@@ -3,9 +3,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import {  Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
+
 const Login= ()=>{
     const [isPasswordShow,setisPasswordShow] = useState(false);
     const [isChecked,setIsChecker]=useState(false);
+    
     return(
         <SafeAreaView style={styles.safeArea}>
             <View style ={styles.view}>
