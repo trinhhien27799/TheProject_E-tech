@@ -19,9 +19,9 @@ const ListItem = (props) => {
                     }}>
                         <Text style={{
                             color: 'black',
-                            fontSize: 25,
+                            fontSize: 15,
                             fontWeight: 'bold'
-                        }}>Iphone 15</Text>
+                        }}>{item.name   }</Text>
 
                         <View style={{
                             height: 1,
