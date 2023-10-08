@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Image, Text, View,StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import colors from "../colors";
-import ListItem from "./ListItem";
-import data from './items';
+import ListItem from "../ListItem";
+import data from '../items';
 
 const ListPhone = () => {
     return (
