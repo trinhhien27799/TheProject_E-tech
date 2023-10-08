@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './Screen/Login';
-import ListPhone from './ListPhone';
+import ListPhone from './Screen/ListPhone';
 import SignUp from './Screen/SignUp';
 
 const Stack = createNativeStackNavigator();
