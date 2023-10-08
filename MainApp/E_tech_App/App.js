@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './Screen/Login';
+import ListPhone from './ListPhone';
 import SignUp from './Screen/SignUp';
 
 const Stack = createNativeStackNavigator();
@@ -10,7 +11,14 @@ const Stack = createNativeStackNavigator();
 const App=()=> {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='SignUp' screenOptions={{headerShown: false}}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='ListPhone'
+          component={ListPhone}
+          options={{
+            headerShown:false,
+          }}
+        />
       <Stack.Screen
         name='Login'
         component={Login}
