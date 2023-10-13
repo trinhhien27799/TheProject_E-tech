@@ -9,6 +9,7 @@ import ListPhone from './Screen/ListPhone';
 import SignUp from './Screen/SignUp';
 import ChiTietSP from './Screen/ChiTietSP';
 import Home from './Screen/home/Home';
+import index from './Screen/navigation';
 
 const Stack = createNativeStackNavigator();
 

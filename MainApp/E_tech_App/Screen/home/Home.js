@@ -8,12 +8,13 @@ import BestSeller from "./bestSeller";
 const Home = () => {
     return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>
-            <MainHeader username={"Username"} />
-            <Banner list={data} />
-            <ListProduct/>
-            <BestSeller title={"Best Seller"}/>
-            <BestSeller title={"Sản phẩm yêu thích"}/>
-
+            <ScrollView>
+                <MainHeader username={"Username"} />
+                <Banner list={data} />
+                <ListProduct />
+                <BestSeller title={"Best Seller"} />
+                <BestSeller title={"Sản phẩm yêu thích"} />
+            </ScrollView>
         </View>
     );
 }
