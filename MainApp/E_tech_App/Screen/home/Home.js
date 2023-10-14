@@ -5,11 +5,11 @@ import data from '../../Model/items';
 import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
-const Home = () => {
+const Home = ({navigation}) => {
     return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>
             <ScrollView>
-                <MainHeader username={"Username"} />
+                <MainHeader username={"Username"} navigation={navigation} />
                 <Banner list={data} />
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />

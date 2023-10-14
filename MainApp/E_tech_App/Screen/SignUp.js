@@ -4,7 +4,7 @@ import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } fro
 
 const SignUp = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea}>  
             <View style={styles.view}>
                 <View style={{ marginVertical: 22 }}>
                     <Text style={{ fontSize: 22, fontWeight: 'bold', marginVertical: 12, color: 'black', marginTop: 40 }}>

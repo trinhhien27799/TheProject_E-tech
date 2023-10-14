@@ -4,7 +4,7 @@ import { Button, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View 
 import {  Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 
-const Login= ()=>{
+const Login= ({navigaiton})=>{
     const [isPasswordShow,setisPasswordShow] = useState(false);
     const [isChecked,setIsChecker]=useState(false);
     
@@ -71,6 +71,9 @@ const Login= ()=>{
                 </View>
                 <TouchableOpacity
                         style={styles.button}
+                        onPress={()=>{
+                            navigation.navigate('Profile');
+                        }}
                 >
                     <Text style={{fontSize:18,fontWeight:'bold'}}>Login</Text>
                 </TouchableOpacity>
@@ -81,7 +84,9 @@ const Login= ()=>{
             
                 }}>
                     <Text >Bạn chưa có tài khoản ?</Text>
-                    <Pressable onPress={null}>
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate('SignUp');
+                    }}>
                         <Text style={{
                             fontSize:16,
                             color:'red',
@@ -90,7 +95,7 @@ const Login= ()=>{
                         }}>
                             Sign up
                         </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             
             </View>

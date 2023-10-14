@@ -10,16 +10,30 @@ import SignUp from './Screen/SignUp';
 import ChiTietSP from './Screen/ChiTietSP';
 import Home from './Screen/home/Home';
 import index from './Screen/navigation';
+import Profile from './Screen/profile/profileScreen';
+
+
 
 const Stack = createNativeStackNavigator();
+
+
 
 const App=()=> {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        // initialRouteName='Login'
+      >
       <Stack.Screen
           name='Home'
           component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+      <Stack.Screen
+          name='Profile'
+          component={Profile}
           options={{
             headerShown: false,
           }}
