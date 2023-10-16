@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Tab =createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 const screenOptions = {
   tabBarShowLabel:false,
   headerShown:false,
