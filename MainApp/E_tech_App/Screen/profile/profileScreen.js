@@ -1,6 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+
+import editProfile from "./editProfile";
+
 const Profile = ({ route,navigation }) => {
     const {username,urlImage} = route.params;
     // const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
@@ -13,7 +16,7 @@ const Profile = ({ route,navigation }) => {
             <View>
                 <ButtonBody icon={require('../../img/history.png')} label="Lịch sử mua hàng" onPress={()=>{}}/>
                 <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{}}/>
-                <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{}}/>
+                <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{navigation.navigate('EditProfile');}}/>
                 <ButtonBody icon={require('../../img/box.png')} label="Đơn hàng của bạn" onPress={()=>{}}/>
             </View>
             <TouchableOpacity
