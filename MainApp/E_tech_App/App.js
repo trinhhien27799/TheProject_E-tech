@@ -8,7 +8,7 @@ import ChiTietSP from './Screen/ChiTietSP';
 import ListPhone from './Screen/ListPhone';
 import Login from './Screen/Login';
 import SignUp from './Screen/SignUp';
-import editProfile from './Screen/profile/editProfile';
+import editProfile from './Screen/profile/editPrifile';
 
 const Stack = createNativeStackNavigator();
 

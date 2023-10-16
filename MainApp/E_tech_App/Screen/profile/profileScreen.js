@@ -2,14 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-import editProfile from "./editProfile";
+import editProfile from "./editPrifile";
 
 const Profile = ({ route,navigation }) => {
     const {username,urlImage} = route.params;
     // const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
     // const username = 'username';
     const email = 'duong@gmail.com';
-
     return (
         <View>
             <HeaderProfile username={username} urlImage={urlImage} email={email} navigation={navigation}/>
