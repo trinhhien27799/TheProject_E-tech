@@ -24,6 +24,7 @@ export default function ChiTietSP() {
     { id: 3, color: 'Xanh dương' },
     { id: 4, color: 'Hồng' },
   ];
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -41,11 +42,14 @@ export default function ChiTietSP() {
             style={styles.img}
           />
         </View>
+
         <View style={styles.view2}>
           <Text style={styles.text1}>Iphone 15 (128GB) </Text>
           <Text style={styles.text2}>$40000</Text>
         </View>
+
         <View style={styles.view3}></View>
+
         <View style={styles.view4}>
           <Text style={styles.text3}>Màu sắc</Text>
           <FlatList
@@ -59,6 +63,7 @@ export default function ChiTietSP() {
             keyExtractor={(item) => item.id}
           />
         </View>
+
         <View style={styles.view5}>
           <Text style={styles.text3}>Mô tả sản phẩm</Text>
           <Text style={styles.text5}>
@@ -66,6 +71,7 @@ export default function ChiTietSP() {
             trải nghiệm tuyệt vời với màn hình OLED 6.7 inch, ...{' '}
           </Text>
         </View>
+
         <View style={styles.view3}></View>
         <View
           style={{
@@ -113,6 +119,7 @@ export default function ChiTietSP() {
         <View style={{ height: 300, marginTop: 20 }}>
           <View style={{ flexDirection: 'row', marginLeft: 10, flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
+
               Các sản phẩm liên quan
             </Text>
             <TouchableOpacity>
@@ -137,6 +144,7 @@ export default function ChiTietSP() {
           <Text style={styles.text3}>Bình Luận</Text>
           <ScrollView></ScrollView>
         </View>
+        
       </ScrollView>
     </SafeAreaView>
   );

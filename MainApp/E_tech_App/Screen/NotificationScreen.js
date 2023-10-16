@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import data from '../Model/itemThongBao'
+
 
 const NotificationScreen = (props) => {
   const data = [
