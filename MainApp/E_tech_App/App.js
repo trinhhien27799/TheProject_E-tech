@@ -26,9 +26,7 @@ const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
 const screenOptions = {
-  activeTintColor: "#2F7C6E",
-  inactiveTintColor: "#222222",
-  activeBackgroundColor: "blue"
+  
 }
 
 const App = () => {
@@ -37,7 +35,12 @@ const App = () => {
       <Tabs.Navigator
         // default configuration from React Navigation
         tabBarOptions={{
-          screenOptions
+          activeTintColor: "#1e1e1f",
+          inactiveTintColor: "#2D4BCf",
+          activeBackgroundColor: "white",
+          tabStyle: {
+            backgroundColor: "#4f9af0"
+          }  
         }}
       >
 

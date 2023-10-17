@@ -23,17 +23,17 @@ const ListProduct = () => {
 const renderItem = ({ item }) => {
     return (
         <View style={styles.viewItem}>
-                <Image style={styles.image} source={item.img} />
-                <Text style={styles.textItem}>
-                    {item.name}
-                </Text>
+            <Image style={styles.image} source={item.img} />
+            <Text style={styles.textItem}>
+                {item.name}
+            </Text>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        margin: 30,
+        padding: 30,
     },
     scrollView: {
         flexDirection: 'column',
@@ -43,26 +43,26 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     image: {
-        width: 80,
-        height: 130,
+        width: 100,
+        height: 90,
         borderRadius: 10,
-        resizeMode:'stretch',
-        margin:10,
+        resizeMode: 'stretch',
+        margin: 10,
 
     },
     viewItem: {
         flex: 1,
         backgroundColor: 'white',
         margin: 20,
-        width: 100,
-        height: 200,
+        width: 150,
+        height: 170,
         borderRadius: 20,
         shadowColor: 'black',
         alignItems: 'center',
         shadowRadius: 10
     },
-    textItem:{
-        fontSize:20,
+    textItem: {
+        fontSize: 20,
         fontWeight: 'bold',
     }
 

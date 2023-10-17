@@ -9,11 +9,11 @@ const MainHeader =({username})=>{
     return (
         <View style={styles.container}>
             <View style={styles.viewAvatar}>
-                <Image style={{width:60,height:60,borderRadius:10}} source={{uri:'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png'}}/>
+                <Image style={{width:40,height:40,borderRadius:10}} source={{uri:'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png'}}/>
                 <Text style={{marginLeft:10,fontWeight:"bold"}}>{username}</Text>
             </View>
             <View style={styles.viewSearch}>
-                <Ionicons style={{lineHeight:50}} name="search" size={25}/>
+                <Ionicons style={{padding: 5}} name="search" size={25}/>
             </View>
         </View>
     );
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         marginTop:15
     },
     viewAvatar:{
-        height:80,
+        height:60,
         width:200, 
         backgroundColor:'#FFFFFF',
         alignItems: 'center',
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     }, 
     viewSearch:{
-        height:50,
-        width:50,
+        height:40,
+        width:40,
         backgroundColor:'white',
         alignItems: 'center',
         borderRadius:50,

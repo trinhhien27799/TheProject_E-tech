@@ -38,7 +38,7 @@ export default function ChiTietSP() {
         </View>
         <View style={styles.view}>
           <Image
-            source={require('./assets/logo-cac-hang-dien-thoai-5.jpg')}
+            source={require('../img/sp.png')}
             style={styles.img}
           />
         </View>
