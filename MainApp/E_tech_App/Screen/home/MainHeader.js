@@ -12,7 +12,7 @@ const MainHeader = ({ username,navigation }) => {
         <View style={styles.container}>
 
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profile',{username,urlImage,navigation})}
+                onPress={() => navigation.navigate('Profile',{username:username,urlImage:urlImage,navigation:navigation})}
             >
                 <View style={styles.viewAvatar}>
                     <Image style={{ width: 60, height: 60, borderRadius: 10 }} source={{ uri: urlImage }} />

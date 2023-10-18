@@ -7,21 +7,12 @@ import Home from './Screen/home/Home';
 import Profile from './Screen/profile/profileScreen';
 import ChiTietSP from './Screen/ChiTietSP';
 import ListPhone from './Screen/ListPhone';
-import Login from './Screen/Login';
-import SignUp from './Screen/SignUp';
+import Login from './Screen/authentication/Login';
+import SignUp from './Screen/authentication/SignUp';
 import editProfile from './Screen/profile/editPrifile';
+import Buttom_Navigation from './Screen/navigation';
 
-import index from './Screen/navigation';
-import CartScreen from './Screen/CartScreen';
-import NotificationScreen from './Screen/NotificationScreen';
-import AccountScreen from './Screen/AccountScreen';
-
-// Navigation Import
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-import Icon from 'react-native-vector-icons/Feather';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -34,7 +25,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='Home'
+        initialRouteName='SignUp'
       >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
@@ -43,8 +34,10 @@ const App = () => {
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
+        <Stack.Screen name='ButtonNavigation' component={Buttom_Navigation} options={{ headerShown: false }} />
+        
       </Stack.Navigator>
-      <Tabs.Navigator
+      {/* <Tabs.Navigator
         // default configuration from React Navigation
         tabBarOptions={{
           screenOptions
@@ -110,7 +103,7 @@ const App = () => {
             )
           }}
         />
-      </Tabs.Navigator>
+      </Tabs.Navigator> */}
     </NavigationContainer>
   );
 }

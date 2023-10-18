@@ -14,6 +14,7 @@ const Home = ({navigation}) => {
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />
                 <BestSeller title={"Sản phẩm yêu thích"} />
+                
             </ScrollView>
         </View>
     );
