@@ -7,14 +7,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const VerifySignIn1 = () => {
+const Quenmk1 = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
+    <View style={styles.view1}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+            <Text style={styles.text}>Quên mật khẩu</Text>
+          </View>
       <View style={styles.view}>
-        <Text style={{fontSize: 20,fontWeight: 'bold'}}>Nhập địa chỉ Email hoặc Số điện thoại của bạn để tiếp tục
+        <Text style={{fontSize: 18,fontWeight: 'bold'}}>Nhập địa chỉ Email hoặc Số điện thoại của bạn để tiếp tục
         </Text>
-        <View style={{ marginBottom: 12 , marginTop: 12}}>
+        <View style={{ marginBottom: 12 , marginTop: 30}}>
           <View style={styles.viewInput}>
             <TextInput
               placeholder="Email / Số điện thoại"
@@ -37,11 +42,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
+    marginTop: 20
   },
   view: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20
+    padding: 20,
+    justifyContent:'center',
+  },
+  view1:{
+      flexDirection: 'row',
+      height: 30,
   },
   viewInput: {
     width: '100%',
@@ -53,11 +63,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 22,
   },
-
+  text: {
+      marginLeft: 80,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
   button: {
     height: 50,
     backgroundColor: '#336BFA',
     alignItems: 'center',
+    justifyContent:'center',
     borderRadius: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -67,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifySignIn1;
+export default Quenmk1;
