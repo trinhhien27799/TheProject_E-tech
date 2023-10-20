@@ -8,7 +8,8 @@ import ListPhone from './Screen/ListPhone';
 import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
 import editProfile from './Screen/profile/editProfile';
-import Buttom_Navigation from './Screen/navigation';
+import ButtomNavigation from './Screen/home/bottomNavigation';
+
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 
@@ -32,7 +33,7 @@ const App = () => {
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
-        <Stack.Screen name='ButtonNavigation' component={Buttom_Navigation} options={{ headerShown: false }} />
+        <Stack.Screen name='ButtonNavigation' component={ButtomNavigation} options={{ headerShown: false }} />
         
       </Stack.Navigator>
     </NavigationContainer>

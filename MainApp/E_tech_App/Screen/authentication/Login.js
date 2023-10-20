@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
     const isValidOk = () => !!email.trim() && !!password.trim();
     const handleLogin = async () => {
         try {
-            navigation.navigate('Home')
+            navigation.navigate('ButtonNavigation')
         } catch (error) {
             console.error('Error:', error);
         }
