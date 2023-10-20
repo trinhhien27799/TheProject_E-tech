@@ -1,8 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
 import Home from './Screen/home/Home';
 import Profile from './Screen/profile/profileScreen';
 import ChiTietSP from './Screen/ChiTietSP';
@@ -37,73 +35,6 @@ const App = () => {
         <Stack.Screen name='ButtonNavigation' component={Buttom_Navigation} options={{ headerShown: false }} />
         
       </Stack.Navigator>
-      {/* <Tabs.Navigator
-        // default configuration from React Navigation
-        tabBarOptions={{
-          screenOptions
-        }}
-      >
-
-        <Tabs.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-                <Icon
-                    name="home"
-                    size={size ? size : 24}
-                    color={focused ? color : "#222222"}
-                    focused={focused}
-                />
-            )
-          }}
-        />
-
-        <Tabs.Screen
-          name="Cart"
-          component={CartScreen}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Icon
-                name="shopping-cart"
-                size={size ? size : 24}
-                color={focused ? color : "#222222"}
-                focused={focused}
-              />
-            )
-          }}
-        />
-
-        <Tabs.Screen
-          name="Notification"
-          component={NotificationScreen}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Icon
-                name="bell"
-                size={size ? size : 24}
-                color={focused ? color : "#222222"}
-                focused={focused}
-              />
-            )
-          }}
-        />
-
-        <Tabs.Screen
-          name="Account"
-          component={AccountScreen}
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Icon
-                name="user"
-                size={size ? size : 24}
-                color={focused ? color : "#222222"}
-                focused={focused}
-              />
-            )
-          }}
-        />
-      </Tabs.Navigator> */}
     </NavigationContainer>
   );
 }

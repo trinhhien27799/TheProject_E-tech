@@ -37,10 +37,7 @@ export default function ChiTietSP() {
           </View>
         </View>
         <View style={styles.view}>
-          <Image
-            source={require('../img/logo-iphone.jpg')}
-            style={styles.img}
-          />
+          <Image source={require('../img/sp.png')} style={styles.img} />
         </View>
 
         <View style={styles.view2}>
