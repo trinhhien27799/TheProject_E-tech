@@ -16,9 +16,7 @@ import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 const screenOptions = {
-  activeTintColor: "#2F7C6E",
-  inactiveTintColor: "#222222",
-  activeBackgroundColor: "blue"
+  
 }
 const App = () => {
   return (

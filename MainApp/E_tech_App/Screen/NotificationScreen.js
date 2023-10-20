@@ -27,7 +27,7 @@ const NotificationScreen = (props) => {
         data={data}
         renderItem={({ item }) => (
           <View style={styles.view}>
-            <View style={{ width: '30%' }}>
+            <View style={{ width: '25%' }}>
               <Ionicons
                 name="md-notifications-outline"
                 size={40}
@@ -53,20 +53,22 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     flex: 1,
+    backgroundColor: "whitesmoke"
   },
   title: {
     fontSize: 15,
-    paddingTop: 10,
+    paddingTop: 8,
   },
   title2: {
     fontSize: 15,
-    paddingTop: 20,
+    paddingVertical: 10,
   },
   img: {
-    height: 200,
-    width: 200,
-    padding: 8,
-    paddingStart: 20,
+    height: 100,
+    width: 100,
+    padding: 10,
+    marginHorizontal: 20,
+    marginTop: 4
   },
   view: {
     width: '90%',
@@ -79,6 +81,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 20,
-    marginTop:15
+    marginTop:15,
   },
 });

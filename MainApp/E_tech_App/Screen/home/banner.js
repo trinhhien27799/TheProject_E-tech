@@ -45,8 +45,7 @@ const renderItem = ({ item }) => {
             <TouchableOpacity>
                 <View style={styles.card}>
                     <View>
-                        <Image style={{ margin:30, borderRadius: 10, height: card_height, width: card_width - 60, resizeMode: 'stretch' }} source={item.url} />
-
+                        <Image style={{borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={item.url} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -57,6 +56,8 @@ const styles = StyleSheet.create({
     card: {
         width: card_width,
         height: card_height,
+        alignItems: 'center',
+        flex: 0,
     },
     imageBox: {
         width: card_width,

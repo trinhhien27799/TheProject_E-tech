@@ -10,7 +10,6 @@ const MainHeader = ({ username,navigation }) => {
     const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
     return (
         <View style={styles.container}>
-
             <TouchableOpacity
                 onPress={() => navigation.navigate('Profile',{username:username,urlImage:urlImage,navigation:navigation})}
             >
