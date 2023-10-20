@@ -57,7 +57,7 @@ const Login = ({ navigation }) => {
                                 placeholder="Mật khẩu"
                                 onChangeText={(text) => {
                                     setPassword(text);
-                                    setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
+                                    setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự!');
                                 }}
                                 placeholderTextColor={'black'}
                                 style={{ width: '100%', marginLeft: 10 }}
@@ -101,7 +101,6 @@ const Login = ({ navigation }) => {
                         onPress={() => {
                             navigation.navigate('SignUp')
                         }}
-
                     >
                         <Text style={{ marginLeft: 10, color: '#336BFA',fontWeight:'bold' }}>
                             Đăng ký

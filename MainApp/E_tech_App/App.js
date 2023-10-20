@@ -7,7 +7,7 @@ import ChiTietSP from './Screen/ChiTietSP';
 import ListPhone from './Screen/ListPhone';
 import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
-import editProfile from './Screen/profile/editPrifile';
+import editProfile from './Screen/profile/editProfile';
 import Buttom_Navigation from './Screen/navigation';
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";

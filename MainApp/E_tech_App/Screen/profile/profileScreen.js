@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-import editProfile from "./editPrifile";
+import editProfile from "./editProfile";
 
 const Profile = ({ route,navigation }) => {
     const {username,urlImage} = route.params;
     // const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
     // const username = 'username';
-    const email = 'duong@gmail.com';
+    const email = 'nguyena@gmail.com';
     return (
         <View>
             <HeaderProfile username={username} urlImage={urlImage} email={email} navigation={navigation}/>
@@ -29,6 +29,7 @@ const Profile = ({ route,navigation }) => {
                     borderRadius: 10,
                     marginTop:70
                 }}
+
                 onPress={()=>{
                     navigation.navigate('Login');
                 }}

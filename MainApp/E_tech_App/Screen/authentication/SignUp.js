@@ -178,9 +178,8 @@ const SignUp = ({ navigation }) => {
           <Text>Bạn đã có tài khoản? </Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Login'), print('hí hí')
+              navigation.navigate('Login')
             }}
-          
           >
             <Text style={{marginLeft:10, color: '#336BFA',fontWeight:'bold' }}>
               Đăng nhập
