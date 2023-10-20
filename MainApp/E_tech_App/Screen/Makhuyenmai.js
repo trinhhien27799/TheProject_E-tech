@@ -49,7 +49,7 @@ export default function Makhuyenmai() {
           renderItem={({ item }) => (
             <View style={styles.view2}>
               <View style={{ width: '28%', paddingTop: 10 }}>
-                <Image source={require('./assets/sale.png')} style={styles.img} />
+                <Image source={require('../img/sale.png')} style={styles.img} />
               </View>
               <View style={{ paddingTop: 10 , width: '40%' }}>
                 <Text style={styles.title}>{item.name}</Text>
