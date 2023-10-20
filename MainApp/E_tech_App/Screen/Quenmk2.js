@@ -7,16 +7,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const VerifySignIn2 = () => {
+const Quenmk2 = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.view1}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+        <Text style={styles.text}>Quên mật khẩu</Text>
+      </View>
       <View style={styles.view}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-          Chúng tôi vừa gửi mã xác nhận đến địa chỉ Email của bạn. Nhập mã xác
-          nhận :
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+          Chúng tôi vừa gửi mã xác nhận đến địa chỉ Email của bạn.
         </Text>
-        <View style={{ marginBottom: 12, marginTop: 12 }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+          Nhập mã xác nhận :
+        </Text>
+        <View style={{ marginBottom: 12, marginTop: 30 }}>
           <View style={styles.viewInput}>
             <TextInput
               placeholder="Mã xác nhận"
@@ -33,7 +40,7 @@ const VerifySignIn2 = () => {
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 40,
+            marginTop: 80,
             justifyContent: 'center',
             alignContent: 'center',
           }}>
@@ -42,24 +49,24 @@ const VerifySignIn2 = () => {
               style={{
                 fontSize: 15,
                 color: '#336BFA',
-                marginRight: 8
+                marginRight: 8,
               }}>
               Gửi lại mã
             </Text>
           </TouchableOpacity>
           <View
             style={{
-              height: 3,  
+              height: 3,
               width: 8,
               backgroundColor: '#0000FF',
-              marginTop: 10
+              marginTop: 10,
             }}></View>
-          <TouchableOpacity >
+          <TouchableOpacity>
             <Text
               style={{
                 fontSize: 15,
                 color: 'red',
-                marginLeft: 8
+                marginLeft: 8,
               }}>
               Hủy bỏ
             </Text>
@@ -74,11 +81,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
+    marginTop: 20,
   },
   view: {
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+  },
+  view1: {
+    flexDirection: 'row',
+    height: 30,
   },
   viewInput: {
     width: '100%',
@@ -90,11 +102,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 22,
   },
-
+  text: {
+    marginLeft: 80,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   button: {
     height: 50,
     backgroundColor: '#336BFA',
     alignItems: 'center',
+    justifyContent:'center',
     borderRadius: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -104,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifySignIn2;
+export default Quenmk2;

@@ -51,7 +51,7 @@ import {
               <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
                 Các sản phẩm
               </Text>
-              <Image source={require('./assets/store.png')} style={styles.img1} />
+              <Image source={require('../img/store.png')} style={styles.img1} />
             </View>
             <View style={{ marginTop: 10, height: 400 }}>
               <FlatList
@@ -60,7 +60,7 @@ import {
                   <View style={styles.view2}>
                     <View style={{ width: '28%', paddingTop: 10 }}>
                       <Image
-                        source={require('./assets/store.png')}
+                        source={require('../img/store.png')}
                         style={styles.img}
                       />
                     </View>
@@ -87,7 +87,7 @@ import {
                   Địa chỉ nhận hàng
                 </Text>
                 <Image
-                  source={require('./assets/location.png')}
+                  source={require('../img/location.png')}
                   style={styles.img1}
                 />
               </View>
@@ -143,7 +143,7 @@ import {
                   Phương thức thanh toán
                 </Text>
                 <Image
-                  source={require('./assets/paymain.png')}
+                  source={require('../img/paymain.png')}
                   style={styles.img1}
                 />
               </View>
@@ -226,7 +226,7 @@ import {
       height: 30,
     },
     text: {
-      marginLeft: 60,
+      marginLeft: 80,
       fontSize: 18,
       fontWeight: 'bold',
     },
