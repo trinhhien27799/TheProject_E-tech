@@ -7,7 +7,7 @@ import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
 const Home = ({navigation}) => {
     return (
-        <View style={tailwind `flex-1 bg-neutral-300`}>
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
             <ScrollView>
                 <MainHeader username={"Username"} navigation={navigation} />
                 <Banner list={data} />
