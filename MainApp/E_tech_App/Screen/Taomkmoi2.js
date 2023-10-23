@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 
-const Taomk2 = () => {
+const Taomk2 = (navigation) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={{ alignItems: 'center', marginTop:80, }}>
@@ -20,7 +20,11 @@ const Taomk2 = () => {
           Chúc mừng! Mật khẩu của bạn đã được đặt lại thành công. Vui lòng
           chuyển sang màn hình đăng nhập để đăng nhập lại.
         </Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+        onPress={() => {
+          navigation.navigate('Login')
+      }}
+        style={styles.button}>
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFFFFF' }}>
             Login
           </Text>
