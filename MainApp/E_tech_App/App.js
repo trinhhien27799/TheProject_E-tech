@@ -12,24 +12,27 @@ import ButtomNavigation from './Screen/home/bottomNavigation';
 import Quenmk1 from './Screen/Quenmk1'
 import Quenmk2 from './Screen/Quenmk2'
 import Taomk from './Screen/Taomkmoi'
-import Yaomk2 from './Screen/Taomkmoi2'
-
+import Taomk2 from './Screen/Taomkmoi2'
 
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
+import BillScreen from './Screen/BillScreen';
 import Taomk2 from './Screen/Taomkmoi2';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
-const screenOptions = {
-  
-}
+
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='SignUp'
       >
+        <Stack.Screen name='BillScreen' component={BillScreen} options={{
+          headerMode: 'screen',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: '#3366ff' }
+        }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
@@ -42,7 +45,6 @@ const App = () => {
         <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
         <Stack.Screen name='ButtonNavigation' component={ButtomNavigation} options={{ headerShown: false }} />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );
