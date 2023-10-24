@@ -9,6 +9,7 @@ import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
 import editProfile from './Screen/profile/editProfile';
 import ButtomNavigation from './Screen/home/bottomNavigation';
+import SearchScreen from './Screen/search/searchScreen';
 
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
@@ -23,6 +24,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='SignUp'
+        // initialRouteName='SearchScreen'
       >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
@@ -32,6 +34,7 @@ const App = () => {
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
         <Stack.Screen name='ButtonNavigation' component={ButtomNavigation} options={{ headerShown: false }} />
+        <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
         
       </Stack.Navigator>
     </NavigationContainer>
