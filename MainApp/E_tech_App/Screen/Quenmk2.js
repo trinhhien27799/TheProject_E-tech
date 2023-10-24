@@ -9,11 +9,26 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const Quenmk2 = () => {
+const Quenmk2 = (navigation) => {
+
+  const [otp, setOtp] = useState('');
+  const [errorOtp, setErrorOtp] = useState('');
+
+  const isValidOk = () => !!otp.trim();
+  const handleCheck = async () => {
+    try {
+      navigation.navigate('Taomk')
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.view1}>
-        <Ionicons name="arrow-back" size={24} color="black" />
+        <Ionicons name="arrow-back" size={24} color="black" onPress={() => {
+          navigation.navigate('Quenmk1')
+        }} />
         <Text style={styles.text}>Quên mật khẩu</Text>
       </View>
       <View style={styles.view}>
@@ -27,12 +42,19 @@ const Quenmk2 = () => {
           <View style={styles.viewInput}>
             <TextInput
               placeholder="Mã xác nhận"
+              onChangeText={(text) => {
+                setErrorOtp( 'Mã xác nhận không hợp lệ');
+                setOtp(text);
+              }}
               placeholderTextColor={'black'}
               style={{ width: '100%', fontSize: 16 }}
             />
           </View>
+          <Text style={{ color: 'red', margin: 10 }}>{errorOtp}</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity disabled={!isValidOk()}
+          onPress={handleCheck}
+          style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
             TIẾP TỤC
           </Text>
@@ -61,7 +83,9 @@ const Quenmk2 = () => {
               backgroundColor: '#0000FF',
               marginTop: 10,
             }}></View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+          navigation.navigate('Login')
+        }}>
             <Text
               style={{
                 fontSize: 15,
@@ -111,7 +135,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#336BFA',
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     borderRadius: 20,
     marginLeft: 'auto',
     marginRight: 'auto',

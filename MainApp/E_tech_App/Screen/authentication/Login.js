@@ -82,7 +82,11 @@ const Login = ({ navigation }) => {
                         </View>
                         <Text style={{ color: 'red', margin: 10 }}>{errorPassword}</Text>
                     </View>
-                    <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                    <TouchableOpacity 
+                    onPress={() => {
+                        navigation.navigate('Quenmk1')
+                    }}
+                    style={{ alignSelf: 'flex-end' }}>
                         <Text style={styles.textForgot}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
                 </View>
