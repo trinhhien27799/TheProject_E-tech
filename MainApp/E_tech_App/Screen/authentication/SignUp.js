@@ -174,7 +174,7 @@ const SignUp = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.view3}></View>
-        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
+        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: -10 }}>
           <Text>Bạn đã có tài khoản? </Text>
           <TouchableOpacity
             onPress={() => {

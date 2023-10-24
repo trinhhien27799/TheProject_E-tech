@@ -17,7 +17,7 @@ import Taomk2 from './Screen/Taomkmoi2'
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import BillScreen from './Screen/BillScreen';
-import Taomk2 from './Screen/Taomkmoi2';
+
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
