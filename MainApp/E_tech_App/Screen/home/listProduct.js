@@ -1,7 +1,6 @@
 import React from "react";
 import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
-// import items from "../../Model/items";
-import items from '../../Model/itemHangPhone';
+import LabelItems from "../../Model/itemHangPhone";
 
 const ListProduct = () => {
     return (
@@ -9,7 +8,7 @@ const ListProduct = () => {
             <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>Các loại sản phẩm</Text>
             <ScrollView horizontal >
                 <FlatList
-                    data={items}
+                    data={LabelItems}
                     numColumns={2}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
