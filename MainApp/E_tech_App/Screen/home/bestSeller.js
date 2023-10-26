@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import bestSeller from '../../Model/seller';
 import items from '../../Model/items';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const BestSeller = ({title}) => {
   const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
+  
+  // Fetch API products
+  const [product, setProduct] = useState(null);
+  useEffect(() => {
+    axios.get('http://192.168.110.173:3000/api/product/get-all').then((res) => {
+      setProduct(res.data);
+    })
+  }, []);
 
   const handleIcon = (index) => {
     const updatedIsClickArray = [...isClickArray];
@@ -15,18 +24,30 @@ const BestSeller = ({title}) => {
 
   const renderItem = ({ item, index }) => (
     <View style={styles.body}>
+      {/* 
+      ==> Code này đang bị lỗi đối chiếu với id của model giảm giá
+
       <View style={styles.saler}>
         <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
           Giảm {bestSeller.find((saler)=>saler.id==item.id).sale}%
         </Text>
+      </View> 
+      */}
+
+    {/* Code lắp tạm thay thế */}
+      <View style={styles.saler}>
+        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+          Giảm 30%
+        </Text>
       </View>
+      
       <View>
-        <Image style={styles.img} source={item.url} />
+        <Image style={styles.img} source={{uri: item.image_preview}} />
         <View style={{ flexDirection: 'row' }}>
           <View>
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.name}</Text>
-            <Text style={{ marginTop: 5 }}>Giá: {item.price}</Text>
-            <Text style={{ marginTop: 5 }}>Loại: {item.loai}</Text>
+            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
+            <Text style={{ marginTop: 5 }}>Giá: {item.max_price}</Text>
+            <Text style={{ marginTop: 5 }}>Loại: {item.brand_name}</Text>
           </View>
           <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
             <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
@@ -45,7 +66,7 @@ const BestSeller = ({title}) => {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={items}
+        data={product}
         horizontal
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
@@ -67,8 +88,8 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
     margin: 10,
-    width: 150,
-    height: 220,
+    width: 180,
+    height: 250,
     borderRadius: 20,
     shadowColor: 'grey',
     shadowRadius: 10,
