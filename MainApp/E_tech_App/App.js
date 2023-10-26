@@ -12,7 +12,7 @@ import ButtomNavigation from './Screen/home/bottomNavigation';
 import Quenmk1 from './Screen/Quenmk1'
 import Quenmk2 from './Screen/Quenmk2'
 import Taomk from './Screen/Taomkmoi'
-import Yaomk2 from './Screen/Taomkmoi2'
+import Taomk2 from './Screen/Taomkmoi2'
 
 
 

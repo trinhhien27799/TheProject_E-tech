@@ -13,9 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import ListItem from "../ListItem";
-import data3 from '../items';
-
+import ViewMoreText from 'react-native-view-more-text';
 
 export default function ChiTietSP() {
   const data = [
@@ -24,6 +22,8 @@ export default function ChiTietSP() {
     { id: 3, color: 'Xanh dương' },
     { id: 4, color: 'Hồng' },
   ];
+  const renderViewMore = (onPress) => <Text onPress={onPress}>View more</Text>;
+  const renderViewLess = (onPress) => <Text onPress={onPress}>View less</Text>;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,7 +37,10 @@ export default function ChiTietSP() {
           </View>
         </View>
         <View style={styles.view}>
-          <Image source={require('../img/sp.png')} style={styles.img} />
+          <Image
+            source={require('../img/sp.png')}
+            style={styles.img}
+          />
         </View>
 
         <View style={styles.view2}>
@@ -63,10 +66,18 @@ export default function ChiTietSP() {
 
         <View style={styles.view5}>
           <Text style={styles.text3}>Mô tả sản phẩm</Text>
-          <Text style={styles.text5}>
+          <ViewMoreText
+          numberOfLines={2}
+          renderViewMore={renderViewMore}
+          renderViewLess={renderViewLess}
+          textStyle={{ fontSize: 14, marginLeft: 10, marginRight: 8, marginTop: 5}}
+          
+        >
+          <Text>
             Iphone 15 là sản phẩm mới nhất của Apple, mang đến cho người dùng
             trải nghiệm tuyệt vời với màn hình OLED 6.7 inch, ...{' '}
           </Text>
+        </ViewMoreText>
         </View>
 
         <View style={styles.view3}></View>
@@ -116,7 +127,6 @@ export default function ChiTietSP() {
         <View style={{ height: 300, marginTop: 20 }}>
           <View style={{ flexDirection: 'row', marginLeft: 10, flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-
               Các sản phẩm liên quan
             </Text>
             <TouchableOpacity>
@@ -131,17 +141,11 @@ export default function ChiTietSP() {
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            {data3.map((item, index) => (
-                <ListItem key={index} item={item} />
-            ))}
-        </ScrollView>
         </View>
         <View style={{ height: 300, backgroundColor: 'red', marginTop: 20 }}>
           <Text style={styles.text3}>Bình Luận</Text>
           <ScrollView></ScrollView>
         </View>
-        
       </ScrollView>
     </SafeAreaView>
   );
