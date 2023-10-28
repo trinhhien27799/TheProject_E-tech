@@ -15,6 +15,7 @@ import { registerUser, insertOtp } from '../../CallApi/authenApi';
 import Dialog from "react-native-dialog";
 import VerifyDialog from './verifyOTP';
 
+
 const SignUp = ({ navigation }) => {
   const [fullname, setFullname] = useState('');
   const [password, setPassword] = useState('');
