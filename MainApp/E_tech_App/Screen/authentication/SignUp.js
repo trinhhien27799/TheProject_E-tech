@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   SafeAreaView,
@@ -7,25 +7,45 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ScrollView,
 } from 'react-native';
 import { isValidEmail, isPassWord, isValidUsername, isConfirm } from '../../Component/validation';
 import { Ionicons } from "@expo/vector-icons";
+import { registerUser, insertOtp } from '../../CallApi/authenApi';
+import Dialog from "react-native-dialog";
+import VerifyDialog from './verifyOTP';
+
 
 const SignUp = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [fullname, setFullname] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const [errorUsername, setErrorUsername] = useState('');
+  const [errorFullname, setErrorFullname] = useState('');
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
-
-
+  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(15);
   const [confirmPass, setConfirmPass] = useState('');
 
-  const isValidOk = () => !!email.trim() && !!password.trim() && !!username.trim() && !!confirmPass.trim() && isValidUsername(username) == true && isValidEmail(email) == true;
+  const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 
+  const [isSignUpPressed, setIsSignUpPressed] = useState(false);
+
+  useEffect(() => {
+    if (isSignUpPressed) {
+      const interval = setInterval(() => {
+        if (remainingTime > 0) {
+          setRemainingTime(remainingTime - 1);
+        } else {
+          clearInterval(interval);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  
+  }, [remainingTime, isSignUpPressed]);
   const handleSignUp = async () => {
     try {
       if (password != confirmPass || confirmPass != password) {
@@ -34,17 +54,23 @@ const SignUp = ({ navigation }) => {
       } else {
         setErrorPassword('');
         setErrorConfim('');
-        console.log(isValidOk);
-        console.log(isValidEmail);
-        console.log(isValidUsername);
+        // registerUser(username,email,password);
+        insertOtp(email);
+        setShowVerifyDialog(true);
+        setIsSignUpPressed(true);
       }
     } catch (error) {
       console.error('Error:', error);
     }
   }
+  const handleDelete = () => {
+    setShowVerifyDialog(false);
+    setRemainingTime(15);
+    setIsSignUpPressed(false);
 
+  };
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <ScrollView style={styles.safeArea}>
       <View style={styles.view}>
         <View style={{ marginVertical: 22 }}>
           <Text
@@ -69,14 +95,14 @@ const SignUp = ({ navigation }) => {
             <TextInput
               placeholder="Họ và tên"
               onChangeText={(text) => {
-                setErrorUsername(isValidUsername(text) ? '' : 'Full name không đúng định dạng');
-                setUsername(text);
+                setErrorFullname(isValidUsername(text) ? '' : 'Full name không đúng định dạng');
+                setFullname(text);
               }}
               placeholderTextColor={'black'}
               style={{ width: '100%', marginLeft: 10 }}
             />
           </View>
-          <Text style={{ color: 'red', margin: 10 }}>{errorUsername}</Text>
+          <Text style={{ color: 'red', margin: 10 }}>{errorFullname}</Text>
         </View>
 
         <View>
@@ -110,7 +136,7 @@ const SignUp = ({ navigation }) => {
               style={{ width: '100%', marginLeft: 10 }}
               secureTextEntry={!isPasswordShow}
             />
-             <TouchableOpacity
+            <TouchableOpacity
               onPress={() => setisPasswordShow(!isPasswordShow)}
               style={{
                 position: 'absolute',
@@ -165,14 +191,16 @@ const SignUp = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
-          disabled={!isValidOk()}
-          onPress={handleSignUp}
+          // disabled={!isValidOk()}
+          onPress={() => {
+            handleSignUp()
+          }}
           style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
             ĐĂNG KÝ
           </Text>
         </TouchableOpacity>
-
+        <VerifyDialog setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
         <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
           <Text>Bạn đã có tài khoản? </Text>
@@ -181,16 +209,15 @@ const SignUp = ({ navigation }) => {
               navigation.navigate('Login')
             }}
           >
-            <Text style={{marginLeft:10, color: '#336BFA',fontWeight:'bold' }}>
+            <Text style={{ marginLeft: 10, color: '#336BFA', fontWeight: 'bold' }}>
               Đăng nhập
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -200,6 +227,7 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     marginHorizontal: 22,
+
   },
   view3: {
     height: 2,
@@ -215,11 +243,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:'#F5F5F5',
+    backgroundColor: '#F5F5F5',
     paddingLeft: 22,
     flexDirection: 'row'
   },
-  viewContainerInput:{
+  viewContainerInput: {
 
   },
   button: {
