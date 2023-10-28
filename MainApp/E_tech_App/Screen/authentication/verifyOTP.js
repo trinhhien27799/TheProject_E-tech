@@ -8,6 +8,7 @@ const VerifyDialog = ({ check, onCancle, email, password, fullname, navigation, 
     const secondInput = useRef();
     const thirdInput = useRef();
     const fourInput = useRef();
+    
     const fiveInput = useRef();
     const sixInput = useRef();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);

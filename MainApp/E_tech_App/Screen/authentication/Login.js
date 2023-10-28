@@ -22,6 +22,7 @@ const Login = ({ navigation }) => {
             loginUser(username,password,navigation);
         } catch (error) {
             console.error('Error:', error);
+            
         }
     }
 

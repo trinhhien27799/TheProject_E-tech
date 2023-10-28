@@ -43,6 +43,7 @@ const SignUp = ({ navigation }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
+  
   }, [remainingTime, isSignUpPressed]);
   const handleSignUp = async () => {
     try {

@@ -31,7 +31,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Login'
-        // initialRouteName='SearchScreen'
       >
         <Stack.Screen name='BillScreen' component={BillScreen} options={{
           headerMode: 'screen',

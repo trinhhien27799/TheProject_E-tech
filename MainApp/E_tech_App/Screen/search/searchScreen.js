@@ -143,6 +143,7 @@ const Line = () => (
 );
 export default SearchScreen;
 const styles = StyleSheet.create({
+    
 
     viewHeader: {
         flexDirection: "row",
