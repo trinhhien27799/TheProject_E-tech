@@ -1,5 +1,5 @@
 import React from "react";
-    const items=[
+    const LabelItems=[
         {
             img:require('../img/logo-iphone.jpg'),
             name:"Iphone"
@@ -34,6 +34,4 @@ import React from "react";
         }
     ];
 
-    
-
-export default items;
+export default LabelItems;
