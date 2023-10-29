@@ -8,7 +8,6 @@ import ListPhone from './Screen/ListPhone';
 import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
 import editProfile from './Screen/profile/editProfile';
-import ButtomNavigation from './Screen/home/bottomNavigation';
 
 import SearchScreen from './Screen/search/searchScreen';
 
@@ -17,10 +16,12 @@ import Quenmk2 from './Screen/Quenmk2'
 import Taomk from './Screen/Taomkmoi'
 import Taomk2 from './Screen/Taomkmoi2'
 
-
-
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import BillScreen from './Screen/BillScreen';
+import AddressTest from './Screen/AddressTest';
+import AddAdress from './Screen/AddAdress';
+import BottomNavigation from './Screen/home/bottomNavigation';
+import NotificationScreen from './Screen/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -29,7 +30,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='SignUp'
+        initialRouteName='ButtonNavigation'
         // initialRouteName='SearchScreen'
       >
         <Stack.Screen name='BillScreen' component={BillScreen} options={{
@@ -48,9 +49,12 @@ const App = () => {
         <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
         <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
-        <Stack.Screen name='ButtonNavigation' component={ButtomNavigation} options={{ headerShown: false }} />
+        <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
 
+        <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
+        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: false }} />
+        <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

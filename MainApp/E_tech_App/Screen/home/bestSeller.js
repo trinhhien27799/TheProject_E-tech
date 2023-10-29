@@ -4,14 +4,16 @@ import bestSeller from '../../Model/seller';
 import items from '../../Model/items';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const BestSeller = ({title}) => {
   const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
+  const navigation = useNavigation();
   
   // Fetch API products
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.110.173:3000/api/product/get-all').then((res) => {
+    axios.get('http://192.168.1.63:3000/api/product/get-all').then((res) => {
       setProduct(res.data);
     })
   }, []);
@@ -41,7 +43,7 @@ const BestSeller = ({title}) => {
         </Text>
       </View>
       
-      <View>
+      <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail')}}>
         <Image style={styles.img} source={{uri: item.image_preview}} />
         <View style={{ flexDirection: 'row' }}>
           <View>
@@ -53,7 +55,7 @@ const BestSeller = ({title}) => {
             <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 
@@ -61,7 +63,7 @@ const BestSeller = ({title}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {navigation.navigate('ListPhone')}}>
           <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
         </TouchableOpacity>
       </View>
