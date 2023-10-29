@@ -1,17 +1,19 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import MainHeader from "./MainHeader";
 import data from '../../Model/items';
 import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
-import tailwind from "twrnc";
+import { useRoute } from "@react-navigation/native";
 
-const Home = ({navigation}) => {
+const Home = ({navigation,route}) => {
+    const useData = route.params.registrationData;
+    // console.log(JSON.stringify(useData));
     return (
-        <View style={tailwind `bg-gray-100 flex-1`}>
+        <View style={{flex:1,paddingTop:'5%'}}>
             <ScrollView>
-                <MainHeader username={"Username"} navigation={navigation} />
+                <MainHeader route={route.params} navigation={navigation} />
                 <Banner list={data} />
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />

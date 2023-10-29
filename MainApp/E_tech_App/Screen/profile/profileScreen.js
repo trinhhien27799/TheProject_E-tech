@@ -3,19 +3,19 @@ import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import editProfile from "./editProfile";
+import { useNavigation } from "@react-navigation/native";
 
-const Profile = ({ route,navigation }) => {
-    const {username,urlImage} = route.params;
-    // const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
-    // const username = 'username';
-    const email = 'nguyena@gmail.com';
+const Profile = ({ route }) => {
+    const {username,avatar,fullname} = route.params.route;
+    const params = route.params.route;
+    const navigation = useNavigation();
     return (
         <View>
-            <HeaderProfile username={username} urlImage={urlImage} email={email} navigation={navigation}/>
+            <HeaderProfile username={fullname} urlImage={avatar} email={username} navigation={navigation}/>
             <View>
                 <ButtonBody icon={require('../../img/history.png')} label="Lịch sử mua hàng" onPress={()=>{}}/>
                 <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{}}/>
-                <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{navigation.navigate('EditProfile');}}/>
+                <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{navigation.navigate('EditProfile',route={params});}}/>
                 <ButtonBody icon={require('../../img/box.png')} label="Đơn hàng của bạn" onPress={()=>{}}/>
             </View>
             <TouchableOpacity
@@ -43,7 +43,7 @@ const HeaderProfile = ({ username, urlImage, email,navigation }) => {
     return (
         <View style={styles.headerContainer}>
             <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                <Image style={styles.imageHeader} source={urlImage} />
+                <Image style={styles.imageHeader} source={{uri:urlImage}} />
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{username}</Text>
                     <Text style={{ marginTop: 15 }}>{email}</Text>

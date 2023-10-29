@@ -6,17 +6,17 @@ import Profile from "../profile/profileScreen";
 
 
 
-const MainHeader = ({ username, navigation }) => {
-    const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
+const MainHeader = ({navigation,route }) => {
+
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profile', { username: username, urlImage: urlImage, navigation: navigation })}
+                onPress={() => navigation.navigate('Profile', {route:route })}
             >
                 <View style={styles.viewAvatar}>
-                    <Image style={{ width: 60, height: 60, borderRadius: 50 }} source={{ uri: urlImage }} />
+                    <Image style={{ width: 60, height: 60, borderRadius: 50 }} source={{ uri: route.avatar }} />
                     <View>
-                        <Text style={{ marginLeft: 10, fontSize: 15 }}>{username}</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15 }}>{route.fullname}</Text>
 
                     </View>
                 </View>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     viewAvatar: {
         // height: 80,
         // width: 200,
-        backgroundColor: '#FFFFFF',
         alignItems: 'center',
         alignSelf: 'center',
         padding: 10,
@@ -55,7 +54,6 @@ const styles = StyleSheet.create({
     viewSearch: {
         height: 50,
         width: 50,
-        backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 50,
         shadowRadius: 2,

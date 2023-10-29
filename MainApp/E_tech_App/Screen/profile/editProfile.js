@@ -4,7 +4,9 @@ import { Image, View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions 
 import userModel from "../../Model/user";
 
 
-const EditProfile = ({ navigation }) => {
+const EditProfile = ({ navigation,route }) => {
+    const userData = route.params.params;
+    console.log(userData);
     const [isPasswordShow,setisPasswordShow] = useState(false);
     const checkUserName = (username) => {
         return userModel.find((user) => user.username == username)
@@ -15,11 +17,10 @@ const EditProfile = ({ navigation }) => {
 
     const user = checkUserName("duong");
     return (
-        <View>
+        <View style={{paddingTop:'5%'}}>
             <HeaderEdit title={'Edit Profile'} navigation={navigation} />
-                    <CircleAvatar url={user.avatar} />
-            
-            <TextFields user={user} isPasswordShow={isPasswordShow} setisPasswordShow={setisPasswordShow}/>
+                    <CircleAvatar url={userData.avatar} />
+            <TextFields user={userData} isPasswordShow={isPasswordShow} setisPasswordShow={setisPasswordShow}/>
             <TouchableOpacity
                 style={styles.button}
                 onPress={saveProfile}
@@ -37,7 +38,9 @@ const HeaderEdit = ({ title, navigation }) => {
         <View style={{ padding: 20 }}>
             <View style={styles.viewHeader}>
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                    onPress={
+                        () => navigation.goBack()
+                    }
                     style={{ flex: 1 }}
                 >
                     <Image style={{ height: 30, width: 30 }} source={require('../../img/previous.png')} />
@@ -59,7 +62,7 @@ const TextFields = ({ user,isPasswordShow,setisPasswordShow }) => {
     return (
         <View>
             <ItemProfile value={user.fullname} title={'Full name'}/>
-            <ItemProfile value={user.email} title={'Email'}/>
+            <ItemProfile value={user.username} title={'Email'}/>
             <ItemProfile value={user.password} title={'Password'} isPasswordShow={isPasswordShow} setisPasswordShow={setisPasswordShow}/>
         </View>
     );

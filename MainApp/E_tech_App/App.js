@@ -25,6 +25,7 @@ import BillScreen from './Screen/BillScreen';
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -36,7 +37,8 @@ const App = () => {
           headerTintColor: 'white',
           headerStyle: { backgroundColor: '#3366ff' }
         }} />
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
