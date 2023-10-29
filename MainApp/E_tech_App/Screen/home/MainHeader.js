@@ -3,6 +3,7 @@ import React from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Profile from "../profile/profileScreen";
+import tailwind from "twrnc";
 
 
 
@@ -27,7 +28,6 @@ const MainHeader = ({navigation,route }) => {
             >
                 <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
             </TouchableOpacity>
-
         </View>
     );
 };
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: '5px',
-        marginTop: 15
+        marginTop: 15,
+        padding: 8,
     },
     viewAvatar: {
         // height: 80,

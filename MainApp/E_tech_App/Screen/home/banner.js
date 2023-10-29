@@ -30,7 +30,7 @@ const Banner = ({ list }) => {
                 data={list}
                 ref={scrollViewRef}
                 horizontal
-                contentContainerStyle={{margin:20}}
+                contentContainerStyle={{ margin: 20 }}
                 pagingEnabled={true}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
@@ -42,13 +42,13 @@ const Banner = ({ list }) => {
 
 const renderItem = ({ item }) => {
     return (
-            <TouchableOpacity>
-                <View style={styles.card}>
-                    <View>
-                        <Image style={{borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={item.url} />
-                    </View>
+        <TouchableOpacity>
+            <View style={styles.card}>
+                <View>
+                    <Image style={{ borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={item.url} />
                 </View>
-            </TouchableOpacity>
+            </View>
+        </TouchableOpacity>
     );
 };
 

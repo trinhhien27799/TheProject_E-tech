@@ -15,6 +15,7 @@ const Home = ({navigation,route}) => {
             <ScrollView>
                 <MainHeader route={route.params} navigation={navigation} />
                 <Banner list={data} />
+
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />
                 <BestSeller title={"Sản phẩm yêu thích"} />
