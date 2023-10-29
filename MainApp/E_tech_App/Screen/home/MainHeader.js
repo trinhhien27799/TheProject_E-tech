@@ -3,6 +3,7 @@ import React from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Profile from "../profile/profileScreen";
+import tailwind from "twrnc";
 
 
 
@@ -14,9 +15,9 @@ const MainHeader = ({ username, navigation }) => {
                 onPress={() => navigation.navigate('Profile', { username: username, urlImage: urlImage, navigation: navigation })}
             >
                 <View style={styles.viewAvatar}>
-                    <Image style={{ width: 60, height: 60, borderRadius: 50 }} source={{ uri: urlImage }} />
+                    <Image style={{ width: 40, height: 40, borderRadius: 50 }} source={{ uri: urlImage }} />
                     <View>
-                        <Text style={{ marginLeft: 10, fontSize: 15 }}>{username}</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>{username}</Text>
 
                     </View>
                 </View>
@@ -27,7 +28,6 @@ const MainHeader = ({ username, navigation }) => {
             >
                 <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
             </TouchableOpacity>
-
         </View>
     );
 };
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: '5px',
-        marginTop: 15
+        marginTop: 15,
+        padding: 8,
     },
     viewAvatar: {
         // height: 80,
