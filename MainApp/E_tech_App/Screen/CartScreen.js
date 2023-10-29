@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView,Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-web';
 import SelectDropdown from 'react-native-select-dropdown';
+import axios from 'axios';
+// const [cart, setCart] = useState(null);
+// useEffect(() => {
+//   axios.get('http://192.168.11.3:3000/api/cart/get-all').then((res) => {
+//     // setProduct(res.data);
+//     console.log(res.data);
+//   })
+// }, []);
 const CartScreen = () => {
   const data = [
     {
