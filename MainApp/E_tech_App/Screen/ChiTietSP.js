@@ -13,39 +13,49 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import ListItem from "../ListItem";
-import data3 from '../items';
-
+import ViewMoreText from 'react-native-view-more-text';
+import tailwind from 'twrnc';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ChiTietSP() {
+  const navigation = useNavigation();
   const data = [
     { id: 1, color: 'Trắng' },
     { id: 2, color: 'Đen' },
     { id: 3, color: 'Xanh dương' },
     { id: 4, color: 'Hồng' },
   ];
+  const renderViewMore = (onPress) => <Text style={tailwind `ml-3`} onPress={onPress}>View more</Text>;
+  const renderViewLess = (onPress) => <Text  style={tailwind `ml-3`} onPress={onPress}>View less</Text>;
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={{ height: 35, flexDirection: 'row', padding: 5, flex: 1 }}>
-          <View style={{ flex: 1 }}>
+        <View style={tailwind `flex-row w-full h-20`}>
+          <TouchableOpacity 
+            style={tailwind `w-10 h-full self-start justify-center flex-auto ml-5`}
+            onPress={() => {navigation.goBack()}}
+          >
             <Ionicons name="arrow-back-outline" size={24} color="black" />
-          </View>
-          <View style={{ marginRight: 8 }}>
+          </TouchableOpacity>
+          <TouchableOpacity style={tailwind `w-10 h-full justify-center self-center mr-5`}>
             <AntDesign name="hearto" size={20} color="black" />
-          </View>
+          </TouchableOpacity>
         </View>
+
         <View style={styles.view}>
-          <Image source={require('../img/sp.png')} style={styles.img} />
+          <Image
+            source={require('../img/sp.png')}
+            style={styles.img}
+          />
         </View>
 
-        <View style={styles.view2}>
-          <Text style={styles.text1}>Iphone 15 (128GB) </Text>
-          <Text style={styles.text2}>$40000</Text>
+        <View style={tailwind `flex-row py-5 px-5`}>
+          <Text style={tailwind `text-xl font-bold`}>Iphone 15 (128GB) </Text>
+          <Text style={tailwind `text-xl ml-24`}>$40000</Text>
         </View>
 
-        <View style={styles.view3}></View>
+        <View style={tailwind `w-90 h-0.5 bg-gray-300 self-center`}></View>
 
         <View style={styles.view4}>
           <Text style={styles.text3}>Màu sắc</Text>
@@ -63,13 +73,20 @@ export default function ChiTietSP() {
 
         <View style={styles.view5}>
           <Text style={styles.text3}>Mô tả sản phẩm</Text>
-          <Text style={styles.text5}>
-            Iphone 15 là sản phẩm mới nhất của Apple, mang đến cho người dùng
-            trải nghiệm tuyệt vời với màn hình OLED 6.7 inch, ...{' '}
-          </Text>
+          <ViewMoreText
+            numberOfLines={2}
+            renderViewMore={renderViewMore}
+            renderViewLess={renderViewLess}
+            textStyle={{ fontSize: 14, marginBottom: 10, marginLeft: 10 }}
+          >
+            <Text>
+              Iphone 15 là sản phẩm mới nhất của Apple, mang đến cho người dùng
+              trải nghiệm tuyệt vời với màn hình OLED 6.7 inch, ...{' '}
+            </Text>
+          </ViewMoreText>
         </View>
 
-        <View style={styles.view3}></View>
+        <View style={tailwind `w-90 h-0.5 bg-gray-300 self-center`}></View>
         <View
           style={{
             height: 50,
@@ -103,7 +120,8 @@ export default function ChiTietSP() {
             style={{ marginTop: 'auto', marginBottom: 'auto' }}
           />
         </View>
-        <View style={styles.view3}></View>
+
+        <View style={tailwind `w-90 h-0.5 bg-gray-300 self-center`}></View>
 
         <View style={{ height: 120, marginTop: 8 }}>
           <TouchableOpacity style={styles.button2}>
@@ -113,10 +131,10 @@ export default function ChiTietSP() {
             <Text style={styles.text6}>THÊM VÀO GIỎ HÀNG</Text>
           </TouchableOpacity>
         </View>
+
         <View style={{ height: 300, marginTop: 20 }}>
           <View style={{ flexDirection: 'row', marginLeft: 10, flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-
               Các sản phẩm liên quan
             </Text>
             <TouchableOpacity>
@@ -131,17 +149,11 @@ export default function ChiTietSP() {
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView>
-            {data3.map((item, index) => (
-                <ListItem key={index} item={item} />
-            ))}
-        </ScrollView>
         </View>
         <View style={{ height: 300, backgroundColor: 'red', marginTop: 20 }}>
           <Text style={styles.text3}>Bình Luận</Text>
           <ScrollView></ScrollView>
         </View>
-        
       </ScrollView>
     </SafeAreaView>
   );
@@ -159,8 +171,7 @@ const styles = StyleSheet.create({
   },
   view2: {
     height: 70,
-    marginTop: 20,
-    marginLeft: 10,
+    flexDirection: 'row'
   },
   view3: {
     height: 1,
@@ -171,12 +182,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   view4: {
-    width: '100%',
+    width: '90%',
     height: 60,
+    paddingLeft: 10
   },
   view5: {
-    height: 160,
-    marginTop: 15,
+    height: 'auto',
+    marginVertical: 15,
+    width: '90%',
+    paddingLeft: 10
   },
   img: {
     width: '80%',
@@ -189,10 +203,10 @@ const styles = StyleSheet.create({
   text1: {
     fontSize: 20,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   text2: {
     fontSize: 18,
-    marginLeft: 200,
   },
   text3: {
     fontSize: 14.5,

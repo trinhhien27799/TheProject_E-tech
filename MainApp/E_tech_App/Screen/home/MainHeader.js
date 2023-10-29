@@ -3,25 +3,31 @@ import React from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Profile from "../profile/profileScreen";
+import tailwind from "twrnc";
 
 
 
-const MainHeader = ({ username,navigation }) => {
+const MainHeader = ({ username, navigation }) => {
     const urlImage = 'https://cdn.pixabay.com/photo/2023/10/02/14/00/egg-8289259_640.png';
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profile',{username:username,urlImage:urlImage,navigation:navigation})}
+                onPress={() => navigation.navigate('Profile', { username: username, urlImage: urlImage, navigation: navigation })}
             >
                 <View style={styles.viewAvatar}>
-                    <Image style={{ width: 60, height: 60, borderRadius: 10 }} source={{ uri: urlImage }} />
-                    <Text style={{ marginLeft: 10, fontWeight: "bold" }}>{username}</Text>
+                    <Image style={{ width: 40, height: 40, borderRadius: 50 }} source={{ uri: urlImage }} />
+                    <View>
+                        <Text style={{ marginLeft: 10, fontSize: 15, fontWeight: 'bold' }}>{username}</Text>
+
+                    </View>
                 </View>
             </TouchableOpacity>
-            <View style={styles.viewSearch}>
+            <TouchableOpacity
+                style={styles.viewSearch}
+                onPress={() => navigation.navigate('SearchScreen')}
+            >
                 <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
-            </View>
-
+            </TouchableOpacity>
         </View>
     );
 };
@@ -32,20 +38,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: '5px',
-        marginTop: 15
+        marginTop: 15,
+        padding: 8,
     },
     viewAvatar: {
-        height: 80,
-        width: 200,
+        // height: 80,
+        // width: 200,
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         alignSelf: 'center',
         padding: 10,
         margin: 10,
         borderRadius: 5,
-        shadowRadius: 5,
         shadowColor: 'gray',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     viewSearch: {
         height: 50,

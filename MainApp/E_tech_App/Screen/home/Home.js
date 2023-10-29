@@ -5,16 +5,19 @@ import data from '../../Model/items';
 import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
-const Home = ({navigation}) => {
+import tailwind from "twrnc";
+
+const Home = ({ navigation }) => {
     return (
-        <View style={{ backgroundColor: 'white', flex: 1 }}>
+        <View style={tailwind`bg-gray-100 flex-1`}>
             <ScrollView>
-                <MainHeader username={"Username"} navigation={navigation} />
-                <Banner list={data} />
+                <View style={tailwind `bg-blue-400`}>
+                    <MainHeader username={"Username"} navigation={navigation} />
+                    <Banner list={data} />
+                </View>
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />
                 <BestSeller title={"Sản phẩm yêu thích"} />
-                
             </ScrollView>
         </View>
     );
