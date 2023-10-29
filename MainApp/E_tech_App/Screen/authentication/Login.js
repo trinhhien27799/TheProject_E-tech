@@ -4,6 +4,8 @@ import { Button, TouchableOpacity, StyleSheet, Text, TextInput, Image, View, Dim
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { isValidEmail, isPassWord } from "../../Component/validation";
+import { loginUser } from '../../CallApi/authenApi';
+
 
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
@@ -17,9 +19,11 @@ const Login = ({ navigation }) => {
     const isValidOk = () => !!email.trim() && !!password.trim();
     const handleLogin = async () => {
         try {
-            navigation.navigate('ButtonNavigation')
+            const username = email;
+            loginUser(username,password,navigation);
         } catch (error) {
             console.error('Error:', error);
+            
         }
     }
 

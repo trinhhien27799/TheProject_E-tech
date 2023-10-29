@@ -30,8 +30,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='ButtonNavigation'
-        // initialRouteName='SearchScreen'
+        initialRouteName='Login'
       >
         <Stack.Screen name='BillScreen' component={BillScreen} options={{
           headerMode: 'screen',
