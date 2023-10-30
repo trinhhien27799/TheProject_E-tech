@@ -6,7 +6,6 @@ import Checkbox from "expo-checkbox";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
 
-
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
     const [isChecked, setIsChecker] = useState(false);
@@ -16,11 +15,14 @@ const Login = ({ navigation }) => {
     const [errorEmail, setErrorEmail] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
 
-    const isValidOk = () => !!email.trim() && !!password.trim();
+    const isValidOk = () => !!email.trim() && !!password.trim() && password.length >= 6
+
     const handleLogin = async () => {
         try {
             const username = email;
             loginUser(username,password,navigation);
+            console.log(username);    
+                   
         } catch (error) {
             console.error('Error:', error);
             

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import React from 'react';
 import Home from './Home';
 import CartScreen from '../CartScreen';
@@ -11,7 +11,8 @@ import Icon from 'react-native-vector-icons/Feather';
 const Tabs = AnimatedTabBarNavigator();
 
 
-const BottomNavigation = ({navigation}) => {
+const BottomNavigation = ({navigation,route}) => {
+  const userData = route.params.registrationData.user
   return (
       <Tabs.Navigator
         // default configuration from React Navigation
@@ -28,6 +29,7 @@ const BottomNavigation = ({navigation}) => {
         <Tabs.Screen
           name="Home"
           component={Home}
+          initialParams={userData}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
                 <Icon
