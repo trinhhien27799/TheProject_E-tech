@@ -6,11 +6,15 @@ import { useNavigation } from "@react-navigation/native";
 const ListItem = (props) => {
     const navigation = useNavigation();
     const { item } = props;
+
+   
     return (
         <View style={{ flex: 1, backgroundColor: 'white', padding: 15 }}>
+            
             <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail')}}>
                 <View>
                     <View style={styles.view}>
+                        
                         <Image
                             style={styles.image}
                             source={item.url} />

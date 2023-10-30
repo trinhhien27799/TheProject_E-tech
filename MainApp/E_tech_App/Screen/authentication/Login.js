@@ -21,6 +21,7 @@ const Login = ({ navigation }) => {
         try {
             const username = email;
             loginUser(username,password,navigation);
+          
         } catch (error) {
             console.error('Error:', error);
             

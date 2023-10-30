@@ -1,68 +1,69 @@
-import React, {useState,useEffect} from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView,Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TextInput } from 'react-native-web';
-import SelectDropdown from 'react-native-select-dropdown';
+import { TextInput, TouchableOpacity } from 'react-native-web';
 import axios from 'axios';
-// const [cart, setCart] = useState(null);
-// useEffect(() => {
-//   axios.get('http://192.168.11.3:3000/api/cart/get-all').then((res) => {
-//     // setProduct(res.data);
-//     console.log(res.data);
-//   })
-// }, []);
+import { getCart } from '../CallApi/cartApi';
 const CartScreen = () => {
+
+  const [cart, setCart] = useState(null);
+  useEffect(() => {
+    setCart(getCart());
+    console.log(cart);
+  }, []);
+
   const data = [
-    {
-      id: 1,
-      image: '',
-      name: 'Iphone 15',
-      category: 'Đen/128GB',
-      price: '$62.50',
-      quantity: '1',
-      status: 'Còn hàng'
-    },
-    {
-      id: 2,
-      image: '',
-      name: 'Iphone 14',
-      category: 'Đen/128GB',
-      price: '$62.50',
-      quantity: '1',
-      status: 'Còn hàng'
-    },
-    {
-      id: 3,
-      image: '',
-      name: 'Iphone 13',
-      category: 'Đen/128GB',
-      price: '$62.50',
-      quantity: '1',
-      status: 'Còn hàng'
-    },
-    {
-      id: 4,
-      image: '',
-      name: 'Iphone 12',
-      category: 'Đen/128GB',
-      price: '$62.50',
-      quantity: '1',
-      status: 'Còn hàng'
-    },
-    {
-      id: 5,
-      image: '',
-      name: 'Iphone 11',
-      category: 'Đen/128GB',
-      price: '$62.50',
-      quantity: '1',
-      status: 'Còn hàng'
-    },
+
+    // {
+    //   id: 1,
+    //   image: '',
+    //   name: 'Iphone 15',
+    //   category: 'Đen/128GB',
+    //   price: '$62.50',
+    //   quantity: '1',
+    //   status: 'Còn hàng'
+    // },
+    // {
+    //   id: 2,
+    //   image: '',
+    //   name: 'Iphone 14',
+    //   category: 'Đen/128GB',
+    //   price: '$62.50',
+    //   quantity: '1',
+    //   status: 'Còn hàng'
+    // },
+    // {
+    //   id: 3,
+    //   image: '',
+    //   name: 'Iphone 13',
+    //   category: 'Đen/128GB',
+    //   price: '$62.50',
+    //   quantity: '1',
+    //   status: 'Còn hàng'
+    // },
+    // {
+    //   id: 4,
+    //   image: '',
+    //   name: 'Iphone 12',
+    //   category: 'Đen/128GB',
+    //   price: '$62.50',
+    //   quantity: '1',
+    //   status: 'Còn hàng'
+    // },
+    // {
+    //   id: 5,
+    //   image: '',
+    //   name: 'Iphone 11',
+    //   category: 'Đen/128GB',
+    //   price: '$62.50',
+    //   quantity: '1',
+    //   status: 'Còn hàng'
+    // },
   ]
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{flex: 1}}>
-     
+      <SafeAreaView style={{ flex: 1 }}>
+
         <View style={styles.header}>
           <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
         </View>
@@ -108,6 +109,7 @@ const CartScreen = () => {
           keyExtractor={(item) => item.id}
         />
         {/* Voucher Container */}
+
         <View style={styles.voucherContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.textVoucher}>Áp dụng mã giảm giá</Text>
@@ -117,7 +119,7 @@ const CartScreen = () => {
         {/* Payment Container */}
         <View style={styles.paymentContainer}>
           <View style={styles.paymentBox}>
-            
+
             <Text style={styles.paymentText}>Thanh toán</Text>
             <View style={styles.productTotal}>
               <Text style={styles.productTotalText}>Tổng cộng sản phẩm</Text>
@@ -137,52 +139,52 @@ const CartScreen = () => {
             </View>
           </View >
           <View style={styles.confirmContainer}>
-        <View style={styles.buttonPayment}>
-          <Text style={styles.textPayment} >Xác nhận thanh toán</Text>
+            <View style={styles.buttonPayment}>
+              <Text style={styles.textPayment} >Xác nhận thanh toán</Text>
+            </View>
+          </View>
         </View>
-        </View>
-        </View>
-        
-     
+
+
       </SafeAreaView>
-      </View>
+    </View>
   )
 }
 
 export default CartScreen;
 const styles = StyleSheet.create({
-  textPayment:{
-    color:'white',
-    fontSize:16,
+  textPayment: {
+    color: 'white',
+    fontSize: 16,
   },
-  buttonPayment:{
-    alignItems:'center',
+  buttonPayment: {
+    alignItems: 'center',
     flex: 1,
-    justifyContent:'center'
+    justifyContent: 'center'
   },
-  confirmContainer:{
-    backgroundColor:'#336BFA',
-    marginLeft:30,
-    marginRight:30,
-    borderRadius:7,
-    height:45,
-    marginTop:10
+  confirmContainer: {
+    backgroundColor: '#336BFA',
+    marginLeft: 30,
+    marginRight: 30,
+    borderRadius: 7,
+    height: 45,
+    marginTop: 10
   },
-  line:{
+  line: {
     borderBottomWidth: 0.8,
     borderBottomColor: '#797979',
-    marginTop:15,
+    marginTop: 15,
     width: '77%'
   },
-  productTotalPriceText:{
-    fontWeight:'bold',
-    fontSize:16
+  productTotalPriceText: {
+    fontWeight: 'bold',
+    fontSize: 16
   },
-  productTotalText:{
-    color:'#3C3C3C'
+  productTotalText: {
+    color: '#3C3C3C'
   },
-  productTotal:{
-    marginTop:20,
+  productTotal: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   paymentBox: {
-  
+
     margin: 20
   },
   paymentContainer: {

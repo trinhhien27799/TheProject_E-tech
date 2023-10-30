@@ -1,7 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 export const registerUser = async (username, email, password,navigation) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000/api/user/create-account', {
+        const response = await fetch('http://192.168.11.3:3000/api/user/create-account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,7 +27,7 @@ export const registerUser = async (username, email, password,navigation) => {
 }
 export const insertOtp = async (email) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000/api/user/receive-otp', {
+        const response = await fetch('http://192.168.11.3:3000/api/user/receive-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +52,7 @@ export const insertOtp = async (email) => {
 }
 export const loginUser = async (username, password,navigation) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000/api/user/login', {
+        const response = await fetch('http://192.168.11.3:3000/api/user/login', {
             method: 'POST',
             headers: {
                 
@@ -60,21 +62,29 @@ export const loginUser = async (username, password,navigation) => {
         });
 
         const data = await response.json();
-        console.log(data);
+       
+    
+        console.log("==========>",data);
+
         if (data.code === 200) {
+             //lưu token vào asyn store
+            await AsyncStorage.setItem('token',data.token);
+            await AsyncStorage.setItem('username',data.user.username);
             navigation.navigate('ButtonNavigation');
             alert('Đăng nhập thành công')
         } else {
-            alert(data.message)
+            //alert(data.message)
+            alert('Đăng nhập thất bại')
         }
     } catch (error) {
+       
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;
     }
 }
 export const verifyOTP = async (username,otp)=>{
     try{
-        const response = await fetch('http://10.0.2.2:3000/api/user/verify-otp', {
+        const response = await fetch('http://192.168.11.3:3000/api/user/verify-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
