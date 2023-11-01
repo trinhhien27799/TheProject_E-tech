@@ -7,19 +7,16 @@ export const registerUser = async (username, email, password,navigation) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-                
             },
-            body: JSON.stringify({ fullname:username,username:email, password:password })
+            body: JSON.stringify({ fullname:username,username:email, password:password})
         });
         const data = await response.json();
         if (data.code == 200) {
-            navigation.navigate('ButtonNavigation');
-            alert('Đăng nhập thành công')
+            navigation.navigate('Login');
+            alert('Đăng ký thành công')
         } else
         alert (data.message);
-        return data;
-
-        
+        return data;  
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;
@@ -67,15 +64,15 @@ export const loginUser = async (username, password,navigation) => {
         console.log("==========>",data);
 
         if (data.code === 200) {
-             //lưu token vào asyn store
-            await AsyncStorage.setItem('token',data.token);
-            await AsyncStorage.setItem('username',data.user.username);
-            navigation.navigate('ButtonNavigation');
+            navigation.navigate('ButtonNavigation',{ registrationData: data });
             alert('Đăng nhập thành công')
+            // <ShowNotification title={'Đăng nhập thành công'}type={'success'}/>
+
         } else {
             //alert(data.message)
             alert('Đăng nhập thất bại')
         }
+        return data;
     } catch (error) {
        
         console.error('Lỗi yêu cầu mạng:', error);

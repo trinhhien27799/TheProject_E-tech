@@ -26,8 +26,10 @@ const SignUp = ({ navigation }) => {
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
   const [showVerifyDialog, setShowVerifyDialog] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(15);
+  const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
+  const [checkValue,setCheckValue] = useState(false);
+
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 
@@ -40,6 +42,7 @@ const SignUp = ({ navigation }) => {
           setRemainingTime(remainingTime - 1);
         } else {
           clearInterval(interval);
+          setCheckValue(!checkValue)
         }
       }, 1000);
       return () => clearInterval(interval);
@@ -55,9 +58,15 @@ const SignUp = ({ navigation }) => {
         setErrorPassword('');
         setErrorConfim('');
         // registerUser(username,email,password);
-        insertOtp(email);
-        setShowVerifyDialog(true);
-        setIsSignUpPressed(true);
+        if(email == ''||password == ''||fullname == ''||confirmPass == ''){
+          alert("Vui lòng điền đầy đủ thông tin!!!");
+        }else
+        {
+          setShowVerifyDialog(true);
+          setIsSignUpPressed(true);
+          insertOtp(email);
+        }
+
       }
     } catch (error) {
       console.error('Error:', error);
@@ -65,7 +74,7 @@ const SignUp = ({ navigation }) => {
   }
   const handleDelete = () => {
     setShowVerifyDialog(false);
-    setRemainingTime(15);
+    setRemainingTime(120);
     setIsSignUpPressed(false);
 
   };
@@ -191,16 +200,15 @@ const SignUp = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
-          // disabled={!isValidOk()}
           onPress={() => {
             handleSignUp()
           }}
-          style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
+          style={[styles.button]}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
             ĐĂNG KÝ
           </Text>
         </TouchableOpacity>
-        <VerifyDialog setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
+        <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
         <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: -10 }}>
           <Text>Bạn đã có tài khoản? </Text>
@@ -251,7 +259,7 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    backgroundColor: '',
+    backgroundColor: '#336BFA',
     alignItems: 'center',
     borderRadius: 20,
     marginLeft: 'auto',
@@ -259,6 +267,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '50%',
     marginTop: 50,
+    
   },
 });
 
