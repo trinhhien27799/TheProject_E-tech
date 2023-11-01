@@ -69,6 +69,7 @@ const SignUp = ({ navigation }) => {
             setIsSignUpPressed(true);
           }else{
             alert(insert.message);
+            
           }
           
         }

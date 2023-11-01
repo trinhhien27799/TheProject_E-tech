@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { isValidEmail } from '../../Component/validation';
 import { useNavigation } from '@react-navigation/native';
-import {  insertOtp } from '../../CallApi/authenApi';
+import { insertOtp } from '../../CallApi/authenApi';
 
 const Quenmk1 = () => {
   const navigation = useNavigation();

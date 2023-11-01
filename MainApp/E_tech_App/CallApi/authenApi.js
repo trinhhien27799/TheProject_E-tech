@@ -1,9 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
-
 export const registerUser = async (username, email, password,navigation) => {
     try {
-        const response = await fetch('http://192.168.11.3:3000/api/user/create-account', {
+        const response = await fetch('http://10.0.2.2:3000/api/user/create-account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +21,7 @@ export const registerUser = async (username, email, password,navigation) => {
 }
 export const insertOtp = async (email,check) => {
     try {
-        const response = await fetch('http://192.168.11.3:3000/api/user/receive-otp', {
+        const response = await fetch('http://10.0.2.2:3000api/user/receive-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +42,7 @@ export const insertOtp = async (email,check) => {
 }
 export const loginUser = async (username, password,navigation) => {
     try {
-        const response = await fetch('http://192.168.11.3:3000/api/user/login', {
+        const response = await fetch('http://10.0.2.2:3000/api/user/login', {
             method: 'POST',
             headers: {
                 
@@ -55,18 +52,13 @@ export const loginUser = async (username, password,navigation) => {
         });
 
         const data = await response.json();
-       
-    
-        console.log("==========>",data);
-
         if (data.code === 200) {
             navigation.navigate('ButtonNavigation',{ registrationData: data });
             alert('Đăng nhập thành công')
             // <ShowNotification title={'Đăng nhập thành công'}type={'success'}/>
 
         } else {
-            //alert(data.message)
-            alert('Đăng nhập thất bại')
+            alert(data.message)
         }
         return data;
     } catch (error) {
@@ -77,7 +69,7 @@ export const loginUser = async (username, password,navigation) => {
 }
 export const verifyOTP = async (username,otp)=>{
     try{
-        const response = await fetch('http://192.168.11.3:3000/api/user/verify-otp', {
+        const response = await fetch('http://10.0.2.2:3000/api/user/verify-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
