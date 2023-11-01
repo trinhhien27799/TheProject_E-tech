@@ -20,23 +20,19 @@ export const registerUser = async (username, email, password,navigation) => {
         throw error;
     }
 }
-export const insertOtp = async (email) => {
+export const insertOtp = async (email,check) => {
     try {
         const response = await fetch('http://10.0.2.2:3000/api/user/receive-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username:email,forgotPassword:false })
+            body: JSON.stringify({ username:email,forgotPassword:check })
         });
 
         if (response.ok) {
             const data = await response.json();
-            if (data.code === 200) {
-                console.log(data.message);
-            } else {
-                console.error(data.message);
-            }
+            return data;
         } else {
             console.error(email);
         }
@@ -84,5 +80,28 @@ export const verifyOTP = async (username,otp)=>{
         return data;
     }catch (error) {
         console.log(error);
+    }
+}
+export const forgotPassword = async(username,password,navigation)=>{
+    
+    try{
+        const response = await fetch('http://10.0.2.2:3000/api/user/forgot-password',{
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({username,password})
+        })
+        const data = await response.json();
+        console.log(data);
+        if (data.code === 200) {
+            // navigation.navigate('ButtonNavigation');
+            navigation.navigate('Taomk2')
+        } else {
+            alert(data.message)
+        }
+    }catch (error) {
+        console.error('Lỗi yêu cầu mạng:', error);
+        throw error;
     }
 }

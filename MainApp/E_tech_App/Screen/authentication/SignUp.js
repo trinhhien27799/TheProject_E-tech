@@ -25,6 +25,7 @@ const SignUp = ({ navigation }) => {
   const [errorFullname, setErrorFullname] = useState('');
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
+  const [isRepasswordShow, setisRepasswordShow] = useState(false);
   const [showVerifyDialog, setShowVerifyDialog] = useState(false);
   const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
@@ -62,9 +63,14 @@ const SignUp = ({ navigation }) => {
           alert("Vui lòng điền đầy đủ thông tin!!!");
         }else
         {
-          setShowVerifyDialog(true);
-          setIsSignUpPressed(true);
-          insertOtp(email);
+          const insert = await insertOtp(email,false);
+          if(insert.code === 200){
+            setShowVerifyDialog(true);
+            setIsSignUpPressed(true);
+          }else{
+            alert(insert.message);
+          }
+          
         }
 
       }
@@ -76,7 +82,6 @@ const SignUp = ({ navigation }) => {
     setShowVerifyDialog(false);
     setRemainingTime(120);
     setIsSignUpPressed(false);
-
   };
   return (
     <ScrollView style={styles.safeArea}>
@@ -177,10 +182,10 @@ const SignUp = ({ navigation }) => {
               }}
               placeholderTextColor={'black'}
               style={{ width: '100%', marginLeft: 10 }}
-              secureTextEntry={!isPasswordShow}
+              secureTextEntry={!isRepasswordShow}
             />
             <TouchableOpacity
-              onPress={() => setisPasswordShow(!isPasswordShow)}
+              onPress={() => setisRepasswordShow(!isRepasswordShow)}
               style={{
                 position: 'absolute',
                 right: 12,
@@ -188,7 +193,7 @@ const SignUp = ({ navigation }) => {
 
             >
               {
-                isPasswordShow != true ? (
+                isRepasswordShow != true ? (
                   <Ionicons name="eye-off" size={24} color={'black'} />
                 ) : (
                   <Ionicons name="eye" size={24} color={'black'} />
