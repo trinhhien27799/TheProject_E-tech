@@ -11,10 +11,10 @@ import editProfile from './Screen/profile/editProfile';
 
 import SearchScreen from './Screen/search/searchScreen';
 
-import Quenmk1 from './Screen/Quenmk1'
-import Quenmk2 from './Screen/Quenmk2'
-import Taomk from './Screen/Taomkmoi'
-import Taomk2 from './Screen/Taomkmoi2'
+import Quenmk1 from './Screen/authentication/forgotEmail'
+import Quenmk2 from './Screen/authentication/confirmOTP'
+import Taomk from './Screen/authentication/Taomkmoi'
+import Taomk2 from './Screen/authentication/Taomkmoi2'
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import BillScreen from './Screen/BillScreen';
@@ -52,7 +52,6 @@ const App = () => {
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
         <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
-
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: false }} />
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />

@@ -51,6 +51,8 @@ const VerifyDialog = ({ check, onCancle, email, password, fullname, navigation, 
                 displayAlert("Có lỗi xảy ra trong quá trình xử lý.");
             }
         }
+
+
     
         console.log("Xác minh kết quả:", verificationResult);
         console.log("Đăng ký kết quả:", registrationResult);

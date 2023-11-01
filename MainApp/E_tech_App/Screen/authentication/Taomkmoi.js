@@ -8,19 +8,25 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { isPassWord, isConfirm } from '../Component/validation';
+import { isPassWord, isConfirm } from '../../Component/validation';
+import { useNavigation } from '@react-navigation/native';
+import { forgotPassword } from '../../CallApi/authenApi';
 
 
-const Taomk = (navigation) => {
+const Taomk = ({route}) => {
+  const navigation = useNavigation();
   const [isPasswordShow, setisPasswordShow] = useState(false);
   const [password, setPassword] = useState('');
   const [errorConfim, setErrorConfim] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const [isRepasswordShow, setisRepasswordShow] = useState(false);
 
-  const isValidOk = () => !!password.trim() && !!confirmPass.trim();
+
+  const isValidOk = () => !!password.trim() && !!confirmPass.trim() && password.length >=6 && confirmPass.length >=6;
 
   const handleCheck = async () => {
+    const email = route.params;
     try {
       if (password != confirmPass || confirmPass != password) {
         setErrorPassword('Password không khớp');
@@ -28,7 +34,7 @@ const Taomk = (navigation) => {
       } else {
         setErrorPassword('');
         setErrorConfim('');
-        console.log(isValidOk);
+        forgotPassword(email,password,navigation);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -39,7 +45,7 @@ const Taomk = (navigation) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.view1}>
         <Ionicons name="arrow-back" size={24} color="black" onPress={() => {
-          navigation.navigate('Quenmk2')
+          navigation.goBack();
         }} />
         <Text style={styles.text}>Tạo mật khẩu mới</Text>
       </View>
@@ -47,7 +53,7 @@ const Taomk = (navigation) => {
         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
           Xác nhận thành công.
         </Text>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+        <Text style={{ color:'grey'}}>
           Vui lòng Nhập mật khẩu mới của bạn:
         </Text>
         <View style={{ marginBottom: 12, marginTop: 20 }}>
@@ -93,10 +99,10 @@ const Taomk = (navigation) => {
               }}
               placeholderTextColor={'black'}
               style={{ width: '100%', marginLeft: 10 }}
-              secureTextEntry={!isPasswordShow}
+              secureTextEntry={!isRepasswordShow}
             />
             <TouchableOpacity
-              onPress={() => setisPasswordShow(!isPasswordShow)}
+              onPress={() => setisRepasswordShow(!isRepasswordShow)}
               style={{
                 position: 'absolute',
                 right: 12,
@@ -104,7 +110,7 @@ const Taomk = (navigation) => {
 
             >
               {
-                isPasswordShow != true ? (
+                isRepasswordShow != true ? (
                   <Ionicons name="eye-off" size={24} color={'black'} />
                 ) : (
                   <Ionicons name="eye" size={24} color={'black'} />
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
-    marginTop: 20,
+    marginTop: '10%',
   },
   view: {
     flex: 1,

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   Text,
@@ -9,17 +10,21 @@ import {
   Image,
 } from 'react-native';
 
-const Taomk2 = (navigation) => {
+const Taomk2 = () => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={{ alignItems: 'center', marginTop:80, }}>
-        <Image source={require('../img/secuety.png')} style={styles.img} />
+        <Image source={require('../../img/secuety.png')} style={styles.img} />
       </View>
       <View style={styles.view}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+        <View>
+        <Text style={{textAlign:'center',fontSize:25,fontWeight:'bold',margin:'10%'}}>Đặt mật khẩu mới{'\n'}thành công</Text>
+        <Text style={{ fontSize: 18,color:'grey',textAlign:'center',marginBottom:10 }}>
           Chúc mừng! Mật khẩu của bạn đã được đặt lại thành công. Vui lòng
           chuyển sang màn hình đăng nhập để đăng nhập lại.
         </Text>
+        </View>
         <TouchableOpacity 
         onPress={() => {
           navigation.navigate('Login')
