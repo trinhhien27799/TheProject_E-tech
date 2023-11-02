@@ -1,6 +1,8 @@
+import { API_BASE_URL } from "./config";
+
 export const registerUser = async (username, email, password,navigation) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000/api/user/create-account', {
+        const response = await fetch(`${API_BASE_URL}/api/user/create-account`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -21,7 +23,7 @@ export const registerUser = async (username, email, password,navigation) => {
 }
 export const insertOtp = async (email,check) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000api/user/receive-otp', {
+        const response = await fetch(`${API_BASE_URL}/api/user/receive-otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +44,7 @@ export const insertOtp = async (email,check) => {
 }
 export const loginUser = async (username, password,navigation) => {
     try {
-        const response = await fetch('http://10.0.2.2:3000/api/user/login', {
+        const response = await fetch(`${API_BASE_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                 
@@ -69,7 +71,7 @@ export const loginUser = async (username, password,navigation) => {
 }
 export const verifyOTP = async (username,otp)=>{
     try{
-        const response = await fetch('http://10.0.2.2:3000/api/user/verify-otp', {
+        const response = await fetch(`${API_BASE_URL}/api/user/verify-otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -85,7 +87,7 @@ export const verifyOTP = async (username,otp)=>{
 export const forgotPassword = async(username,password,navigation)=>{
     
     try{
-        const response = await fetch('http://10.0.2.2:3000/api/user/forgot-password',{
+        const response = await fetch(`${API_BASE_URL}/api/user/forgot-password`,{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json'

@@ -11,7 +11,7 @@ const MainHeader = ({navigation,route }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => navigation.navigate('Profile', {route:route })}
             >
                 <View style={styles.viewAvatar}>
@@ -21,12 +21,18 @@ const MainHeader = ({navigation,route }) => {
 
                     </View>
                 </View>
+            </TouchableOpacity> */}
+            <TouchableOpacity>
+                <Image style={{height:35,width:35}} source={require('../../img/appMenu.png')}/>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.viewSearch}
                 onPress={() => navigation.navigate('SearchScreen')}
             >
-                <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
+                <View style={{flexDirection:'row'}}>
+                <Ionicons style={{ lineHeight:50 }} name="search" size={25} />
+                <Text style={{lineHeight:50,marginLeft:5}}>Nhập nội dung cần tìm kiếm....</Text>
+                </View>
             </TouchableOpacity>
         </View>
     );
@@ -53,11 +59,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     viewSearch: {
-        height: 50,
-        width: 50,
-        alignItems: 'center',
+        height: 55,
+        width: 250,
+        paddingLeft:20,
         borderRadius: 50,
-        shadowRadius: 2,
+        borderWidth: 2,
+        borderColor:'grey',
         marginRight: 20,
     },
     title: {
