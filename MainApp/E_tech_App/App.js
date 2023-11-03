@@ -22,7 +22,7 @@ import AddressTest from './Screen/AddressTest';
 import AddAdress from './Screen/AddAdress';
 import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
-
+import BillDetailScreen from './Screen/BillDetailScreen';
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -55,6 +55,10 @@ const App = () => {
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: false }} />
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
+        <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
+        headerTintColor: 'white',  
+        headerTitle:'Chi tiết đơn hàng',
+        headerStyle: { backgroundColor: '#3366ff' }}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
