@@ -11,3 +11,5 @@ const favorites = () => {
 
   return favorites;
 }
+
+export default favorites;

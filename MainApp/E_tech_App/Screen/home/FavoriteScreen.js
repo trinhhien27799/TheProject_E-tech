@@ -24,7 +24,7 @@ const FavoriteScreen = () => {
             <Text style={{ marginTop: 5 }}>Loại: {itemf.brand_name}</Text>
           </View>
           <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
-            <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
+            <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart-outline' : 'heart'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -40,9 +40,9 @@ const FavoriteScreen = () => {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={favorite}
+        data={favorites}
         horizontal
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(itemf, index) => index.toString()}
         renderItem={renderItemFavorite}
       />
     </View>
