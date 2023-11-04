@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL } from "./config";
 export const getCart = async () => {
     const token = await AsyncStorage.getItem('token');
     const username = await AsyncStorage.getItem('username');
     try {
         
-        const response = await fetch('http://192.168.11.3:3000/api/cart/get-all', {
+        const response = await fetch(`${API_BASE_URL}/api/cart/get-all`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,7 +28,7 @@ export const getCart = async () => {
 
 export const addCart = async () => {
     try {
-        const response = await fetch('http://192.168.11.3:3000/api/cart/add', {
+        const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
