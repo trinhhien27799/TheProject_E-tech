@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, Touchable } from 'react-native';
+import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TextInput, TouchableOpacity } from 'react-native-web';
+import { TextInput } from 'react-native-web';
 import axios from 'axios';
 import { getCart } from '../CallApi/cartApi';
+import { useNavigation } from '@react-navigation/native';
 const CartScreen = () => {
-
+  const navigation = useNavigation();
   const [cart, setCart] = useState(null);
   useEffect(() => {
     setCart(getCart());
@@ -139,9 +140,10 @@ const CartScreen = () => {
             </View>
           </View >
           <View style={styles.confirmContainer}>
-            <View style={styles.buttonPayment}>
-              <Text style={styles.textPayment} >Xác nhận thanh toán</Text>
-            </View>
+            <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('BillDetailScreen')}}>
+              <Text  style={styles.textPayment}>Xác nhận thanh toán</Text>
+            
+            </TouchableOpacity>
           </View>
         </View>
 
