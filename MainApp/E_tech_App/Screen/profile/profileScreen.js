@@ -1,11 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-
-import editProfile from "./editProfile";
 import { useNavigation } from "@react-navigation/native";
 
 const Profile = ({ route }) => {
+    console.log(route);
     const {username,avatar,fullname} = route.params.route;
     const params = route.params.route;
     const navigation = useNavigation();

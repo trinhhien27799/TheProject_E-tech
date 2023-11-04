@@ -9,7 +9,6 @@ import { useRoute } from "@react-navigation/native";
 
 const Home = ({navigation,route}) => {
     const useData = route.params.registrationData;
-    // console.log(JSON.stringify(useData));
     return (
         <View style={{flex:1,paddingTop:'5%'}}>
             <ScrollView>

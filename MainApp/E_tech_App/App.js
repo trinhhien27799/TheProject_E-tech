@@ -22,6 +22,7 @@ import AddressTest from './Screen/AddressTest';
 import AddAdress from './Screen/AddAdress';
 import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
+import ResetPassword from './Screen/profile/resetPassword';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -55,6 +56,7 @@ const App = () => {
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: false }} />
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
+        <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

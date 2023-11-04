@@ -11,18 +11,9 @@ const MainHeader = ({navigation,route }) => {
 
     return (
         <View style={styles.container}>
-            {/* <TouchableOpacity
-                onPress={() => navigation.navigate('Profile', {route:route })}
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Profile', {route:route })}
             >
-                <View style={styles.viewAvatar}>
-                    <Image style={{ width: 60, height: 60, borderRadius: 50 }} source={{ uri: route.avatar }} />
-                    <View>
-                        <Text style={{ marginLeft: 10, fontSize: 15 }}>{route.fullname}</Text>
-
-                    </View>
-                </View>
-            </TouchableOpacity> */}
-            <TouchableOpacity>
                 <Image style={{height:35,width:35}} source={require('../../img/appMenu.png')}/>
             </TouchableOpacity>
             <TouchableOpacity
