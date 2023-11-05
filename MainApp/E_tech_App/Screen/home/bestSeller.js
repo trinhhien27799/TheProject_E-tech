@@ -13,7 +13,7 @@ const BestSeller = ({title}) => {
   // Fetch API products
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.11.3:3000/api/product/get-all').then((res) => {
+    axios.get('http://172.16.100.134:3000/api/product/get-all').then((res) => {
       setProduct(res.data);
     })
   }, []);

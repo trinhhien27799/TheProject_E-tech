@@ -4,7 +4,6 @@ import { Touchable } from 'react-native-web';
 import tailwind from 'twrnc'
 const BillDetailScreen = () => {
     const data = [
-
         {
             id: 1,
             image: '',
@@ -73,8 +72,10 @@ const BillDetailScreen = () => {
                     <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
                     <Text style={styles.textInfo}>Người mua: Nguyễn Văn A </Text>
                 </View>
+
                 <View style={styles.line}></View>
                 {/* Address */}
+
                 <View style={styles.addressContainer}>
                     <View style={styles.addressHeader}>
 
@@ -170,7 +171,7 @@ const BillDetailScreen = () => {
                 <View style={styles.Button}>
                 <View style={styles.confirmContainer}>
             <TouchableOpacity  style={styles.buttonPayment}>
-              <Text  style={styles.textPayment}>Phản hồi đơn hàng</Text>
+              <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
             </TouchableOpacity>
           </View>
           </View>
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     textPayment: {
         color: 'white',
         fontSize: 16,
+        fontWeight: 'bold',
       },
       buttonPayment: {
         alignItems: 'center',
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#D5D5D5',
     },
     listCart: {
-        maxHeight: 400,
+        maxHeight: 1000,
         marginLeft: 20,
         marginRight: 20,
     },
@@ -307,7 +309,8 @@ const styles = StyleSheet.create({
     textAddressInfo: {
         marginLeft: 13,
         fontSize: 13,
-        marginTop: 10
+        marginTop: 10,
+        width: '80%'
     },
     textAddress: {
         marginLeft: 13,
@@ -321,6 +324,7 @@ const styles = StyleSheet.create({
     textTitle: {
         fontSize: 17,
         fontWeight: 'bold',
+        marginBottom: 5
     },
     titleContainer: {
         flexDirection: 'row',
@@ -333,9 +337,8 @@ const styles = StyleSheet.create({
     },
     header: {
         height: 180,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 30,
+        marginHorizontal: 30,
+        marginVertical: 30,
     },
 
     container: {

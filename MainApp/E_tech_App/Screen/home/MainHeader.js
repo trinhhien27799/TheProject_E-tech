@@ -7,22 +7,23 @@ import tailwind from "twrnc";
 
 
 
-const MainHeader = ({navigation,route }) => {
+const MainHeader = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
             <TouchableOpacity
-            onPress={() => navigation.navigate('Profile', {route:route })}
+                onPress={() => navigation.navigate('Profile', { route: route })}
             >
-                <Image style={{height:35,width:35}} source={require('../../img/appMenu.png')}/>
+                <Image style={{ height: 35, width: 35 }} source={require('../../img/appMenu.png')} />
             </TouchableOpacity>
+
             <TouchableOpacity
                 style={styles.viewSearch}
                 onPress={() => navigation.navigate('SearchScreen')}
             >
-                <View style={{flexDirection:'row'}}>
-                <Ionicons style={{ lineHeight:50 }} name="search" size={25} />
-                <Text style={{lineHeight:50,marginLeft:5}}>Nhập nội dung cần tìm kiếm....</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
+                    <Text style={tailwind `flex-auto mt-3 ml-2`}>Nhập nội dung cần tìm kiếm....</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -34,9 +35,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: '5px',
         marginTop: 15,
         padding: 8,
+        marginLeft: 20
     },
     viewAvatar: {
         // height: 80,
@@ -44,19 +45,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         padding: 10,
-        margin: 10,
         borderRadius: 5,
         shadowColor: 'gray',
         flexDirection: 'row',
     },
     viewSearch: {
         height: 55,
-        width: 250,
-        paddingLeft:20,
+        width: 310,
+        paddingLeft: 15,
         borderRadius: 50,
         borderWidth: 2,
-        borderColor:'grey',
-        marginRight: 20,
+        borderColor: 'grey',
+        marginRight: 5,
     },
     title: {
         fontSize: 18,
