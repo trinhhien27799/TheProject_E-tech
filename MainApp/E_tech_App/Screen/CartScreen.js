@@ -140,8 +140,8 @@ const CartScreen = () => {
             </View>
           </View >
           <View style={styles.confirmContainer}>
-            <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('BillDetailScreen')}}>
-              <Text  style={styles.textPayment}>Xác nhận thanh toán</Text>
+            <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('PayScreen')}}>
+              <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
             
             </TouchableOpacity>
           </View>
@@ -170,13 +170,13 @@ const styles = StyleSheet.create({
     marginRight: 30,
     borderRadius: 7,
     height: 45,
-    marginTop: 10
+    marginVertical: 10
   },
   line: {
     borderBottomWidth: 0.8,
     borderBottomColor: '#797979',
     marginTop: 15,
-    width: '77%'
+    width: '100%'
   },
   productTotalPriceText: {
     fontWeight: 'bold',
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
 
   },
   container: {
-    paddingTop: 30,
+    paddingVertical: 30,
     flex: 1,
     backgroundColor: "whitesmoke",
   },
