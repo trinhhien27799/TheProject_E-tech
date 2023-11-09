@@ -1,8 +1,26 @@
 import React from "react";
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, Text, View,TouchableOpacity  } from "react-native";
 import LabelItems from "../../Model/itemHangPhone";
+import { useNavigation } from '@react-navigation/native';
 
-const ListProduct = () => {
+const ListProduct = (props) => {
+     const navigation = useNavigation();
+
+    const renderItem = ({ item }) => {
+        return (
+            <View style={styles.viewItem}>
+                 <TouchableOpacity  onPress={() =>navigation.navigate('ListPhoneByCate', {
+              data: item.name
+            })}>
+                <Image style={styles.image} source={item.img} />
+                <Text style={styles.textItem}>
+                    {item.name}
+                </Text>
+                </TouchableOpacity>
+            </View>
+           
+        );
+    };
     return (
         <View style={styles.container}>
             <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>Các loại sản phẩm</Text>
@@ -11,7 +29,7 @@ const ListProduct = () => {
                     data={LabelItems}
                     numColumns={2}
                     renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(item) =>item = item.name }
                     contentContainerStyle={styles.flatListContent}
                 />
             </ScrollView>
@@ -19,16 +37,7 @@ const ListProduct = () => {
     );
 };
 
-const renderItem = ({ item }) => {
-    return (
-        <View style={styles.viewItem}>
-            <Image style={styles.image} source={item.img} />
-            <Text style={styles.textItem}>
-                {item.name}
-            </Text>
-        </View>
-    );
-};
+
 
 const styles = StyleSheet.create({
     container: {
