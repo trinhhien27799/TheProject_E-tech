@@ -5,7 +5,7 @@ import items from '../../Model/items';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
+import { API_BASE_URL } from "../../CallApi/config";
 const BestSeller = ({title}) => {
   const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
   const navigation = useNavigation();
@@ -13,7 +13,7 @@ const BestSeller = ({title}) => {
   // Fetch API products
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    axios.get('http://172.16.100.134:3000/api/product/get-all').then((res) => {
+    axios.get(`${API_BASE_URL}/api/product/get-all`).then((res) => {
       setProduct(res.data);
     })
   }, []);

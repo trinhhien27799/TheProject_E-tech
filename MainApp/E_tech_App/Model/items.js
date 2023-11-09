@@ -4,7 +4,7 @@ import axios from "axios";
 const items = () => {
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.110.173:3000/api/product/get-all').then((res) => {
+    axios.get('http://192.168.11.3:3000/api/product/get-all').then((res) => {
       setProduct(res.data);
     })
   }, [])

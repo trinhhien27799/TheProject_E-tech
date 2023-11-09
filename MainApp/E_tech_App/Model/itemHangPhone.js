@@ -2,7 +2,7 @@ import React from "react";
     const LabelItems=[
         {
             img:require('../img/logo-iphone.jpg'),
-            name:"Iphone"
+            name:"Apple"
         },
         {
             img:require('../img/logo-LG.jpg'),
