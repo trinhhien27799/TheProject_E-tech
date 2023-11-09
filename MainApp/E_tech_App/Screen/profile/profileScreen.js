@@ -13,7 +13,7 @@ const Profile = ({ route }) => {
             <HeaderProfile username={fullname} urlImage={avatar} email={username} navigation={navigation}/>
             <View>
                 <ButtonBody icon={require('../../img/history.png')} label="Lịch sử mua hàng" onPress={()=>{}}/>
-                <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{}}/>
+                <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{navigation.navigate('MyVoucher')}}/>
                 <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{navigation.navigate('EditProfile',route={params});}}/>
                 <ButtonBody icon={require('../../img/box.png')} label="Đơn hàng của bạn" onPress={()=>{navigation.navigate('OrderScreen')}}/>
             </View>

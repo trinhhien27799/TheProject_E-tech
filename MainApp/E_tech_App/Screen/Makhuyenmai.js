@@ -13,28 +13,53 @@ export default function Makhuyenmai() {
   const data = [
     {
       id: 1,
-      name: 'Giảm giá 20%',
-      hsd: '30/10/2023'
+      description: 'Giảm giá 20% phí ship',
+      release_date: '9/11/2023',
+      expiration_date: '30/12/2023',
+      type: 0,
+      discount_type: 1,
+      discount_value: 20,
+      used: false,
     },
     {
       id: 2,
-      name: 'Miễn phí vận chuyển',
-      hsd: '30/10/2023'
+      description: 'Giảm giá 20% phí ship',
+      release_date: '9/11/2023',
+      expiration_date: '30/12/2023',
+      type: 0,
+      discount_type: 1,
+      discount_value: 20,
+      used: false,
     },
     {
       id: 3,
-      name: 'Giảm 30% phí vận chuyển',
-      hsd: '30/10/2023'
+      description: 'Giảm giá 20% phí ship',
+      release_date: '9/11/2023',
+      expiration_date: '30/12/2023',
+      type: 0,
+      discount_type: 1,
+      discount_value: 20,
+      used: false,
     },
     {
       id: 4,
-      name: 'Giảm giá 10%',
-      hsd: '30/10/2023'
+      description: 'Giảm giá 20% phí ship',
+      release_date: '9/11/2023',
+      expiration_date: '30/12/2023',
+      type: 0,
+      discount_type: 1,
+      discount_value: 20,
+      used: false,
     },
     {
       id: 5,
-      name: 'Giảm giá 50%',
-      hsd: '30/10/2023'
+      description: 'Giảm giá 20% phí ship',
+      release_date: '9/11/2023',
+      expiration_date: '30/12/2023',
+      type: 0,
+      discount_type: 1,
+      discount_value: 20,
+      used: false,
     },
   ];
   return (
@@ -48,16 +73,25 @@ export default function Makhuyenmai() {
           data={data}
           renderItem={({ item }) => (
             <View style={styles.view2}>
-              <View style={{ width: '28%', paddingTop: 10 }}>
+              <View
+                style={{
+                  width: '28%',
+                  paddingTop: 10,
+                  borderColor: 'black',
+                  borderRightWidth: 1,
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}>
                 <Image source={require('../img/sale.png')} style={styles.img} />
               </View>
-              <View style={{ paddingTop: 10 , width: '40%' }}>
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.title2}>{item.hsd}</Text>
+              <View style={{ paddingTop: 10, width: '50%', marginLeft: 10 }}>
+                <Text style={styles.title}>{item.description}</Text>
+                <Text >{item.description}</Text>
+                <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
               </View>
-              <View style={{ paddingTop: 10 }}>
+              <View style={{ paddingTop: 10, alignContent:'center' , justifyContent:'center'}}>
                 <TouchableOpacity style={styles.button2}>
-                  <Text style={{ color: 'white' }}>Lưu mã khuyến mại</Text>
+                  <Text style={{ color: 'white' , fontSize: 16}}>Lưu</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -85,7 +119,7 @@ const styles = StyleSheet.create({
   },
   view2: {
     width: '90%',
-    height: 100,
+    height: 120,
     marginLeft: 'auto',
     marginRight: 'auto',
     flexDirection: 'row',
@@ -96,26 +130,25 @@ const styles = StyleSheet.create({
   },
   img: {
     height: 80,
-    width: 80,
-    padding: 8,
-    paddingStart: 20,
+    width: 90,
+    marginLeft: 6,
+    marginBottom: 8,
   },
   title: {
     fontSize: 16,
   },
   title2: {
     fontSize: 13,
+    marginTop: 10,
   },
   button2: {
     backgroundColor: '#336BFA',
-    width : '60%',
     height: 60,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
-    marginLeft : 8,
-    marginTop: 10
+    marginTop: 10,
   },
 });
