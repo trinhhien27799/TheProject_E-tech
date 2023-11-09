@@ -27,10 +27,13 @@ import DialogAddress from './Screen/DialogAddress';
 import Pay from './Screen/Pay';
 import MapViewScreen from './Component/MapView';
 import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen';
+import PTTT from './Screen/PTTT';
+import DialogQR from './Screen/DialogQR';
 
 
 import BillDetailScreen from './Screen/BillDetailScreen';
 import AddAdress from './Screen/AddAdress';
+import MyVoucher from './Screen/MyVoucher';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
 const Stack = createNativeStackNavigator();
@@ -60,6 +63,11 @@ const App = () => {
 
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true}} />
+        <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
+        <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
+        <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+
+
 
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
