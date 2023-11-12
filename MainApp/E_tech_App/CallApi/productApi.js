@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { API_USER_URL } from './config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export const getAllProduct = async () => {
   try {
     const response = await axios.get(`${API_USER_URL}/api/product/get-all`);
     return response.data;
   } catch (error) {
     console.error('Lỗi yêu cầu mạng:', error);
-    throw error; // Khi bạn xử lý lỗi, bạn có thể throw nó để thông báo lỗi cho phía khác sử dụng hàm này.
+    throw error; 
   }
 }
 export const getBanner = async () => {
@@ -18,3 +19,56 @@ export const getBanner = async () => {
     throw error;
   }
 }
+export const getLike = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token')
+    const username = await AsyncStorage.getItem('username')
+    const response = await fetch(`${API_USER_URL}/api/favorite/get-all`,{
+      method:'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:JSON.stringify({token,username})
+    })
+    const data = response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const toggleLike = async ({ product_id, action }) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const username = await AsyncStorage.getItem('username');
+
+    let endpoint = '';
+    let method = '';
+
+    switch (action) {
+      case 'add':
+        endpoint = `${API_USER_URL}/api/favorite/add`;
+        method = 'POST';
+        break;
+      case 'check':
+        endpoint = `${API_USER_URL}/api/favorite/check`;
+        method = 'POST';
+        break;
+      case 'delete':
+        endpoint = `${API_USER_URL}/api/favorite/delete`;
+        method = 'POST';
+        break;
+      default:
+        throw new Error('Invalid action');
+    }
+
+    const response = await fetch(endpoint, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, username, product_id }),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+

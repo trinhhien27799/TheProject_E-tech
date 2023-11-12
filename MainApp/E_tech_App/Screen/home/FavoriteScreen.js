@@ -1,49 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import favorites from '../../Model/favorites';
-import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
+import { View,  Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { getLike } from '../../CallApi/productApi';
+import IteamProduct from '../../Component/itemProducts';
 
 const FavoriteScreen = () => {
-  const [isClickArray, setIsClickArray] = useState(Array(favorites.length).fill(false));
-  
-  const handleIcon = (index) => {
-    const updatedIsClickArray = [...isClickArray];
-    updatedIsClickArray[index] = !updatedIsClickArray[index];
-    setIsClickArray(updatedIsClickArray);
-  };
-
-  const renderItemFavorite = ({ itemf, index }) => (
-    <View style={styles.body}>
-      <View>
-        <Image style={styles.img} source={{uri: itemf.image_preview}} />
-        <View style={{ flexDirection: 'row' }}>
-          <View>
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{itemf.product_name}</Text>
-            <Text style={{ marginTop: 5 }}>Giá: {itemf.max_price}</Text>
-            <Text style={{ marginTop: 5 }}>Loại: {itemf.brand_name}</Text>
-          </View>
-          <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
-            <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart-outline' : 'heart'} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-
+  const [favoritesData,setFavoritesData] = useState([])
+  useEffect(() => {
+    const fetchData = async() =>{
+        const data = await getLike();
+        setFavoritesData(data);
+    };
+    fetchData();
+  })
+  const handleMore = async()=>{
+    
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Sản phẩm yêu thích</Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {
+          handleMore();
+        }}>
           <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
         </TouchableOpacity>
       </View>
       <FlatList
-        data={favorites}
+        data={favoritesData}
         horizontal
-        keyExtractor={(itemf, index) => index.toString()}
-        renderItem={renderItemFavorite}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item})=>{   
+          return <IteamProduct key={item._id} route={item}/>
+      }}
       />
     </View>
   );

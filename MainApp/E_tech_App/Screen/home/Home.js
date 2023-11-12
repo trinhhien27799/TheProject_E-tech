@@ -4,6 +4,7 @@ import MainHeader from "./MainHeader";
 import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
+import FavoriteScreen from "./FavoriteScreen";
 
 const Home = ({navigation,route}) => {
     return (
@@ -14,7 +15,7 @@ const Home = ({navigation,route}) => {
 
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />
-                <BestSeller title={"Sản phẩm yêu thích"} />
+                <FavoriteScreen />
             </ScrollView>
         </View>
     );
