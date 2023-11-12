@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screen/home/Home';
 import Profile from './Screen/profile/profileScreen';
@@ -17,15 +17,26 @@ import Taomk from './Screen/authentication/Taomkmoi'
 import Taomk2 from './Screen/authentication/Taomkmoi2'
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-import BillScreen from './Screen/BillScreen';
 import AddressTest from './Screen/AddressTest';
-import AddAdress from './Screen/AddAdress';
 import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
 import ResetPassword from './Screen/profile/resetPassword';
+import OrderScene from './Screen/OrderPackageScenes/OrderScene';
+import { Button } from 'react-native';
+import DialogAddress from './Screen/DialogAddress';
+import Pay from './Screen/Pay';
+import MapViewScreen from './Component/MapView';
+import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen';
+import PTTT from './Screen/PTTT';
+import DialogQR from './Screen/DialogQR';
+
 
 import BillDetailScreen from './Screen/BillDetailScreen';
 import ViewItem from './Screen/search/viewItem';
+import AddAdress from './Screen/AddAdress';
+import MyVoucher from './Screen/MyVoucher';
+
+import ListPhoneByCate from './Screen/ListPhoneByCate';
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -36,13 +47,7 @@ const App = () => {
       <Stack.Navigator
         initialRouteName='Login'
       >
-        <Stack.Screen name='BillScreen' component={BillScreen} options={{
-          headerMode: 'screen',
-          headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#3366ff' }
-        }} />
-          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-
+        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
@@ -53,16 +58,41 @@ const App = () => {
         <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
         <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
         <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
+
         <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
+
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
-        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: false }} />
+        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true}} />
+        <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
+        <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
+        <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+
+
+
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
         <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
         <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
         headerTintColor: 'white',  
         headerTitle:'Chi tiết đơn hàng',
+        headerStyle: { backgroundColor: '#3366ff' }}} />
+
+        <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false}} />
+        <Stack.Screen name='OrderScreen' component={OrderScene} options={{ headerShown: true, headerLeft: () => (
+            <Button
+              onPress={() => alert('This is a button!')}
+              title="Exit"
+              color="blue"
+            />
+          )}} />
+
+        <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: false }} />
+        <Stack.Screen name='MapScreen' component={MapViewScreen} options={{headerShown: false}} />
+        <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen}/>
+        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} ooptions={{ headerShown: true, 
+        headerTintColor: 'white',  
+        headerTitle:'Danh sách sản phẩm',
         headerStyle: { backgroundColor: '#3366ff' }}} />
       </Stack.Navigator>
     </NavigationContainer>

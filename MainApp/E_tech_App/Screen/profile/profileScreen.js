@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import tailwind from "twrnc";
 
 const Profile = ({ route }) => {
     console.log(route);
@@ -12,9 +13,9 @@ const Profile = ({ route }) => {
             <HeaderProfile username={fullname} urlImage={avatar} email={username} navigation={navigation}/>
             <View>
                 <ButtonBody icon={require('../../img/history.png')} label="Lịch sử mua hàng" onPress={()=>{}}/>
-                <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{}}/>
+                <ButtonBody icon={require('../../img/tag.png')} label="Voucher của bạn" onPress={()=>{navigation.navigate('MyVoucher')}}/>
                 <ButtonBody icon={require('../../img/person.png')} label="Thay đổi thông tin tài khoản" onPress={()=>{navigation.navigate('EditProfile',route={params});}}/>
-                <ButtonBody icon={require('../../img/box.png')} label="Đơn hàng của bạn" onPress={()=>{}}/>
+                <ButtonBody icon={require('../../img/box.png')} label="Đơn hàng của bạn" onPress={()=>{navigation.navigate('OrderScreen')}}/>
             </View>
             <TouchableOpacity
                 style={{
@@ -40,11 +41,11 @@ const Profile = ({ route }) => {
 const HeaderProfile = ({ username, urlImage, email,navigation }) => {
     return (
         <View style={styles.headerContainer}>
-            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <View style={tailwind `flex-row w-90 self-center`}>
                 <Image style={styles.imageHeader} source={{uri:urlImage}} />
                 <View style={{ flexDirection: 'column' }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{username}</Text>
-                    <Text style={{ marginTop: 15 }}>{email}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>{username}</Text>
+                    <Text style={{ marginTop: 15, color: 'white' }}>{email}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={()=>{
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
         shadowColor: 'grey',
         shadowRadius: 20,
         justifyContent: 'center',
-
     },
     imageHeader: {
         width: 70,
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginLeft: 100
+        marginLeft: 45
+        
     },
     viewButton: {
         backgroundColor: 'white',

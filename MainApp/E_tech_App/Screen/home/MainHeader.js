@@ -39,7 +39,6 @@ const MainHeader = ({ navigation, route }) => {
             console.log(e);
         }
     }, [currentPage]);
-
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -47,6 +46,7 @@ const MainHeader = ({ navigation, route }) => {
             >
                 <Image style={{ height: 35, width: 35 }} source={require('../../img/appMenu.png')} />
             </TouchableOpacity>
+
             <TouchableOpacity
                 style={styles.viewSearch}
             >
@@ -87,8 +87,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
+
         marginTop: 15,
         padding: 8,
+        marginLeft: 20
     },
     viewIndex: {
         flexDirection: 'row',
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         padding: 10,
-        margin: 10,
         borderRadius: 5,
         shadowColor: 'gray',
         flexDirection: 'row',
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         flexDirection: 'row',
         alignItems: 'center',
+
     },
     title: {
         fontSize: 18,
