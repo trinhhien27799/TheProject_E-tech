@@ -1,19 +1,16 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import MainHeader from "./MainHeader";
-import data from '../../Model/items';
 import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
-import { useRoute } from "@react-navigation/native";
 
 const Home = ({navigation,route}) => {
-    const useData = route.params.registrationData;
     return (
         <View style={{flex:1,paddingTop:'5%'}}>
             <ScrollView>
                 <MainHeader route={route.params} navigation={navigation} />
-                <Banner list={data} />
+                <Banner />
 
                 <ListProduct />
                 <BestSeller title={"Best Seller"} />

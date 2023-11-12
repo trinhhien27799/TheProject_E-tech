@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const registerUser = async (username, email, password,navigation) => {
     try {
-        const response = await fetch(`${API_USER_URL}/create-account`, {
+        const response = await fetch(`${API_USER_URL}/api/user/create-account`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export const registerUser = async (username, email, password,navigation) => {
 }
 export const insertOtp = async (email,check) => {
     try {
-        const response = await fetch(`${API_USER_URL}/receive-otp`, {
+        const response = await fetch(`${API_USER_URL}/api/user/receive-otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export const insertOtp = async (email,check) => {
 }
 export const loginUser = async (username, password,navigation) => {
     try {
-        const response = await fetch(`${API_USER_URL}/login`, {
+        const response = await fetch(`${API_USER_URL}/api/user/login`, {
             method: 'POST',
             headers: {
                 
@@ -72,9 +72,24 @@ export const loginUser = async (username, password,navigation) => {
         throw error;
     }
 }
+export const autoLogin = async ({token}) => {
+    try{
+        const response = await fetch(`${API_USER_URL}/api/user/auto-login`,{
+            method: 'POST',
+            headers: {'Content-Type': 'multipart/form-data'},
+            body:token
+        })
+        const data = await response.json();
+        return data;
+    } catch (error) {
+       
+        console.error('Lỗi yêu cầu mạng:', error);
+        throw error;
+    }
+}
 export const verifyOTP = async (username,otp)=>{
     try{
-        const response = await fetch(`${API_USER_URL}/verify-otp`, {
+        const response = await fetch(`${API_USER_URL}/api/user/verify-otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -90,7 +105,7 @@ export const verifyOTP = async (username,otp)=>{
 export const forgotPassword = async(username,password,navigation)=>{
     
     try{
-        const response = await fetch(`${API_USER_URL}/forgot-password`,{
+        const response = await fetch(`${API_USER_URL}/api/user/forgot-password`,{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json'
