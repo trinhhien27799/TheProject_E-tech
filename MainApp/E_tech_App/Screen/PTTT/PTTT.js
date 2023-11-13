@@ -14,11 +14,11 @@ import { useNavigation } from '@react-navigation/native';
 const PTTT = () => {
     const [selectedRadio, setSelectedRadio] = useState(1);
     const navigation = useNavigation();
-    const Check = () =>{
-        if(selectedRadio ==1){
+    const Check = () => {
+        if (setSelectedRadio == 1) {
             () => { navigation.goback() }
-        }else{
-            navigation.navigate('DialogQR') 
+        } else {
+            () => { navigation.navigate('DialogQR') }
         }
     }
     return (
