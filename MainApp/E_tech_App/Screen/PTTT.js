@@ -14,7 +14,13 @@ import { useNavigation } from '@react-navigation/native';
 const PTTT = () => {
     const [selectedRadio, setSelectedRadio] = useState(1);
     const navigation = useNavigation();
-
+    const Check = () =>{
+        if(selectedRadio ==1){
+            () => { navigation.goback() }
+        }else{
+            navigation.navigate('DialogQR') 
+        }
+    }
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -27,7 +33,7 @@ const PTTT = () => {
                         <View style={styles.radio}>
                             {selectedRadio == 1 ? <View style={styles.radioBg}></View> : null}
                         </View>
-                        <Text style={{ marginLeft: 5, fontSize: 15 }}>Tiền mặt</Text>
+                        <Text style={{ marginLeft: 5, fontSize: 15 }}>Thanh toán khi nhận hàng (Tiền mặt)</Text>
                     </View>
                 </TouchableOpacity>
                 <View>
@@ -45,7 +51,7 @@ const PTTT = () => {
                         <Text style={styles.text}>Hủy</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button2}>
+                    <TouchableOpacity style={styles.button2} onPress={Check}>
                         <Text style={styles.text}>Xác nhận</Text>
                     </TouchableOpacity>
                 </View>

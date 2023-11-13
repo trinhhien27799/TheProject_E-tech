@@ -26,7 +26,7 @@ const DialogQR = () => {
             <Text style={styles.text}>Hủy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button2}>
+          <TouchableOpacity style={styles.button2} onPress={() => { alert('Thanh toán thành công!');navigation.navigate('Home') }}>
             <Text style={styles.text}>Xác nhận Thanh toán </Text>
           </TouchableOpacity>
         </View>
