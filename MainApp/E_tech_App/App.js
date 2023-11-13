@@ -33,8 +33,12 @@ import Makhuyenmai from './Screen/voucher/Makhuyenmai';
 import ApDungVoucher from './Screen/voucher/ApDungVoucher'
 
 import BillDetailScreen from './Screen/BillDetailScreen';
+import ViewItem from './Screen/search/viewItem';
 import AddAdress from './Screen/AddAdress';
 import MyVoucher from './Screen/voucher/MyVoucher';
+
+import ListPhoneByCate from './Screen/ListPhoneByCate';
+
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -49,7 +53,6 @@ const App = () => {
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
-
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
@@ -74,6 +77,7 @@ const App = () => {
 
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
+        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
         <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
         headerTintColor: 'white',  
         headerTitle:'Chi tiết đơn hàng',
@@ -91,6 +95,10 @@ const App = () => {
         <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: false }} />
         <Stack.Screen name='MapScreen' component={MapViewScreen} options={{headerShown: false}} />
         <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen}/>
+        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} ooptions={{ headerShown: true, 
+        headerTintColor: 'white',  
+        headerTitle:'Danh sách sản phẩm',
+        headerStyle: { backgroundColor: '#3366ff' }}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

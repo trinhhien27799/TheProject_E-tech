@@ -1,14 +1,44 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity, } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Profile from "../profile/profileScreen";
-import tailwind from "twrnc";
-
-
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { getAllProduct } from "../../CallApi/productApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MainHeader = ({ navigation, route }) => {
+    const [dataProduct, setDataProduct] = useState([]);
+    const scrollView = useRef();
+    const [currentPage, setCurrentPage] = useState(0);
+    const [list, setList] = useState('');
 
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                const product = await getAllProduct();
+                setList(product.length);
+                setDataProduct(product);
+            }
+            fetchData();
+
+            const scrollInterval = setInterval(() => {
+
+                if (currentPage < list) {
+                    setCurrentPage(currentPage + 1);
+                } else {
+                    setCurrentPage(1);
+                }
+                const offset = (currentPage - 1) * 50;
+                if (scrollView.current) {
+                    scrollView.current.scrollToOffset({ offset, animated: true });
+                }
+            }, 3000);
+
+            return () => {
+                clearInterval(scrollInterval);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }, [currentPage]);
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -19,11 +49,32 @@ const MainHeader = ({ navigation, route }) => {
 
             <TouchableOpacity
                 style={styles.viewSearch}
-                onPress={() => navigation.navigate('SearchScreen')}
             >
                 <View style={{ flexDirection: 'row' }}>
                     <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
-                    <Text style={tailwind `flex-auto mt-3 ml-2`}>Nhập nội dung cần tìm kiếm....</Text>
+                    <View style={styles.scrollViewContainer}>
+                        <FlatList
+                            ref={scrollView}
+                            data={dataProduct}
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={()=>{
+                                        const product_name = item.product_name;
+                                        const brand_name = item.brand_name;
+                                        navigation.navigate('SearchScreen',{product_name,brand_name})
+                                    }}
+                                >
+                                    <View style={styles.viewIndex}>
+                                        <Text style={{ color: 'red' }}>{item.product_name}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        
+                        />
+                    </View>
                 </View>
             </TouchableOpacity>
         </View>
@@ -35,13 +86,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 10,
+
         marginTop: 15,
         padding: 8,
         marginLeft: 20
     },
+    viewIndex: {
+        flexDirection: 'row',
+        marginVertical: 10,
+        padding: 5,
+    },
     viewAvatar: {
-        // height: 80,
-        // width: 200,
         alignItems: 'center',
         alignSelf: 'center',
         padding: 10,
@@ -51,16 +107,24 @@ const styles = StyleSheet.create({
     },
     viewSearch: {
         height: 55,
-        width: 310,
-        paddingLeft: 15,
+        width: 270,
+        paddingLeft: 20,
         borderRadius: 50,
         borderWidth: 2,
         borderColor: 'grey',
-        marginRight: 5,
+        marginRight: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
-    }
+    },
+    scrollViewContainer: {
+        height: 50,
+        marginLeft: 10,
+    },
 });
+
 export default MainHeader;
