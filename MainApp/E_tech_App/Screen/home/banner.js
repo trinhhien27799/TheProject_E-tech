@@ -1,16 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FlatList, Dimensions, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { FlatList, Dimensions, View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import { getBanner } from "../../CallApi/productApi";
 
 const card_width = Dimensions.get("window").width;
 const card_height = 200;
 
-const Banner = ({ list }) => {
+const Banner = () => {
     const scrollViewRef = useRef();
     const [currentPage, setCurrentPage] = useState(0);
-
+    const [dataBanner,setDataBanner]= useState([]);
+    useEffect(()=>{
+        const fectData = async()=>{
+            const bannerData = await getBanner();
+                setDataBanner(bannerData);
+                const imagePromises = bannerData.map(async (item) => {
+                    await Image.prefetch(item.image);
+                  });
+          
+                  await Promise.all(imagePromises);
+            }
+            fectData();
+    },[]);
     useEffect(() => {
+        
         const scrollInterval = setInterval(() => {
-            if (currentPage < list.length - 1) {
+            if (currentPage < dataBanner.length - 1) {
                 setCurrentPage(currentPage + 1);
             } else {
                 setCurrentPage(0);
@@ -22,14 +36,16 @@ const Banner = ({ list }) => {
         return () => {
             clearInterval(scrollInterval);
         };
-    }, [currentPage, list]);
+    }, [currentPage, dataBanner]);
+    
 
     return (
         <View>
             <FlatList
-                data={list}
+                data={dataBanner}
                 ref={scrollViewRef}
                 horizontal
+                showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ margin: 20 }}
                 pagingEnabled={true}
                 keyExtractor={(item, index) => index.toString()}
@@ -45,7 +61,8 @@ const renderItem = ({ item }) => {
         <TouchableOpacity>
             <View style={styles.card}>
                 <View>
-                    <Image style={{ borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={item.url} />
+                    
+                    <Image  style={{ borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={{uri:item.image}} />
                 </View>
             </View>
         </TouchableOpacity>

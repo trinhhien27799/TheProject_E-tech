@@ -32,6 +32,7 @@ import DialogQR from './Screen/DialogQR';
 
 
 import BillDetailScreen from './Screen/BillDetailScreen';
+import ViewItem from './Screen/search/viewItem';
 import AddAdress from './Screen/AddAdress';
 import MyVoucher from './Screen/MyVoucher';
 
@@ -71,6 +72,7 @@ const App = () => {
 
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
+        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
         <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
         headerTintColor: 'white',  
         headerTitle:'Chi tiết đơn hàng',
