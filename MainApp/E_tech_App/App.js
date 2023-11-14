@@ -27,17 +27,19 @@ import DialogAddress from './Screen/DialogAddress';
 import Pay from './Screen/Pay';
 import MapViewScreen from './Component/MapView';
 import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen';
-import PTTT from './Screen/PTTT';
-import DialogQR from './Screen/DialogQR';
-
+import PTTT from './Screen/PTTT/PTTT';
+import DialogQR from './Screen/PTTT/DialogQR';
+import Makhuyenmai from './Screen/voucher/Makhuyenmai';
+import ApDungVoucher from './Screen/voucher/ApDungVoucher'
 
 import BillDetailScreen from './Screen/BillDetailScreen';
 import ViewItem from './Screen/search/viewItem';
 import AddAdress from './Screen/AddAdress';
-import MyVoucher from './Screen/MyVoucher';
+import MyVoucher from './Screen/voucher/MyVoucher';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
 import ProductComment from './Component/ProductComment';
+
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -68,6 +70,9 @@ const App = () => {
         <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
         <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
         <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+        <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
+        <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
+
 
 
 

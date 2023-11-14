@@ -18,7 +18,7 @@ export const getAllProduct = () => {
     return product;
   } catch (error) {
     console.error('Lỗi yêu cầu mạng:', error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -35,10 +35,10 @@ export const getLike = async () => {
   try {
     const token = await AsyncStorage.getItem('token')
     const username = await AsyncStorage.getItem('username')
-    const response = await fetch(`${API_USER_URL}/api/favorite/get-all`,{
-      method:'POST',
-      headers: {'Content-Type': 'application/json'},
-      body:JSON.stringify({token,username})
+    const response = await fetch(`${API_USER_URL}/api/favorite/get-all`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, username })
     })
     const data = response.json();
     return data;
@@ -83,4 +83,31 @@ export const toggleLike = async ({ product_id, action }) => {
     console.error(error);
   }
 };
+export const getNotifi = async ({action}) => {
+  try {
+    const token = await AsyncStorage.getItem('token')
+    const username = await AsyncStorage.getItem('username')
+    let endpoint = '';
+    switch (action) {
+      case 'get':
+        endpoint = `${API_USER_URL}/api/notification/get-all`;
+        break;
+      case 'seenAll':
+        endpoint = `${API_USER_URL}/api/notification/seen-all`;
+        break;
+      default:
+        throw new Error('Invalid action');
+
+    }
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, username })
+    })
+    const data = response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
