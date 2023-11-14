@@ -1,38 +1,30 @@
-import React from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, SafeAreaView, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import tailwind from 'twrnc';
+import { getNotifi } from '../CallApi/productApi';
 
 const NotificationScreen = (props) => {
-  const data = [
-    {
-      id: 1,
-      status: 'Ở đây có voucher giảm đến 500.000đ! ',
-      time: '9h42 AM',
-    },
-    {
-      id: 2,
-      status: 'Đơn hàng đã giao thành công!',
-      time: '6/10/2023',
-    },
-    {
-      id: 3,
-      status: 'Đơn hàng của bạn đã được chuyển đi!',
-      time: '6/10/2023',
-    },
-    {
-      id: 4,
-      status: 'Đơn hàng của bạn đã được chuyển đi!',
-      time: '6/10/2023',
-    },
-    {
-      id: 5,
-      status: 'Đơn hàng của bạn đã được chuyển đi!',
-      time: '6/10/2023',
-    },
-  ];
-
+  const [datas, setData] = useState([]);
+  const [seen,setSeen] = useState(false);
+  const getTime = ({time}) => {
+    const date = new Date(time);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return (hours+':'+minutes+ '  ' + day + '-' + month + '-' + year).toString();
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getNotifi({action:'get'});
+      setData(data);
+      
+    }
+    fetchData();
+  },[])
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ flexDirection: 'row', marginTop: 20 }}>
@@ -46,32 +38,33 @@ const NotificationScreen = (props) => {
           }}>
           THÔNG BÁO
         </Text>
-        <Entypo
-          name="dots-three-vertical"
-          size={24}
-          color="black"
-          style={{ marginRight: 8 }}
-        />
+
+        <TouchableOpacity
+          onPress={()=>{
+          }}
+        >
+          <Entypo
+            name="dots-three-vertical"
+            size={24}
+            color="black"
+            style={{ marginRight: 8 }}
+          />
+          
+        </TouchableOpacity>
       </View>
 
       <View style={{ marginTop: 20 }}>
         <FlatList
-          data={data}
+          data={datas}
           renderItem={({ item }) => (
-            <View>
-              <TouchableOpacity style={tailwind`w-90 flex-row border border-gray-400 rounded-lg mt-5 justify-center`}>
-                <View style={{ width: '20%' }}>
-                  <Ionicons
-                    name="md-notifications-outline"
-                    size={40}
-                    color="black"
-                    style={styles.img}
-                  />
+            <View >
+              <TouchableOpacity style={[item.seen?{ backgroundColor:'#AADAE9',opacity:0.5}:null,tailwind`w-90 flex-row border border-gray-400 rounded-lg mt-5 justify-center p-5`]}>
+                <View style={{ width: '15%', height: '50%'}}>
+                  <Image source={{ uri: item.image }} style={styles.img} />
                 </View>
-
-                <View style={tailwind`w-64`}>
-                  <Text style={styles.title}>{item.status}</Text>
-                  <Text style={styles.title2}>{item.time}</Text>
+                <View style={tailwind`w-64 ml-5`}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.title2}>{getTime({time:item.time})}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -103,10 +96,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   img: {
-    height: 100,
-    width: 100,
-    padding: 12,
-    paddingVertical: 30
+    flex: 1,
+    resizeMode: "cover",
   },
   view: {
     width: '90%',
