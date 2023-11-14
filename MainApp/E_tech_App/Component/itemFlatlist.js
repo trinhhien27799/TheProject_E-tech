@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import StarRating from "./startRating"; // Assuming it's a correct component name
 import { Ionicons } from "@expo/vector-icons";
-import { toggleLike } from "../CallApi/productApi";
+import { getItemProduct, toggleLike } from "../CallApi/productApi";
+import { useNavigation } from "@react-navigation/native";
 
 const numberWithCommas = (number) => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
-
 
 const ItemFlatlist = ({ route }) => {
   const [checkHeart, setCheckHeart] = useState(false);
@@ -28,8 +28,18 @@ const ItemFlatlist = ({ route }) => {
 
     }
   }
+  const handleItem = async ()=>{
+    // console.log(route._id);
+    const dataItem = await getItemProduct({product_id:route._id});
+    navigation.navigate('DetailPoducts',{route,dataItem});
+  }
+  const navigation = useNavigation();
   return (
-    <View style={styles.item} key={route._id}>
+    <TouchableOpacity 
+    onPress={()=>{
+      handleItem();
+    }}
+    style={styles.item} key={route._id}>
       <Image style={styles.image} source={{ uri: route.image_preview }} />
       <Text style={styles.productName}>{route.product_name}</Text>
       <Text style={styles.textPrice}>{numberWithCommas(route.min_price)} đ</Text>
@@ -44,7 +54,7 @@ const ItemFlatlist = ({ route }) => {
           }
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

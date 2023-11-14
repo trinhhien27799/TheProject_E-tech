@@ -37,6 +37,7 @@ import AddAdress from './Screen/AddAdress';
 import MyVoucher from './Screen/MyVoucher';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
+import DetailProducts from './Screen/products/detailProducts';
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -61,6 +62,7 @@ const App = () => {
 
         <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='DetailPoducts' component={DetailProducts} options={{ headerShown: false }} />
 
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true}} />
