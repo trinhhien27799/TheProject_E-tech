@@ -17,7 +17,7 @@ import ViewMoreText from 'react-native-view-more-text';
 import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ChiTietSP() {
+const ProductDetail = ({product}) => {
   const navigation = useNavigation();
   const data = [
     { id: 1, color: 'Trắng' },
@@ -43,16 +43,16 @@ export default function ChiTietSP() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.view}>
+        <View style={tailwind `w-80 self-center py-5 bg-white shadow-lg rounded-lg`}>
           <Image
-            source={require('../img/sp.png')}
+            source={{uri: product.image_preview}}
             style={styles.img}
           />
         </View>
 
         <View style={tailwind `flex-row py-5 px-5`}>
-          <Text style={tailwind `text-xl font-bold`}>Iphone 15 (128GB) </Text>
-          <Text style={tailwind `text-xl ml-24`}>$40000</Text>
+          <Text style={tailwind `text-xl font-bold w-42`}>{product.product_name}</Text>
+          <Text style={tailwind `text-xl ml-28`}>{product.max_price}</Text>
         </View>
 
         <View style={tailwind `w-90 h-0.5 bg-gray-300 self-center`}></View>
@@ -159,15 +159,23 @@ export default function ChiTietSP() {
   );
 }
 
+export default function ChiTietSP({route}) {
+  const {product} = route.params;
+  console.log(product);
+  return (
+    <ProductDetail product={product}/>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fff',
   },
   view: {
-    width: '100%',
+    width: '80%',
     height: 230,
+    backgroundColor: 'white'
   },
   view2: {
     height: 70,
