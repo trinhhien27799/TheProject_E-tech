@@ -37,6 +37,7 @@ import AddAdress from './Screen/AddAdress';
 import MyVoucher from './Screen/MyVoucher';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
+import ProductComment from './Component/ProductComment';
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -94,6 +95,8 @@ const App = () => {
         headerTintColor: 'white',  
         headerTitle:'Danh sách sản phẩm',
         headerStyle: { backgroundColor: '#3366ff' }}} />
+
+        <Stack.Screen name='Comment' component={ProductComment} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

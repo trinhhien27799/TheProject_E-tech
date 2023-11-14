@@ -16,6 +16,8 @@ import { Feather } from '@expo/vector-icons';
 import ViewMoreText from 'react-native-view-more-text';
 import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+import ProductComment from '../Component/ProductComment';
+import ListProductHorzontal from './ListProductHorizontal';
 
 const ProductDetail = ({product}) => {
   const navigation = useNavigation();
@@ -133,26 +135,32 @@ const ProductDetail = ({product}) => {
         </View>
 
         <View style={{ height: 300, marginTop: 20 }}>
-          <View style={{ flexDirection: 'row', marginLeft: 10, flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-              Các sản phẩm liên quan
-            </Text>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  color: '#336BFA',
-                  fontSize: 13,
-                  marginRight: 8,
-                  marginTop: 3,
-                }}>
-                MORE
+          <View style={{marginLeft: 10, flex: 1 }}>
+            <View style={tailwind `flex-row`}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
+                Các sản phẩm liên quan
               </Text>
-            </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    color: '#336BFA',
+                    fontSize: 13,
+                    marginRight: 8,
+                    marginTop: 3,
+                  }}
+                  onPress={() => navigation.navigate('ListPhone')}
+                  >
+                  MORE
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <ListProductHorzontal />
           </View>
         </View>
-        <View style={{ height: 300, backgroundColor: 'red', marginTop: 20 }}>
+        <View style={{ height: 300, marginTop: 20, marginBottom: 20 }}>
           <Text style={styles.text3}>Bình Luận</Text>
-          <ScrollView></ScrollView>
+          <ProductComment/>
         </View>
       </ScrollView>
     </SafeAreaView>
