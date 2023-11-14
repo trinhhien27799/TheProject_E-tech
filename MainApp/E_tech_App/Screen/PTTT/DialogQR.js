@@ -16,7 +16,7 @@ const DialogQR = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Image source={require('../img/QR.png')} style={styles.img}/>
+        <Image source={require('../../img/QR.png')} style={styles.img}/>
         <View style={{marginTop: 20}}>
           <Text style={styles.text1}>Quý khách vui lòng điền Nội dung chuyển khoản là : Tên tài khoản đang sử dụng.
           </Text>

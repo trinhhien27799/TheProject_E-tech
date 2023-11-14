@@ -1,10 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL } from "./config";
+
 export const getCart = async () => {
-    const token = await AsyncStorage.getItem('token');
-    const username = await AsyncStorage.getItem('username');
+    
     try {
-        
+        const token = await AsyncStorage.getItem('token');
+        const username = await AsyncStorage.getItem('username');
+
+        console.log(token + ' ' + username);
         const response = await fetch(`${API_BASE_URL}/api/cart/get-all`, {
             method: 'POST',
             headers: {
@@ -16,8 +19,7 @@ export const getCart = async () => {
         console.log(data);
         if (data.code == 200) {
             alert('Lấy giỏ hàng thành công')
-        } else
-        alert (data.message);
+        } 
         return data;
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);
