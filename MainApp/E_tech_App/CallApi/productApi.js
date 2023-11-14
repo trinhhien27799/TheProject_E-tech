@@ -1,15 +1,27 @@
 import axios from 'axios';
 import { API_USER_URL } from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export const getAllProduct = async () => {
+import React from 'react';
+export const getAllProduct = () => {
+  const [product, setProduct] = React.useState(null)
+
+  const getData = () => {
+    axios.get(`${API_USER_URL}/api/product/get-all`).then((response) => {
+      setProduct(response.data)
+    });
+  }
   try {
-    const response = await axios.get(`${API_USER_URL}/api/product/get-all`);
-    return response.data;
+    React.useEffect(() => {
+      getData();
+    }, [])
+    
+    return product;
   } catch (error) {
     console.error('Lỗi yêu cầu mạng:', error);
     throw error; 
   }
 }
+
 export const getBanner = async () => {
   try {
     const response = await axios.get(`${API_USER_URL}/api/banner/get-all`);
