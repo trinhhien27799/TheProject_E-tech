@@ -110,4 +110,20 @@ export const getNotifi = async ({action}) => {
     console.log(error);
   }
 }
+export const getItemProduct = async({product_id})=>{
+  try {
+    const response = await axios.get(`${API_USER_URL}/api/product/${product_id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const getBrandName = async({brand_name})=>{
+  try {
+    const response = await axios.get(`${API_USER_URL}/api/product/get/brand/${brand_name}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
