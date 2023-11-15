@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Makhuyenmai() {
   const navigation = useNavigation();
+  const voucherArray = vouchers();
 
   // const data = [
   //   {
@@ -75,55 +76,55 @@ export default function Makhuyenmai() {
   //   },
   // ];
 
-  const [voucherCode, setVoucherCode] = useState('');
-  const [voucherID, setVoucherID] = useState('');
+  // const [voucherCode, setVoucherCode] = useState('');
+  // const [voucherID, setVoucherID] = useState('');
 
-  const handleVoucher = async () => {
-    try {
-      addVoucher(voucherCode, voucherID);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
+  // const handleVoucher = async () => {
+  //   try {
+  //     addVoucher(voucherCode, voucherID);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }
 
-  const renderItemVoucher = ( item) => (
-    <View style={styles.view2}>
-      <View
-        style={{
-          width: '28%',
-          paddingTop: 10,
-          borderColor: 'black',
-          borderRightWidth: 1,
-          alignContent: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image source={require('../img/sale.png')} style={styles.img} />
-      </View>
-      <View style={{ paddingTop: 10, width: '50%', marginLeft: 10 }}>
-        <Text style={styles.title} >{item.description}</Text>
-        <Text >Đơn tối thiểu {item.condition}.000đ</Text>
-        <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
-      </View>
-      <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-        <TouchableOpacity style={styles.button2} onPress={handleVoucher}>
-          <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  // const renderItemVoucher = ( item) => (
+  //   <View style={styles.view2}>
+  //     <View
+  //       style={{
+  //         width: '28%',
+  //         paddingTop: 10,
+  //         borderColor: 'black',
+  //         borderRightWidth: 1,
+  //         alignContent: 'center',
+  //         justifyContent: 'center',
+  //       }}>
+  //       <Image source={require('../img/sale.png')} style={styles.img} />
+  //     </View>
+  //     <View style={{ paddingTop: 10, width: '50%', marginLeft: 10 }}>
+  //       <Text style={styles.title} >{item.description}</Text>
+  //       <Text >Đơn tối thiểu {item.condition}.000đ</Text>
+  //       <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
+  //     </View>
+  //     <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
+  //       <TouchableOpacity style={styles.button2} onPress={handleVoucher}>
+  //         <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   </View>
+  // );
 
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
-        <TouchableOpacity onPress={() => { navigation.goback() }}>
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.text}>Voucher của Shop</Text>
       </View>
       <View>
         <FlatList
-          data={vouchers}
+          data={voucherArray}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.view2}>
