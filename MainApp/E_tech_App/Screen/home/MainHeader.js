@@ -41,56 +41,63 @@ const MainHeader = ({ navigation, route }) => {
     }, [currentPage]);
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Profile', { route: route })}
-            >
-                <Image style={{ height: 35, width: 35 }} source={require('../../img/appMenu.png')} />
-            </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.viewSearch}
-            >
-                <View style={{ flexDirection: 'row' }}>
-                    <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
-                    <View style={styles.scrollViewContainer}>
-                        <FlatList
-                            ref={scrollView}
-                            data={dataProduct}
-                            horizontal={false}
-                            showsHorizontalScrollIndicator={false}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={()=>{
-                                        const product_name = item.product_name;
-                                        const brand_name = item.brand_name;
-                                        navigation.navigate('SearchScreen',{product_name,brand_name})
-                                    }}
-                                >
-                                    <View style={styles.viewIndex}>
-                                        <Text style={{ color: 'red' }}>{item.product_name}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )}
-                        
-                        />
+            <View style={styles.headerContainer}>
+                <View style={{ paddingLeft: 16, paddingTop: 40, flexDirection: 'row', justifyContent: 'space-between',marginTop:5 }}>
+                    <TouchableOpacity
+                        style={styles.viewSearch}
+                    >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Ionicons style={{ lineHeight: 50 }} name="ios-search-outline" size={24} color="black" />
+                            <View style={styles.scrollViewContainer}>
+                                <FlatList
+                                    ref={scrollView}
+                                    data={dataProduct}
+                                    horizontal={false}
+                                    showsHorizontalScrollIndicator={false}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                const product_name = item.product_name;
+                                                const brand_name = item.brand_name;
+                                                navigation.navigate('SearchScreen', { product_name, brand_name })
+                                            }}
+                                        >
+                                            <View style={styles.viewIndex}>
+                                                <Text style={{ color: 'red' }}>{item.product_name}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+
+                                />
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={{ paddingRight: 16 }}>
+                        <View style={styles.iconNotifyContainer}>
+                            <TouchableOpacity>
+                                <Ionicons name="ios-notifications-outline" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-            </TouchableOpacity>
+                <View style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', paddingTop: 60, }}>
+                </View>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    iconNotifyContainer: {
+        width: 35,
+        height: 35,
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 10,
-
-        marginTop: 15,
-        padding: 8,
-        marginLeft: 20
+        backgroundColor: 'white',
+        borderRadius: 20,
     },
     viewIndex: {
         flexDirection: 'row',
@@ -106,15 +113,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     viewSearch: {
-        height: 55,
-        width: 270,
-        paddingLeft: 20,
+        height: 35,
+        width: 290,
+        paddingLeft: 10,
         borderRadius: 50,
-        borderWidth: 2,
-        borderColor: 'grey',
-        marginRight: 20,
+        marginRight: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: 'white'
 
     },
     title: {
@@ -125,6 +131,29 @@ const styles = StyleSheet.create({
         height: 50,
         marginLeft: 10,
     },
+    welComeContainer: {
+        flexDirection: 'row',
+        width: 146,
+        height: 36,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        paddingLeft: 10,
+        borderRadius: 20,
+        paddingRight: 10,
+    },
+
+    headerContainer: {
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#5182CC",
+    },
+
+    container: {
+        width: "100%",
+        height: 160,
+        backgroundColor: "white",
+    },
+
 });
 
 export default MainHeader;

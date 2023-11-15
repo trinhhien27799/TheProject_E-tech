@@ -13,9 +13,6 @@ const ListProduct = (props) => {
               data: item.name
             })}>
                 <Image style={styles.image} source={item.img} />
-                <Text style={styles.textItem}>
-                    {item.name}
-                </Text>
                 </TouchableOpacity>
             </View>
            
@@ -23,16 +20,20 @@ const ListProduct = (props) => {
     };
     return (
         <View style={styles.container}>
-            <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>Các loại sản phẩm</Text>
-            <ScrollView horizontal >
+           <View style = {styles.titleContainer}>
+          <Image style={{width:25,height:25,marginRight:10}} source={require('../../img/newspaper.png')}/>  
+          <Text style={styles.textTitle}>Thương hiệu hàng đầu</Text>
+        </View>
                 <FlatList
+                    horizontal
                     data={LabelItems}
-                    numColumns={2}
+                    showsHorizontalScrollIndicator={false}
+                    numColumns={1}
                     renderItem={renderItem}
-                    keyExtractor={(item) =>item = item.name }
+                    keyExtractor={(item) =>item = item.img }
                     contentContainerStyle={styles.flatListContent}
                 />
-            </ScrollView>
+           
         </View>
     );
 };
@@ -40,34 +41,44 @@ const ListProduct = (props) => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 30,
+    container:{
+        marginTop:30,
+        marginLeft:15
     },
-    scrollView: {
-        flexDirection: 'column',
-        margin: 20
-    },
+    textTitle:{
+        fontWeight: '700',
+        fontSize: 17,
+      },
+    
+      titleContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+    textTitle:{
+        fontWeight: '700',
+        fontSize: 18,
+      },
+   
     flatListContent: {
         flexDirection: 'row',
+        
     },
     image: {
-        width: 100,
-        height: 90,
-        borderRadius: 10,
-        resizeMode: 'stretch',
-        margin: 10,
-
+        width: 110,
+        resizeMode: 'contain',
     },
     viewItem: {
-        flex: 1,
         backgroundColor: 'white',
-        margin: 20,
         width: 150,
-        height: 170,
-        borderRadius: 20,
-        shadowColor: 'black',
+        height: 70,
+        borderRadius: 8,
         alignItems: 'center',
-        shadowRadius: 10
+        shadowRadius: 10,
+        marginTop:15,
+        marginRight:10,
+        justifyContent:'center',
+        shadowOpacity:0.05,
+      
     },
     textItem: {
         fontSize: 20,

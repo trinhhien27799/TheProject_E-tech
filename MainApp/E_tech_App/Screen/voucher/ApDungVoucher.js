@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { myvouchers } from '../Model/voucher';
+import { myvouchers } from '../../Model/voucher';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Makhuyenmai() {
@@ -44,7 +44,7 @@ export default function Makhuyenmai() {
                   alignContent: 'center',
                   justifyContent: 'center',
                 }}>
-                <Image source={require('../img/sale.png')} style={styles.img} />
+                <Image source={require('../../img/sale.png')} style={styles.img} />
               </View>
               <View style={{ paddingTop: 10, width: '50%', marginLeft: 10 }}>
                 <Text style={styles.title} >{item.description}</Text>

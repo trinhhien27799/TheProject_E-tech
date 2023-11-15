@@ -6,10 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from "../../CallApi/config";
-const BestSeller = ({title}) => {
+const BestSeller = () => {
   const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
   const navigation = useNavigation();
-  
+
+
   // Fetch API products
   const [product, setProduct] = useState(null);
   useEffect(() => {
@@ -23,7 +24,18 @@ const BestSeller = ({title}) => {
     updatedIsClickArray[index] = !updatedIsClickArray[index];
     setIsClickArray(updatedIsClickArray);
   };
+  
+  const formatCash = (str) => {
 
+    return str.split('').reverse().reduce((prev, next, index) => {
+      if(str){
+        return ((index % 3) ? next : (next + '.')) + prev
+      }
+        else{
+
+        }
+    })
+  }
   const renderItem = ({ item, index }) => (
     <View style={styles.body}>
       {/* 
@@ -38,23 +50,22 @@ const BestSeller = ({title}) => {
 
     {/* Code lắp tạm thay thế */}
       <View style={styles.saler}>
-        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 27 }}>
           Giảm 30%
         </Text>
       </View>
       
       <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail')}}>
         <Image style={styles.img} source={{uri: item.image_preview}} />
-        <View style={{ flexDirection: 'row' }}>
-          <View>
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-            <Text style={{ marginTop: 5 }}>Giá: {item.max_price}</Text>
-            <Text style={{ marginTop: 5 }}>Loại: {item.brand_name}</Text>
-          </View>
-          <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
-            <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
-          </TouchableOpacity>
+        <View style={styles.infoView}>
+            <Text numberOfLines={1} style={{fontWeight: 'bold'}}>{item.product_name}</Text>
+            <View>
+            <Text style={{ marginTop: 5,color:'red' }}>{formatCash( item.max_price+"")} đ</Text>
+            </View>
         </View>
+        <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
+            <Ionicons size={23} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
+          </TouchableOpacity>
       </TouchableOpacity>
     </View>
   );
@@ -62,15 +73,20 @@ const BestSeller = ({title}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
+      <View style = {styles.titleContainer}>
+          <Image style={{width:25,height:25,marginRight:10}} source={require('../../img/highlight1.png')}/>
+          <Text style={styles.textTitle}>Bán chạy nhất</Text>
+        </View>
         <TouchableOpacity onPress={() => {navigation.navigate('ListPhone')}}>
-          <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
+          <Text style={{ fontWeight: '500', color: 'blue',marginRight:15 }}>More</Text>
         </TouchableOpacity>
       </View>
+
       <FlatList
         data={product}
         horizontal
-        keyExtractor={(item, index) => index.toString()}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => item._id.toString()}
         renderItem={renderItem}
       />
     </View>
@@ -78,50 +94,64 @@ const BestSeller = ({title}) => {
 };
 
 const styles = StyleSheet.create({
+  infoView:{
+    marginTop:5,
+    width:"90%"
+  },
+  textTitle:{
+    fontWeight: '700',
+    fontSize: 17,
+  },
+
+  titleContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   container: {
-    margin: 30,
+    marginTop:30,
+    marginLeft:15
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
   },
   body: {
+    position:'relative',
     backgroundColor: 'white',
-    margin: 10,
     width: 180,
     height: 250,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: 'grey',
     shadowRadius: 10,
     alignItems: 'center',
+    marginRight:10,
+    marginTop:15,
+    padding:5
   },
   saler: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: 75,
-    height: 35,
+    paddingTop:3,
+    paddingBottom:3,
     backgroundColor: 'red',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     borderTopLeftRadius:10,
     zIndex: 2,
   },
   img: {
-    height: 100,
+    height: 140,
     width: 140,
     zIndex: 1,
     marginTop: 25,
   },
   viewIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: 2,
-    height: 30,
-    width: 30,
-    padding: 2,
+    position:'absolute',
+    bottom:-35,
+    right:-10,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
