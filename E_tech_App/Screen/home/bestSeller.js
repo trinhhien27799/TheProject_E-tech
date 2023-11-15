@@ -38,7 +38,7 @@ const BestSeller = () => {
 
 
       <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { product: item }) }}>
-        <Image style={tailwind`w-25 h-30 self-center mt-4`} source={{ uri: item.image_preview }} />
+        <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
         <View style={{ flexDirection: 'row' }}>
           <View style={tailwind`mt-4 w-37`}>
             <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
