@@ -59,6 +59,7 @@ const BestSeller = () => {
         </TouchableOpacity>
       </View>
       <FlatList
+
         data={product}
         numColumns={2}
         keyExtractor={(item, index) => index.toString()}
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   flatListContainer: {
-    alignItems:'center'
+    alignItems: 'center'
   },
 });
 

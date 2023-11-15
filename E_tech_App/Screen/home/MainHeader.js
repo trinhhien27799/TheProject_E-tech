@@ -44,7 +44,7 @@ const MainHeader = ({ navigation, route }) => {
             <TouchableOpacity
                 onPress={() => navigation.navigate('Profile', { route: route })}
             >
-                <Image style={{ height: 35, width: 35 }} source={require('../../img/appMenu.png')} />
+                <Image style={{ height: 45, width: 45 }} source={require('../../img/appMenu.png')} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -82,13 +82,13 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 15,
-        paddingHorizontal: 10,
-        paddingVertical: 15,
+        paddingHorizontal: 16,
+        paddingBottom: 20,
+        backgroundColor: 'red'
     },
     viewIndex: {
         flex: 1,
-        height: 45
+        height: 45,
     },
     viewAvatar: {
         alignItems: 'center',
@@ -103,19 +103,17 @@ const styles = StyleSheet.create({
         height: 45,
         flex: 1,
         borderRadius: 50,
-        borderWidth: 2,
-        borderColor: 'grey',
         marginStart: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
-
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     title: {
         fontSize: 17,
         textAlignVertical: 'center',
         lineHeight: 45,
-        color:'red'
+        color: 'red'
     },
     scrollViewContainer: {
         flex: 1,

@@ -42,6 +42,7 @@ const ListProduct = (props) => {
         <View style={styles.container}>
             <Text style={styles.title}>Các loại sản phẩm</Text>
             <FlatList
+                
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
@@ -54,7 +55,7 @@ const ListProduct = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         paddingHorizontal: 8,
     },
     title: {
