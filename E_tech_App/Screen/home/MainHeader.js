@@ -26,7 +26,7 @@ const MainHeader = ({ navigation, route }) => {
                 } else {
                     setCurrentPage(1);
                 }
-                const offset = (currentPage - 1) * 50;
+                const offset = (currentPage - 1) * 45;
                 if (scrollView.current) {
                     scrollView.current.scrollToOffset({ offset, animated: true });
                 }
@@ -51,28 +51,25 @@ const MainHeader = ({ navigation, route }) => {
                 style={styles.viewSearch}
             >
                 <View style={{ flexDirection: 'row' }}>
-                    <Ionicons style={{ lineHeight: 50 }} name="search" size={25} />
+                    <Ionicons style={{ lineHeight: 45 }} name="search" size={25} />
                     <View style={styles.scrollViewContainer}>
                         <FlatList
                             ref={scrollView}
                             data={dataProduct}
-                            horizontal={false}
-                            showsHorizontalScrollIndicator={false}
+                            scrollEnabled={false}
+                            showsVerticalScrollIndicator={false}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={()=>{
+                                <View style={styles.viewIndex}
+                                    onTouchStart={() => {
                                         const product_name = item.product_name;
                                         const brand_name = item.brand_name;
-                                        navigation.navigate('SearchScreen',{product_name,brand_name})
-                                    }}
-                                >
-                                    <View style={styles.viewIndex}>
-                                        <Text style={{ color: 'red' }}>{item.product_name}</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                        navigation.navigate('SearchScreen', { product_name, brand_name })
+                                    }}>
+                                    <Text style={styles.title}>{item.product_name}</Text>
+                                </View>
                             )}
-                        
+
                         />
                     </View>
                 </View>
@@ -84,18 +81,14 @@ const MainHeader = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 10,
-
         marginTop: 15,
-        padding: 8,
-        marginLeft: 20
+        paddingHorizontal: 10,
+        paddingVertical: 15,
     },
     viewIndex: {
-        flexDirection: 'row',
-        marginVertical: 10,
-        padding: 5,
+        flex: 1,
+        height: 45
     },
     viewAvatar: {
         alignItems: 'center',
@@ -106,23 +99,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     viewSearch: {
-        height: 55,
-        width: 270,
-        paddingLeft: 20,
+        paddingLeft: 18,
+        height: 45,
+        flex: 1,
         borderRadius: 50,
         borderWidth: 2,
         borderColor: 'grey',
-        marginRight: 20,
+        marginStart: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center'
 
     },
     title: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 17,
+        textAlignVertical: 'center',
+        lineHeight: 45,
+        color:'red'
     },
     scrollViewContainer: {
-        height: 50,
+        flex: 1,
+        height: 45,
         marginLeft: 10,
     },
 });

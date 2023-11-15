@@ -5,17 +5,17 @@ import Banner from "./banner";
 import ListProduct from "./listProduct";
 import BestSeller from "./bestSeller";
 import FavoriteScreen from "./FavoriteScreen";
+import ListBrand from "./listBrand";
 
-const Home = ({navigation,route}) => {
+const Home = ({ navigation, route }) => {
     return (
-        <View style={{flex:1,paddingTop:'5%'}}>
+        <View style={{ flex: 1, paddingTop: '5%' }}>
             <ScrollView>
                 <MainHeader route={route.params} navigation={navigation} />
                 <Banner />
-
                 <ListProduct />
-                <BestSeller title={"Best Seller"} />
-                <FavoriteScreen />
+                <ListBrand />
+                <BestSeller  />
             </ScrollView>
         </View>
     );
