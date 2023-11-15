@@ -21,8 +21,7 @@ const Banner = () => {
             }
             fectData();
     },[]);
-    useEffect(() => {
-        
+    useEffect(() => {   
         const scrollInterval = setInterval(() => {
             if (currentPage < dataBanner.length - 1) {
                 setCurrentPage(currentPage + 1);
@@ -61,8 +60,7 @@ const renderItem = ({ item }) => {
         <TouchableOpacity>
             <View style={styles.card}>
                 <View>
-                    
-                    <Image  style={{ borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch' }} source={{uri:item.image}} />
+                    <Image  style={{ borderRadius: 0, height: card_height, width: card_width - 80, resizeMode: 'stretch', alignItems: 'center' }} source={{uri:item.image}} />
                 </View>
             </View>
         </TouchableOpacity>

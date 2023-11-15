@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList, Image, ScrollView, StyleSheet, Text, View,TouchableOpacity  } from "react-native";
 import LabelItems from "../../Model/itemHangPhone";
 import { useNavigation } from '@react-navigation/native';
+import tailwind from "twrnc";
 
 const ListProduct = (props) => {
      const navigation = useNavigation();
@@ -9,13 +10,15 @@ const ListProduct = (props) => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.viewItem}>
-                 <TouchableOpacity  onPress={() =>navigation.navigate('ListPhoneByCate', {
-              data: item.name
-            })}>
-                <Image style={styles.image} source={item.img} />
-                <Text style={styles.textItem}>
-                    {item.name}
-                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('ListPhoneByCate', {
+                    data: item.name
+                })}>
+                    <View style={tailwind ``}>
+                        <Image style={styles.image} source={item.img} />
+                        <Text style={tailwind `font-bold text-lg self-center`}>
+                            {item.name}
+                        </Text>
+                    </View>
                 </TouchableOpacity>
             </View>
            
@@ -51,8 +54,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     image: {
-        width: 100,
-        height: 90,
+        width: 120,
+        height: 100,
         borderRadius: 10,
         resizeMode: 'stretch',
         margin: 10,
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         margin: 20,
-        width: 150,
+        width: 170,
         height: 170,
         borderRadius: 20,
         shadowColor: 'black',
