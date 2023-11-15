@@ -1,60 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import bestSeller from '../../Model/seller';
-import items from '../../Model/items';
-import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { API_BASE_URL } from "../../CallApi/config";
+import { getAllProduct } from "../../CallApi/productApi";
 import tailwind from 'twrnc';
-const BestSeller = ({title}) => {
-  const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
+import { formatPrice } from '../../utils/format'
+
+const BestSeller = () => {
   const navigation = useNavigation();
-  
-  // Fetch API products
-  const [product, setProduct] = useState(null);
+
+  const [product, setProduct] = useState([]);
+
+  const getData = async () => {
+    try {
+      const rs = await getAllProduct()
+      setProduct(rs)
+    } catch (error) {
+      console.log(`bestSeller: ${error}`)
+    }
+  }
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/product/get-all`).then((res) => {
-      setProduct(res.data);
-    })
+    getData()
   }, []);
 
-  const handleIcon = (index) => {
-    const updatedIsClickArray = [...isClickArray];
-    updatedIsClickArray[index] = !updatedIsClickArray[index];
-    setIsClickArray(updatedIsClickArray);
-  };
 
   const renderItem = ({ item, index }) => (
     <View style={styles.body}>
-      {/* 
-      ==> Code này đang bị lỗi đối chiếu với id của model giảm giá
-
-      <View style={styles.saler}>
-        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
-          Giảm {bestSeller.find((saler)=>saler.id==item.id).sale}%
-        </Text>
-      </View> 
-      */}
-
-    {/* Code lắp tạm thay thế */}
-      <View style={styles.saler}>
-        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
-          Giảm 30%
-        </Text>
-      </View>
-      
-      <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail', {product: item})}}>
-        <Image style={tailwind `w-25 h-30 self-center mt-4`} source={{uri: item.image_preview}} />
-        <View style={{ flexDirection: 'row' }}>
-          <View style={tailwind `mt-4 w-37`}>
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-            <Text style={{ marginTop: 5 }}>Giá: {item.max_price}</Text>
-            <Text style={{ marginTop: 5 }}>Loại: {item.brand_name}</Text>
+      {item.percent_discount > 0
+        ? (
+          <View style={styles.saler}>
+            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+              Giảm {item.percent_discount}%
+            </Text>
           </View>
-          <TouchableOpacity onPress={() => handleIcon(index)} style={styles.viewIcon}>
-            <Ionicons size={24} color='red' name={isClickArray[index] ? 'heart' : 'heart-outline'} />
-          </TouchableOpacity>
+        ) :
+        null
+      }
+
+
+      <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { product: item }) }}>
+        <Image style={tailwind`w-25 h-30 self-center mt-4`} source={{ uri: item.image_preview }} />
+        <View style={{ flexDirection: 'row' }}>
+          <View style={tailwind`mt-4 w-37`}>
+            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
+            <Text style={{ marginTop: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
+            <Text style={{ marginTop: 5 }}>Hãng: {item.brand_name}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -63,14 +53,14 @@ const BestSeller = ({title}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
-        <TouchableOpacity onPress={() => {navigation.navigate('ListPhone')}}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Danh sách sản phẩm</Text>
+        <TouchableOpacity onPress={() => { navigation.navigate('ListPhone') }}>
           <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
         </TouchableOpacity>
       </View>
       <FlatList
         data={product}
-        horizontal
+        numColumns={2}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
       />
@@ -81,6 +71,7 @@ const BestSeller = ({title}) => {
 const styles = StyleSheet.create({
   container: {
     margin: 30,
+    flex: 1
   },
   header: {
     flexDirection: 'row',
@@ -107,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    borderTopLeftRadius:10,
+    borderTopLeftRadius: 10,
     zIndex: 2,
   },
   img: {

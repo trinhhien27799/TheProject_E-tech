@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react"
 import { FlatList, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import tailwind from "twrnc"
-import { getTypeProduct } from '../../CallApi/typeProduct'
+import { getBrand } from '../../CallApi/brand'
 
-const ListProduct = (props) => {
+const ListBrand = (props) => {
     const navigation = useNavigation()
     const [data, setData] = useState([])
 
     const getData = async () => {
         try {
-            const rs = await getTypeProduct()
+            const rs = await getBrand()
             setData(rs)
         } catch (error) {
-            console.log(`ListProduct : ${error}`)
+            console.log(`ListBrand : ${error}`)
         }
     }
 
@@ -23,24 +23,19 @@ const ListProduct = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-
             <TouchableOpacity onPress={() => navigation.navigate('ListPhoneByCate', {
                 data: item.name
             })}>
                 <View style={styles.viewItem}>
                     <Image style={styles.image} source={{ uri: item.image }} />
-                    <Text style={styles.textItem}>
-                        {item.name}
-                    </Text>
                 </View>
             </TouchableOpacity>
-
 
         )
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Các loại sản phẩm</Text>
+            <Text style={styles.title}>Các hãng sản phẩm</Text>
             <FlatList
                 data={data}
                 renderItem={renderItem}
@@ -54,8 +49,8 @@ const ListProduct = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
         paddingHorizontal: 8,
+        flex:1
     },
     title: {
         marginStart: 8,
@@ -65,9 +60,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     image: {
-        width: 46,
-        height: 46,
-        resizeMode: 'cover',
+        width: 70,
+        height: 70,
+        resizeMode: 'contain',
     },
     viewItem: {
         backgroundColor: 'white',
@@ -80,13 +75,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    textItem: {
-        marginTop: 6,
-        fontSize: 14,
-        fontWeight: '500',
-        overflow: 'hidden'
-    }
 
 })
 
-export default ListProduct
+export default ListBrand
