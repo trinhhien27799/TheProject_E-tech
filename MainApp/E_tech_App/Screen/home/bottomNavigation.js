@@ -7,6 +7,7 @@ import NotificationScreen from '../NotificationScreen';
 import AccountScreen from '../AccountScreen';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import Icon from 'react-native-vector-icons/Feather';
+import Makhuyenmai from '../Makhuyenmai';
 
 const Tabs = AnimatedTabBarNavigator();
 
@@ -74,7 +75,7 @@ const BottomNavigation = ({navigation,route}) => {
 
         <Tabs.Screen
           name="Account"
-          component={AccountScreen}
+          component={Makhuyenmai}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
               <Icon
