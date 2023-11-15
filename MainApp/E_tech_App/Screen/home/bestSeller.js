@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { API_BASE_URL } from "../../CallApi/config";
+import tailwind from 'twrnc';
 const BestSeller = ({title}) => {
   const [isClickArray, setIsClickArray] = useState(Array(items.length).fill(false));
   const navigation = useNavigation();
@@ -43,10 +44,10 @@ const BestSeller = ({title}) => {
         </Text>
       </View>
       
-      <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail')}}>
-        <Image style={styles.img} source={{uri: item.image_preview}} />
+      <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail', {product: item})}}>
+        <Image style={tailwind `w-25 h-30 self-center mt-4`} source={{uri: item.image_preview}} />
         <View style={{ flexDirection: 'row' }}>
-          <View>
+          <View style={tailwind `mt-4 w-37`}>
             <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
             <Text style={{ marginTop: 5 }}>Giá: {item.max_price}</Text>
             <Text style={{ marginTop: 5 }}>Loại: {item.brand_name}</Text>
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     margin: 10,
     width: 180,
-    height: 250,
+    height: 270,
     borderRadius: 20,
     shadowColor: 'grey',
     shadowRadius: 10,
