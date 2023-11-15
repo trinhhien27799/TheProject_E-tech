@@ -63,6 +63,7 @@ const BestSeller = () => {
         numColumns={2}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
+        contentContainerStyle={styles.flatListContainer}
       />
     </View>
   );
@@ -70,7 +71,6 @@ const BestSeller = () => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 30,
     flex: 1
   },
   header: {
@@ -117,6 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+  },
+  flatListContainer: {
+    alignItems:'center'
   },
 });
 
