@@ -1,36 +1,22 @@
 import axios from 'axios';
 import { API_USER_URL } from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
-export const getAllProduct = () => {
-  const [product, setProduct] = React.useState(null)
+import api, { setAuthToken } from '../apiService'
 
-  const getData = () => {
-    axios.get(`${API_USER_URL}/api/product/get-all`).then((response) => {
-      setProduct(response.data)
-    });
-  }
+
+const getAllProduct = async () => {
   try {
-    React.useEffect(() => {
-      getData();
-    }, [])
-    
-    return product;
+    const rs = await api.get('/product/get-all')
+    return rs.data
   } catch (error) {
-    console.error('Lỗi yêu cầu mạng:', error);
-    throw error;
+    throw error
   }
 }
 
-export const getBanner = async () => {
-  try {
-    const response = await axios.get(`${API_USER_URL}/api/banner/get-all`);
-    return response.data;
-  } catch (error) {
-    console.error('Lỗi yêu cầu mạng:', error);
-    throw error;
-  }
-}
+
+export { getAllProduct }
+
+
 export const getLike = async () => {
   try {
     const token = await AsyncStorage.getItem('token')
@@ -83,7 +69,7 @@ export const toggleLike = async ({ product_id, action }) => {
     console.error(error);
   }
 };
-export const getNotifi = async ({action}) => {
+export const getNotifi = async ({ action }) => {
   try {
     const token = await AsyncStorage.getItem('token')
     const username = await AsyncStorage.getItem('username')
@@ -110,7 +96,7 @@ export const getNotifi = async ({action}) => {
     console.log(error);
   }
 }
-export const getItemProduct = async({product_id})=>{
+export const getItemProduct = async ({ product_id }) => {
   try {
     const response = await axios.get(`${API_USER_URL}/api/product/${product_id}`);
     return response.data;
@@ -118,7 +104,7 @@ export const getItemProduct = async({product_id})=>{
     console.log(error);
   }
 }
-export const getBrandName = async({brand_name})=>{
+export const getBrandName = async ({ brand_name }) => {
   try {
     const response = await axios.get(`${API_USER_URL}/api/product/get/brand/${brand_name}`);
     return response.data;
