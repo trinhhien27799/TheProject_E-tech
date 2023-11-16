@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../CallApi/config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const vouchers = () => {
   const [voucher, setVoucher] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.110.173:3000/api/voucher/get-all').then((res) => {
+    axios.get(`${API_BASE_URL}/api/voucher/get-all`).then((res) => {
       setVoucher(res.data);
     })
   }, [])
@@ -13,9 +15,11 @@ export const vouchers = () => {
 }
 
 export const myvouchers = () => {
+    const username = AsyncStorage.getItem('username');
+    console.log(username);
     const [myvoucher, setMyVoucher] = useState(null);
     useEffect(() => {
-      axios.get('http://192.168.110.173:3000/api/voucher/get').then((res) => {
+      axios.get(`${API_BASE_URL}/api/voucher/get`, {username: username}).then((res) => {
         setMyVoucher(res.data);
       })
     }, [])

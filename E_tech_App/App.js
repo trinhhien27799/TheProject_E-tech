@@ -76,8 +76,6 @@ const App = () => {
         <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
 
 
-
-
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
         <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />

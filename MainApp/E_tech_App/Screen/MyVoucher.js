@@ -16,7 +16,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function MyVoucher() {
   const navigation = useNavigation();
-
+  const myVoucherArray = myvouchers();
+  console.log(myVoucherArray);
 
   // const data = [
   //   {
@@ -79,7 +80,7 @@ export default function MyVoucher() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
-        <TouchableOpacity onPress={() => { navigation.goback() }}>
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.text}>Voucher của bạn</Text>
