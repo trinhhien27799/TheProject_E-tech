@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View,  Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View,  Text, TouchableOpacity,Image, StyleSheet, FlatList } from 'react-native';
 import { getLike } from '../../CallApi/productApi';
 import IteamProduct from '../../Component/itemProducts';
 
@@ -18,11 +18,14 @@ const FavoriteScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Sản phẩm yêu thích</Text>
+      <View style = {styles.titleContainer}>
+          <Image style={{width:25,height:25,marginRight:10}} source={require('../../img/highlight1.png')}/>
+          <Text style={styles.textTitle}>Sản phẩm yêu thích</Text>
+        </View>
         <TouchableOpacity onPress={() => {
           handleMore();
         }}>
-          <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
+          <Text style={{ fontWeight: '500', color: 'blue',marginRight:15 }}>More</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -38,14 +41,22 @@ const FavoriteScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  titleContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textTitle:{
+    fontWeight: '700',
+    fontSize: 17,
+  },
   container: {
-    margin: 30,
+    marginTop:30,
+    marginLeft:15
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
   },
   body: {
     backgroundColor: 'white',
