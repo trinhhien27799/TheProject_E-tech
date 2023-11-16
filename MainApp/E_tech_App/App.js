@@ -29,13 +29,13 @@ import MapViewScreen from './Component/MapView';
 import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen';
 import PTTT from './Screen/PTTT/PTTT';
 import DialogQR from './Screen/PTTT/DialogQR';
-import Makhuyenmai from './Screen/voucher/Makhuyenmai';
-import ApDungVoucher from './Screen/voucher/ApDungVoucher'
+import Makhuyenmai from './Screen/Makhuyenmai';
+import ApDungVoucher from './Screen/ApDungVoucher'
 
 import BillDetailScreen from './Screen/BillDetailScreen';
 import ViewItem from './Screen/search/viewItem';
 import AddAdress from './Screen/AddAdress';
-import MyVoucher from './Screen/voucher/MyVoucher';
+import MyVoucher from './Screen/MyVoucher';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
 import DetailProducts from './Screen/products/detailProducts';
@@ -102,7 +102,6 @@ const App = () => {
         headerTintColor: 'white',  
         headerTitle:'Danh sách sản phẩm',
         headerStyle: { backgroundColor: '#3366ff' }}} />
-
         <Stack.Screen name='Comment' component={ProductComment} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
