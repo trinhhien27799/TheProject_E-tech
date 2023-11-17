@@ -7,11 +7,14 @@ import { getBrand } from '../../CallApi/brand'
 const ListBrand = (props) => {
     const navigation = useNavigation()
     const [data, setData] = useState([])
-
+    const [title, setTitle] = useState('')
     const getData = async () => {
         try {
             const rs = await getBrand()
-            setData(rs)
+            if (rs != null && rs.length > 0) {
+                setData(rs)
+                setTitle("Các hãng sản phẩm")
+            }
         } catch (error) {
             console.log(`ListBrand : ${error}`)
         }
@@ -35,9 +38,9 @@ const ListBrand = (props) => {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Các hãng sản phẩm</Text>
+            <Text style={styles.title}>{title}</Text>
             <FlatList
-                
+
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}

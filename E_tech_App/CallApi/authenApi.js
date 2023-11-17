@@ -1,35 +1,24 @@
-import { API_USER_URL } from "./config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import api, { setAuthToken } from '../apiService'
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { setToken } from '../session'
 
-export const registerUser = async (username, email, password,navigation) => {
+export const registerUser = async (username, email, password, navigation) => {
     try {
-        const response = await fetch(`${API_USER_URL}/api/user/create-account`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ fullname:username,username:email, password:password})
-        });
-        const data = await response.json();
-        if (data.code == 200) {
-            navigation.navigate('Login');
-            alert('Đăng ký thành công')
-        } else
-        alert (data.message);
-        return data;  
+        const response = await api.post('/user/create-account', { fullname: username, username: email, password: password })
+        return response.data
     } catch (error) {
-        console.error('Lỗi yêu cầu mạng:', error);
-        throw error;
+        console.error('Lỗi yêu cầu mạng:', error)
+        throw error
     }
 }
-export const insertOtp = async (email,check) => {
+export const insertOtp = async (email, check) => {
     try {
         const response = await fetch(`${API_USER_URL}/api/user/receive-otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username:email,forgotPassword:check })
+            body: JSON.stringify({ username: email, forgotPassword: check })
         });
 
         if (response.ok) {
@@ -43,12 +32,12 @@ export const insertOtp = async (email,check) => {
         throw error;
     }
 }
-export const loginUser = async (username, password,navigation) => {
+export const loginUser = async (username, password, navigation) => {
     try {
         const response = await fetch(`${API_USER_URL}/api/user/login`, {
             method: 'POST',
             headers: {
-                
+
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ username, password })
@@ -56,9 +45,9 @@ export const loginUser = async (username, password,navigation) => {
 
         const data = await response.json();
         if (data.code === 200) {
-            AsyncStorage.setItem('token',data.token);
-            AsyncStorage.setItem('username',data.user.username)
-            navigation.navigate('ButtonNavigation',{ registrationData: data });
+            AsyncStorage.setItem('token', data.token);
+            AsyncStorage.setItem('username', data.user.username)
+            navigation.navigate('ButtonNavigation', { registrationData: data });
             alert('Đăng nhập thành công')
             // <ShowNotification title={'Đăng nhập thành công'}type={'success'}/>
 
@@ -67,28 +56,26 @@ export const loginUser = async (username, password,navigation) => {
         }
         return data;
     } catch (error) {
-       
+
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;
     }
 }
-export const autoLogin = async ({token}) => {
-    try{
-        const response = await fetch(`${API_USER_URL}/api/user/auto-login`,{
-            method: 'POST',
-            headers: {'Content-Type': 'multipart/form-data'},
-            body:token
-        })
-        const data = await response.json();
-        return data;
+export const autoLogin = async () => {
+    try {
+        const token = await AsyncStorage.getItem("token")
+        if (!token)
+            throw "can not get token"
+        setToken(token)
+        const response = await api.post('/user/auto-login', { token: token })
+        return response.data
     } catch (error) {
-       
-        console.error('Lỗi yêu cầu mạng:', error);
-        throw error;
+        console.error('autoLogin:', error);
+        throw error
     }
 }
-export const verifyOTP = async (username,otp)=>{
-    try{
+export const verifyOTP = async (username, otp) => {
+    try {
         const response = await fetch(`${API_USER_URL}/api/user/verify-otp`, {
             method: 'POST',
             headers: {
@@ -98,19 +85,19 @@ export const verifyOTP = async (username,otp)=>{
         });
         const data = await response.json();
         return data;
-    }catch (error) {
+    } catch (error) {
         console.log(error);
     }
 }
-export const forgotPassword = async(username,password,navigation)=>{
-    
-    try{
-        const response = await fetch(`${API_USER_URL}/api/user/forgot-password`,{
+export const forgotPassword = async (username, password, navigation) => {
+
+    try {
+        const response = await fetch(`${API_USER_URL}/api/user/forgot-password`, {
             method: 'POST',
-            headers:{
-                'Content-Type':'application/json'
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username,password})
+            body: JSON.stringify({ username, password })
         })
         const data = await response.json();
         console.log(data);
@@ -120,7 +107,7 @@ export const forgotPassword = async(username,password,navigation)=>{
         } else {
             alert(data.message)
         }
-    }catch (error) {
+    } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;
     }
