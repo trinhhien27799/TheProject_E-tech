@@ -59,7 +59,6 @@ const BestSeller = () => {
         </TouchableOpacity>
       </View>
       <FlatList
-
         data={product}
         numColumns={2}
         keyExtractor={(item, index) => index.toString()}

@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { Touchable } from 'react-native-web';
 import tailwind from 'twrnc'
-const BillDetailScreen = () => {
+import OrderStatusHeader from '../Component/OrderStatusHeader';
+const BillDetailScreen = ({route}) => {
+    const {item} = route.params;
+
     const data = [
         {
             id: 1,
@@ -55,22 +58,21 @@ const BillDetailScreen = () => {
             total: '40.000.000'
         },
     ]
+
+    const currentDate = item.time;
+    const splitDate = currentDate.split('T');
+    const getDate = splitDate[0];
+
     return (
         <View style={styles.container}>
             <ScrollView>
                 {/* Header */}
                 <View style={styles.header}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.textTitle}>Đơn hàng đã hoàn thành</Text>
-                        <Image
-                            source={require('../img/billScreen/check_463574.png')}
-                            style={tailwind`ml-3 w-5 h-5 self-center`}
-                        />
-                    </View>
-                    <Text style={styles.textInfo}>Mã đơn hàng: ẠUN132443</Text>
-                    <Text style={styles.textInfo}>Ngày mua: 30/10/2023</Text>
+                    <OrderStatusHeader orderStatus={item.status}/>
+                    <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
+                    <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
                     <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
-                    <Text style={styles.textInfo}>Người mua: Nguyễn Văn A </Text>
+                    <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
                 </View>
 
                 <View style={styles.line}></View>
@@ -85,7 +87,7 @@ const BillDetailScreen = () => {
                         />
                         <View style={styles.addressInfo}>
                             <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
-                            <Text style={styles.textAddressInfo}>số nhà 15, ngõ 565, đường Lạc Long Quân, Tây Hồ, Hà Nội</Text>
+                            <Text style={styles.textAddressInfo}>{item.address.address}</Text>
                         </View>
                     </View>
 
@@ -94,7 +96,7 @@ const BillDetailScreen = () => {
 
                 {/* List Bill */}
                 <FlatList
-                    data={data}
+                    data={item.products}
                     style={styles.listCart}
                     renderItem={({ item }) => (
 
@@ -103,13 +105,16 @@ const BillDetailScreen = () => {
                             <View style={styles.cartItem}>
 
                                 <View style={styles.imgItemView}>
-                                    <Image style={styles.imgItem} />
+                                    <Image 
+                                        style={styles.imgItem} 
+                                        source={{uri: item.image}}
+                                    />
                                 </View>
 
                                 <View style={styles.nameItemView}>
                                     <View >
-                                        <Text style={styles.nameItem}>{item.name}</Text>
-                                        <Text style={styles.categoryItem}>Loại: {item.category}</Text>
+                                        <Text style={styles.nameItem}>{item.product_name}</Text>
+                                        <Text style={styles.categoryItem}>Loại: </Text>
                                         <Text style={styles.categoryItem}>Giá: {item.price}</Text>
                                     </View>
                                     <View>
@@ -122,12 +127,13 @@ const BillDetailScreen = () => {
                                 </View>
                             </View>
                             <View style={styles.textTotal}>
-                                <Text style={styles.textTotal}>Tổng cộng: {item.total}</Text>
+                                <Text style={styles.textTotal}>Tổng cộng: {item.price * item.quantity}</Text>
                             </View>
                         </View>
                     )}
                     keyExtractor={(item) => item.id}
                 />
+
                 {/* Total Container */}
                 <View style={styles.calContainer}>
                     <View style={styles.calView}>
@@ -136,15 +142,11 @@ const BillDetailScreen = () => {
                     </View>
                     <View style={styles.calView}>
                         <Text style={styles.textInfo}>Phí vận chuyển:</Text>
-                        <Text style={styles.textInfo}>20.000</Text>
+                        <Text style={styles.textInfo}>{item.transport_fee}</Text>
                     </View>
                     <View style={styles.calView}>
-                        <Text style={styles.textInfo}>Áp dụng voucher:</Text>
+                        <Text style={styles.textInfo}>Voucher giảm giá:</Text>
                         <Text style={styles.textInfo}>-500.000</Text>
-                    </View>
-                    <View style={styles.calView}>
-                        <Text style={styles.textInfo}>Giảm giá phí vận chuyển:</Text>
-                        <Text style={styles.textInfo}>-10.000</Text>
                     </View>
                     <View style={styles.calViewTotal}>
                         <Text style={styles.textBold}>Thành tiền:</Text>
@@ -160,8 +162,8 @@ const BillDetailScreen = () => {
                             style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
                         />
                         <View style={styles.paymentType}>
-                            <Text style={styles.textBold}>Phương thức thanh toán: </Text>
-                            <Text style={styles.textMoneyType}> Tiền mặt</Text>
+                            <Text style={styles.textBold}>Phương thức thanh toán:</Text>
+                            <Text style={styles.textMoneyType}>{item.payment_method}</Text>
                         </View>
                     </View>
                 </View>
@@ -213,6 +215,7 @@ const styles = StyleSheet.create({
     },
     textMoneyType:{
         fontSize:14,
+        width: '50%'
     },
     paymentType:{
         flexDirection:'row',
@@ -291,6 +294,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1.3,
         paddingBottom: 20,
         borderBottomColor: '#D5D5D5',
+        height: 220,
+        justifyContent: 'center'
+
     },
     listCart: {
         maxHeight: 1000,
@@ -347,4 +353,5 @@ const styles = StyleSheet.create({
        
     },
 })
+
 export default BillDetailScreen
