@@ -49,7 +49,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='Login'
+        initialRouteName='OrderScreen'
       >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
@@ -75,11 +75,10 @@ const App = () => {
         <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
         <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
 
-
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
         <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
-        <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
+        <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
         headerTintColor: 'white',  
         headerTitle:'Chi tiết đơn hàng',
         headerStyle: { backgroundColor: '#3366ff' }}} />
@@ -100,6 +99,7 @@ const App = () => {
         headerTintColor: 'white',  
         headerTitle:'Danh sách sản phẩm',
         headerStyle: { backgroundColor: '#3366ff' }}} />
+
         <Stack.Screen name='Comment' component={ProductComment} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>

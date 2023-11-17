@@ -112,6 +112,7 @@ export default function Makhuyenmai() {
       </View>
     </View>
   );
+
   // const renderItemVoucher = ( item) => (
   //   <View style={styles.view2}>
   //     <View

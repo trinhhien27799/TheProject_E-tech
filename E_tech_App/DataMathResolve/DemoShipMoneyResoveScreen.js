@@ -2,22 +2,16 @@ import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import tailwind from 'twrnc';
 import {ShipMoneyResolve_City} from './ShipMoneyResolve'
+import { getAllBill } from '../CallApi/billAPI';
+import { getBill } from '../Model/BillModel';
 
 const DemoShipMoneyResoveScreen = () => {
-    const weight = 0.7;
-    const distance = 1.5;
-    const cityStatus = 1;
+    const demoBill = getBill();
+    console.log(demoBill);
 
-    let shipMoneyResult = 0;
-    try {
-        shipMoneyResult = ShipMoneyResolve_City(weight, cityStatus, distance);
-    } catch (error) {
-        console.log(error);
-    }
-    
     return (
         <View style={tailwind `flex-auto justify-center`}>
-            <Text>Total: {shipMoneyResult}</Text>
+            {/* <Text>Total: {shipMoneyResult}</Text> */}
         </View>
     )
 }
