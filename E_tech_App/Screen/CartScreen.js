@@ -7,105 +7,21 @@ import { getCart } from '../CallApi/cartApi';
 import { useNavigation } from '@react-navigation/native';
 const CartScreen = () => {
   const navigation = useNavigation();
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     setCart(getCart());
-    console.log(cart);
+    console.log("====>"+cart);
   }, []);
 
-  const data = [
-
-    // {
-    //   id: 1,
-    //   image: '',
-    //   name: 'Iphone 15',
-    //   category: 'Đen/128GB',
-    //   price: '$62.50',
-    //   quantity: '1',
-    //   status: 'Còn hàng'
-    // },
-    // {
-    //   id: 2,
-    //   image: '',
-    //   name: 'Iphone 14',
-    //   category: 'Đen/128GB',
-    //   price: '$62.50',
-    //   quantity: '1',
-    //   status: 'Còn hàng'
-    // },
-    // {
-    //   id: 3,
-    //   image: '',
-    //   name: 'Iphone 13',
-    //   category: 'Đen/128GB',
-    //   price: '$62.50',
-    //   quantity: '1',
-    //   status: 'Còn hàng'
-    // },
-    // {
-    //   id: 4,
-    //   image: '',
-    //   name: 'Iphone 12',
-    //   category: 'Đen/128GB',
-    //   price: '$62.50',
-    //   quantity: '1',
-    //   status: 'Còn hàng'
-    // },
-    // {
-    //   id: 5,
-    //   image: '',
-    //   name: 'Iphone 11',
-    //   category: 'Đen/128GB',
-    //   price: '$62.50',
-    //   quantity: '1',
-    //   status: 'Còn hàng'
-    // },
-  ]
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
 
         <View style={styles.header}>
           <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
         </View>
 
-        {/* List Cart */}
-        <FlatList
-          data={cart}
-          style={styles.listCart}
-          renderItem={({ item }) => (
-
-            // Cart Item
-            <View style={styles.cartItem}>             
-              {/* <View style={styles.imgItemView}>
-                <Image style={styles.imgItem} />
-              </View> */}
-
-              <View style={styles.nameItemView}>
-                <View >
-                  <Text style={styles.nameItem}>{item.product_name}</Text>
-                  <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text>
-                </View>
-                {/* <View>
-                  <Text style={styles.statusItem}>{item.status}</Text>
-                </View> */}
-              </View>
-
-              {/* <View style={styles.priceItemView}>
-                <View>
-                  <Text style={styles.textPrice}>{item.price}</Text>
-
-                  <Text style={styles.textQuantity}>{item.quantity}</Text>
-                </View>
-                <Text style={styles.textDelete}>Xóa</Text>
-              </View> */}
-            </View>
-
-
-          )}
-          keyExtractor={(item) => item.id}
-        />
         {/* Voucher Container */}
 
         <View style={styles.voucherContainer}>
@@ -145,7 +61,7 @@ const CartScreen = () => {
         </View>
 
 
-      </SafeAreaView>
+      </ScrollView>
     </View>
   )
 }

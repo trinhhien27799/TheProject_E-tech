@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://192.168.1.3:3000/api',
-    timeout: 5000, 
+    baseURL: 'http://192.168.11.2:3000/api',
+    //timeout: 5000, 
 });
 
 export const setAuthToken = (token) => {
