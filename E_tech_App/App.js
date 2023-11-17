@@ -40,6 +40,7 @@ import MyVoucher from './Screen/MyVoucher';
 import ListPhoneByCate from './Screen/ListPhoneByCate';
 import DetailProducts from './Screen/products/detailProducts';
 import ProductComment from './Component/ProductComment';
+import SplashScreen from './Screen/splash/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -49,8 +50,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='OrderScreen'
+        initialRouteName='Splash'
+
       >
+       <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />

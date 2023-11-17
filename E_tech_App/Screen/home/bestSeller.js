@@ -1,26 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { getAllProduct } from "../../CallApi/productApi";
-import tailwind from 'twrnc';
+import React, { useEffect, useState } from 'react'
+import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { getAllProduct } from "../../CallApi/productApi"
+import tailwind from 'twrnc'
 import { formatPrice } from '../../utils/format'
 
 const BestSeller = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState([])
+  const [title, setTitle] = useState('')
+  const [more, setMore] = useState('')
 
   const getData = async () => {
     try {
       const rs = await getAllProduct()
-      setProduct(rs)
+      if (rs != null && rs.length > 0) {
+        setProduct(rs)
+        setTitle("Danh sách sản phẩm")
+        setMore("Xem thêm")
+      }
+
     } catch (error) {
       console.log(`bestSeller: ${error}`)
     }
   }
   useEffect(() => {
     getData()
-  }, []);
+  }, [])
 
 
   const renderItem = ({ item, index }) => (
@@ -48,14 +55,14 @@ const BestSeller = () => {
         </View>
       </TouchableOpacity>
     </View>
-  );
+  )
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Danh sách sản phẩm</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
         <TouchableOpacity onPress={() => { navigation.navigate('ListPhone') }}>
-          <Text style={{ fontWeight: '500', color: 'blue' }}>More</Text>
+          <Text style={{ fontWeight: '500', color: 'blue' }}>{more}</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -63,15 +70,16 @@ const BestSeller = () => {
         numColumns={2}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        contentContainerStyle={styles.flatListContainer}
+        style={styles.flatListContainer}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingHorizontal: 8,
   },
   header: {
     flexDirection: 'row',
@@ -121,6 +129,6 @@ const styles = StyleSheet.create({
   flatListContainer: {
     alignItems: 'center'
   },
-});
+})
 
-export default BestSeller;
+export default BestSeller
