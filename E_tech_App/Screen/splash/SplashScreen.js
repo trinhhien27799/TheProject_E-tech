@@ -17,7 +17,7 @@ const SplashScreen = () => {
         } catch (error) {
             console.log(`splash :${error}`)
         } finally {
-            navigation.navigate('Home')
+            navigation.replace('Home')
         }
     }
     useEffect(() => {
