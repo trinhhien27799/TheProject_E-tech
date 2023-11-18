@@ -32,7 +32,7 @@ const Home = ({ navigation, route }) => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor="red" />
+            <StatusBar barStyle="light-content" backgroundColor="cyan" />
             <MainHeader route={route.params} navigation={navigation} />
             <SectionList
                 sections={sections}
