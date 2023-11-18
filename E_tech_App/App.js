@@ -51,6 +51,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Splash'
+
       >
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
@@ -77,16 +78,13 @@ const App = () => {
         <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
         <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
 
-
-        <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false }} />
-        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false }} />
-        <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{
-          headerShown: true,
-          headerTintColor: 'white',
-          headerTitle: 'Chi tiết đơn hàng',
-          headerStyle: { backgroundColor: '#3366ff' }
-        }} />
+        <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
+        <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
+        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
+        <Stack.Screen name='BillDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
+        headerTintColor: 'white',  
+        headerTitle:'Chi tiết đơn hàng',
+        headerStyle: { backgroundColor: '#3366ff' }}} />
 
         <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
         <Stack.Screen name='OrderScreen' component={OrderScene} options={{
