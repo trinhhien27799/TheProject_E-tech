@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 const CartScreen = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState(null);
+
   useEffect(() => {
     setCart(getCart());
     console.log(cart);
@@ -71,38 +72,34 @@ const CartScreen = () => {
 
         {/* List Cart */}
         <FlatList
-          data={data}
+          data={cart}
           style={styles.listCart}
           renderItem={({ item }) => (
 
             // Cart Item
-            <View style={styles.cartItem}>
-
-              <View style={styles.imgItemView}>
+            <View style={styles.cartItem}>             
+              {/* <View style={styles.imgItemView}>
                 <Image style={styles.imgItem} />
-              </View>
+              </View> */}
 
               <View style={styles.nameItemView}>
                 <View >
-                  <Text style={styles.nameItem}>{item.name}</Text>
-                  <Text style={styles.categoryItem}>Loại: {item.category}</Text>
+                  <Text style={styles.nameItem}>{item.product_name}</Text>
+                  <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text>
                 </View>
-                <View>
+                {/* <View>
                   <Text style={styles.statusItem}>{item.status}</Text>
-                </View>
+                </View> */}
               </View>
 
-              <View style={styles.priceItemView}>
+              {/* <View style={styles.priceItemView}>
                 <View>
                   <Text style={styles.textPrice}>{item.price}</Text>
 
                   <Text style={styles.textQuantity}>{item.quantity}</Text>
                 </View>
                 <Text style={styles.textDelete}>Xóa</Text>
-              </View>
-
-
-
+              </View> */}
             </View>
 
 

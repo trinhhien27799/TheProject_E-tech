@@ -208,7 +208,7 @@ const Pay = ({ username, diachi, price1, ship }) => {
                   Chọn mã giảm giá của bạn
                 </Text>
               </View>
-              <TouchableOpacity onPress={() => {navigation.navigate('ChooseAddressScreen')}}>
+              <TouchableOpacity onPress={() => {navigation.navigate('ApDungVoucher')}}>
               <Feather
                 name="chevron-right"
                 size={45}

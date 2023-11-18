@@ -16,8 +16,10 @@ import { Feather } from '@expo/vector-icons';
 import ViewMoreText from 'react-native-view-more-text';
 import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+import ProductComment from '../Component/ProductComment';
+import ListProductHorzontal from './ListProductHorizontal';
 
-export default function ChiTietSP() {
+const ProductDetail = ({product}) => {
   const navigation = useNavigation();
   const data = [
     { id: 1, color: 'Trắng' },
@@ -43,16 +45,16 @@ export default function ChiTietSP() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.view}>
+        <View style={tailwind `w-80 self-center py-5 bg-white shadow-lg rounded-lg`}>
           <Image
-            source={require('../img/sp.png')}
+            source={{uri: product.image_preview}}
             style={styles.img}
           />
         </View>
 
         <View style={tailwind `flex-row py-5 px-5`}>
-          <Text style={tailwind `text-xl font-bold`}>Iphone 15 (128GB) </Text>
-          <Text style={tailwind `text-xl ml-24`}>$40000</Text>
+          <Text style={tailwind `text-xl font-bold w-42`}>{product.product_name}</Text>
+          <Text style={tailwind `text-xl ml-28`}>{product.max_price}</Text>
         </View>
 
         <View style={tailwind `w-90 h-0.5 bg-gray-300 self-center`}></View>
@@ -133,29 +135,43 @@ export default function ChiTietSP() {
         </View>
 
         <View style={{ height: 300, marginTop: 20 }}>
-          <View style={{ flexDirection: 'row', marginLeft: 10, flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-              Các sản phẩm liên quan
-            </Text>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  color: '#336BFA',
-                  fontSize: 13,
-                  marginRight: 8,
-                  marginTop: 3,
-                }}>
-                MORE
+          <View style={{marginLeft: 10, flex: 1 }}>
+            <View style={tailwind `flex-row`}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
+                Các sản phẩm liên quan
               </Text>
-            </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    color: '#336BFA',
+                    fontSize: 13,
+                    marginRight: 8,
+                    marginTop: 3,
+                  }}
+                  onPress={() => navigation.navigate('ListPhone')}
+                  >
+                  MORE
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <ListProductHorzontal />
           </View>
         </View>
-        <View style={{ height: 300, backgroundColor: 'red', marginTop: 20 }}>
+        <View style={{ height: 300, marginTop: 20, marginBottom: 20 }}>
           <Text style={styles.text3}>Bình Luận</Text>
-          <ScrollView></ScrollView>
+          <ProductComment/>
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+export default function ChiTietSP({route}) {
+  const {product} = route.params;
+  console.log(product);
+  return (
+    <ProductDetail product={product}/>
   );
 }
 
@@ -163,11 +179,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fff',
   },
   view: {
-    width: '100%',
+    width: '80%',
     height: 230,
+    backgroundColor: 'white'
   },
   view2: {
     height: 70,
