@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  TextInput
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -15,9 +16,8 @@ import { useNavigation } from '@react-navigation/native';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 
-const Pay = ({ username, diachi, price1, ship }) => {
+const Pay = () => {
   const navigation = useNavigation();
-  const priceall = price1 + ship;
   const data = [
     {
       id: 1,
@@ -69,6 +69,61 @@ const Pay = ({ username, diachi, price1, ship }) => {
         </View>
 
         <View style={{ marginTop: 20 }}>
+          {/* Address View */}
+          <View >
+            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
+              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
+                Địa chỉ nhận hàng
+              </Text>
+              <Image
+                source={require('../img/location.png')}
+                style={styles.img1}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              marginTop: 20,
+              height: 50,
+              flexDirection: 'row',
+              marginLeft: 20,
+            }}>
+
+            {/* Address Detail */}
+            <View style={{ flex: 1 }}>
+              <Text>
+                Username - Phone {username}
+              </Text>
+              <Text>
+                Địa chỉ {diachi}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
+              <Feather
+                name="chevron-right"
+                size={45}
+                color="black"
+                style={{
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  marginRight: 40,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Ship Bill */}
+          <View style={tailwind`w-93 self-center flex-row mt-3`}>
+            <Text style={{ fontWeight: 'bold' }}>
+              Phí vận chuyển:
+            </Text>
+            <Text style={tailwind`flex-1 self-end ml-51`}>
+              {totalShipMoney}đ
+            </Text>
+          </View>
+          {/* Split Space */}
+          <View style={styles.view3}></View>
+
           {/* Payment Products */}
           <View style={tailwind`flex-row self-center w-full`}>
             <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold', marginLeft: 20, alignSelf: 'center' }}>
@@ -98,8 +153,6 @@ const Pay = ({ username, diachi, price1, ship }) => {
                     </View>
                   </View>
 
-
-
                   <View style={tailwind`flex-row m-3 self-end`}>
                     <Text>Số lượng: </Text>
                     <Text>{item.quantity}</Text>
@@ -111,26 +164,32 @@ const Pay = ({ username, diachi, price1, ship }) => {
           </View>
 
           {/* Total Product */}
-          <View style={tailwind`w-93 self-center flex-row mt-5`}>
-            <Text style={{ fontWeight: 'bold' }}>
-              Tổng Cộng:
-            </Text>
-            <Text style={tailwind`flex-1 self-end ml-53`}>
-              {totalResult}đ
-            </Text>
+          <View style={{ marginTop: 10 }}>
+            <TextInput
+              placeholder="Ghi chú cho cửa hàng"
+              placeholderTextColor={'black'}
+              style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
+            />
+            <View style={tailwind`w-93 self-center flex-row mt-5`}>
+              <Text style={{ fontWeight: 'bold' }}>
+                Tổng Cộng:
+              </Text>
+              <Text style={tailwind`flex-1 self-end ml-53`}>
+                {totalResult}đ
+              </Text>
+            </View>
           </View>
-
           {/* Split Space */}
           <View style={styles.view3}></View>
 
-          {/* Address View */}
+          {/* Voucher */}
           <View style={{ marginTop: 30 }}>
             <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
               <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Địa chỉ nhận hàng
+                Áp dụng Voucher giảm giá
               </Text>
               <Image
-                source={require('../img/location.png')}
+                source={require('../img/sale.png')}
                 style={styles.img1}
               />
             </View>
@@ -142,17 +201,18 @@ const Pay = ({ username, diachi, price1, ship }) => {
               flexDirection: 'row',
               marginLeft: 20,
             }}>
-
-            {/* Address Detail */}
             <View style={{ flex: 1 }}>
-              <Text>
-                Username - Phone {username}
-              </Text>
-              <Text>
-                Địa chỉ {diachi}
+              <Text
+                style={{
+                  fontSize: 14.5,
+                  marginLeft: 10,
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}>
+                Chọn mã giảm giá của bạn
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {navigation.navigate('ChooseAddressScreen')}}>
+            <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>
               <Feather
                 name="chevron-right"
                 size={45}
@@ -165,62 +225,6 @@ const Pay = ({ username, diachi, price1, ship }) => {
               />
             </TouchableOpacity>
           </View>
-
-          {/* Ship Bill */}
-          <View style={tailwind`w-93 self-center flex-row mt-3`}>
-            <Text style={{ fontWeight: 'bold' }}>
-              Phí vận chuyển:
-            </Text>
-            <Text style={tailwind`flex-1 self-end ml-51`}>
-              {totalShipMoney}đ
-            </Text>
-          </View>
-          {/* Split Space */}
-          <View style={styles.view3}></View>
-
-          {/* Voucher */}
-          <View style={{ marginTop: 30 }}>
-              <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
-                <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                  Áp dụng Voucher giảm giá
-                </Text>
-                <Image
-                  source={require('../img/sale.png')}
-                  style={styles.img1}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                marginTop: 20,
-                height: 50,
-                flexDirection: 'row',
-                marginLeft: 20,
-              }}>
-              <View style={{ flex: 1 }}>
-                <Text
-                  style={{
-                    fontSize: 14.5,
-                    marginLeft: 10,
-                    marginTop: 'auto',
-                    marginBottom: 'auto',
-                  }}>
-                  Chọn mã giảm giá của bạn
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => {navigation.navigate('ApDungVoucher')}}>
-              <Feather
-                name="chevron-right"
-                size={45}
-                color="black"
-                style={{
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginRight: 40,
-                }}
-              />
-            </TouchableOpacity>
-            </View>
 
           {/* Split Space */}
           <View style={styles.view3}></View>
@@ -249,7 +253,7 @@ const Pay = ({ username, diachi, price1, ship }) => {
                 Thanh toán khi nhận hàng
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {navigation.navigate('PTTT')}}>
+            <TouchableOpacity onPress={() => { navigation.navigate('PTTT') }}>
               <Feather
                 name="chevron-right"
                 size={45}
@@ -263,37 +267,41 @@ const Pay = ({ username, diachi, price1, ship }) => {
             </TouchableOpacity>
           </View>
         </View>
-        
+
         {/* Space Split */}
         <View style={styles.view3}></View>
-        
+
         {/* Total Payment */}
         <View
           style={{
             marginTop: 20,
-            justifyContent: 'center',
-            flexDirection: 'row'
           }}>
-          <View style={tailwind`flex-1`}>
-            <View style={tailwind`ml-6`}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                Thanh toán:
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                }}>
-                {totalResult + totalShipMoney}
-              </Text>
+          <View style={{ marginLeft: 20 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              Chi tiết thanh toán
+            </Text>
+            <View style={{ height: 120, flexDirection: 'row', marginLeft: 10 ,}}>
+              <View>
+                <Text>Tổng tiền hàng:</Text>
+                <Text>Tiền phí vận chuyển:</Text>
+                <Text>Áp dụng mã voucher:</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Tổng thanh toán:</Text>
+              </View>
+              <View style={{ marginLeft: 80 }}>
+                <Text>2.000.000đ</Text>
+                <Text>50.000đ</Text>
+                <Text>200.000đ</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'red' }}>1.850.000đ</Text>
+              </View>
             </View>
           </View>
           <TouchableOpacity style={styles.button2}>
             <Text style={{ fontWeight: 'bold', color: 'white' }}>
-              Thanh toán
+              Đặt hàng
             </Text>
           </TouchableOpacity>
         </View>
