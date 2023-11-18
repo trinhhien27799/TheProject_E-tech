@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE_URL } from "./config";
+import { API_USER_URL } from "./config";
 export const getCart = async () => {
     const token = await AsyncStorage.getItem('token');
     const username = await AsyncStorage.getItem('username');
     try {
         
-        const response = await fetch(`${API_BASE_URL}/api/cart/get-all`, {
+        const response = await fetch(`${API_USER_URL}/api/cart/get-all`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,24 +26,19 @@ export const getCart = async () => {
 }
 
 
-export const addCart = async () => {
+export const addCart = async ({dataCart}) => {
+    const token = await AsyncStorage.getItem('token');
+    const username = await AsyncStorage.getItem('username');
     try {
-        const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
+        const response = await fetch(`${API_USER_URL}/api/cart/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username:username ,token:token,data:data})
+            body: JSON.stringify({username:username ,token:token,"variations_id":dataCart.variations_id,"quantity":dataCart.quantity})
         });
         const data = await response.json();
-        console.log(data);
-        if (data.code == 200) {
-            alert('Thêm vào giỏ hàng thành công')
-        } else
-        alert (data.message);
-        return data;
-
-        
+            alert (data);
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;

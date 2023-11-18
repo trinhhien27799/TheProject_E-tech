@@ -1,34 +1,59 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import { View,StyleSheet,Text, Image, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import FooterProduct from "./footerProduct";
 import BodyProducts from "./bodyProducts";
-import { LinearGradient } from 'expo-linear-gradient';
+import colors from "../../Component/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const DetailPoducts = ({route})=>{
+    const variations = route.params.dataItem.variations;
+    const [image,setImage] = useState(route.params.route.image_preview);
+    const [borderIndex,setBorderIndex] = useState(null);
+    const navigation = useNavigation();
     return(
         <View style={styles.container}>
             <ScrollView style={{flex:1}}>
             <View style={{flex:1}}>
             <View style={styles.viewImage}>
-                <Image style={styles.imagePd} source={{uri:route.params.route.image_preview}}/>
+                <Image style={styles.imagePd} source={{uri:image}}/>
             </View>
+            <ScrollView horizontal>
+                {
+                    variations.map((item, index)=>(
+                        <TouchableOpacity
+                            onPress={()=>{
+                                setImage(item.image)
+                                setBorderIndex(index)
+                            }}
+                        >
+                            <Image 
+                        key={index}
+                        source={{uri:item.image}} 
+                        style={{height:100,width:100,margin:5,borderRadius:15,borderColor:borderIndex==index?colors.blue:null,borderWidth:1}}/>
+                        </TouchableOpacity>
+                    ))
+                }
+            </ScrollView>
            <TouchableOpacity
                 style={styles.viewPrevious}
+                onPress={()=>{
+                    navigation.goBack();
+                }}
             >
                 <Ionicons name="arrow-back" size={20}/>
             </TouchableOpacity>
             </View>
             <BodyProducts route={route.params.dataItem}/>
             </ScrollView>
-            <FooterProduct />
+            <FooterProduct route={route.params} />
         </View>
     );
+    
 }
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        paddingTop:'5%',
         backgroundColor: 'linear-gradient(to bottom, #87CEEB, #FFFFFF)',
     },
     imagePd :{
@@ -38,7 +63,7 @@ const styles = StyleSheet.create({
     viewPrevious:{
         position:'absolute',
         width:40,
-        marginTop:'5%',
+        marginTop:'10%',
         margin:10,
         borderColor:'grey',
         borderWidth:1,

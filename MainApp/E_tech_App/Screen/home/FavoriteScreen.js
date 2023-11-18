@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View,  Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { getLike } from '../../CallApi/productApi';
+import { getItemProduct, getLike } from '../../CallApi/productApi';
 import IteamProduct from '../../Component/itemProducts';
+import { useNavigation } from '@react-navigation/native';
 
 const FavoriteScreen = () => {
   const [favoritesData,setFavoritesData] = useState([])
@@ -11,10 +12,15 @@ const FavoriteScreen = () => {
         setFavoritesData(data);
     };
     fetchData();
-  })
+  },[])
   const handleMore = async()=>{
     
   }
+  const handleItem= async({item}) =>{
+    const dataItem = await getItemProduct({product_id:item._id});
+    navigation.navigate('DetailPoducts',{"route":item,dataItem});
+  }
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -30,7 +36,13 @@ const FavoriteScreen = () => {
         horizontal
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item})=>{   
-          return <IteamProduct key={item._id} route={item}/>
+          return <TouchableOpacity
+          onPress={()=>{
+           handleItem({item:item})
+          }}
+          >
+            <IteamProduct key={item._id} route={item}/>
+          </TouchableOpacity>
       }}
       />
     </View>

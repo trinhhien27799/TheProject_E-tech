@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE_URL } from "./config";
+import { API_USER_URL } from "./config";
 export const getAllVoucher = async () => {
     const username = await AsyncStorage.getItem('username');
     try {
-        const response = await fetch(`${API_BASE_URL}/api/voucher/get-all`, {
+        const response = await fetch(`${API_USER_URL}/api/voucher/get-all`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ export const getAllVoucher = async () => {
 export const addVoucher = async (voucherCode , voucherID) => {
     const username = await AsyncStorage.getItem('username');
     try {
-        const response = await fetch(`${API_BASE_URL}/api/voucher/add`, {
+        const response = await fetch(`${API_USER_URL}/api/voucher/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export const addVoucher = async (voucherCode , voucherID) => {
 export const getMyVoucher = async () => {
     const username = await AsyncStorage.getItem('username');
     try {
-        const response = await fetch(`${API_BASE_URL}/api/voucher/get`, {
+        const response = await fetch(`${API_USER_URL}/api/voucher/get`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

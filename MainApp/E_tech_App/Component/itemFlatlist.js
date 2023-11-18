@@ -14,6 +14,9 @@ const ItemFlatlist = ({ route }) => {
   useEffect(() => {
     const fectData = async () => {
       const resultCheckLike = await toggleLike({ product_id: route._id, action: 'check' });
+      // dataItem.map((item) => {
+      //   console.log(item);
+      // })
       setCheckHeart(resultCheckLike)
     };
     fectData();
@@ -29,7 +32,6 @@ const ItemFlatlist = ({ route }) => {
     }
   }
   const handleItem = async ()=>{
-    // console.log(route._id);
     const dataItem = await getItemProduct({product_id:route._id});
     navigation.navigate('DetailPoducts',{route,dataItem});
   }
@@ -43,9 +45,12 @@ const ItemFlatlist = ({ route }) => {
       <Image style={styles.image} source={{ uri: route.image_preview }} />
       <Text style={styles.productName}>{route.product_name}</Text>
       <Text style={styles.textPrice}>{numberWithCommas(route.min_price)} đ</Text>
+      {
+      route.min_price == route.max_price ? null:
       <Text style={styles.discountedPrice}>{numberWithCommas(route.max_price)} đ</Text>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-        {route.vote === 0 ? null : <StarRating route={route.vote} />}
+      }
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        {route.vote === 0 ? <Text >Chưa có đánh giá</Text> : <StarRating route={route.vote} />}
         <TouchableOpacity
           onPress={handleLike}
         >
@@ -62,10 +67,12 @@ const styles = StyleSheet.create({
   item: {
     margin: 10,
     padding: 10,
-    backgroundColor: '#e0e0e0',
+    // backgroundColor: '#e0e0e0',
+    borderColor:'grey',
+    borderWidth:1,
     borderRadius: 8,
     width: '45%',
-    height: 250
+    height: 300,
   },
   image: {
     width: '100%',
@@ -79,8 +86,8 @@ const styles = StyleSheet.create({
   },
   textPrice: {
     fontWeight: 'bold',
-    marginTop: '2%',
-    color: 'red',
+    marginTop: '5%',
+    color: 'red', 
   },
   discountedPrice: {
     fontSize: 12,

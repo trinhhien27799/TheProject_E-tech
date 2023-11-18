@@ -10,6 +10,8 @@ import SignUp from './Screen/authentication/SignUp';
 import editProfile from './Screen/profile/editProfile';
 
 import SearchScreen from './Screen/search/searchScreen';
+import store from './Component/redux/store';
+import { Provider } from 'react-redux';
 
 import Quenmk1 from './Screen/authentication/forgotEmail'
 import Quenmk2 from './Screen/authentication/confirmOTP'
@@ -44,7 +46,8 @@ const Tabs = AnimatedTabBarNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+<NavigationContainer>
       <Stack.Navigator
         initialRouteName='Login'
       >
@@ -98,6 +101,7 @@ const App = () => {
         headerStyle: { backgroundColor: '#3366ff' }}} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
