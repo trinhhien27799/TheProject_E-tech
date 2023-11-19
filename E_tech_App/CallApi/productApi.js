@@ -14,6 +14,18 @@ const getAllProduct = async () => {
 
 export { getAllProduct }
 
+const getAllProductByFilter = async ( data) => {
+  try {
+    const rs = await api.get(`/${data.route}/get/${data.id}`)
+    return rs.data
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export { getAllProduct, getAllProductByFilter }
+
 export const getLike = async () => {
   try {
     const token = await AsyncStorage.getItem('token')

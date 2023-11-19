@@ -29,7 +29,7 @@ const ListProduct = (props) => {
         return (
 
             <TouchableOpacity onPress={() => navigation.navigate('ListPhoneByCate', {
-                data: item.name
+                data: { id: item._id, route: "type-product" }
             })}>
                 <View style={styles.viewItem}>
                     <Image style={styles.image} source={{ uri: item.image }} />

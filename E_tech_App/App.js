@@ -52,7 +52,7 @@ const App = () => {
       <Stack.Navigator
         initialRouteName='Splash'
       >
-       <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
@@ -70,7 +70,7 @@ const App = () => {
         <Stack.Screen name='DetailPoducts' component={DetailProducts} options={{ headerShown: false }} />
 
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
-        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true}} />
+        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
         <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
         <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
         <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
@@ -85,24 +85,23 @@ const App = () => {
         headerTitle:'Chi tiết đơn hàng',
         headerStyle: { backgroundColor: '#3366ff' }}} />
 
-        <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false}} />
-        <Stack.Screen name='OrderScreen' component={OrderScene} options={{ headerShown: true, headerLeft: () => (
+        <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
+        <Stack.Screen name='OrderScreen' component={OrderScene} options={{
+          headerShown: true, headerLeft: () => (
             <Button
               onPress={() => alert('This is a button!')}
               title="Exit"
               color="blue"
             />
-          )}} />
+          )
+        }} />
 
-        <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: false }} />
-        <Stack.Screen name='MapScreen' component={MapViewScreen} options={{headerShown: false}} />
-        <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen}/>
-        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} ooptions={{ headerShown: true, 
-        headerTintColor: 'white',  
-        headerTitle:'Danh sách sản phẩm',
-        headerStyle: { backgroundColor: '#3366ff' }}} />
+        <Stack.Screen name='PayScreen' component={Pay} options={{ headerShown: false }} />
+        <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
+        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>
 
-        <Stack.Screen name='Comment' component={ProductComment} options={{headerShown: false}} />
+        <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

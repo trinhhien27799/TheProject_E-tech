@@ -39,11 +39,19 @@ const MainHeader = ({ navigation, route }) => {
             console.log(e);
         }
     }, [currentPage]);
+    const LimitedText = ({ text, limit }) => {
+        if (text.length <= limit) {
+            return <Text style={{ color: 'red' }}>{text}</Text>;
+        } else {
+            const truncatedText = `${text.slice(0, limit)}...`;
+            return <Text style={{ color: 'red' }}>{truncatedText}</Text>;
+        }
+    };
     return (
         <View style={styles.container}>
 
             <View style={styles.headerContainer}>
-                <View style={{ paddingLeft: 16, paddingTop: 40, flexDirection: 'row', justifyContent: 'space-between',marginTop:5 }}>
+                <View style={{ paddingLeft: 16, paddingTop: 40, flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
                     <TouchableOpacity
                         style={styles.viewSearch}
                     >
@@ -54,7 +62,7 @@ const MainHeader = ({ navigation, route }) => {
                                     ref={scrollView}
                                     data={dataProduct}
                                     horizontal={false}
-                                    showsHorizontalScrollIndicator={false}
+                                    showsVerticalScrollIndicator={false}
                                     keyExtractor={(item, index) => index.toString()}
                                     renderItem={({ item }) => (
                                         <TouchableOpacity
@@ -65,7 +73,7 @@ const MainHeader = ({ navigation, route }) => {
                                             }}
                                         >
                                             <View style={styles.viewIndex}>
-                                                <Text style={{ color: 'red' }}>{item.product_name}</Text>
+                                                <LimitedText text={item.product_name} limit={34} />
                                             </View>
                                         </TouchableOpacity>
                                     )}
