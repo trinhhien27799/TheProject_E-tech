@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { autoLogin } from '../../CallApi/authenApi'
 import { getUser, setUser } from '../../session'
 import { useNavigation } from '@react-navigation/native';
 
+
 const SplashScreen = () => {
-    const animation = useRef(null)
     const navigation = useNavigation()
     const login = async () => {
         try {
@@ -21,18 +21,17 @@ const SplashScreen = () => {
             const user = getUser();
             console.log(user);
             navigation.navigate('ButtonNavigation',{registrationData:user})
+
         }
     }
     useEffect(() => {
-        animation.current?.play()
         login()
-    }, []);
+    }, [])
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="white" />
             <LottieView
                 autoPlay
-                ref={animation}
                 style={{
                     width: 200,
                     height: 200,
