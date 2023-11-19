@@ -1,32 +1,71 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Dimensions, FlatList } from "react-native";
-import colors from "../../Component/colors";
+import { StyleSheet, View, Text, Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { getBrandName } from "../../CallApi/productApi";
 import IteamBrand from "../../Component/itemBrand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { formatPrice } from "../../utils/format";
 export default VariationsProducts = ({ route }) => {
-    const [branData,setBrandData] = useState([]);
-    useEffect(()=>{
-        const fetchData =async()=>{
-            const data = await getBrandName({brand_name:route.brand_name})
+    const routes = route.dataItem;
+    const [branData, setBrandData] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getBrandName({ brand_name: route.route.brand_name });
+            console.log(data);
             setBrandData(data);
         }
         fetchData();
-    },[]);
+    }, []);
+    const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+    const [selectVersionIndex, setSelectVersionIndex] = useState(0);
+    const [selectedRAMROM, setSelectedRAMROM] = useState("");
+    useEffect(() => {
+        if (routes.variations && routes.variations.length > 0) {
+          const selectedVersion = routes.variations[selectVersionIndex];
+          const dataIndex = routes.variations[selectedColorIndex];
+          AsyncStorage.setItem('dataSelect',JSON.stringify(dataIndex));
+          setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
+        }
+      }, [selectVersionIndex,selectedColorIndex]);
+      const checkRam = routes.variations.filter(variation => variation.ram);
     return (
         <View >
-            <TextView title={'Lựa chọn phiên bản'} />
+            {
+                checkRam.length > 0 ?
+                <>
+                <TextView title={'Lựa chọn phiên bản'} />
             <FlatList
-                data={route.variations}
+                data={routes.variations}
                 keyExtractor={item => item._id}
-                renderItem={ItemViewVersion}
-                style={styles.container}
+                renderItem={({ item, index }) => {
+                    return <ItemViewVersion
+                        routes={item}
+                        isSelected={selectVersionIndex == index}
+                        onPress={() => {
+                            setSelectVersionIndex(index);  
+                        }}
+                    />
+                }}
+                numColumns={3}
+
             />
+                </>:null
+            }
             <TextView title={'Lựa chọn màu sắc'} />
             <FlatList
-                data={route.variations}
+                data={routes.variations}
                 keyExtractor={item => item._id}
-                renderItem={ItemView}
-                style={styles.container}
+                renderItem={({ item, index }) => {
+                    return <ItemView
+                        routes={item}
+                        isSelected={selectedColorIndex == index}
+                        onPress={() => {
+                            setSelectedColorIndex(index);
+                        }}
+                        selectedRAMROM={selectedRAMROM}
+                    />
+                }}
+                numColumns={3}
+
             />
             <TextView title={'Chi tiết sản phẩm'} />
             <TextView title={'Sản phẩm tương tự'} />
@@ -34,22 +73,30 @@ export default VariationsProducts = ({ route }) => {
                 data={branData}
                 keyExtractor={item => item._id}
                 horizontal
-                renderItem={({item})=>{  
-                    return <IteamBrand route={item}/>
+                renderItem={({ item }) => {
+                    return <IteamBrand routes={item} />
                 }}
                 style={styles.container}
             />
         </View>
     );
+    
 }
-const ItemView = (route) => {
-    const numberWithCommas = (number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    };
+const ItemView = ({ routes, isSelected, onPress,selectedRAMROM }) => {
+    const select = selectedRAMROM == routes.ram+'/'+routes.rom; 
+
+    
     return (
-        <View style={[{}, styles.viewItem]}>
-            <Text>{route.item.color}</Text>
-            <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>{numberWithCommas(route.item.price)}</Text>
+        <View>
+            <TouchableOpacity
+                disabled={!select}
+                onPress={onPress}
+            >
+                <View style={[{ borderColor: select?isSelected ? '#1E90FF' : 'grey':'grey' ,backgroundColor:select?null:'#E3E6E7'}, styles.viewItem]}>
+                    <Text>{routes.color}</Text>
+                    <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(routes.price)}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -59,15 +106,18 @@ const TextView = ({ title }) => (
 
     </View>
 );
-const ItemViewVersion = (route) => {
-    const numberWithCommas = (number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    };
+const ItemViewVersion = ({ routes, isSelected, onPress }) => {
+   
     return (
-        <View style={[{}, styles.viewItem]}>
-            <Text>{route.item.ram}/{route.item.rom}</Text>
-            <Text style={{ fontSize: 15, color: 'red', fontWeight: 'bold' }}>{numberWithCommas(route.item.price)}</Text>
-        </View>
+        <TouchableOpacity
+            onPress={onPress}
+        >
+            <View style={[{ borderColor: isSelected ? '#1E90FF' : 'grey' }, styles.viewItem]}>
+                <Text>{routes.ram}/{routes.rom}</Text>
+                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(routes.price)}</Text>
+            </View>
+        </TouchableOpacity>
+
     );
 }
 const styles = StyleSheet.create({
@@ -77,13 +127,14 @@ const styles = StyleSheet.create({
     },
     viewItem: {
         height: 70,
-        width: Dimensions.get("window").width * 0.3,
-        borderColor: colors.grey,
+        width: Dimensions.get("window").width * 0.25,
         borderWidth: 2,
         justifyContent: 'center',
         borderRadius: 10,
         paddingLeft: 10,
         paddingTop: 20,
-        paddingBottom: 20
+        paddingBottom: 20,
+        marginLeft: 10,
+        marginBottom: 10,
     }
 });

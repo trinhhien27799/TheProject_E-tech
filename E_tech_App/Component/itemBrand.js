@@ -3,11 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import StarRating from "./startRating"; // Assuming it's a correct component name
 import { Ionicons } from "@expo/vector-icons";
 import { toggleLike } from "../CallApi/productApi";
-
-const numberWithCommas = (number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
+import { formatPrice } from "../utils/format";
 
 const IteamBrand = ({ route }) => {
     const [checkHeart, setCheckHeart] = useState(false);
@@ -32,8 +28,8 @@ const IteamBrand = ({ route }) => {
         <View style={styles.item} >
             <Image style={styles.image} source={{ uri: route.image_preview }} />
             <Text style={styles.productName}>{route.product_name}</Text>
-            <Text style={styles.textPrice}>{numberWithCommas(route.min_price)} đ</Text>
-            <Text style={styles.discountedPrice}>{numberWithCommas(route.max_price)} đ</Text>
+            <Text style={styles.textPrice}>{formatPrice(route.min_price)}</Text>
+            <Text style={styles.discountedPrice}>{formatPrice(route.max_price)}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                 {route.vote === 0 ? null : <StarRating route={route.vote} />}
                 <TouchableOpacity

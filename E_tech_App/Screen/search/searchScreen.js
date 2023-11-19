@@ -9,7 +9,6 @@ const SearchScreen = ({ route }) => {
     const product_name = route.params.product_name;
     const textInputRef = useRef(null);
     const [history, setHistory] = useState([]);
-    const [search, setSearch] = useState('');
     const [isShowMore, setIsShowMore] = useState(false);
     const [dataProduct, setDataProduct] = useState([]);
     const [textSearch, setTextSearch] = useState('');

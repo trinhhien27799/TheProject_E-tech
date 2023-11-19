@@ -44,7 +44,7 @@ const Banner = () => {
                 data={dataBanner}
                 ref={scrollViewRef}
                 horizontal
-                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}

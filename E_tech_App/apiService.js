@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_BASE_URL } from './CallApi/config';
 
 const instance = axios.create({
-    baseURL: 'http://192.168.1.140:3000/api',
+    baseURL: `${API_BASE_URL}/api`,
     timeout: 5000, 
 });
 
