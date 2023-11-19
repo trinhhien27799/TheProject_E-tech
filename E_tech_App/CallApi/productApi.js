@@ -12,8 +12,6 @@ const getAllProduct = async () => {
   }
 }
 
-export { getAllProduct }
-
 const getAllProductByFilter = async ( data) => {
   try {
     const rs = await api.get(`/${data.route}/get/${data.id}`)
