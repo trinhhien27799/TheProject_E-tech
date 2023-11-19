@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View,StyleSheet, TouchableOpacity, ScrollView, FlatList } from "react-native";
 import colors from "../colors";
 import ListItem from "../ListItem";
@@ -7,9 +7,25 @@ import { getAllProduct } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
 
 const ListPhone = () => {
-    const productList = getAllProduct();
-    console.log(productList);
+    const [product, setProduct] = useState(null);
     const navigation = useNavigation();
+
+    const getData = async () => {
+        try {
+          const rs = await getAllProduct()
+          if (rs != null && rs.length > 0) {
+            setProduct(rs)
+            setTitle("Danh sách sản phẩm")
+            setMore("Xem thêm")
+          }
+    
+        } catch (error) {
+          console.log(`bestSeller: ${error}`)
+        }
+      }
+      useEffect(() => {
+        getData()
+      }, [])
 
     const ListItem = ({item}) => {
         return (
@@ -71,7 +87,7 @@ const ListPhone = () => {
 
     return (
         <FlatList
-            data={productList}
+            data={product}
             renderItem={ListItem}
         />
     );
