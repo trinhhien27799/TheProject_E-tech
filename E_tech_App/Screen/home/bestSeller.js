@@ -32,9 +32,8 @@ const BestSeller = () => {
 
 
   const renderItem = ({ item, index }) => {
-    const handleItem = async ()=>{
-      const dataItem = await getItemProduct({productId:item._id});
-      navigation.navigate('DetailPoducts',{route:item,dataItem});
+    const handleItem = async () => {
+      navigation.navigate('ProductDetail', { productId: item._id });
     }
     return (
       <View style={styles.body}>
@@ -48,14 +47,14 @@ const BestSeller = () => {
           ) :
           null
         }
-  
-  
+
+
         <TouchableOpacity onPress={handleItem}>
           <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
           <View style={{ flexDirection: 'row' }}>
             <View style={tailwind`mt-4 w-37`}>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-              <Text style={{ marginTop: 5,marginBottom:5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
+              <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
               {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} />}
             </View>
 
