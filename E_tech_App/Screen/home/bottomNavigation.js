@@ -8,12 +8,14 @@ import AccountScreen from '../AccountScreen';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import Icon from 'react-native-vector-icons/Feather';
 import Makhuyenmai from '../Makhuyenmai';
+import Profile from '../profile/profileScreen';
 
 const Tabs = AnimatedTabBarNavigator();
 
 
 const BottomNavigation = ({navigation,route}) => {
-  const userData = route.params.registrationData.user
+  const userData = route.params.registrationData
+  console.log(route.params.registrationData);
   return (
       <Tabs.Navigator
         // default configuration from React Navigation
@@ -75,7 +77,8 @@ const BottomNavigation = ({navigation,route}) => {
 
         <Tabs.Screen
           name="Account"
-          component={Makhuyenmai}
+          component={Profile}
+          initialParams={userData}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
               <Icon
