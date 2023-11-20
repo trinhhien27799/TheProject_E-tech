@@ -6,8 +6,7 @@ export const getCart = async () => {
     try {
         const token = await AsyncStorage.getItem('token');
         const username = await AsyncStorage.getItem('username');
-
-        console.log(token + ' ' + username);
+        
         const response = await fetch(`${API_BASE_URL}/api/cart/get-all`, {
             method: 'POST',
             headers: {
@@ -16,7 +15,6 @@ export const getCart = async () => {
             body: JSON.stringify({username:username ,token:token})
         });
         const data = await response.json();
-        console.log(data);
         if (data.code == 200) {
             alert('Lấy giỏ hàng thành công')
         } 

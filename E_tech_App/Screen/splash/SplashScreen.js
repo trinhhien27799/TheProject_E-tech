@@ -10,18 +10,18 @@ const SplashScreen = () => {
     const navigation = useNavigation()
     const login = async () => {
         try {
-            const response = await autoLogin()
+            const response = await autoLogin();
+            console.log(response);
             if (response.code == 200) {
                 setUser(response.user)
-                // console.log("Đăng nhập thành công")
+                console.log("Đăng nhập thành công")
             }
         } catch (error) {
             console.log(`splash :${error}`)
         } finally {
             const user = getUser();
-            console.log(user);
+            user == null?navigation.navigate("Login"):
             navigation.navigate('ButtonNavigation',{registrationData:user})
-
         }
     }
     useEffect(() => {

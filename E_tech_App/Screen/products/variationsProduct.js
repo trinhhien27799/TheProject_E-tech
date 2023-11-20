@@ -10,7 +10,6 @@ export default VariationsProducts = ({ route }) => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getBrandName({ brand_name: route.route.brand_name });
-            console.log(data);
             setBrandData(data);
         }
         fetchData();
