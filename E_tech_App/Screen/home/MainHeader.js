@@ -42,7 +42,9 @@ const MainHeader = ({ navigation, route }) => {
             clearInterval(scrollInterval)
         }
 
+
     }, [currentPage])
+
 
 
     return (
@@ -50,6 +52,7 @@ const MainHeader = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles.viewSearch}
             >
+
 
                 <Ionicons style={{ lineHeight: 27 }} name="ios-search-outline" size={20} color="red" />
 

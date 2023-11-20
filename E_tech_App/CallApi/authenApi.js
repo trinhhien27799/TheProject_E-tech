@@ -1,6 +1,7 @@
 import api, { setAuthToken } from '../apiService'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { setToken } from '../session'
+import { API_USER_URL } from './config'
 
 export const registerUser = async (username, email, password, navigation) => {
     try {
@@ -64,6 +65,7 @@ export const loginUser = async (username, password, navigation) => {
 export const autoLogin = async () => {
     try {
         const token = await AsyncStorage.getItem("token")
+        console.log(token);
         if (!token)
             throw "can not get token"
         setToken(token)

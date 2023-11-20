@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { getAllProduct } from "../../CallApi/productApi"
+import { getAllProduct, getItemProduct } from "../../CallApi/productApi"
 import tailwind from 'twrnc'
 import { formatPrice } from '../../utils/format'
+import StartRating from '../../Component/startRating'
 
 const BestSeller = () => {
   const navigation = useNavigation()
@@ -30,32 +31,39 @@ const BestSeller = () => {
   }, [])
 
 
-  const renderItem = ({ item, index }) => (
-    <View style={styles.body}>
-      {item.percent_discount > 0
-        ? (
-          <View style={styles.saler}>
-            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
-              Giảm {item.percent_discount}%
-            </Text>
-          </View>
-        ) :
-        null
-      }
+  const renderItem = ({ item, index }) => {
+    const handleItem = async ()=>{
+      const dataItem = await getItemProduct({productId:item._id});
+      navigation.navigate('DetailPoducts',{route:item,dataItem});
+    }
+    return (
+      <View style={styles.body}>
+        {item.percent_discount > 0
+          ? (
+            <View style={styles.saler}>
+              <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+                Giảm {item.percent_discount}%
+              </Text>
+            </View>
+          ) :
+          null
+        }
+  
+  
+        <TouchableOpacity onPress={handleItem}>
+          <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={tailwind`mt-4 w-37`}>
+              <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
+              <Text style={{ marginTop: 5,marginBottom:5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
+              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} />}
+            </View>
 
-
-      <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { productId: item._id }) }}>
-        <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
-        <View style={{ flexDirection: 'row' }}>
-          <View style={tailwind`mt-4 w-37`}>
-            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-            <Text style={{ marginTop: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
-            <Text style={{ marginTop: 5 }}>Hãng: {item.brand_name}</Text>
           </View>
-        </View>
-      </TouchableOpacity>
-    </View>
-  )
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>

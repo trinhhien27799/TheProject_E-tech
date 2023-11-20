@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api, { setAuthToken } from '../apiService'
 import { getUser } from '../session.js'
 
-
 const getAllProduct = async () => {
   try {
     const rs = await api.get('/product/get-all')
@@ -36,7 +35,6 @@ const getItemProduct = async (productId) => {
 
 
 export { getAllProduct, getAllProductByFilter, getItemProduct }
-
 
 export const getLike = async () => {
   try {
@@ -117,6 +115,7 @@ export const getNotifi = async ({ action }) => {
     console.log(error);
   }
 }
+
 
 export const getBrandName = async ({ brand_name }) => {
   try {
