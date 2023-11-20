@@ -35,7 +35,6 @@ const EditProfile = ({ navigation, route }) => {
             quality: 1,
           });
       
-          console.log(image);
           if (!result.canceled) {
             setImage(result.assets[0].uri);
           }
