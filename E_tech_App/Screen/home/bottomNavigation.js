@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import React from 'react';
 import Home from './Home';
-import CartScreen from '../CartScreen';
+import CartScreen from '../YourCart/CartScreen';
 import NotificationScreen from '../NotificationScreen';
 import AccountScreen from '../AccountScreen';
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
