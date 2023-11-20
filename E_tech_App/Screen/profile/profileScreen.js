@@ -1,11 +1,13 @@
 import React from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import tailwind from "twrnc";
+import color from "../../colors";
 
 const Profile = ({ route }) => {
     console.log(route);
-    const {username,avatar,fullname} = route.params.route;
+
+    const {username,avatar,fullname} = route.params;
     const params = route.params.route;
     const navigation = useNavigation();
     return (
@@ -41,7 +43,7 @@ const Profile = ({ route }) => {
 const HeaderProfile = ({ username, urlImage, email,navigation }) => {
     return (
         <View style={styles.headerContainer}>
-            <View style={tailwind `flex-row w-90 self-center`}>
+            {/* <View style={tailwind `flex-row w-90 self-center`}>
                 <Image style={styles.imageHeader} source={{uri:urlImage}} />
                 <View style={{ flexDirection: 'column' }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>{username}</Text>
@@ -55,6 +57,17 @@ const HeaderProfile = ({ username, urlImage, email,navigation }) => {
                 >
                     <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/previous.png')} />
                 </TouchableOpacity>
+            </View> */}
+            <TouchableOpacity
+                    onPress={()=>{
+                        navigation.goBack();
+                    }}
+                    style={styles.viewIcon}
+                >
+                    <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/previous.png')} />
+                </TouchableOpacity>
+            <View style={styles.viewAvatar}>
+                <Image style={styles.imageHeader} source={{uri:urlImage}} />
             </View>
         </View>
     );
@@ -74,30 +87,29 @@ const ButtonBody = ({ icon, label,onPress }) => {
 export default Profile;
 const styles = StyleSheet.create({
     headerContainer: {
-        height: 150,
+        height: Dimensions.get("window").height*0.2,
         backgroundColor: '#5182CC',
-        borderBottomRightRadius: 30,
-        borderBottomLeftRadius: 30,
         shadowColor: 'grey',
         shadowRadius: 20,
         justifyContent: 'center',
+        marginBottom:50,
     },
     imageHeader: {
-        width: 70,
-        height: 70,
-        borderRadius: 10,
-        marginRight: 20
+        // width: 70,
+        // height: 70,
+        flex:1,
+        // borderRadius: 10,
+        // marginRight: 20
+        resizeMode:'cover'
     },
     viewIcon: {
-        height: 35,
-        width: 35,
-        borderRadius: 20,
-        borderColor: 'white',
-        borderWidth: 2,
+        height: 50,
+        width: 50,
+        borderRadius: 50,
+        backgroundColor: '#D0D3D4',
         justifyContent: 'center',
-        alignSelf: 'center',
-        marginLeft: 45
-        
+        marginLeft: 10,
+        position:'relative',
     },
     viewButton: {
         backgroundColor: 'white',
@@ -112,6 +124,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
 
+    },
+    viewAvatar:{
+        height:125,
+        width:125,
+        borderRadius:100,
+        backgroundColor:color.conHang,
+        position:'absolute',
+        flex:1,
+        top:'60%',
+        alignSelf:'center'
     }
-
 });
