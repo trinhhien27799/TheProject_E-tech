@@ -41,6 +41,7 @@ import ListPhoneByCate from './Screen/ListPhoneByCate';
 import DetailProducts from './Screen/products/detailProducts';
 import ProductComment from './Component/ProductComment';
 import SplashScreen from './Screen/splash/SplashScreen';
+import DetailCommentScreen from './Screen/DetailCommentScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -102,6 +103,7 @@ const App = () => {
         <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>
 
         <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
+        <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
