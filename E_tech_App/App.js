@@ -3,7 +3,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screen/home/Home';
 import Profile from './Screen/profile/profileScreen';
-import ChiTietSP from './Screen/ChiTietSP';
+import ProductDetail from './Screen/ProductDetail';
 import ListPhone from './Screen/ListPhone';
 import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
@@ -56,7 +56,7 @@ const App = () => {
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
+        <Stack.Screen name='ProductDetail' component={ProductDetail} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { API_USER_URL } from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api, { setAuthToken } from '../apiService'
+import { getUser } from '../session.js'
 
 
 const getAllProduct = async () => {
@@ -13,7 +14,7 @@ const getAllProduct = async () => {
   }
 }
 
-const getAllProductByFilter = async ( data) => {
+const getAllProductByFilter = async (data) => {
   try {
     const rs = await api.get(`/${data.route}/get/${data.id}`)
     return rs.data
@@ -22,8 +23,19 @@ const getAllProductByFilter = async ( data) => {
   }
 }
 
+const getItemProduct = async (productId) => {
+  try {
+    const response = await api.post(`/product/${productId}`, {
+      username: getUser() ? getUser().username : null
+    })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
 
-export { getAllProduct, getAllProductByFilter }
+
+export { getAllProduct, getAllProductByFilter, getItemProduct }
 
 
 export const getLike = async () => {
@@ -105,14 +117,7 @@ export const getNotifi = async ({ action }) => {
     console.log(error);
   }
 }
-export const getItemProduct = async ({ product_id }) => {
-  try {
-    const response = await axios.get(`${API_USER_URL}/api/product/${product_id}`);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 export const getBrandName = async ({ brand_name }) => {
   try {
     const response = await axios.get(`${API_USER_URL}/api/product/get/brand/${brand_name}`);
