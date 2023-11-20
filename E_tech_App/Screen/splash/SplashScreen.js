@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { autoLogin } from '../../CallApi/authenApi'
-import { getUser, setUser } from '../../session'
-import { useNavigation } from '@react-navigation/native';
+
+import { setToken, setUser } from '../../session'
+import { useNavigation } from '@react-navigation/native'
 
 
 const SplashScreen = () => {
@@ -15,6 +16,8 @@ const SplashScreen = () => {
             if (response.code == 200) {
                 setUser(response.user)
                 console.log("Đăng nhập thành công")
+            } else {
+                setToken(null)
             }
         } catch (error) {
             console.log(`splash :${error}`)

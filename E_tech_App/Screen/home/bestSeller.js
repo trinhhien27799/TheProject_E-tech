@@ -33,7 +33,7 @@ const BestSeller = () => {
 
   const renderItem = ({ item, index }) => {
     const handleItem = async ()=>{
-      const dataItem = await getItemProduct({product_id:item._id});
+      const dataItem = await getItemProduct({productId:item._id});
       navigation.navigate('DetailPoducts',{route:item,dataItem});
     }
     return (
@@ -58,6 +58,7 @@ const BestSeller = () => {
               <Text style={{ marginTop: 5,marginBottom:5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
               {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} />}
             </View>
+
           </View>
         </TouchableOpacity>
       </View>
