@@ -15,44 +15,36 @@ import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
+import { getCart } from '../../CallApi/cartApi';
+import { createBill } from '../CallApi/billApi2';
+
 
 const Pay = () => {
   const navigation = useNavigation();
-  const data = [
-    {
-      id: 1,
-      name: 'IPhone 15 Pro Max',
-      price: 20000000,
-      hang: 'Apple',
-      quantity: 1,
-      weight: 0.758
-    },
-    {
-      id: 2,
-      name: 'IPhone 15 Pro Max',
-      price: 20000000,
-      hang: 'Apple',
-      quantity: 1,
-      weight: 0.758
-    },
-    {
-      id: 3,
-      name: 'IPhone 15 Pro Max',
-      price: 20000000,
-      hang: 'Apple',
-      quantity: 1,
-      weight: 0.758
-    },
-    {
-      id: 4,
-      name: 'IPhone 15 Pro Max',
-      price: 20000000,
-      hang: 'Apple',
-      quantity: 1,
-      weight: 0.758
-    },
-  ];
+  const [cart, setCart] = useState([]);
 
+  const [listIDcart, setListIDcart] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [transport_fee, setTransport_fee] = useState([]);
+  const [shipping_id, setShipping_id] = useState([]);
+  const [voucher_id, setVoucher_id] = useState([]);
+  const [note, setNote] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getCart();
+      setCart(data);
+    }
+    fetchData();
+  }, []);
+
+  const handlePay = async () => {
+    try {
+      createBill(address, listIDcart, transport_fee, shipping_id, voucher_id, note);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   var totalResult = TotalProductBill(data);
   var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
 
@@ -136,26 +128,31 @@ const Pay = () => {
           <View style={{ marginTop: 10 }}>
             <FlatList
               data={data}
+
               renderItem={({ item }) => (
                 <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black`}>
-                  <View style={styles.view2}>
-                    <View style={{ width: '28%', paddingTop: 10 }}>
-                      <Image
-                        source={require('../img/store.png')}
-                        style={styles.img}
-                      />
+                  <View style={styles.cartItem}>
+                    <View style={styles.imgItemView}>
+                      <Image style={styles.imgItem} source={{ uri: item.image }} />
                     </View>
-                    <View
-                      style={{ paddingTop: 10, width: '60%', marginLeft: 10 }}>
-                      <Text style={styles.title}>{item.name}</Text>
-                      <Text style={styles.title2}>{item.price}</Text>
-                      <Text style={styles.title2}>{item.hang}</Text>
-                    </View>
-                  </View>
 
-                  <View style={tailwind`flex-row m-3 self-end`}>
-                    <Text>Số lượng: </Text>
-                    <Text>{item.quantity}</Text>
+                    <View style={styles.nameItemView}>
+                      <View >
+                        <Text style={styles.nameItem}>{item.product_name}</Text>
+                        {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
+                      </View>
+                      {/* <View>
+                    <Text style={styles.statusItem}>{item.status}</Text>
+                  </View> */}
+                    </View>
+
+                    <View style={styles.priceItemView}>
+                      <View>
+                        <Text style={styles.textPrice}>{item.price}</Text>
+
+                        <Text style={styles.textQuantity}>{item.quantity}</Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
               )}
@@ -167,6 +164,9 @@ const Pay = () => {
           <View style={{ marginTop: 10 }}>
             <TextInput
               placeholder="Ghi chú cho cửa hàng"
+              onChangeText={(text) => {
+                setNote(text);
+              }}
               placeholderTextColor={'black'}
               style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
             />
@@ -284,7 +284,7 @@ const Pay = () => {
               }}>
               Chi tiết thanh toán
             </Text>
-            <View style={{ height: 120, flexDirection: 'row', marginLeft: 10 ,}}>
+            <View style={{ height: 120, flexDirection: 'row', marginLeft: 10, }}>
               <View>
                 <Text>Tổng tiền hàng:</Text>
                 <Text>Tiền phí vận chuyển:</Text>
@@ -299,7 +299,7 @@ const Pay = () => {
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.button2}>
+          <TouchableOpacity style={styles.button2} onPress={handlePay}>
             <Text style={{ fontWeight: 'bold', color: 'white' }}>
               Đặt hàng
             </Text>
@@ -376,5 +376,55 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 'auto',
     marginBottom: 20
+  },
+  imgItem: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#D5D5D5',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  cartItem: {
+    width: '100%',
+    height: 120,
+    borderBottomWidth: 1.1,
+    borderBottomColor: '#D5D5D5',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+  priceItemView: {
+    width: '20%',
+    marginLeft: 10,
+    justifyContent: 'space-between',
+  },
+  statusItem: {
+    color: '#767676',
+    fontSize: 13
+  },
+  categoryItem: {
+    color: '#767676',
+    fontSize: 13,
+    marginTop: 5
+  },
+  nameItem: {
+    fontSize: 17,
+    fontWeight: 'bold',
+
+  },
+  nameItemView: {
+    width: '45%',
+    marginLeft: 10,
+    justifyContent: 'space-between',
+  },
+  textPrice: {
+    fontWeight: 'bold',
+    textAlign: 'right'
+  },
+  textQuantity: {
+    textAlign: 'right',
+    marginTop: 15,
+    fontWeight: 'bold',
   },
 });

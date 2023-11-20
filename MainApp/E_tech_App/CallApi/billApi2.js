@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_BASE_URL } from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const createBill = async (address , listIDcart,transport_fee,shipping_id,voucher_id, note) => {
+export const createBill = async (address , listIDcart,transport_fee,shipping_id,voucher_id, note , navigation) => {
     const token = await AsyncStorage.getItem('token');
     const username = await AsyncStorage.getItem('username');
     try {
@@ -15,13 +15,13 @@ export const createBill = async (address , listIDcart,transport_fee,shipping_id,
         });
         const data = await response.json();
         console.log(data);
-        if (data.code == 200) {
-            alert('Tạo Bill thành công')
-        } else
-        alert (data.message);
+        if (data.code === 200) {
+            navigation.navigate('OrderScreen',{ registrationData: data });
+            alert('Đặt hàng thành công')
+        } else {
+            alert(data.message)
+        }
         return data;
-
-        
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);
         throw error;
