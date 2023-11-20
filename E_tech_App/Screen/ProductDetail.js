@@ -42,6 +42,7 @@ const ProductDetail = () => {
   const getData = async (productId) => {
     try {
       const response = await getItemProduct(productId)
+      console.log(response)
       setProduct(response)
       setColor(response.variations[0].color)
       const arr1 = []
