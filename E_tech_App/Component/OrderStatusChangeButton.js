@@ -3,7 +3,7 @@ import React from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import tailwind from 'twrnc'
 
-const OrderStatusChangeButton = ({ statusNum }) => {
+const OrderStatusChangeButton = ({ statusNum, item }) => {
     const navigation = useNavigation();
 
     if (statusNum == 3) {
@@ -15,7 +15,7 @@ const OrderStatusChangeButton = ({ statusNum }) => {
                     </TouchableOpacity>
                     <TouchableOpacity 
                         style={tailwind`self-end p-3 bg-blue-500 rounded-md`}
-                        onPress={() => navigation.navigate('PayScreen')}
+                        onPress={() => navigation.navigate('CartScreen')}
                     >
                         <Text style={tailwind`text-white font-bold`}>Mua Lại</Text>
                     </TouchableOpacity>

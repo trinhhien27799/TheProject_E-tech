@@ -63,14 +63,7 @@ const CartScreen = () => {
             )
           }}
         />
-        {/* Voucher Container */}
 
-        <View style={styles.voucherContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textVoucher}>Áp dụng mã giảm giá</Text>
-            <Text style={styles.textVoucher}>➜ </Text>
-          </View>
-        </View>
         {/* Payment Container */}
         <View style={styles.paymentContainer}>
           <View style={styles.paymentBox}>

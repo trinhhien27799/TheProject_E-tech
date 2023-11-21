@@ -10,7 +10,7 @@ import OrderStatusChangeButton from '../../Component/OrderStatusChangeButton'
 import { useNavigation } from '@react-navigation/native'
 import { getBill } from '../../Model/BillModel'
 
-const CheckPayScreen = ({ statusNumCheck }) => {
+const CheckPayScreenFix = ({ orderList }) => {
     const navigation = useNavigation();
 
     const ProductCard = ({ item }) => {
@@ -68,15 +68,13 @@ const CheckPayScreen = ({ statusNumCheck }) => {
     // else {
     //     newData = ListOrder;
     // }
-    const orderData = getBill(statusNumCheck);
-    console.log(orderData);
 
     return (
         <FlatList
-            data={orderData}
+            data={orderList}
             renderItem={ProductCard}
         />
     )
 }
 
-export default CheckPayScreen
+export default CheckPayScreenFix

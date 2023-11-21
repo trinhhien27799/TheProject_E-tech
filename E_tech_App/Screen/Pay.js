@@ -17,6 +17,7 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
+import { useEffect, useState } from 'react';
 
 const Pay = () => {
   const navigation = useNavigation();
