@@ -5,6 +5,10 @@ import { TextInput } from 'react-native-web';
 import axios from 'axios';
 import { getCart } from '../../CallApi/cartApi';
 import { useNavigation } from '@react-navigation/native';
+import tailwind from 'twrnc';
+import { TotalProductBill } from '../../DataMathResolve/TotalProductBill';
+import { formatPrice } from '../../utils/format';
+
 const CartScreen = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
@@ -41,7 +45,7 @@ const CartScreen = () => {
   
                 <View style={styles.nameItemView}>
                   <View >
-                    <Text style={styles.nameItem}>{item.product_name}</Text>
+                    <Text style={tailwind `text-base font-bold`}>{item.product_name}</Text>
                     {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
                   </View>
                   {/* <View>
@@ -51,11 +55,15 @@ const CartScreen = () => {
   
                 <View style={styles.priceItemView}>
                   <View>
-                    <Text style={styles.textPrice}>{item.price}</Text>
+                    <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
   
                     <Text style={styles.textQuantity}>{item.quantity}</Text>
                   </View>
-                  <Text style={styles.textDelete}>Xóa</Text>
+                  <TouchableOpacity
+                    
+                  >
+                    <Text style={styles.textDelete}>Xóa</Text>
+                  </TouchableOpacity>  
                 </View>
               </View>
   
@@ -65,10 +73,10 @@ const CartScreen = () => {
         />
 
         {/* Payment Container */}
-        <View style={styles.paymentContainer}>
-          <View style={styles.paymentBox}>
+        <View style={tailwind `border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center mt-50`}>
+          <View style={tailwind `p-5`}>
 
-            <Text style={styles.paymentText}>Thanh toán</Text>
+            {/* <Text style={styles.paymentText}>Thanh toán</Text>
             <View style={styles.productTotal}>
               <Text style={styles.productTotalText}>Tổng cộng sản phẩm</Text>
               <Text style={styles.productTotalPriceText}>$140.00</Text>
@@ -79,11 +87,11 @@ const CartScreen = () => {
               <Text style={styles.productTotalText}>Áp dụng mã giảm giá</Text>
               <Text style={styles.productTotalPriceText}>Ô nhập mã giảm giá</Text>
             </View>
-            <View style={styles.line}></View>
+            <View style={styles.line}></View> */}
 
             <View style={styles.productTotal}>
-              <Text style={styles.productTotalPriceText}>Tổng cộng</Text>
-              <Text style={styles.productTotalPriceText}>$168.60</Text>
+              <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
+              <Text style={styles.productTotalPriceText}>{formatPrice(TotalProductBill(cart))}</Text>
             </View>
           </View >
           <View style={styles.confirmContainer}>
@@ -133,7 +141,6 @@ const styles = StyleSheet.create({
     color: '#3C3C3C'
   },
   productTotal: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

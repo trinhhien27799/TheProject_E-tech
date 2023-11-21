@@ -47,12 +47,12 @@ const CheckPayScreen = ({ statusNumCheck }) => {
     
                     <View style={tailwind`justify-center flex-row flex-auto px-16`}>
                         <View style={tailwind``}>
-                            <Text style={tailwind`py-2 justify-center`}>Số lượng sản phẩm: {item.products.length}</Text>
-                            <Text style={tailwind``}>Tổng tiền: {item.total_price + item.transport_fee}</Text>
+                            <Text style={tailwind `py-2 justify-center`}>Số lượng sản phẩm: {item.products.length}</Text>
+                            <Text style={tailwind ``}>Tổng tiền: {item.total_price + item.transport_fee}</Text>
                         </View>
     
                         <View>
-                            <OrderStatusChangeButton statusNum={item.status} />
+                            <OrderStatusChangeButton item={item} statusNum={item.status} />
                         </View>
                     </View>
                 </View>

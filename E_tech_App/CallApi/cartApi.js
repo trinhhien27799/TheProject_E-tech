@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL } from "./config";
 
-export const getCart = async () => {
-    
+export const getCart = async () => {  
     try {
         const token = await AsyncStorage.getItem('token');
         const username = await AsyncStorage.getItem('username');
@@ -38,7 +37,7 @@ export const addCart = async ({dataCart}) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username:username ,token:token,variations_id:dataCart.variations_id,quantity:dataCart.quantity})
+            body: JSON.stringify({username:username ,token:token, variations_id:dataCart.variations_id, quantity:dataCart.quantity})
         });
         const data = await response.json();
     } catch (error) {
@@ -46,3 +45,4 @@ export const addCart = async ({dataCart}) => {
         throw error;
     }
 }
+
