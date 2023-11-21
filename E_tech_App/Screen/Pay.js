@@ -18,6 +18,7 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
+import { formatPrice } from '../../utils/format';
 
 
 const Pay = (voucher_idd, voucher_name) => {
@@ -149,7 +150,7 @@ const Pay = (voucher_idd, voucher_name) => {
 
                     <View style={styles.priceItemView}>
                       <View>
-                        <Text style={styles.textPrice}>{item.price}</Text>
+                        <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
 
                         <Text style={styles.textQuantity}>{item.quantity}</Text>
                       </View>
@@ -173,7 +174,7 @@ const Pay = (voucher_idd, voucher_name) => {
             />
             <View style={tailwind`w-93 self-center flex-row mt-5`}>
               <Text style={{ fontWeight: 'bold' }}>
-                Tổng Cộng:
+                Tổng Cộng:{formatPrice(TotalProductBill(cart))}
               </Text>
               <Text style={tailwind`flex-1 self-end ml-53`}>
                 {totalResult}đ
@@ -350,7 +351,7 @@ const Pay = (voucher_idd, voucher_name) => {
                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Tổng thanh toán:</Text>
               </View>
               <View style={{ marginLeft: 80 }}>
-                <Text>2.000.000đ</Text>
+                <Text>{formatPrice(TotalProductBill(cart))}</Text>
                 <Text>50.000đ</Text>
                 <Text>200.000đ</Text>
                 <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'red' }}>1.850.000đ</Text>
