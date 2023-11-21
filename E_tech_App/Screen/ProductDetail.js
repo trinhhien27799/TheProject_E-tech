@@ -34,11 +34,6 @@ const ProductDetail = () => {
   const [roms, setRoms] = useState([])
   const [productSecleted, setProductSelected] = useState({})
 
-
-
-
-
-
   const getData = async (productId) => {
     try {
       const response = await getItemProduct(productId)
@@ -103,8 +98,6 @@ const ProductDetail = () => {
     setProductSelected(prd)
     console.log(prd._id)
   }
-
-
 
   useEffect(() => {
     getData(productId)
