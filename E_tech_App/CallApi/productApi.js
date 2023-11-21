@@ -27,6 +27,7 @@ const getItemProduct = async (productId) => {
     const response = await api.post(`/product/${productId}`, {
       username: getUser() ? getUser().username : null
     })
+    console.log(response);
     return response.data
   } catch (error) {
     throw error
