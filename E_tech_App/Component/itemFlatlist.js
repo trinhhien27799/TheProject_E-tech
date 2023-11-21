@@ -28,7 +28,7 @@ const ItemFlatlist = ({ route }) => {
     }
   }
   const handleItem = async ()=>{
-    const dataItem = await getItemProduct({product_id:route._id});
+    const dataItem = await getItemProduct(route._id);
     navigation.navigate('DetailPoducts',{route,dataItem});
   }
   const navigation = useNavigation();

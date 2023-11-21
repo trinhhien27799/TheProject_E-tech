@@ -34,7 +34,6 @@ const BestSeller = () => {
   const renderItem = ({ item, index }) => {
     const handleItem = async () => {
       const dataItem = await getItemProduct(item._id);
-      console.log(dataItem);
       navigation.navigate('DetailPoducts',{route:item,dataItem});
     }
     return (
