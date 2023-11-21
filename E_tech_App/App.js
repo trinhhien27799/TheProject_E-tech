@@ -36,6 +36,7 @@ import BillDetailScreen from './Screen/BillDetailScreen';
 import ViewItem from './Screen/search/viewItem';
 import AddAdress from './Screen/AddAdress';
 import MyVoucher from './Screen/MyVoucher';
+import ShippingMethod from './Screen/ShippingMethod';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
 import DetailProducts from './Screen/products/detailProducts';
@@ -76,6 +77,8 @@ const App = () => {
         <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
         <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
         <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
+        <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
+
 
         <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
         <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />

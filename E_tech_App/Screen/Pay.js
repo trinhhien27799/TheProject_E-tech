@@ -1,3 +1,4 @@
+import React, { useState , useEffect} from 'react';
 import {
   Image,
   FlatList,
@@ -19,15 +20,15 @@ import { getCart } from '../../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
 
 
-const Pay = () => {
+const Pay = (voucher_idd, voucher_name) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
+
   const [listIDcart, setListIDcart] = useState([]);
-  const [address, setAddress] = useState([]);
+  const [address, setAddress] = useState('');
   const [transport_fee, setTransport_fee] = useState([]);
-  const [shipping_id, setShipping_id] = useState([]);
-  const [voucher_id, setVoucher_id] = useState([]);
+  
   const [note, setNote] = useState([]);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Pay = () => {
 
   const handlePay = async () => {
     try {
-      createBill(address, listIDcart, transport_fee, shipping_id, voucher_id, note);
+      createBill(address, listIDcart, transport_fee, shipping_id,voucher_idd, note);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -84,10 +85,10 @@ const Pay = () => {
             {/* Address Detail */}
             <View style={{ flex: 1 }}>
               <Text>
-                Username - Phone {username}
+                Username - Phone 
               </Text>
               <Text>
-                Địa chỉ {diachi}
+                Địa chỉ 
               </Text>
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
@@ -127,7 +128,7 @@ const Pay = () => {
           {/* List Product */}
           <View style={{ marginTop: 10 }}>
             <FlatList
-              data={data}
+              data={cart}
 
               renderItem={({ item }) => (
                 <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black`}>
@@ -181,12 +182,13 @@ const Pay = () => {
           </View>
           {/* Split Space */}
           <View style={styles.view3}></View>
+          
 
-          {/* Voucher */}
+          {/* Phương thức vận chuyển */}
           <View style={{ marginTop: 30 }}>
             <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
               <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Áp dụng Voucher giảm giá
+              Phương thức vận chuyển
               </Text>
               <Image
                 source={require('../img/sale.png')}
@@ -209,8 +211,64 @@ const Pay = () => {
                   marginTop: 'auto',
                   marginBottom: 'auto',
                 }}>
-                Chọn mã giảm giá của bạn
+                Chọn phương thức vận chuyển
               </Text>
+            </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('ShippingMethod') }}>
+              <Feather
+                name="chevron-right"
+                size={45}
+                color="black"
+                style={{
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  marginRight: 40,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Split Space */}
+          <View style={styles.view3}></View>
+
+
+          {/* Voucher */}
+          <View style={{ marginTop: 30 }}>
+            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
+              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
+                Áp dụng Voucher giảm giá
+              </Text>
+              <Image
+                source={require('../img/sale.png')}
+                style={styles.img1}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              marginTop: 20,
+              height: 50,
+              flexDirection: 'row',
+              marginLeft: 20,
+            }}>
+            <View style={{ flex: 1 }}>
+              { voucher_idd == 0 ? <Text
+                style={{
+                  fontSize: 14.5,
+                  marginLeft: 10,
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}>
+                Chọn mã giảm giá của bạn
+              </Text> : <Text
+                style={{
+                  fontSize: 14.5,
+                  marginLeft: 10,
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}>
+                {voucher_name}
+              </Text>}
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>
               <Feather
