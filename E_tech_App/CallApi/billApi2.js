@@ -5,6 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const createBill = async (address , listIDcart,transport_fee,shipping_id,voucher_id, note , navigation) => {
     const token = await AsyncStorage.getItem('token');
     const username = await AsyncStorage.getItem('username');
+
+    console.log(username + ' ' + token);
+
     try {
         const response = await fetch(`${API_BASE_URL}/api/bill/create`, {
             method: 'POST',

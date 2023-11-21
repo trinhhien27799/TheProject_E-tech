@@ -6,7 +6,6 @@ import { autoLogin } from '../../CallApi/authenApi'
 import { getUser, setToken, setUser } from '../../session'
 import { useNavigation } from '@react-navigation/native'
 
-
 const SplashScreen = () => {
     const navigation = useNavigation()
     const login = async () => {

@@ -5,6 +5,7 @@ import {ShipMoneyResolve_City} from './ShipMoneyResolve'
 import { getAllBill } from '../CallApi/billAPI';
 import { getBill } from '../Model/BillModel';
 import RatingStar from '../Component/RatingStar';
+import ProductComment from '../Component/ProductComment';
 
 const DemoShipMoneyResoveScreen = () => {
     const demoBill = getBill();
@@ -12,7 +13,7 @@ const DemoShipMoneyResoveScreen = () => {
 
     return (
         <View style={tailwind `flex-auto justify-center`}>
-            <RatingStar/>
+            <ProductComment/>
         </View>
     )
 }

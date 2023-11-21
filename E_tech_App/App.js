@@ -41,7 +41,10 @@ import ListPhoneByCate from './Screen/ListPhoneByCate';
 import DetailProducts from './Screen/products/detailProducts';
 import ProductComment from './Component/ProductComment';
 import SplashScreen from './Screen/splash/SplashScreen';
+import DetailCommentScreen from './Screen/DetailCommentScreen';
 import SettingScreen from './Screen/profile/setting';
+import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen';
+import CartScreen from './Screen/YourCart/CartScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -53,6 +56,8 @@ const App = () => {
       <Stack.Navigator
         initialRouteName='Splash'
       >
+        <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
+
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
@@ -104,6 +109,9 @@ const App = () => {
         <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>
 
         <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
+        <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
+
+        <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

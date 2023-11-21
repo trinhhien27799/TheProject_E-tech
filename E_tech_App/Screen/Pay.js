@@ -17,13 +17,14 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
+import { useEffect, useState } from 'react';
 
 const Pay = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
   const [listIDcart, setListIDcart] = useState([]);
-  const [address, setAddress] = useState([]);
+  const [address, setAddress] = useState('');
   const [transport_fee, setTransport_fee] = useState([]);
   const [shipping_id, setShipping_id] = useState([]);
   const [voucher_id, setVoucher_id] = useState([]);
@@ -44,8 +45,8 @@ const Pay = () => {
       console.error('Error:', error);
     }
   }
-  var totalResult = TotalProductBill(data);
-  var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
+  // var totalResult = TotalProductBill(data);
+  // var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
 
   return (
     <SafeAreaView style={styles.container}>
