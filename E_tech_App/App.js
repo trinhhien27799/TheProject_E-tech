@@ -3,7 +3,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screen/home/Home';
 import Profile from './Screen/profile/profileScreen';
-import ChiTietSP from './Screen/ChiTietSP';
+import ProductDetail from './Screen/ProductDetail';
 import ListPhone from './Screen/ListPhone';
 import Login from './Screen/authentication/Login';
 import SignUp from './Screen/authentication/SignUp';
@@ -42,6 +42,7 @@ import DetailProducts from './Screen/products/detailProducts';
 import ProductComment from './Component/ProductComment';
 import SplashScreen from './Screen/splash/SplashScreen';
 import DetailCommentScreen from './Screen/DetailCommentScreen';
+import SettingScreen from './Screen/profile/setting';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -56,7 +57,7 @@ const App = () => {
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name='ProductDetail' component={ChiTietSP} options={{ headerShown: false }} />
+        <Stack.Screen name='ProductDetail' component={ProductDetail} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
@@ -69,6 +70,7 @@ const App = () => {
         <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
         <Stack.Screen name='DetailPoducts' component={DetailProducts} options={{ headerShown: false }} />
+        <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
         <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
