@@ -130,7 +130,6 @@ const Pay = (voucher_idd, voucher_name) => {
           <View style={{ marginTop: 10 }}>
             <FlatList
               data={cart}
-
               renderItem={({ item }) => (
                 <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black`}>
                   <View style={styles.cartItem}>
@@ -158,7 +157,7 @@ const Pay = (voucher_idd, voucher_name) => {
                   </View>
                 </View>
               )}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => {item.id ; setListIDcart == item.id}}
             />
           </View>
 

@@ -60,7 +60,7 @@ const ShippingMethod = () => {
                     <Text style={tailwind`self-center`}>Hủy</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} >
+                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} onPress={() => navigation.goBack()}>
                     <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
                 </TouchableOpacity>
             </View>
