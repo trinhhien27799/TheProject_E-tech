@@ -10,7 +10,7 @@ import OrderStatusChangeButton from '../../Component/OrderStatusChangeButton'
 import { useNavigation } from '@react-navigation/native'
 import { getBill } from '../../Model/BillModel'
 
-const CheckPayScreen = ({ statusNumCheck }) => {
+const CheckPayScreenFix = ({ orderList }) => {
     const navigation = useNavigation();
 
     const ProductCard = ({ item }) => {
@@ -47,12 +47,12 @@ const CheckPayScreen = ({ statusNumCheck }) => {
     
                     <View style={tailwind`justify-center flex-row flex-auto px-16`}>
                         <View style={tailwind``}>
-                            <Text style={tailwind `py-2 justify-center`}>Số lượng sản phẩm: {item.products.length}</Text>
-                            <Text style={tailwind ``}>Tổng tiền: {item.total_price + item.transport_fee}</Text>
+                            <Text style={tailwind`py-2 justify-center`}>Số lượng sản phẩm: {item.products.length}</Text>
+                            <Text style={tailwind``}>Tổng tiền: {item.total_price + item.transport_fee}</Text>
                         </View>
     
                         <View>
-                            <OrderStatusChangeButton item={item} statusNum={item.status} />
+                            <OrderStatusChangeButton statusNum={item.status} />
                         </View>
                     </View>
                 </View>
@@ -68,15 +68,13 @@ const CheckPayScreen = ({ statusNumCheck }) => {
     // else {
     //     newData = ListOrder;
     // }
-    const orderData = getBill(statusNumCheck);
-    console.log(orderData);
 
     return (
         <FlatList
-            data={orderData}
+            data={orderList}
             renderItem={ProductCard}
         />
     )
 }
 
-export default CheckPayScreen
+export default CheckPayScreenFix

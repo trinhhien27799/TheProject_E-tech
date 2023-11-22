@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { getAllBill } from "../CallApi/billAPI"
 
 export const getBill = (statusNum) => {
+    console.log(statusNum);
     const [data, setData] = useState([])
 
     const getData = async () => {
@@ -19,3 +20,4 @@ export const getBill = (statusNum) => {
 
     return data;
 }
+

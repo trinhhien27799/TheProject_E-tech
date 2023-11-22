@@ -52,6 +52,7 @@ export default function OrderScene() {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
+        sceneContainerStyle={tailwind}
       />
     );
   }

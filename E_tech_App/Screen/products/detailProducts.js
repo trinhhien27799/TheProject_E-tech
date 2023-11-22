@@ -7,6 +7,7 @@ import colors from "../../Component/colors";
 import { useNavigation } from "@react-navigation/native";
 
 const DetailPoducts = ({route})=>{
+    console.log(route);
     const variations = route.params.dataItem.variations;
     const [image,setImage] = useState(route.params.route.image_preview);
     const [borderIndex,setBorderIndex] = useState(null);
