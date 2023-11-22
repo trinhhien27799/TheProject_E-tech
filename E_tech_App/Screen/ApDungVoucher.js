@@ -50,7 +50,7 @@ export default function Makhuyenmai() {
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={styles.button2} onPress={() => {
-                                                navigation.goback( { voucher_idd:item.id , voucher_name: item.description})
+                                                navigation.goBack( { voucher_idd:item.id , voucher_name: item.description})
                                             }}>
                   <Text style={{ color: 'white', fontSize: 16 }}>Sử dụng</Text>
                 </TouchableOpacity>

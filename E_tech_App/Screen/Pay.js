@@ -18,7 +18,7 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
-import { formatPrice } from '../../utils/format';
+import { formatPrice } from '../utils/format';
 
 
 
@@ -113,7 +113,7 @@ const Pay = (voucher_idd, voucher_name) => {
               Phí vận chuyển:
             </Text>
             <Text style={tailwind`flex-1 self-end ml-51`}>
-              {totalShipMoney}đ
+              30000đ
             </Text>
           </View>
           {/* Split Space */}
@@ -132,15 +132,15 @@ const Pay = (voucher_idd, voucher_name) => {
             <FlatList
               data={cart}
               renderItem={({ item }) => (
-                <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black`}>
-                  <View style={styles.cartItem}>
-                    <View style={styles.imgItemView}>
+                <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black py-5`}>
+                  <View style={tailwind `flex-row`}>
+                    <View style={tailwind `px-2`}>
                       <Image style={styles.imgItem} source={{ uri: item.image }} />
                     </View>
 
-                    <View style={styles.nameItemView}>
+                    <View style={tailwind `w-40`}>
                       <View >
-                        <Text style={styles.nameItem}>{item.product_name}</Text>
+                        <Text style={tailwind `text-base`}>{item.product_name}</Text>
                         {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
                       </View>
                       {/* <View>
@@ -148,7 +148,7 @@ const Pay = (voucher_idd, voucher_name) => {
                   </View> */}
                     </View>
 
-                    <View style={styles.priceItemView}>
+                    <View style={tailwind `w-23`}>
                       <View>
                         <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
 
@@ -174,13 +174,14 @@ const Pay = (voucher_idd, voucher_name) => {
             />
             <View style={tailwind`w-93 self-center flex-row mt-5`}>
               <Text style={{ fontWeight: 'bold' }}>
-                Tổng Cộng:{formatPrice(TotalProductBill(cart))}
+                Tổng Cộng:
               </Text>
               <Text style={tailwind`flex-1 self-end ml-53`}>
-                {totalResult}đ
+                {formatPrice(TotalProductBill(cart))}
               </Text>
             </View>
           </View>
+          
           {/* Split Space */}
           <View style={styles.view3}></View>
           
@@ -268,7 +269,7 @@ const Pay = (voucher_idd, voucher_name) => {
                   marginTop: 'auto',
                   marginBottom: 'auto',
                 }}>
-                {voucher_name}
+                voucher_name
               </Text>}
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>

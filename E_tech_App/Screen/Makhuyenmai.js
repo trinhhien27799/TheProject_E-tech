@@ -30,6 +30,8 @@ export default function Makhuyenmai() {
     }
   }
 
+  console.log(voucherArray);
+
   // const renderItemVoucher = (item) => (
   //   <View style={styles.view2}>
   //     <View
@@ -89,8 +91,8 @@ export default function Makhuyenmai() {
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={styles.button2} onPress={() => {
-                                                setVoucherID == item.id;
-                                                setVoucherCode == item.code;
+                                                setVoucherID(item.id);
+                                                setVoucherCode(item.code);
                                                 handleVoucher();
                                             }}>
                   <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>

@@ -8,7 +8,6 @@ import {
     ScrollView,
     FlatList,
     SafeAreaView,
-    RadioButton,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import tailwind from 'twrnc';
