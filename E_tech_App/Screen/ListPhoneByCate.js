@@ -61,7 +61,7 @@ const ListPhone = ({ route }) => {
             }
 
 
-            <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { product: item }) }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { productId: item._id }) }}>
                 <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
                 <View style={{ flexDirection: 'row' }}>
                     <View style={tailwind`mt-4 w-37`}>

@@ -16,9 +16,10 @@ import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
-import { getCart } from '../../CallApi/cartApi';
+import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
 import { formatPrice } from '../../utils/format';
+
 
 
 const Pay = (voucher_idd, voucher_name) => {
@@ -47,8 +48,8 @@ const Pay = (voucher_idd, voucher_name) => {
       console.error('Error:', error);
     }
   }
-  var totalResult = TotalProductBill(data);
-  var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
+  // var totalResult = TotalProductBill(data);
+  // var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
 
   return (
     <SafeAreaView style={styles.container}>

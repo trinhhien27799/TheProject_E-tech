@@ -12,7 +12,6 @@ import Profile from '../profile/profileScreen';
 
 const Tabs = AnimatedTabBarNavigator();
 
-
 const BottomNavigation = ({navigation,route}) => {
   const userData = route.params.registrationData
   console.log(route.params.registrationData);

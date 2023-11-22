@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native'
@@ -7,11 +7,14 @@ import { RadioButton } from 'react-native-paper'
 import tailwind from 'twrnc'
 import { useNavigation } from '@react-navigation/native'
 import { ListAddress } from '../Model/AddressModel'
+import items from '../items'
 
 const AddressCard = ({ item }) => {
     return (
         <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
-            <RadioButton />
+            <RadioButton 
+                value={item.address}
+            />
 
             <View style={tailwind`justify-center`}>
                 <Text>{item.address}</Text>
@@ -21,17 +24,24 @@ const AddressCard = ({ item }) => {
 }
 
 const DialogAddress = () => {
+    const [getAddress, setGetAddress] = useState([]);
     const navigation = useNavigation();
+
     return (
         <View style={tailwind `flex-auto p-12`}>
             <Text style={tailwind`text-lg mb-5 font-bold`}>Chọn địa chỉ</Text>
 
             {/* Flatlist địa chỉ */}
-            <FlatList
-                data={ListAddress}
-                renderItem={AddressCard}
-                style={tailwind``}
-            />
+            <RadioButton.Group
+                onValueChange={(item) => setGetAddress(item)}
+                value=''
+            >
+                <FlatList
+                    data={ListAddress}
+                    renderItem={AddressCard}
+                    style={tailwind ``}
+                />
+            </RadioButton.Group>            
 
             {/* Thêm địa chỉ */}
             <TouchableOpacity
@@ -56,7 +66,10 @@ const DialogAddress = () => {
                     <Text style={tailwind`self-center`}>Hủy</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`}>
+                <TouchableOpacity 
+                    style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`}
+                    onPress={() => {console.log(getAddress)}}
+                >
                     <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
                 </TouchableOpacity>
             </View>
