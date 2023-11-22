@@ -10,16 +10,17 @@ import LoadingWidget from "../../Component/loading";
 import { getImage } from "../../Component/provider/itemProvider";
 const DetailPoducts = ({route})=>{
     const {loading,dataItem} = useItemProduct(route.params.route._id);
+    const [dataTest,setDataTest] = useState(null);
     const variations = dataItem.variations;
-    // useEffect(()=>{
-        // setImage(route.params.route.image_preview);
-        
-    // })
-    // const images = getImage();
-    // console.log(images);
-    const [image,setImage] = useState(route.params.route.image_preview);
+    const [image,setImage] = useState(null);
     const [borderIndex,setBorderIndex] = useState(null);
+    const [price,setPrice] = useState(null);
     const navigation = useNavigation();
+    useEffect(() => {
+        // Update the image when dataTest changes
+        setImage(dataTest ? dataTest.image : route.params.route.image_preview);
+        setPrice(dataTest?dataTest.price:route.params.route.max_price);
+      }, [dataTest]);
     return(
         <View style={styles.container}>
             {
@@ -58,7 +59,7 @@ const DetailPoducts = ({route})=>{
                     <Ionicons name="arrow-back" size={20}/>
                 </TouchableOpacity>
                 </View>
-                <BodyProducts route={dataItem}/>
+                <BodyProducts route={dataItem}setDataTest={setDataTest} price={price}/>
                 </ScrollView>
                 <FooterProduct route={route.params} />
                 </>

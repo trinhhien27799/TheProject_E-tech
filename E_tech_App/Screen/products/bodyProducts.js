@@ -6,12 +6,12 @@ import { InfoProduct } from "./infoProduct";
 import VariationsProduct from "./variationsProduct";
 import { formatPrice } from "../../utils/format";
 import useLikeToggle from "../../Component/hooks/useLikeToggle";
-export default BodyProduts = ({ route }) => {
+export default BodyProduts = ({ route,setDataTest,price }) => {
     const {checkHeart,handleUnlike} = useLikeToggle(route._id);
     return (
         <View style={styles.container}>
             <Text style={{fontWeight:'bold',fontSize:20}}>{route.product_name}</Text>
-            <Text style={{marginTop:5,marginBottom:5,color:'red',fontSize:17}}>{formatPrice(route.min_price)}</Text>
+            <Text style={{marginTop:5,marginBottom:5,color:'red',fontSize:17}}>{formatPrice(price)}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 {route.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={route.vote} />}
                 <View style={{ flexDirection: 'row' }}>
@@ -28,7 +28,7 @@ export default BodyProduts = ({ route }) => {
                 </View>
             </View>
             <InfoProduct />
-            <VariationsProduct route={route}/>
+            <VariationsProduct route={route} setDataTest={setDataTest}/>
         </View>
        
     )

@@ -4,8 +4,7 @@ import { getBrandName } from "../../CallApi/productApi";
 import IteamBrand from "../../Component/itemBrand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatPrice } from "../../utils/format";
-import { setImage, setPrice } from "../../Component/provider/itemProvider";
-export default VariationsProducts = ({ route }) => {
+export default VariationsProducts = ({ route,setDataTest }) => {
     const [branData, setBrandData] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -60,8 +59,7 @@ export default VariationsProducts = ({ route }) => {
                         isSelected={selectedColorIndex == index}
                         onPress={() => {
                             setSelectedColorIndex(index);
-                            setImage(item.image);
-                            setPrice(item.price);
+                            setDataTest(item)
                         }}
                         selectedRAMROM={selectedRAMROM}
                     />
