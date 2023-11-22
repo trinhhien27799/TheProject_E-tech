@@ -7,13 +7,13 @@ import VariationsProduct from "./variationsProduct";
 import { formatPrice } from "../../utils/format";
 import useLikeToggle from "../../Component/hooks/useLikeToggle";
 export default BodyProduts = ({ route }) => {
-    const {checkHeart,handleUnlike} = useLikeToggle(route.dataItem._id);
+    const {checkHeart,handleUnlike} = useLikeToggle(route._id);
     return (
         <View style={styles.container}>
-            <Text style={{fontWeight:'bold',fontSize:20}}>{route.dataItem.product_name}</Text>
-            <Text style={{marginTop:5,marginBottom:5,color:'red',fontSize:17}}>{formatPrice(route.dataItem.min_price)}</Text>
+            <Text style={{fontWeight:'bold',fontSize:20}}>{route.product_name}</Text>
+            <Text style={{marginTop:5,marginBottom:5,color:'red',fontSize:17}}>{formatPrice(route.min_price)}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                {route.dataItem.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={route.dataItem.vote} />}
+                {route.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={route.vote} />}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                     onPress={handleUnlike}

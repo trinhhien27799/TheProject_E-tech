@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { getItemProduct, toggleLike } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
 import { formatPrice } from "../utils/format";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const ItemFlatlist = ({ route }) => {
@@ -27,9 +28,10 @@ const ItemFlatlist = ({ route }) => {
 
     }
   }
+
   const handleItem = async ()=>{
-    const dataItem = await getItemProduct(route._id);
-    navigation.navigate('DetailPoducts',{route,dataItem});
+    // const dataItem = await getItemProduct(route._id);
+    navigation.navigate('DetailPoducts',{route});
   }
   const navigation = useNavigation();
   return (
