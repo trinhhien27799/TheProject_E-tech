@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Image, Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList } from "react-native"
 import { useNavigation } from '@react-navigation/native'
-import { getAllProductByFilter } from '../CallApi/productApi'
+import { getAllProductByFilter, getItemProduct } from '../CallApi/productApi'
 import tailwind from 'twrnc'
 import { formatPrice } from '../utils/format'
 import LottieView from 'lottie-react-native'
@@ -17,7 +17,7 @@ const ListPhone = ({ route }) => {
     const getData = async () => {
         try {
             setLoading(true)
-            const response = await getAllProductByFilter(data)
+            const response = await getAllProductByFilter(data);
             setItems(response)
             changeTitePageDone(response.length)
         } catch (error) {
@@ -45,7 +45,9 @@ const ListPhone = ({ route }) => {
         getData()
     }, [])
 
-
+    const handleItem = async ({item})=>{
+        navigation.navigate('DetailPoducts',{route:item});
+    }
 
     const renderItem = ({ item, index }) => (
         <View style={styles.body}>
@@ -61,7 +63,7 @@ const ListPhone = ({ route }) => {
             }
 
 
-            <TouchableOpacity onPress={() => { navigation.navigate('ProductDetail', { productId: item._id }) }}>
+            <TouchableOpacity onPress={() => { handleItem({item:item}) }}>
                 <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
                 <View style={{ flexDirection: 'row' }}>
                     <View style={tailwind`mt-4 w-37`}>
