@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import tailwind from 'twrnc'
 import RatingStar from './RatingStar'
@@ -48,7 +48,7 @@ const CommentCard = ({ item }) => {
     )
 }
 
-const ProductComment = () => {
+const ProductComment = ({starRating}) => {
     const commentArray = [
         {
             id: 1,
@@ -66,11 +66,25 @@ const ProductComment = () => {
             comment: 'Sheeeeeesssshhhh',
             starNum: 5
         },
-    ]
+    ];
+
+    const StarRatingSort = (starNum) => {
+        if(starNum != null){
+            const StarRatingSortData = commentArray.filter((item) => item.starNum == starNum);
+            return StarRatingSortData;
+        }
+        
+        else{
+            return commentArray;
+        }
+    }
+    // abc
+    var setData = StarRatingSort(starRating);
+
     return (
         <View>
             <FlatList
-                data={commentArray}
+                data={setData}
                 renderItem={CommentCard}
             />
         </View>

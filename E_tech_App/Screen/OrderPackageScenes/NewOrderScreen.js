@@ -19,7 +19,7 @@ const NewOrderScreen = () => {
         },
         {
             id: 2,
-            buttonName: 'Xác nhận thanh toán',
+            buttonName: 'Chờ xác nhận',
             valueCheck: 1
         },
         {
@@ -31,6 +31,11 @@ const NewOrderScreen = () => {
             id: 4,
             buttonName: 'Đã giao hàng',
             valueCheck: 3
+        },
+        {
+            id: 5,
+            buttonName: 'Đã hủy',
+            valueCheck: -1
         },
     ];
 

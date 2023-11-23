@@ -14,6 +14,19 @@ export const getAllBill = async (statusNum) => {
     }
 }
 
+export const getRealBill = async (statusNum) => {
+    const username = await AsyncStorage.getItem('username');
+    const token = await AsyncStorage.getItem('token');
+
+    console.log(username + ' ' + token);
+    try {
+        const bill = await api.post(`/bill/get-all`, {username: username, token: token});
+        return bill.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const createBill = async () => {
     try {
         const addBill = await api.post('/bill/create');

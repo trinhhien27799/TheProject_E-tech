@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllBill } from "../CallApi/billAPI"
+import { getAllBill, getRealBill } from "../CallApi/billAPI"
 
 export const getBill = (statusNum) => {
     console.log(statusNum);
@@ -20,4 +20,26 @@ export const getBill = (statusNum) => {
 
     return data;
 }
+
+export const getAllUserBill = (statusNum) => {
+    console.log(statusNum);
+    const [data, setData] = useState([])
+
+    const getData = async () => {
+        try {
+            const rs = await getRealBill();
+            setData(rs)
+        } catch (error) {
+            console.log(`ListOrder : ${error}`)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    return data;
+}
+
+
 

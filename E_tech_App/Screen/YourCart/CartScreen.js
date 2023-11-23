@@ -73,22 +73,8 @@ const CartScreen = () => {
         />
 
         {/* Payment Container */}
-        <View style={tailwind `border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center mt-50`}>
+        <View style={tailwind `border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center`}>
           <View style={tailwind `p-5`}>
-
-            {/* <Text style={styles.paymentText}>Thanh toán</Text>
-            <View style={styles.productTotal}>
-              <Text style={styles.productTotalText}>Tổng cộng sản phẩm</Text>
-              <Text style={styles.productTotalPriceText}>$140.00</Text>
-            </View>
-            <View style={styles.line}></View>
-
-            <View style={styles.productTotal}>
-              <Text style={styles.productTotalText}>Áp dụng mã giảm giá</Text>
-              <Text style={styles.productTotalPriceText}>Ô nhập mã giảm giá</Text>
-            </View>
-            <View style={styles.line}></View> */}
-
             <View style={styles.productTotal}>
               <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
               <Text style={styles.productTotalPriceText}>{formatPrice(TotalProductBill(cart))}</Text>
@@ -237,9 +223,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   listCart: {
-    maxHeight: 400,
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: 20
   },
   header: {
     height: 50,
