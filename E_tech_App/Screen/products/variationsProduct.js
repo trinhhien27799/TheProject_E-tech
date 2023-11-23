@@ -4,13 +4,13 @@ import { getBrandName } from "../../CallApi/productApi";
 import IteamBrand from "../../Component/itemBrand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatPrice } from "../../utils/format";
-export default VariationsProducts = ({ route }) => {
-    const routes = route.dataItem;
+export default VariationsProducts = ({ route,setDataTest }) => {
     const [branData, setBrandData] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getBrandName({ brand_name: route.route.brand_name });
+            const data = await getBrandName({ brand_name: route.brand_name });
             setBrandData(data);
+            
         }
         fetchData();
     }, []);
@@ -18,14 +18,14 @@ export default VariationsProducts = ({ route }) => {
     const [selectVersionIndex, setSelectVersionIndex] = useState(0);
     const [selectedRAMROM, setSelectedRAMROM] = useState("");
     useEffect(() => {
-        if (routes.variations && routes.variations.length > 0) {
-          const selectedVersion = routes.variations[selectVersionIndex];
-          const dataIndex = routes.variations[selectedColorIndex];
+        if (route.variations && route.variations.length > 0) {
+          const selectedVersion = route.variations[selectVersionIndex];
+          const dataIndex = route.variations[selectedColorIndex];
           AsyncStorage.setItem('dataSelect',JSON.stringify(dataIndex));
           setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
         }
       }, [selectVersionIndex,selectedColorIndex]);
-      const checkRam = routes.variations.filter(variation => variation.ram);
+      const checkRam = route.variations.filter(variation => variation.ram);
     return (
         <View >
             {
@@ -33,11 +33,11 @@ export default VariationsProducts = ({ route }) => {
                 <>
                 <TextView title={'Lựa chọn phiên bản'} />
             <FlatList
-                data={routes.variations}
+                data={route.variations}
                 keyExtractor={item => item._id}
                 renderItem={({ item, index }) => {
                     return <ItemViewVersion
-                        routes={item}
+                        route={item}
                         isSelected={selectVersionIndex == index}
                         onPress={() => {
                             setSelectVersionIndex(index);  
@@ -51,14 +51,15 @@ export default VariationsProducts = ({ route }) => {
             }
             <TextView title={'Lựa chọn màu sắc'} />
             <FlatList
-                data={routes.variations}
+                data={route.variations}
                 keyExtractor={item => item._id}
                 renderItem={({ item, index }) => {
                     return <ItemView
-                        routes={item}
+                        route={item}
                         isSelected={selectedColorIndex == index}
                         onPress={() => {
                             setSelectedColorIndex(index);
+                            setDataTest(item)
                         }}
                         selectedRAMROM={selectedRAMROM}
                     />
@@ -73,16 +74,15 @@ export default VariationsProducts = ({ route }) => {
                 keyExtractor={item => item._id}
                 horizontal
                 renderItem={({ item }) => {
-                    return <IteamBrand routes={item} />
+                    return <IteamBrand route={item} />
                 }}
                 style={styles.container}
             />
         </View>
     );
-    
 }
-const ItemView = ({ routes, isSelected, onPress,selectedRAMROM }) => {
-    const select = selectedRAMROM == routes.ram+'/'+routes.rom; 
+const ItemView = ({ route, isSelected, onPress,selectedRAMROM }) => {
+    const select = selectedRAMROM == route.ram+'/'+route.rom; 
 
     
     return (
@@ -92,8 +92,8 @@ const ItemView = ({ routes, isSelected, onPress,selectedRAMROM }) => {
                 onPress={onPress}
             >
                 <View style={[{ borderColor: select?isSelected ? '#1E90FF' : 'grey':'grey' ,backgroundColor:select?null:'#E3E6E7'}, styles.viewItem]}>
-                    <Text>{routes.color}</Text>
-                    <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(routes.price)}</Text>
+                    <Text>{route.color}</Text>
+                    <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(route.price)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -105,15 +105,15 @@ const TextView = ({ title }) => (
 
     </View>
 );
-const ItemViewVersion = ({ routes, isSelected, onPress }) => {
+const ItemViewVersion = ({ route, isSelected, onPress }) => {
    
     return (
         <TouchableOpacity
             onPress={onPress}
         >
             <View style={[{ borderColor: isSelected ? '#1E90FF' : 'grey' }, styles.viewItem]}>
-                <Text>{routes.ram}/{routes.rom}</Text>
-                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(routes.price)}</Text>
+                <Text>{route.ram}/{route.rom}</Text>
+                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(route.price)}</Text>
             </View>
         </TouchableOpacity>
 

@@ -87,7 +87,7 @@ export default function MyVoucher() {
       </View>
       <View>
         <FlatList
-          data={myvouchers}
+          data={myVoucherArray}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.view2}>

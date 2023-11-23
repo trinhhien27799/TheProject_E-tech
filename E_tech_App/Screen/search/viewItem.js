@@ -32,7 +32,6 @@ const HeaderItem = ({route}) => {
             </TouchableOpacity>
             <TouchableOpacity
             onPress={()=>{
-                // navigation.navigate("SearchScreen", routes);
             }}
             style={styles.viewSearch}>
                 <TextInput

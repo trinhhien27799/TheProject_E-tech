@@ -47,6 +47,7 @@ export const getLike = async () => {
       body: JSON.stringify({ token, username })
     })
     const data = response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

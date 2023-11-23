@@ -15,10 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Makhuyenmai() {
   const navigation = useNavigation();
-
-  const handleVoucher = () => {
-
-  }
+  const myVoucherArray = myvouchers();
 
 
   return (
@@ -31,7 +28,7 @@ export default function Makhuyenmai() {
       </View>
       <View>
         <FlatList
-          data={myvouchers}
+          data={myVoucherArray}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.view2}>
@@ -52,7 +49,9 @@ export default function Makhuyenmai() {
                 <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity style={styles.button2} onPress={handleVoucher}>
+                <TouchableOpacity style={styles.button2} onPress={() => {
+                                                navigation.goBack( { voucher_idd:item.id , voucher_name: item.description})
+                                            }}>
                   <Text style={{ color: 'white', fontSize: 16 }}>Sử dụng</Text>
                 </TouchableOpacity>
               </View>

@@ -6,6 +6,7 @@ import { addCart } from "../CallApi/cartApi";
 import { formatPrice } from "../utils/format";
 
 const ViewModal = ({ route, data }) => {
+    
     const [quantity, setQuantity] = useState(1);
     const [dataCart, setDataCart] = useState({
         "variations_id": data._id,
@@ -26,8 +27,8 @@ const ViewModal = ({ route, data }) => {
             </View>
             <Image source={{ uri: data.image }} style={styles.image} />
             <View style={styles.priceContainer}>
-                <Text style={styles.price}>{formatPrice(route.dataItem.max_price)}</Text>
-                <Text >Kho: {route.dataItem.total_quantity}</Text>
+                <Text style={styles.price}>{formatPrice(data.price)}</Text>
+                <Text >Kho: {route.route.total_quantity}</Text>
             </View>
             <View style={styles.infoItem}>
                 <Text style={styles.title}>Màu sắc</Text>

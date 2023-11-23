@@ -1,3 +1,4 @@
+import React, { useState , useEffect} from 'react';
 import {
   Image,
   FlatList,
@@ -17,17 +18,19 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
-import { useEffect, useState } from 'react';
+import { formatPrice } from '../utils/format';
 
-const Pay = () => {
+
+
+const Pay = (voucher_idd, voucher_name) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
+
 
   const [listIDcart, setListIDcart] = useState([]);
   const [address, setAddress] = useState('');
   const [transport_fee, setTransport_fee] = useState([]);
-  const [shipping_id, setShipping_id] = useState([]);
-  const [voucher_id, setVoucher_id] = useState([]);
+  
   const [note, setNote] = useState([]);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ const Pay = () => {
 
   const handlePay = async () => {
     try {
-      createBill(address, listIDcart, transport_fee, shipping_id, voucher_id, note);
+      createBill(address, listIDcart, transport_fee, shipping_id,voucher_idd, note);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -84,10 +87,10 @@ const Pay = () => {
             {/* Address Detail */}
             <View style={{ flex: 1 }}>
               <Text>
-                Username - Phone {username}
+                Username - Phone 
               </Text>
               <Text>
-                Địa chỉ {diachi}
+                Địa chỉ 
               </Text>
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
@@ -110,7 +113,7 @@ const Pay = () => {
               Phí vận chuyển:
             </Text>
             <Text style={tailwind`flex-1 self-end ml-51`}>
-              {totalShipMoney}đ
+              30000đ
             </Text>
           </View>
           {/* Split Space */}
@@ -127,18 +130,17 @@ const Pay = () => {
           {/* List Product */}
           <View style={{ marginTop: 10 }}>
             <FlatList
-              data={data}
-
+              data={cart}
               renderItem={({ item }) => (
-                <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black`}>
-                  <View style={styles.cartItem}>
-                    <View style={styles.imgItemView}>
+                <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black py-5`}>
+                  <View style={tailwind `flex-row`}>
+                    <View style={tailwind `px-2`}>
                       <Image style={styles.imgItem} source={{ uri: item.image }} />
                     </View>
 
-                    <View style={styles.nameItemView}>
+                    <View style={tailwind `w-40`}>
                       <View >
-                        <Text style={styles.nameItem}>{item.product_name}</Text>
+                        <Text style={tailwind `text-base`}>{item.product_name}</Text>
                         {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
                       </View>
                       {/* <View>
@@ -146,9 +148,9 @@ const Pay = () => {
                   </View> */}
                     </View>
 
-                    <View style={styles.priceItemView}>
+                    <View style={tailwind `w-23`}>
                       <View>
-                        <Text style={styles.textPrice}>{item.price}</Text>
+                        <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
 
                         <Text style={styles.textQuantity}>{item.quantity}</Text>
                       </View>
@@ -156,7 +158,7 @@ const Pay = () => {
                   </View>
                 </View>
               )}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => {item.id ; setListIDcart == item.id}}
             />
           </View>
 
@@ -175,18 +177,20 @@ const Pay = () => {
                 Tổng Cộng:
               </Text>
               <Text style={tailwind`flex-1 self-end ml-53`}>
-                {totalResult}đ
+                {formatPrice(TotalProductBill(cart))}
               </Text>
             </View>
           </View>
+          
           {/* Split Space */}
           <View style={styles.view3}></View>
+          
 
-          {/* Voucher */}
+          {/* Phương thức vận chuyển */}
           <View style={{ marginTop: 30 }}>
             <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
               <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Áp dụng Voucher giảm giá
+              Phương thức vận chuyển
               </Text>
               <Image
                 source={require('../img/sale.png')}
@@ -209,8 +213,64 @@ const Pay = () => {
                   marginTop: 'auto',
                   marginBottom: 'auto',
                 }}>
-                Chọn mã giảm giá của bạn
+                Chọn phương thức vận chuyển
               </Text>
+            </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('ShippingMethod') }}>
+              <Feather
+                name="chevron-right"
+                size={45}
+                color="black"
+                style={{
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  marginRight: 40,
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Split Space */}
+          <View style={styles.view3}></View>
+
+
+          {/* Voucher */}
+          <View style={{ marginTop: 30 }}>
+            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
+              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
+                Áp dụng Voucher giảm giá
+              </Text>
+              <Image
+                source={require('../img/sale.png')}
+                style={styles.img1}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              marginTop: 20,
+              height: 50,
+              flexDirection: 'row',
+              marginLeft: 20,
+            }}>
+            <View style={{ flex: 1 }}>
+              { voucher_idd == 0 ? <Text
+                style={{
+                  fontSize: 14.5,
+                  marginLeft: 10,
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}>
+                Chọn mã giảm giá của bạn
+              </Text> : <Text
+                style={{
+                  fontSize: 14.5,
+                  marginLeft: 10,
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                }}>
+                voucher_name
+              </Text>}
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>
               <Feather
@@ -292,7 +352,7 @@ const Pay = () => {
                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Tổng thanh toán:</Text>
               </View>
               <View style={{ marginLeft: 80 }}>
-                <Text>2.000.000đ</Text>
+                <Text>{formatPrice(TotalProductBill(cart))}</Text>
                 <Text>50.000đ</Text>
                 <Text>200.000đ</Text>
                 <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'red' }}>1.850.000đ</Text>
