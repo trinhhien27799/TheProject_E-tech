@@ -6,10 +6,14 @@ import { View } from 'react-native'
 import tailwind from 'twrnc';
 import CheckPayScreen from './CheckPayScreen';
 import { useNavigation } from '@react-navigation/native';
+import { getBill } from '../../Model/BillModel';
+import CheckPayScreenFix from './CheckPayScreenFix';
 
 const NewOrderScreen = () => {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(1);
     const navigation = useNavigation();
+
+    var data = null;
 
     const buttonValueList = [
         {
@@ -44,6 +48,8 @@ const NewOrderScreen = () => {
         navigation.navigate('NewOrderScreen')
     }
 
+    data = getBill(value);
+
     const ButtonCard = ({item}) => {
         return (
             <TouchableOpacity
@@ -64,7 +70,7 @@ const NewOrderScreen = () => {
                 style={tailwind `mt-10 ml-5`}
             />
 
-            <CheckPayScreen statusNumCheck={value}/>
+            <CheckPayScreenFix orderList={data}/>
         </View>
     )
 }

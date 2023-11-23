@@ -52,7 +52,7 @@ const CheckPayScreenFix = ({ orderList }) => {
                         </View>
     
                         <View>
-                            <OrderStatusChangeButton statusNum={item.status} />
+                            <OrderStatusChangeButton item={item} statusNum={item.status} />
                         </View>
                     </View>
                 </View>

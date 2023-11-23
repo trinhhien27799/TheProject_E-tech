@@ -79,7 +79,9 @@ const MainHeader = ({ navigation, route }) => {
 
             <View >
                 <View style={styles.icon}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        
+                    >
                         <Ionicons name="ios-notifications-outline" size={24} color="black" />
                     </TouchableOpacity>
                 </View>

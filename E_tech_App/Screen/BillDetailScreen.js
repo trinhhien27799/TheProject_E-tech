@@ -3,6 +3,8 @@ import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Butt
 import { Touchable } from 'react-native-web';
 import tailwind from 'twrnc'
 import OrderStatusHeader from '../Component/OrderStatusHeader';
+import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
+import { formatPrice } from '../utils/format';
 const BillDetailScreen = ({route}) => {
     const {item} = route.params;
 
@@ -115,7 +117,7 @@ const BillDetailScreen = ({route}) => {
                                     <View >
                                         <Text style={styles.nameItem}>{item.product_name}</Text>
                                         <Text style={styles.categoryItem}>Loại: </Text>
-                                        <Text style={styles.categoryItem}>Giá: {item.price}</Text>
+                                        <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
                                     </View>
                                     <View>
 
@@ -127,7 +129,7 @@ const BillDetailScreen = ({route}) => {
                                 </View>
                             </View>
                             <View style={styles.textTotal}>
-                                <Text style={styles.textTotal}>Tổng cộng: {item.price * item.quantity}</Text>
+                                <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
                             </View>
                         </View>
                     )}
@@ -138,19 +140,19 @@ const BillDetailScreen = ({route}) => {
                 <View style={styles.calContainer}>
                     <View style={styles.calView}>
                         <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
-                        <Text style={styles.textInfo}>56.000.000</Text>
+                        <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
                     </View>
                     <View style={styles.calView}>
                         <Text style={styles.textInfo}>Phí vận chuyển:</Text>
-                        <Text style={styles.textInfo}>{item.transport_fee}</Text>
+                        <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
                     </View>
                     <View style={styles.calView}>
                         <Text style={styles.textInfo}>Voucher giảm giá:</Text>
-                        <Text style={styles.textInfo}>-500.000</Text>
+                        <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
                     </View>
                     <View style={styles.calViewTotal}>
                         <Text style={styles.textBold}>Thành tiền:</Text>
-                        <Text style={styles.textBold}>56.510.000</Text>
+                        <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
                     </View>
                 </View>
                 <View style={styles.line}></View>
