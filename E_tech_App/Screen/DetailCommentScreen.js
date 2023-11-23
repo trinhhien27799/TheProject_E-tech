@@ -58,7 +58,7 @@ const DetailCommentScreen = () => {
             </View>
 
             {/* Comment line */}
-            <ProductComment starRating={sortRatingStar}/>
+            <ProductComment starRating={sortRatingStar} productID={'65590e5cc77a4a005ce12f3b'}/>
 
             {/* Bottom modal */}
             <BottomSheet ref={starOpenRef}>

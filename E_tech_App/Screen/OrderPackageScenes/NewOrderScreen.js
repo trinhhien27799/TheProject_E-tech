@@ -6,8 +6,9 @@ import { View } from 'react-native'
 import tailwind from 'twrnc';
 import CheckPayScreen from './CheckPayScreen';
 import { useNavigation } from '@react-navigation/native';
-import { getBill } from '../../Model/BillModel';
+import { getAllUserBill, getBill } from '../../Model/BillModel';
 import CheckPayScreenFix from './CheckPayScreenFix';
+import { getRealBill } from '../../CallApi/billAPI';
 
 const NewOrderScreen = () => {
     const [value, setValue] = useState(1);
@@ -19,7 +20,7 @@ const NewOrderScreen = () => {
         {
             id: 1,
             buttonName: 'Tất cả',
-            valueCheck: 0
+            valueCheck: null
         },
         {
             id: 2,
@@ -48,7 +49,17 @@ const NewOrderScreen = () => {
         navigation.navigate('NewOrderScreen')
     }
 
-    data = getBill(value);
+    data = getAllUserBill();
+    console.log(data);
+
+    const ChangeData = (valueNum) => {
+        if(valueNum != null){
+            return data.filter((item) => item.status == valueNum);
+        }
+        else{
+            return data;
+        }
+    }
 
     const ButtonCard = ({item}) => {
         return (
@@ -70,7 +81,7 @@ const NewOrderScreen = () => {
                 style={tailwind `mt-10 ml-5`}
             />
 
-            <CheckPayScreenFix orderList={data}/>
+            <CheckPayScreenFix orderList={ChangeData(value)}/>
         </View>
     )
 }

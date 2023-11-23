@@ -21,8 +21,7 @@ export const getBill = (statusNum) => {
     return data;
 }
 
-export const getAllUserBill = (statusNum) => {
-    console.log(statusNum);
+export const getAllUserBill = () => {
     const [data, setData] = useState([])
 
     const getData = async () => {

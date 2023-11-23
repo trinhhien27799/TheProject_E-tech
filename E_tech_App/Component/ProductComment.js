@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import tailwind from 'twrnc'
 import RatingStar from './RatingStar'
+import { getComment } from '../Model/CommentModel'
 
 const CommentCard = ({ item }) => {
     return (
@@ -10,13 +11,13 @@ const CommentCard = ({ item }) => {
             <View style={tailwind `flex-row`}>
                 <View style={tailwind `flex-row`}>
                     <Image 
-                        source={{ uri: item.avatar }} 
+                        source={{ uri: item.author.avatar }} 
                         style={tailwind `mt-3 w-10 h-10 rounded-full`}
                     />
                     <View>
                         <View style={tailwind `flex-row`}>
-                            <Text style={tailwind`ml-2 mt-2 font-bold`}>{item.username}</Text>
-                            <RatingStar starNum={item.starNum} style={'h-4 ml-37'}/>
+                            <Text style={tailwind`ml-2 mt-2 font-bold`}>{item.author.fullname}</Text>
+                            <RatingStar starNum={item.numStar} style={'h-4 ml-37'}/>
                         </View>
                         <Text style={tailwind`ml-2 mt-1`}>{item.date}</Text>
                     </View>              
@@ -25,7 +26,7 @@ const CommentCard = ({ item }) => {
 
             {/* Comment line */}
             <View style={tailwind `py-3`}>
-                <Text style={tailwind `justify-center text-base`}>{item.comment}</Text>
+                <Text style={tailwind `justify-center text-base`}>{item.content}</Text>
             </View>
 
             {/* Comment button */}
@@ -48,7 +49,7 @@ const CommentCard = ({ item }) => {
     )
 }
 
-const ProductComment = ({starRating}) => {
+const ProductComment = ({starRating, productID}) => {
     const commentArray = [
         {
             id: 1,
@@ -68,9 +69,11 @@ const ProductComment = ({starRating}) => {
         },
     ];
 
+    const commentData = getComment(productID);
+
     const StarRatingSort = (starNum) => {
         if(starNum != null){
-            const StarRatingSortData = commentArray.filter((item) => item.starNum == starNum);
+            const StarRatingSortData = commentData.filter((item) => item.numStar == starNum);
             return StarRatingSortData;
         }
         
@@ -84,7 +87,7 @@ const ProductComment = ({starRating}) => {
     return (
         <View>
             <FlatList
-                data={setData}
+                data={starRating}
                 renderItem={CommentCard}
             />
         </View>

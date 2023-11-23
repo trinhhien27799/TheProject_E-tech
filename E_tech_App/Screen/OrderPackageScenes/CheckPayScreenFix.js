@@ -73,6 +73,7 @@ const CheckPayScreenFix = ({ orderList }) => {
         <FlatList
             data={orderList}
             renderItem={ProductCard}
+            style={tailwind `h-1000`}
         />
     )
 }
