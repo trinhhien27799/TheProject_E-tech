@@ -22,12 +22,19 @@ const SplashScreen = () => {
             console.log(`splash :${error}`)
         } finally {
             const user = getUser();
-            navigation.navigate('ButtonNavigation', { registrationData: user });
+            console.log(user);
+            if(user == null) {
+                navigation.navigate('Login');
+            }
+            else{
+                navigation.navigate('ButtonNavigation', { registrationData: user });
+            }
         }
     }
     useEffect(() => {
         login()
     }, [])
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="white" />

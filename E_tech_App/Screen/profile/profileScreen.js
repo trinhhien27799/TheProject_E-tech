@@ -19,8 +19,7 @@ const Profile = ({ route }) => {
         const fetchData = async () => {
             const data = await getMyVoucher();
             const like = await getLike();
-            setLikeData(like);
-            
+            setLikeData(like); 
         }
         fetchData();
     }, [])
