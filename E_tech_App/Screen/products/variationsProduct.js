@@ -67,8 +67,12 @@ export default VariationsProducts = ({ route,setDataTest }) => {
                 numColumns={3}
 
             />
+
+            {/* Display Product */}
             <TextView title={'Chi tiết sản phẩm'} />
+
             <TextView title={'Sản phẩm tương tự'} />
+
             <FlatList
                 data={branData}
                 keyExtractor={item => item._id}
