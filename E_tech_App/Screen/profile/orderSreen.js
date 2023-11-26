@@ -6,7 +6,7 @@ import { StyleSheet, Image, View,Text, TouchableOpacity } from "react-native";
 export default OrderScreen = () => {
     const navigation = useNavigation();
     const hanldClick = ()=>{
-    navigation.navigate('OrderScreen');
+    navigation.navigate('NewOrderScreen');
     
 }
     return (

@@ -4,7 +4,7 @@ import RatingStar from '../RatingStar';
 import tailwind from 'twrnc';
 import { RadioButton } from 'react-native-paper';
 
-const StarRatingModal = () => {
+const StarRatingModal = ({onValueReturn}) => {
     const ChooseStarValueArray = [
         {
             id: 1, 
@@ -44,6 +44,10 @@ const StarRatingModal = () => {
         )
     }
 
+    const onHandleValue = () => {
+        onValueReturn(selectedStar);
+    }
+
     return (
         <ScrollView>
             <View style={tailwind`h-full`}>
@@ -66,7 +70,10 @@ const StarRatingModal = () => {
                         <Text style={tailwind `self-center`}>Bỏ chọn</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={tailwind`w-45 bg-green-300 py-3 justify-center rounded-md`}>
+                    <TouchableOpacity 
+                        style={tailwind`w-45 bg-green-300 py-3 justify-center rounded-md`}
+                        onPress={onHandleValue}
+                    >
                         <Text style={tailwind `self-center`}>Đồng ý</Text>
                     </TouchableOpacity>
                 </View>

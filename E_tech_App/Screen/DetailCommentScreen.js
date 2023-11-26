@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Image, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
@@ -11,6 +11,14 @@ import ProductVariationModal from '../Component/CommentModal/ProductVariationMod
 const DetailCommentScreen = () => {
     const starOpenRef = useRef(null);
     const variationOpenRef = useRef(null);
+
+    const [sortRatingStar, setSortRatingStar] = useState(null);
+
+    const handleRatingStarValue = (returnedValue) => {
+        setSortRatingStar(returnedValue);
+    }
+
+    console.log(sortRatingStar);
 
     return (
         <View style={tailwind `h-full`}>
@@ -50,11 +58,11 @@ const DetailCommentScreen = () => {
             </View>
 
             {/* Comment line */}
-            <ProductComment />
+            <ProductComment starRating={sortRatingStar} productID={'65590e5cc77a4a005ce12f3b'}/>
 
             {/* Bottom modal */}
             <BottomSheet ref={starOpenRef}>
-                <StarRatingModal/>
+                <StarRatingModal onValueReturn={handleRatingStarValue}/>
             </BottomSheet>
 
             <BottomSheet ref={variationOpenRef}>

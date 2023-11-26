@@ -86,6 +86,9 @@ const RadioView = ({ Checked }) => {
   return (
     <View>
       <Checkbox status={Checked ? 'checked' : 'unchecked'} />
+            )
+          }}
+        />
     </View>
   )
 }
@@ -219,9 +222,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   listCart: {
-    maxHeight: 400,
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: 20
   },
   header: {
     height: 50,

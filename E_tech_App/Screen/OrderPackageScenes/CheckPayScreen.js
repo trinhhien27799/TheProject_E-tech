@@ -60,14 +60,6 @@ const CheckPayScreen = ({ statusNumCheck }) => {
         )
     }
 
-    // console.log(statusNumCheck);
-    // var newData = [];
-    // if (statusNumCheck != 0) {
-    //     newData = ListOrder.filter((item) => item.shipStatus === statusNumCheck);
-    // }
-    // else {
-    //     newData = ListOrder;
-    // }
     const orderData = getBill(statusNumCheck);
     console.log(orderData);
 

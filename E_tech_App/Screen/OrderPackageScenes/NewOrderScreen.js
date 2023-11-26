@@ -6,20 +6,25 @@ import { View } from 'react-native'
 import tailwind from 'twrnc';
 import CheckPayScreen from './CheckPayScreen';
 import { useNavigation } from '@react-navigation/native';
+import { getAllUserBill, getBill } from '../../Model/BillModel';
+import CheckPayScreenFix from './CheckPayScreenFix';
+import { getRealBill } from '../../CallApi/billAPI';
 
 const NewOrderScreen = () => {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(1);
     const navigation = useNavigation();
+
+    var data = null;
 
     const buttonValueList = [
         {
             id: 1,
             buttonName: 'Tất cả',
-            valueCheck: 0
+            valueCheck: null
         },
         {
             id: 2,
-            buttonName: 'Xác nhận thanh toán',
+            buttonName: 'Chờ xác nhận',
             valueCheck: 1
         },
         {
@@ -32,11 +37,28 @@ const NewOrderScreen = () => {
             buttonName: 'Đã giao hàng',
             valueCheck: 3
         },
+        {
+            id: 5,
+            buttonName: 'Đã hủy',
+            valueCheck: -1
+        },
     ];
 
     const setValueFunction = (inValue) => {
         setValue(inValue);
         navigation.navigate('NewOrderScreen')
+    }
+
+    data = getAllUserBill();
+    console.log(data);
+
+    const ChangeData = (valueNum) => {
+        if(valueNum != null){
+            return data.filter((item) => item.status == valueNum);
+        }
+        else{
+            return data;
+        }
     }
 
     const ButtonCard = ({item}) => {
@@ -59,7 +81,7 @@ const NewOrderScreen = () => {
                 style={tailwind `mt-10 ml-5`}
             />
 
-            <CheckPayScreen statusNumCheck={value}/>
+            <CheckPayScreenFix orderList={ChangeData(value)}/>
         </View>
     )
 }

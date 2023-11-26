@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons"
 import React, { useEffect, useRef, useState } from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity, FlatList } from "react-native"
 import { getAllProduct } from "../../CallApi/productApi"
+import { useNavigation } from "@react-navigation/native"
 
 
 const MainHeader = ({ navigation, route }) => {
@@ -79,7 +80,9 @@ const MainHeader = ({ navigation, route }) => {
 
             <View >
                 <View style={styles.icon}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('NotificationsScreen')}
+                    >
                         <Ionicons name="ios-notifications-outline" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
