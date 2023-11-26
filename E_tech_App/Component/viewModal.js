@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import { addCart } from "../CallApi/cartApi";
 import { formatPrice } from "../utils/format";
 
-const ViewModal = ({ route, data }) => {
+const ViewModal = ({ data }) => {
     
     const [quantity, setQuantity] = useState(1);
     const [dataCart, setDataCart] = useState({
@@ -28,7 +28,7 @@ const ViewModal = ({ route, data }) => {
             <Image source={{ uri: data.image }} style={styles.image} />
             <View style={styles.priceContainer}>
                 <Text style={styles.price}>{formatPrice(data.price)}</Text>
-                <Text >Kho: {route.route.total_quantity}</Text>
+                <Text >Kho: {data.quantity}</Text>
             </View>
             <View style={styles.infoItem}>
                 <Text style={styles.title}>Màu sắc</Text>

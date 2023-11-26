@@ -5,14 +5,15 @@ import { StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import ViewModal from "../../Component/viewModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Disclosure } from "@headlessui/react";
 
-export default FooterProduct = ({ route }) => {
+export default FooterProduct = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [dataIndex,setDataIndex] = useState([]);
+    const [dataIndex, setDataIndex] = useState([]);
 
-   
-    const toggleModal = async() => {
-        const dataString  = await AsyncStorage.getItem('dataSelect');
+
+    const toggleModal = async () => {
+        const dataString = await AsyncStorage.getItem('dataSelect');
         const data = JSON.parse(dataString);
         setDataIndex(data);
         setIsModalVisible(!isModalVisible);
@@ -39,7 +40,7 @@ export default FooterProduct = ({ route }) => {
                 style={{ margin: 0 }}
             >
                 <View style={styles.modalContainer}>
-                    <ViewModal route={route} data={dataIndex}/>
+                    <ViewModal data={dataIndex} />
                 </View>
             </Modal>
         </View>
@@ -49,12 +50,14 @@ export default FooterProduct = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: 50,
+        flexGrow: 0,
+        paddingVertical: 16,
         justifyContent: 'space-around',
         flexDirection: "row"
     },
     boxButton: {
-        flex: 1,
+        width: Dimensions.get('window').width * 0.4,
+        height:45,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
@@ -63,7 +66,6 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: 'white',
-        // padding: 20,
         height: Dimensions.get('window').height * 0.5,
         marginTop: Dimensions.get('window').height * 0.5,
         borderRadius: 10,
