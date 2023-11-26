@@ -68,7 +68,7 @@ const renderItem = ({ item }) => {
 }
 
 const styles = StyleSheet.create({
-    image: { height: 220, width: card_width, alignItems: 'center', resizeMode: 'cover', }
+    image: { height: 200, width: card_width, alignItems: 'center', resizeMode: 'cover', }
 })
 
 export default Banner

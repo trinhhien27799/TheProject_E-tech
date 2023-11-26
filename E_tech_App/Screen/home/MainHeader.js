@@ -93,7 +93,7 @@ const MainHeader = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 18,
+        fontSize: 14,
         height: 35,
         color: 'red',
         fontWeight: '300',
@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flexGrow: 0,
-        paddingVertical: 14,
+        paddingTop: 14,
+        paddingBottom:28,
         backgroundColor: "#5182CC",
         flexDirection: 'row',
         justifyContent: 'space-around'

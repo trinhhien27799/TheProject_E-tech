@@ -54,7 +54,8 @@ const ListBrand = (props) => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 8,
-        flex: 1
+        flex: 1, 
+        backgroundColor: 'white',
     },
     title: {
         marginStart: 8,
