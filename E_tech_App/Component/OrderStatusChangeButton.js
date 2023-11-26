@@ -11,7 +11,7 @@ const OrderStatusChangeButton = ({ statusNum, item }) => {
 
     const styleFeedback = 'self-end p-2 bg-gray-500 rounded-md';
     const styleCancel = 'self-end p-2 bg-red-500 rounded-md ml-2';
-    const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md';
+    const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md ml-2';
 
     const [visible, setVisible] = useState(false);
 

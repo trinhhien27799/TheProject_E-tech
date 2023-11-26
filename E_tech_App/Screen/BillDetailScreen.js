@@ -8,59 +8,6 @@ import { formatPrice } from '../utils/format';
 const BillDetailScreen = ({route}) => {
     const {item} = route.params;
 
-    const data = [
-        {
-            id: 1,
-            image: '',
-            name: 'Iphone 15',
-            category: 'Đen/128GB',
-            price: '$62.50',
-            quantity: '1',
-            status: 'Còn hàng',
-            total: '30.000.000'
-        },
-        {
-            id: 2,
-            image: '',
-            name: 'Iphone 14',
-            category: 'Đen/128GB',
-            price: '$62.50',
-            quantity: '1',
-            status: 'Còn hàng',
-            total: '70.000.000'
-        },
-        {
-            id: 3,
-            image: '',
-            name: 'Iphone 13',
-            category: 'Đen/128GB',
-            price: '$62.50',
-            quantity: '1',
-            status: 'Còn hàng',
-            total: '50.000.000'
-        },
-        {
-            id: 4,
-            image: '',
-            name: 'Iphone 12',
-            category: 'Đen/128GB',
-            price: '$62.50',
-            quantity: '1',
-            status: 'Còn hàng',
-            total: '45.000.000'
-        },
-        {
-            id: 5,
-            image: '',
-            name: 'Iphone 11',
-            category: 'Đen/128GB',
-            price: '$62.50',
-            quantity: '1',
-            status: 'Còn hàng',
-            total: '40.000.000'
-        },
-    ]
-
     const currentDate = item.time;
     const splitDate = currentDate.split('T');
     const getDate = splitDate[0];
