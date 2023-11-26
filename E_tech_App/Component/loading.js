@@ -1,7 +1,7 @@
 import { Dimensions, Text, View, StyleSheet } from "react-native"
 import LottieView from 'lottie-react-native'
 
-const LoadingWidget = ({isLoading}) => {
+const LoadingWidget = () => {
     return (
         <View>
             <LottieView
