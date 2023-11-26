@@ -13,9 +13,11 @@ export const setUserId = (newUserId) => {
     token = newToken
   }
   
+  
   export const getUser = () => {
     return user
   }
+<<<<<<< HEAD
   export const getUserId = () => {
     return userId
   }
@@ -23,3 +25,6 @@ export const setUserId = (newUserId) => {
   export const getToken = () => {
     return token
   }
+=======
+  
+>>>>>>> parent of 478c480 (Merge branch 'main' into update)

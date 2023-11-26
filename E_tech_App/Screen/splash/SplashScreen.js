@@ -13,10 +13,13 @@ const SplashScreen = () => {
             const response = await autoLogin();
             if (response.code == 200) {
                 setUser(response.user)
+<<<<<<< HEAD
                 console.log("Đăng nhập thành công")
             } else {
                 navigation.navigate('Login')
                 setToken(null)
+=======
+>>>>>>> parent of 478c480 (Merge branch 'main' into update)
             }
         } catch (error) {
             console.log(`splash :${error}`)

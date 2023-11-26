@@ -113,7 +113,6 @@ export default VariationsProducts = ({ route, setDataTest }) => {
 const ItemView = ({ route, isSelected, onPress, selectedRAMROM }) => {
     const select = selectedRAMROM == route.ram + '/' + route.rom;
 
-
     return (
         <View>
             <TouchableOpacity
@@ -134,7 +133,11 @@ const TextView = ({ title }) => (
 
     </View>
 );
+<<<<<<< HEAD
 const ItemViewVersion = ({ route, isSelected, onPress }) => {
+=======
+const ItemViewVersion = ({ item, isSelected, onPress }) => {
+>>>>>>> parent of 478c480 (Merge branch 'main' into update)
 
     return (
         <TouchableOpacity

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 export const API_USER_URL = 'http://10.0.2.2:3000';
+=======
+export const API_USER_URL = 'http://192.168.1.110:3000';
+>>>>>>> parent of 478c480 (Merge branch 'main' into update)
 
 export const API_BASE_URL = API_USER_URL

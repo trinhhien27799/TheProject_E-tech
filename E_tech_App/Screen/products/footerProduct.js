@@ -5,9 +5,15 @@ import { StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import ViewModal from "../../Component/viewModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+<<<<<<< HEAD
 
 export default FooterProduct = ({ route }) => {
     
+=======
+import { Disclosure } from "@headlessui/react";
+
+export default FooterProduct = () => {
+>>>>>>> parent of 478c480 (Merge branch 'main' into update)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataIndex,setDataIndex] = useState([]);
 
@@ -15,7 +21,6 @@ export default FooterProduct = ({ route }) => {
     const toggleModal = async() => {
         const dataString  = await AsyncStorage.getItem('dataSelect');
         const data = JSON.parse(dataString);
-        console.log(data);
         setDataIndex(data);
         setIsModalVisible(!isModalVisible);
     };
