@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native";
 import { addCart } from "../CallApi/cartApi";
 import { formatPrice } from "../utils/format";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const ViewModal = ({ route, data }) => {
-    console.log(route);
-    console.log("================================================");
-    console.log(data);
+
+
+const ViewModal = ({ data }) => {
+    
     const [quantity, setQuantity] = useState(1);
     const [dataCart, setDataCart] = useState({
         "variations_id": data._id,
@@ -29,8 +28,8 @@ const ViewModal = ({ route, data }) => {
             </View>
             <Image source={{ uri: data.image_preview }} style={styles.image} />
             <View style={styles.priceContainer}>
-                <Text style={styles.price}>{formatPrice(data.max_price)}</Text>
-                <Text >Kho: {route.route.total_quantity}</Text>
+                <Text style={styles.price}>{formatPrice(data.price)}</Text>
+                <Text >Kho: {data.quantity}</Text>
             </View>
             <View style={styles.infoItem}>
                 <Text style={styles.title}>Màu sắc</Text>

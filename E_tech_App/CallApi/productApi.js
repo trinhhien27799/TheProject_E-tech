@@ -25,7 +25,20 @@ const getAllProductByFilter = async (data) => {
 const getItemProduct = async (productId) => {
   try {
     const response = await api.post(`/product/${productId}`, {
-      username: getUser() ? getUser().username : null
+      userId: getUser() ? getUser()._id : null
+    })
+    console.log(response);
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+const handleLike = async (boolean, productId) => {
+  try {
+    const option = boolean ? 'add' : 'delete'
+    const response = await api.post(`/favorite/${option}`, {
+      productId: productId
     })
     console.log(response);
     return response.data
@@ -35,7 +48,7 @@ const getItemProduct = async (productId) => {
 }
 
 
-export { getAllProduct, getAllProductByFilter, getItemProduct }
+export { getAllProduct, getAllProductByFilter, getItemProduct, handleLike }
 
 export const getLike = async () => {
   try {
