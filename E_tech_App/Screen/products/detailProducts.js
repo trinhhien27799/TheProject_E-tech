@@ -17,7 +17,6 @@ const DetailPoducts = ({route})=>{
     const [price,setPrice] = useState(null);
     const navigation = useNavigation();
     useEffect(() => {
-        // Update the image when dataTest changes
         setImage(dataTest ? dataTest.image : route.params.route.image_preview);
         setPrice(dataTest?dataTest.price:route.params.route.max_price);
       }, [dataTest]);

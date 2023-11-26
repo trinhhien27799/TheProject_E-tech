@@ -11,11 +11,11 @@ const SplashScreen = () => {
     const login = async () => {
         try {
             const response = await autoLogin();
-            // console.log(response);
             if (response.code == 200) {
                 setUser(response.user)
                 console.log("Đăng nhập thành công")
             } else {
+                navigation.navigate('Login')
                 setToken(null)
             }
         } catch (error) {
