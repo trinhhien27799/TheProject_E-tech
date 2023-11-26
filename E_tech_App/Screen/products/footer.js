@@ -1,35 +1,39 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Dimensions, View, Text, TouchableOpacity, Image } from "react-native";
-import { StyleSheet } from "react-native";
-import Modal from "react-native-modal";
-import ViewModal from "../../Component/viewModal";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Disclosure } from "@headlessui/react";
+import { Ionicons } from "@expo/vector-icons"
+import React, { useState } from "react"
+import { Dimensions, View, Text, TouchableOpacity, Image } from "react-native"
+import { StyleSheet } from "react-native"
+import Modal from "react-native-modal"
+import ViewModal from "./viewModal"
+import { getProductSelected } from "../../session"
 
 export default FooterProduct = () => {
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [dataIndex, setDataIndex] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [dataIndex, setDataIndex] = useState([])
+    const [option, setOption] = useState(false)
 
 
     const toggleModal = async () => {
-        const dataString = await AsyncStorage.getItem('dataSelect');
-        const data = JSON.parse(dataString);
-        console.log(data);
-        setDataIndex(data);
-        setIsModalVisible(!isModalVisible);
-    };
+        const data = getProductSelected()
+        setDataIndex(data)
+        setIsModalVisible(!isModalVisible)
+    }
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={toggleModal}
+                onPress={() => {
+                    toggleModal()
+                    setOption(false)
+                }}
                 style={[{ backgroundColor: '#1E90FF' }, styles.boxButton]}
             >
                 <Text style={{ color: 'white' }}>Thêm vào giỏ hàng</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={toggleModal}
+                onPress={() => {
+                    toggleModal()
+                    setOption(true)
+                }}
                 style={[{ borderColor: '#1E90FF', borderWidth: 1 }, styles.boxButton]}
             >
                 <Text>Mua ngay</Text>
@@ -42,12 +46,12 @@ export default FooterProduct = () => {
                 style={{ margin: 0 }}
             >
                 <View style={styles.modalContainer}>
-                    <ViewModal data={dataIndex} />
+                    <ViewModal data={dataIndex} setIsModalVisible={setIsModalVisible} option={option} />
                 </View>
             </Modal>
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
     },
     boxButton: {
         width: Dimensions.get('window').width * 0.4,
-        height:45,
+        height: 45,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 20,
@@ -79,4 +83,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#1E90FF',
         borderRadius: 5,
     },
-});
+})
