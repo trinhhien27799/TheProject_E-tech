@@ -33,9 +33,7 @@ const BestSeller = () => {
 
   const renderItem = ({ item, index }) => {
     const handleItem = async () => {
-      // const dataItem = await getItemProduct(item._id);
-      // navigation.navigate('DetailPoducts',{route:item,dataItem});
-      navigation.navigate('DetailPoducts',{route:item});
+      navigation.navigate('DetailPoducts',{productId:item._id});
     }
     return (
       <View style={styles.body}>

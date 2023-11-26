@@ -14,15 +14,11 @@ const SplashScreen = () => {
             if (response.code == 200) {
                 setUser(response.user)
                 console.log("Đăng nhập thành công")
-            } else {
-                navigation.navigate('Login')
-                setToken(null)
             }
         } catch (error) {
             console.log(`splash :${error}`)
         } finally {
             const user = getUser();
-            console.log(user);
             if(user == null) {
                 navigation.navigate('Login');
             }
