@@ -68,6 +68,7 @@ const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
     const select = selectedRAMROM == item.ram + '/' + item.rom;
 
 
+
     return (
         <View>
             <TouchableOpacity
@@ -87,7 +88,9 @@ const TextView = ({ title }) => (
         <Text style={{ marginVertical: 10, fontWeight: 'bold', fontSize: 15 }}>{title}</Text>
     </View>
 );
+
 const ItemViewVersion = ({ item, isSelected, onPress }) => {
+
 
     return (
         <TouchableOpacity

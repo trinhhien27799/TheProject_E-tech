@@ -13,6 +13,7 @@ const SplashScreen = () => {
             const response = await autoLogin();
             if (response.code == 200) {
                 setUser(response.user)
+                console.log("Đăng nhập thành công")
             }
         } catch (error) {
             console.log(`splash :${error}`)

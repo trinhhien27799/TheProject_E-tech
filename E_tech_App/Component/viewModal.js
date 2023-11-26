@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import { addCart } from "../CallApi/cartApi";
 import { formatPrice } from "../utils/format";
 
+
 const ViewModal = ({ data }) => {
     
     const [quantity, setQuantity] = useState(1);
@@ -14,10 +15,10 @@ const ViewModal = ({ data }) => {
     })
     const navigation = useNavigation();
     const handleAdd = async () => {
-        navigation.goBack();
         await addCart({ dataCart: dataCart });
+        await AsyncStorage.removeItem('dataSelect');
+        navigation.navigate('Cart');
     }
-    console.log(data.ram == null);
     return (
         <ScrollView>
             <View style={styles.header}>
@@ -25,7 +26,7 @@ const ViewModal = ({ data }) => {
                     <Ionicons name="close" size={30} color="black" />
                 </TouchableOpacity>
             </View>
-            <Image source={{ uri: data.image }} style={styles.image} />
+            <Image source={{ uri: data.image_preview }} style={styles.image} />
             <View style={styles.priceContainer}>
                 <Text style={styles.price}>{formatPrice(data.price)}</Text>
                 <Text >Kho: {data.quantity}</Text>

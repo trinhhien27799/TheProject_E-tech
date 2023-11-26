@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Disclosure } from "@headlessui/react";
 
 export default FooterProduct = () => {
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataIndex, setDataIndex] = useState([]);
 
@@ -15,6 +16,7 @@ export default FooterProduct = () => {
     const toggleModal = async () => {
         const dataString = await AsyncStorage.getItem('dataSelect');
         const data = JSON.parse(dataString);
+        console.log(data);
         setDataIndex(data);
         setIsModalVisible(!isModalVisible);
     };
