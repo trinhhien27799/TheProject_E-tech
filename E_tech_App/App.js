@@ -39,7 +39,7 @@ import MyVoucher from './Screen/MyVoucher';
 import ShippingMethod from './Screen/ShippingMethod';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
-import DetailProducts from './Screen/products/detailProducts';
+import DetailProducts from './Screen/products/main';
 import ProductComment from './Component/ProductComment';
 import SplashScreen from './Screen/splash/SplashScreen';
 import DetailCommentScreen from './Screen/DetailCommentScreen';
