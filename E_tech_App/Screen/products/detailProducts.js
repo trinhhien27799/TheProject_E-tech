@@ -1,31 +1,61 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, Dimensions, FlatList } from "react-native";
-import FooterProduct from "./footerProduct";
-import BodyProducts from "./bodyProducts";
-import colors from "../../Component/colors";
-import { useNavigation } from "@react-navigation/native";
-import useItemProduct from "../../Component/hooks/useItemProducts";
-import LoadingWidget from "../../Component/loading";
-import { getImage } from "../../Component/provider/itemProvider";
-const DetailProducts = ({ route }) => {
-    const { loading, dataItem } = useItemProduct(route.params.route._id);
-    const [dataTest, setDataTest] = useState(null);
-    const variations = dataItem.variations;
-    const [image, setImage] = useState(null);
-    const [borderIndex, setBorderIndex] = useState(null);
-    const [price, setPrice] = useState(null);
-    const navigation = useNavigation();
+
+import { Ionicons } from "@expo/vector-icons"
+import React, { useEffect, useState } from "react"
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, Dimensions } from "react-native"
+import FooterProduct from "./footerProduct"
+import BodyProducts from "./bodyProducts"
+import colors from "../../Component/colors"
+import { useNavigation, useRoute } from "@react-navigation/native"
+import { getItemProduct } from "../../CallApi/productApi"
+import LoadingWidget from "../../Component/loading"
+import VariationsProduct from "./variationsProduct"
+import { InfoProduct } from "./info"
+import { Rule } from "./rule"
+const DetailPoducts = () => {
+    const route = useRoute()
+    const [product, setProduct] = useState({})
+    const [loading, setLoading] = useState(true)
+    const [dataTest, setDataTest] = useState(null)
+    const [image, setImage] = useState(null)
+    const [borderIndex, setBorderIndex] = useState(null)
+    const navigation = useNavigation()
+
+    const getData = async () => {
+        try {
+            const productId = route.params.productId
+            const response = await getItemProduct(productId)
+            setProduct(response)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
-        // Update the image when dataTest changes
-        setImage(dataTest ? dataTest.image : route.params.route.image_preview);
-        setPrice(dataTest ? dataTest.price : route.params.route.max_price);
-    }, [dataTest]);
+        getData()
+    }, [])
+
+    useEffect(() => {
+        setImage(dataTest ? dataTest.image : product.image_preview)
+    }, [dataTest, product])
+
+
+    const data = [
+        { type: 0 },
+        { type: 1 },
+        { type: 2 },
+        { type: 3 }
+    ]
+    const sections = [{ data, key: 'section' }]
+
+    
     return (
         <View style={styles.container}>
             {
                 loading ?
                     <LoadingWidget isLoading={loading} /> :
+                    <LoadingWidget /> :
                     <>
                         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
                             <View style={{ flex: 1 }}>
@@ -35,6 +65,8 @@ const DetailProducts = ({ route }) => {
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                     {
                                         variations.map((item, index) => (
+                                       product.variations.map((item, index) => (
+
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     setImage(item.image)
@@ -43,8 +75,9 @@ const DetailProducts = ({ route }) => {
                                             >
                                                 <Image
                                                     key={index}
-                                                    source={{ uri: item.image }}
-                                                    style={{ height: 100, width: 100, margin: 5, borderRadius: 15, borderColor: borderIndex == index ? colors.blue : null, borderWidth: 1 }} />
+
+                                                    style={{ height: 100, width: 100, margin: 5, borderRadius: 15, borderColor: borderIndex == index ? colors.blue : null }} />
+
                                             </TouchableOpacity>
                                         ))
                                     }
@@ -53,19 +86,24 @@ const DetailProducts = ({ route }) => {
                                 <TouchableOpacity
                                     style={styles.viewPrevious}
                                     onPress={() => {
-                                        navigation.goBack();
+                                        navigation.goBack()
+
                                     }}
                                 >
                                     <Ionicons name="arrow-back" size={20} />
                                 </TouchableOpacity>
                             </View>
-                            <BodyProducts route={dataItem} setDataTest={setDataTest} price={price} />
+
+                            <BodyProducts productId={product._id} productName={product.product_name} price={product.min_price} vote={product.vote} isLike={product.like}/>
+                            <Rule />
+                            <VariationsProduct variations={product.variations} />
+                            <InfoProduct description={product.description} />
                         </ScrollView>
-                        <FooterProduct route={route.params} />
+                        <FooterProduct/>
                     </>
             }
         </View>
-    );
+    )
 }
 const styles = StyleSheet.create({
     container: {
@@ -91,6 +129,6 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height * 0.5,
         width: '100%',
     }
-});
+})
 
-export default DetailProducts;
+export default DetailPoducts

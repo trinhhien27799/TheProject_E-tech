@@ -1,95 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { TextInput } from 'react-native-web';
-import axios from 'axios';
-import { getCart } from '../../CallApi/cartApi';
+import React, { useState } from 'react';
+import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tailwind from 'twrnc';
 import { TotalProductBill } from '../../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../../utils/format';
-
+import CartHooks from '../../Component/hooks/cartHook';
+import LoadingWidget from "../../Component/loading";
+import { Checkbox } from 'react-native-paper';
 const CartScreen = () => {
   const navigation = useNavigation();
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    const fetchData =async()=>{
-      const data = await getCart();
-      setCart(data);
-    }
-    fetchData();
-  }, []);
-
+  const { isLoading, cart, handleDelete } = CartHooks();
+  const [checked, setChecked] = useState(false);
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
+      {
+        isLoading ?
+          <LoadingWidget isLoading={isLoading} /> :
+          <>
+            <SafeAreaView style={{ flex: 1 }}>
+              <View style={styles.header}>
+                <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
+              </View>
 
-        <View style={styles.header}>
-          <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
-        </View>
+              <FlatList
+                data={cart}
+                style={styles.listCart}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.cartItem}>
+                      <TouchableOpacity
+                        onPress={() => { setChecked(!checked) }}>
+                        <RadioView Checked={checked} />
 
-        {/* List Cart */}
-        <FlatList
-          data={cart}
-          style={styles.listCart}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
+                      </TouchableOpacity>
+                      <View style={styles.imgItemView}>
+                        <Image style={styles.imgItem} source={{ uri: item.image }} />
+                      </View>
+                      <View style={styles.nameItemView}>
+                        <View >
+                          <Text style={tailwind`text-base font-bold`}>{item.product_name}</Text>
+                        </View>
+                      </View>
+                      <View style={styles.priceItemView}>
+                        <View>
+                          <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
+                          <Text style={styles.textQuantity}>{item.quantity}</Text>
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            console.log(item._id);
+                            handleDelete(item._id)
+                          }}
+                        >
+                          <Text style={styles.textDelete}>Xóa</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
 
-              // Cart Item
-              <View style={styles.cartItem}>             
-                <View style={styles.imgItemView}>
-                  <Image style={styles.imgItem} source={{uri:item.image}}/>
-                </View>
-  
-                <View style={styles.nameItemView}>
-                  <View >
-                    <Text style={tailwind `text-base font-bold`}>{item.product_name}</Text>
-                    {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
+
+                  )
+                }}
+              />
+
+              <View style={tailwind`border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center mt-50`}>
+                <View style={tailwind`p-5`}>
+                  <View style={styles.productTotal}>
+                    <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
+                    <Text style={styles.productTotalPriceText}>{formatPrice(TotalProductBill(cart))}</Text>
                   </View>
-                  {/* <View>
-                    <Text style={styles.statusItem}>{item.status}</Text>
-                  </View> */}
-                </View>
-  
-                <View style={styles.priceItemView}>
-                  <View>
-                    <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
-  
-                    <Text style={styles.textQuantity}>{item.quantity}</Text>
-                  </View>
-                  <TouchableOpacity
-                    
-                  >
-                    <Text style={styles.textDelete}>Xóa</Text>
-                  </TouchableOpacity>  
+                </View >
+                <View style={styles.confirmContainer}>
+                  <TouchableOpacity style={styles.buttonPayment} onPress={() => { navigation.navigate('PayScreen') }}>
+                    <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-  
-  
+            </SafeAreaView>
+          </>
+      }
+    </View>
+  )
+}
+const RadioView = ({ Checked }) => {
+  return (
+    <View>
+      <Checkbox status={Checked ? 'checked' : 'unchecked'} />
             )
           }}
         />
-
-        {/* Payment Container */}
-        <View style={tailwind `border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center`}>
-          <View style={tailwind `p-5`}>
-            <View style={styles.productTotal}>
-              <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
-              <Text style={styles.productTotalPriceText}>{formatPrice(TotalProductBill(cart))}</Text>
-            </View>
-          </View >
-          <View style={styles.confirmContainer}>
-            <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('PayScreen')}}>
-              <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
-            
-            </TouchableOpacity>
-          </View>
-        </View>
-
-
-      </SafeAreaView>
     </View>
   )
 }

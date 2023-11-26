@@ -28,7 +28,7 @@ const Pay = (voucher_idd, voucher_name) => {
 
 
   const [listIDcart, setListIDcart] = useState([]);
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState('123 Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội');
   const [transport_fee, setTransport_fee] = useState([]);
 
   const [note, setNote] = useState([]);

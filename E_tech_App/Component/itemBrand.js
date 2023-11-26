@@ -4,8 +4,11 @@ import StarRating from "./startRating"; // Assuming it's a correct component nam
 import { Ionicons } from "@expo/vector-icons";
 import { toggleLike } from "../CallApi/productApi";
 import { formatPrice } from "../utils/format";
+import { useNavigation } from "@react-navigation/native";
+import useItemProduct from "./hooks/useItemProducts";
 
 const IteamBrand = ({ route }) => {
+  
     const [checkHeart, setCheckHeart] = useState(false);
   useEffect(() => {
     const fectData = async () => {
@@ -24,8 +27,12 @@ const IteamBrand = ({ route }) => {
 
     }
   }
+  const navigation = useNavigation();
     return (
-        <View style={styles.item} >
+        <TouchableOpacity style={styles.item} onPress={()=>{
+          navigation.goBack();
+          navigation.navigate('DetailPoducts',{route:route});
+        }}>
             <Image style={styles.image} source={{ uri: route.image_preview }} />
             <Text style={styles.productName}>{route.product_name}</Text>
             <Text style={styles.textPrice}>{formatPrice(route.min_price)}</Text>
@@ -40,7 +47,7 @@ const IteamBrand = ({ route }) => {
                     }
                 </TouchableOpacity>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

@@ -1,12 +1,19 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import tailwind from 'twrnc'
 import { getBill } from '../Model/BillModel'
 import { addCart } from '../CallApi/cartApi'
+import { Dialog, Provider } from 'react-native-paper'
 
 const OrderStatusChangeButton = ({ statusNum, item }) => {  
     const navigation = useNavigation();
+
+    const styleFeedback = 'self-end p-2 bg-gray-500 rounded-md';
+    const styleCancel = 'self-end p-2 bg-red-500 rounded-md ml-2';
+    const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md';
+
+    const [visible, setVisible] = useState(false);
 
     const AddCartArray = (productArray) => {
         console.log(productArray.length);
@@ -20,35 +27,65 @@ const OrderStatusChangeButton = ({ statusNum, item }) => {
 
     console.log(item); 
 
-    if (statusNum == 3) {
-        return (
-            <View>
-                <View style={tailwind`w-full flex-row justify-end`}>
-                    <TouchableOpacity style={tailwind`self-end p-3 bg-gray-500 rounded-md mr-2`}>
-                        <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={tailwind`self-end p-3 bg-blue-500 rounded-md`}
-                        onPress={() => AddCartArray(item.products)}
-                    >
-                        <Text style={tailwind`text-white font-bold`}>Mua Lại</Text>
-                    </TouchableOpacity>
+    switch (statusNum) {
+        case 2:
+            return (
+                <View>
+                    <View style={tailwind`w-full flex-row justify-end`}>
+                        <TouchableOpacity style={tailwind `${styleFeedback}`}>
+                            <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={tailwind `${styleBuyAgain}`}
+                            onPress={() => AddCartArray(item.products)}
+                        >
+                            <Text style={tailwind`text-white font-bold`}>Mua Lại</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        )
-    }
-    else {
-        return (
-            <View>
-                <View style={tailwind`w-full flex-row justify-end`}>
-                    <TouchableOpacity style={tailwind`self-end p-3 bg-gray-500 rounded-md mr-2`}>
-                        <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
-                    </TouchableOpacity>
+            )
+            break;
+    
+        case -1:
+            return (
+                <View>
+                    <View style={tailwind`w-full flex-row justify-end`}>
+                        <TouchableOpacity style={tailwind `${styleFeedback}`}>
+                            <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        )
-    }
+            )
+            break;
 
+        case 2:
+            return (
+                <View>
+                    <View style={tailwind`w-full flex-row justify-end`}>
+                        <TouchableOpacity style={tailwind `${styleFeedback}`}>
+                            <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+            break;    
+
+        default:
+            return (
+                <View style={tailwind`w-full flex-row justify-end`}>
+                    <TouchableOpacity style={tailwind`${styleFeedback}`}>
+                        <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setVisible(true)}
+                        style={tailwind`${styleCancel}`}
+                    >
+                        <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>
+                    </TouchableOpacity>
+                </View>     
+            )
+            break;
+    }
 }
 
 export default OrderStatusChangeButton

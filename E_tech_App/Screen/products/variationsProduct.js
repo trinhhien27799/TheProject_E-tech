@@ -1,65 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Dimensions, FlatList, TouchableOpacity } from "react-native";
-import { getBrandName } from "../../CallApi/productApi";
-import IteamBrand from "../../Component/itemBrand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatPrice } from "../../utils/format";
-export default VariationsProducts = ({ route,setDataTest }) => {
-    const [branData, setBrandData] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getBrandName({ brand_name: route.brand_name });
-            setBrandData(data);
-            
-        }
-        fetchData();
-    }, []);
+
+
+const VariationsProducts = ({ variations }) => {
+
+
     const [selectedColorIndex, setSelectedColorIndex] = useState(0);
     const [selectVersionIndex, setSelectVersionIndex] = useState(0);
     const [selectedRAMROM, setSelectedRAMROM] = useState("");
+
+
     useEffect(() => {
-        if (route.variations && route.variations.length > 0) {
-          const selectedVersion = route.variations[selectVersionIndex];
-          const dataIndex = route.variations[selectedColorIndex];
-          AsyncStorage.setItem('dataSelect',JSON.stringify(dataIndex));
-          setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
+        if (variations && variations.length > 0) {
+            const selectedVersion = variations[selectVersionIndex];
+            const dataIndex = variations[selectedColorIndex];
+            AsyncStorage.setItem('dataSelect', JSON.stringify(dataIndex));
+            setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
         }
-      }, [selectVersionIndex,selectedColorIndex]);
-      const checkRam = route.variations.filter(variation => variation.ram);
+    }, [selectVersionIndex, selectedColorIndex]);
+    const checkRam = variations.filter(item => item.ram);
     return (
-        <View >
+        <View style={styles.container}>
             {
                 checkRam.length > 0 ?
-                <>
-                <TextView title={'Lựa chọn phiên bản'} />
-            <FlatList
-                data={route.variations}
-                keyExtractor={item => item._id}
-                renderItem={({ item, index }) => {
-                    return <ItemViewVersion
-                        route={item}
-                        isSelected={selectVersionIndex == index}
-                        onPress={() => {
-                            setSelectVersionIndex(index);  
-                        }}
-                    />
-                }}
-                numColumns={3}
+                    <>
+                        <TextView title={'Lựa chọn phiên bản'} />
+                        <FlatList
+                            data={variations}
+                            keyExtractor={item => item._id}
+                            renderItem={({ item, index }) => {
+                                return <ItemViewVersion
+                                    item={item}
+                                    isSelected={selectVersionIndex == index}
+                                    onPress={() => {
+                                        setSelectVersionIndex(index);
+                                    }}
+                                />
+                            }}
+                            numColumns={3}
 
-            />
-                </>:null
+                        />
+                    </> : null
             }
             <TextView title={'Lựa chọn màu sắc'} />
             <FlatList
-                data={route.variations}
+                data={variations}
                 keyExtractor={item => item._id}
                 renderItem={({ item, index }) => {
                     return <ItemView
-                        route={item}
+                        item={item}
                         isSelected={selectedColorIndex == index}
                         onPress={() => {
                             setSelectedColorIndex(index);
-                            setDataTest(item)
                         }}
                         selectedRAMROM={selectedRAMROM}
                     />
@@ -67,8 +61,12 @@ export default VariationsProducts = ({ route,setDataTest }) => {
                 numColumns={3}
 
             />
+
+            {/* Display Product */}
             <TextView title={'Chi tiết sản phẩm'} />
+
             <TextView title={'Sản phẩm tương tự'} />
+
             <FlatList
                 data={branData}
                 keyExtractor={item => item._id}
@@ -81,19 +79,20 @@ export default VariationsProducts = ({ route,setDataTest }) => {
         </View>
     );
 }
-const ItemView = ({ route, isSelected, onPress,selectedRAMROM }) => {
-    const select = selectedRAMROM == route.ram+'/'+route.rom; 
+const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
+    const select = selectedRAMROM == item.ram + '/' + item.rom;
 
-    
+
+
     return (
         <View>
             <TouchableOpacity
                 disabled={!select}
                 onPress={onPress}
             >
-                <View style={[{ borderColor: select?isSelected ? '#1E90FF' : 'grey':'grey' ,backgroundColor:select?null:'#E3E6E7'}, styles.viewItem]}>
-                    <Text>{route.color}</Text>
-                    <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(route.price)}</Text>
+                <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : 'grey', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
+                    <Text style={{color: select ? 'black' : 'grey'}}>{item.color}</Text>
+                    <Text style={{ fontSize: 10, color: select ? 'red' : 'grey', fontWeight: 'bold' }}>{formatPrice(item.price)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -101,39 +100,45 @@ const ItemView = ({ route, isSelected, onPress,selectedRAMROM }) => {
 }
 const TextView = ({ title }) => (
     <View>
-        <Text style={{ marginTop: 10, fontWeight: 'bold', fontSize: 15 }}>{title}</Text>
-
+        <Text style={{ marginVertical: 10, fontWeight: 'bold', fontSize: 15 }}>{title}</Text>
     </View>
 );
-const ItemViewVersion = ({ route, isSelected, onPress }) => {
-   
+
+const ItemViewVersion = ({ item, isSelected, onPress }) => {
+
+
     return (
         <TouchableOpacity
             onPress={onPress}
         >
             <View style={[{ borderColor: isSelected ? '#1E90FF' : 'grey' }, styles.viewItem]}>
-                <Text>{route.ram}/{route.rom}</Text>
-                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(route.price)}</Text>
+                <Text>{item.ram}/{item.rom}</Text>
+                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
 
     );
 }
+
+export default VariationsProducts
+
+
 const styles = StyleSheet.create({
     container: {
         marginTop: 10,
-        flexDirection: "row"
+        flexDirection: "column",
+        marginHorizontal:8
     },
     viewItem: {
         height: 70,
         width: Dimensions.get("window").width * 0.25,
-        borderWidth: 2,
+        borderWidth: 1,
         justifyContent: 'center',
         borderRadius: 10,
         paddingLeft: 10,
         paddingTop: 20,
         paddingBottom: 20,
-        marginLeft: 10,
+        marginEnd: 10,
         marginBottom: 10,
     }
 });

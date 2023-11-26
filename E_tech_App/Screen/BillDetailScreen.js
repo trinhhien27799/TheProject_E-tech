@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         fontSize: 13.5,
         fontWeight: 'bold',
+        marginTop: 30
     },
     textPrice: {
         fontWeight: 'bold',

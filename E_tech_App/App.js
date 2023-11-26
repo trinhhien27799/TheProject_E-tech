@@ -21,6 +21,7 @@ import AddressTest from './Screen/AddressTest';
 import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
 import ResetPassword from './Screen/profile/resetPassword';
+
 import OrderScene from './Screen/OrderPackageScenes/OrderScene';
 import { Button ,TouchableOpacity} from 'react-native';
 import DialogAddress from './Screen/DialogAddress';
@@ -46,7 +47,12 @@ import DetailCommentScreen from './Screen/DetailCommentScreen';
 import SettingScreen from './Screen/profile/setting';
 import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen';
 import CartScreen from './Screen/YourCart/CartScreen';
+
 import { Ionicons } from '@expo/vector-icons';
+
+import AddCommentScreen from './Screen/AddCommentScreen';
+
+
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
 
@@ -56,6 +62,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='PayScreen'
+
       >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
@@ -96,15 +103,6 @@ const App = () => {
         headerStyle: { backgroundColor: '#3366ff' }}} />
 
         <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
-        <Stack.Screen name='OrderScreen' component={OrderScene} options={{
-          headerShown: true, headerLeft: () => (
-            <Button
-              onPress={() => alert('This is a button!')}
-              title="Exit"
-              color="blue"
-            />
-          )
-        }} />
 
         <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: true, 
         headerLeft:() => (
@@ -123,6 +121,7 @@ const App = () => {
         <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
