@@ -6,6 +6,7 @@ import Checkbox from "expo-checkbox";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
 import { setAuthToken } from "../../apiService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
@@ -23,9 +24,9 @@ const Login = ({ navigation }) => {
             const username = email;
             const response = await loginUser(username, password, navigation);
             if (response.code === 200) {
-                AsyncStorage.setItem('token', response.token);
+               await AsyncStorage.setItem('token', response.token);
                 setAuthToken(response.token)
-                navigation.navigate('ButtonNavigation', { registrationData: data });
+                navigation.navigate('ButtonNavigation', { registrationData: response });
                 alert('Đăng nhập thành công')
             } else {
                 alert(response.message)
