@@ -1,3 +1,4 @@
+
 import { Ionicons } from "@expo/vector-icons"
 import React, { useEffect, useState } from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, Dimensions } from "react-native"
@@ -53,6 +54,7 @@ const DetailPoducts = () => {
         <View style={styles.container}>
             {
                 loading ?
+                    <LoadingWidget isLoading={loading} /> :
                     <LoadingWidget /> :
                     <>
                         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
@@ -62,7 +64,9 @@ const DetailPoducts = () => {
                                 </View>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                     {
-                                        product.variations.map((item, index) => (
+                                        variations.map((item, index) => (
+                                       product.variations.map((item, index) => (
+
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     setImage(item.image)
@@ -71,8 +75,9 @@ const DetailPoducts = () => {
                                             >
                                                 <Image
                                                     key={index}
-                                                    source={{ uri: item.image }}
+
                                                     style={{ height: 100, width: 100, margin: 5, borderRadius: 15, borderColor: borderIndex == index ? colors.blue : null }} />
+
                                             </TouchableOpacity>
                                         ))
                                     }
@@ -82,11 +87,13 @@ const DetailPoducts = () => {
                                     style={styles.viewPrevious}
                                     onPress={() => {
                                         navigation.goBack()
+
                                     }}
                                 >
                                     <Ionicons name="arrow-back" size={20} />
                                 </TouchableOpacity>
                             </View>
+
                             <BodyProducts productId={product._id} productName={product.product_name} price={product.min_price} vote={product.vote} isLike={product.like}/>
                             <Rule />
                             <VariationsProduct variations={product.variations} />

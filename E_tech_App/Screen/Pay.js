@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   FlatList,
@@ -30,7 +30,7 @@ const Pay = (voucher_idd, voucher_name) => {
   const [listIDcart, setListIDcart] = useState([]);
   const [address, setAddress] = useState('123 Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội');
   const [transport_fee, setTransport_fee] = useState([]);
-  
+
   const [note, setNote] = useState([]);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Pay = (voucher_idd, voucher_name) => {
 
   const handlePay = async () => {
     try {
-      createBill(address, listIDcart, transport_fee, shipping_id,voucher_idd, note);
+      createBill(address, listIDcart, transport_fee, shipping_id, voucher_idd, note);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -54,77 +54,55 @@ const Pay = (voucher_idd, voucher_name) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {/* Header Screen */}
-        <View style={styles.view}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons style={tailwind`ml-5`} name="arrow-back" size={24} color="black" />
-          </TouchableOpacity>
 
-          <Text style={styles.text}>Thanh toán</Text>
-        </View>
-
-        <View style={{ marginTop: 20 }}>
+        <View style={styles.containerInfo}>
           {/* Address View */}
-          <View >
-            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
-              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Địa chỉ nhận hàng
-              </Text>
+          <View>
+            <View style={{ flexDirection: 'row', alignItems: "center" }}>
               <Image
-                source={require('../img/location.png')}
-                style={styles.img1}
+                source={require('../img/map.png')}
+                style={styles.imgIcon}
               />
+              <Text style={styles.textTitle}>
+                Địa chỉ giao hàng
+              </Text>
             </View>
           </View>
-          <View
-            style={{
-              marginTop: 20,
-              height: 50,
-              flexDirection: 'row',
-              marginLeft: 20,
-            }}>
 
-            {/* Address Detail */}
-            <View style={{ flex: 1 }}>
-              <Text>
-                Username - Phone 
-              </Text>
-              <Text>
-                Địa chỉ 
-              </Text>
-            </View>
-            <TouchableOpacity onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
+          <View>
+            <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
+              {/* Address Detail */}
+              <View>
+                <Text style={styles.textInfo} >Tên người mua - Số điện thoại</Text>
+                <Text style={{ marginTop: 5 }}>Địa chỉ</Text>
+              </View>
+
               <Feather
                 name="chevron-right"
-                size={45}
+                size={30}
                 color="black"
-                style={{
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginRight: 40,
-                }}
               />
             </TouchableOpacity>
-          </View>
-
-          {/* Ship Bill */}
-          <View style={tailwind`w-93 self-center flex-row mt-3`}>
-            <Text style={{ fontWeight: 'bold' }}>
-              Phí vận chuyển:
-            </Text>
-            <Text style={tailwind`flex-1 self-end ml-51`}>
-              30000đ
-            </Text>
+            {/* Ship Bill */}
+            <View style={tailwind`flex-row mt-3`}>
+              <Text style={{ fontWeight: 'bold' }}>Phí vận chuyển: </Text>
+              <Text style={tailwind`flex-1 self-end`}>
+                {formatPrice(30000)}
+              </Text>
+            </View>
           </View>
           {/* Split Space */}
-          <View style={styles.view3}></View>
+          <View style={styles.textLine}></View>
 
           {/* Payment Products */}
-          <View style={tailwind`flex-row self-center w-full`}>
-            <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold', marginLeft: 20, alignSelf: 'center' }}>
-              Các sản phẩm
+          <View style={{ flexDirection: 'row', alignItems: "center" }}>
+            <Image
+              source={require('../img/box1.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.textTitle}>
+              Sản phẩm đã chọn
             </Text>
-            <Image source={require('../img/store.png')} style={styles.img1} />
           </View>
 
           {/* List Product */}
@@ -133,14 +111,14 @@ const Pay = (voucher_idd, voucher_name) => {
               data={cart}
               renderItem={({ item }) => (
                 <View style={tailwind`rounded-xl w-90 self-center mt-3 border border-black py-5`}>
-                  <View style={tailwind `flex-row`}>
-                    <View style={tailwind `px-2`}>
+                  <View style={tailwind`flex-row`}>
+                    <View style={tailwind`px-2`}>
                       <Image style={styles.imgItem} source={{ uri: item.image }} />
                     </View>
 
-                    <View style={tailwind `w-40`}>
+                    <View style={tailwind`w-40`}>
                       <View >
-                        <Text style={tailwind `text-base`}>{item.product_name}</Text>
+                        <Text style={tailwind`text-base`}>{item.product_name}</Text>
                         {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
                       </View>
                       {/* <View>
@@ -148,7 +126,7 @@ const Pay = (voucher_idd, voucher_name) => {
                   </View> */}
                     </View>
 
-                    <View style={tailwind `w-23`}>
+                    <View style={tailwind`w-23`}>
                       <View>
                         <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
 
@@ -158,212 +136,167 @@ const Pay = (voucher_idd, voucher_name) => {
                   </View>
                 </View>
               )}
-              keyExtractor={(item) => {item.id ; setListIDcart == item.id}}
+              keyExtractor={(item) => { item.id; setListIDcart == item.id }}
             />
           </View>
 
           {/* Total Product */}
-          <View style={{ marginTop: 10 }}>
+          <View>
             <TextInput
               placeholder="Ghi chú cho cửa hàng"
+              multiline
               onChangeText={(text) => {
                 setNote(text);
               }}
-              placeholderTextColor={'black'}
-              style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
+              placeholderTextColor={'#8E8E8E'}
+              style={{
+                borderWidth: 0.3,
+                borderRadius: 3,
+                padding: 5,
+                height: 70
+              }}
             />
-            <View style={tailwind`w-93 self-center flex-row mt-5`}>
-              <Text style={{ fontWeight: 'bold' }}>
-                Tổng Cộng:
-              </Text>
-              <Text style={tailwind`flex-1 self-end ml-53`}>
-                {formatPrice(TotalProductBill(cart))}
+             <View style={{flexDirection:'row',justifyContent:'space-between', marginTop:10}}>
+              <Text style={{ fontWeight: 'bold' }}>Tổng cộng: </Text>
+              <Text style={tailwind`self-end`}>
+              {formatPrice(TotalProductBill(cart))}
               </Text>
             </View>
           </View>
-          
+
           {/* Split Space */}
-          <View style={styles.view3}></View>
-          
+          <View style={styles.textLine}></View>
+
 
           {/* Phương thức vận chuyển */}
-          <View style={{ marginTop: 30 }}>
-            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
-              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
+          <View style={{ flexDirection: 'row', alignItems: "center" }}>
+            <Image
+              source={require('../img/car.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.textTitle}>
               Phương thức vận chuyển
-              </Text>
-              <Image
-                source={require('../img/sale.png')}
-                style={styles.img1}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              marginTop: 20,
-              height: 50,
-              flexDirection: 'row',
-              marginLeft: 20,
-            }}>
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  fontSize: 14.5,
-                  marginLeft: 10,
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                }}>
-                Chọn phương thức vận chuyển
-              </Text>
-            </View>
-            <TouchableOpacity onPress={() => { navigation.navigate('ShippingMethod') }}>
-              <Feather
-                name="chevron-right"
-                size={45}
-                color="black"
-                style={{
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginRight: 40,
-                }}
-              />
-            </TouchableOpacity>
+            </Text>
           </View>
 
+          <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ShippingMethod') }}>
+              {/* Address Detail */}
+              <View>
+                <Text> Chọn phương thức vận chuyển</Text>
+              </View>
+
+              <Feather
+                name="chevron-right"
+                size={30}
+                color="black"
+              />
+            </TouchableOpacity>
           {/* Split Space */}
-          <View style={styles.view3}></View>
+          <View style={styles.textLine}></View>
 
 
           {/* Voucher */}
-          <View style={{ marginTop: 30 }}>
-            <View style={{ flexDirection: 'row', height: 30, marginLeft: 20 }}>
-              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Áp dụng Voucher giảm giá
-              </Text>
-              <Image
-                source={require('../img/sale.png')}
-                style={styles.img1}
-              />
-            </View>
+          <View style={{ flexDirection: 'row', alignItems: "center" }}>
+            <Image
+              source={require('../img/voucher.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.textTitle}>
+              Voucher giảm giá
+            </Text>
           </View>
-          <View
-            style={{
-              marginTop: 20,
-              height: 50,
-              flexDirection: 'row',
-              marginLeft: 20,
-            }}>
+          
+          <View>
+               <TouchableOpacity  style={styles.contentView} onPress={() => { navigation.navigate('ApDungVoucher') }}>
             <View style={{ flex: 1 }}>
-              { voucher_idd == 0 ? <Text
+              {voucher_idd == 0 ? <Text
                 style={{
                   fontSize: 14.5,
-                  marginLeft: 10,
                   marginTop: 'auto',
+                  marginLeft: 2,
                   marginBottom: 'auto',
                 }}>
                 Chọn mã giảm giá của bạn
               </Text> : <Text
                 style={{
                   fontSize: 14.5,
-                  marginLeft: 10,
+                  marginLeft: 2,
                   marginTop: 'auto',
                   marginBottom: 'auto',
                 }}>
-                voucher_name
+                Mã voucher
               </Text>}
             </View>
-            <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>
-              <Feather
+           
+            <Feather
                 name="chevron-right"
-                size={45}
+                size={30}
                 color="black"
-                style={{
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginRight: 40,
-                }}
               />
             </TouchableOpacity>
           </View>
 
           {/* Split Space */}
-          <View style={styles.view3}></View>
+          <View style={styles.textLine}></View>
 
           {/* Payment Method */}
-          <View style={{ marginTop: 30 }}>
-            <View style={{ flexDirection: 'row', height: 50, marginLeft: 20 }}>
-              <Text style={{ fontSize: 18, flex: 1, fontWeight: 'bold' }}>
-                Phương thức thanh toán
-              </Text>
-              <Image
-                source={require('../img/paymain.png')}
-                style={styles.img1}
-              />
-            </View>
+          <View style={{ flexDirection: 'row', alignItems: "center" }}>
+            <Image
+              source={require('../img/payment_method.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.textTitle}>
+              Phương thức thanh toán
+            </Text>
           </View>
-          <View
-            style={{
-              height: 50,
-              flexDirection: 'row',
-              marginLeft: 20,
-              marginTop: 10,
-            }}>
-            <View style={{ flex: 1 }}>
-              <Text style={{ marginTop: 10 }}>
+          <View>
+            <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('PTTT') }}>
+            <View>
+              <Text>
                 Thanh toán khi nhận hàng
               </Text>
             </View>
-            <TouchableOpacity onPress={() => { navigation.navigate('PTTT') }}>
-              <Feather
+         
+            <Feather
                 name="chevron-right"
-                size={45}
+                size={30}
                 color="black"
-                style={{
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                  marginRight: 40,
-                }}
               />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Space Split */}
-        <View style={styles.view3}></View>
+        <View style={styles.textLine}></View>
 
         {/* Total Payment */}
-        <View
-          style={{
-            marginTop: 20,
-          }}>
-          <View style={{ marginLeft: 20 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: 'bold',
-              }}>
+        <View>
+          <View>
+            <Text style={styles.textTitle}>
               Chi tiết thanh toán
             </Text>
-            <View style={{ height: 120, flexDirection: 'row', marginLeft: 10, }}>
+            <View style={styles.contentTotalView}>
               <View>
-                <Text>Tổng tiền hàng:</Text>
-                <Text>Tiền phí vận chuyển:</Text>
-                <Text>Áp dụng mã voucher:</Text>
-                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Tổng thanh toán:</Text>
+                <Text style={styles.textTotal}>Tổng tiền hàng:</Text>
+                <Text  style={styles.textTotal}>Tiền phí vận chuyển:</Text>
+                <Text style={styles.textTotal}>Áp dụng mã voucher:</Text>
+                <Text style={styles.textTotal}>Tổng thanh toán:</Text>
               </View>
-              <View style={{ marginLeft: 80 }}>
-                <Text>{formatPrice(TotalProductBill(cart))}</Text>
-                <Text>50.000đ</Text>
-                <Text>200.000đ</Text>
-                <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'red' }}>1.850.000đ</Text>
+              <View>
+                <Text style={styles.textTotal}>{formatPrice(TotalProductBill(cart))}</Text>
+                <Text style={styles.textTotal}>30.000đ</Text>
+                <Text style={styles.textTotal}>200.000đ</Text>
+                <Text style={styles.textHighlight}>1.850.000đ</Text>
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.button2} onPress={handlePay}>
+          <View style={styles.btnPayContainer}>
+          <TouchableOpacity style={styles.btnPay} onPress={handlePay}>
             <Text style={{ fontWeight: 'bold', color: 'white' }}>
               Đặt hàng
             </Text>
           </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -374,35 +307,47 @@ export default Pay;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 30,
+    backgroundColor: 'white'
   },
-  view: {
-    flexDirection: 'row',
-    height: 30,
+  containerInfo: {
     marginTop: 20,
+    marginHorizontal: 10,
   },
-  text: {
-    marginLeft: 15,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  view2: {
-    width: '90%',
-    height: 80,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+  contentView: {
+    marginTop: 10,
     flexDirection: 'row',
-    marginTop: 15,
+    justifyContent: 'space-between',
+    alignItems: "center"
   },
-  view3: {
-    height: 1,
-    width: '90%',
+  contentTotalView:{
+    marginTop: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: "center",
+    marginHorizontal:10,
+    marginBottom:15
+  },
+  textTotal:{
+    marginTop:10,
+  },
+  textHighlight:{
+    color:'red',
+    marginTop:10,
+    fontWeight:'bold'
+  },
+  textLine: {
+    height: 0.3,
+    width: '100%',
     backgroundColor: 'black',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 15,
+    marginTop: 20,
+    marginBottom: 15
   },
+  textBlur:{
+    color:"#8E8E8E"
+  },
+ 
   img: {
     height: 60,
     width: 60,
@@ -411,31 +356,32 @@ const styles = StyleSheet.create({
     marginTop: 10,
     resizeMode: 'cover',
   },
-  img1: {
-    height: 40,
-    width: 35,
-    marginRight: 30,
+  imgIcon: {
+    width: 25,
+    height: 25,
+  },
+  textTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10
+  },
+  textInfo: {
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5
   },
-  title2: {
-    fontSize: 13,
-  },
-  button2: {
+  btnPay: {
     backgroundColor: '#336BFA',
-    width: '40%',
-    height: 60,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    padding: 10,
-    marginRight: 20,
-    marginLeft: 'auto',
-    marginBottom: 20
+    borderRadius: 5,
+    padding: 15,
+  },
+  btnPayContainer:{
+    margin:10
   },
   imgItem: {
     width: 80,

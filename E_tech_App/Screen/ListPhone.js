@@ -5,7 +5,8 @@ import ListItem from "../ListItem";
 import data from '../items';
 import { getAllProduct } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
-
+import { AntDesign } from '@expo/vector-icons';
+import { formatPrice } from '../utils/format'
 const ListPhone = () => {
     const [product, setProduct] = useState(null);
     const navigation = useNavigation();
@@ -29,11 +30,9 @@ const ListPhone = () => {
 
     const ListItem = ({item}) => {
         return (
-            <View style={{ flex: 1, backgroundColor: 'white', padding: 15 }}>
+            <View style={styles.containerItem}>
                 <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail', {product: item})}}>
-                    <View>
-                        <View style={styles.view}>
-                            
+                        <View style={styles.containerInfo}>
                             <Image
                                 style={styles.image}
                                 source={{uri: item.image_preview}} />
@@ -41,23 +40,21 @@ const ListPhone = () => {
                             <View style={{
                                 flex: 1,
                                 marginRight: 15,
+                                marginLeft:15,
                                 padding: 5,
                             }}>
-                                <Text style={{
+                                <Text numberOfLines={2} style={{
                                     color: 'black',
-                                    fontSize: 15,
+                                    fontSize: 14,
+                                    marginTop:5,
                                     fontWeight: 'bold'
                                 }}>{item.product_name}</Text>
-    
-                                <View style={{
-                                    height: 1,
-                                    backgroundColor: colors.grey,
-                                    marginTop: 5
-                                }}></View>
-    
-                                <Text style={{ fontSize: 12, color: colors.grey }}>Giá: {item.max_price}</Text>
+                                    <View style={styles.textPrice}>
+                                <Text style={{ fontSize: 13, color:"red" }}>Giá: {formatPrice(item.max_price ? item.max_price : 0)}</Text>
+                                </View>
+                                <View style={styles.textCategory}>
                                 <Text style={{ fontSize: 12, color: colors.grey }}>Hãng: {item.brand_name}</Text>
-    
+                                </View>
                                 {/* <View style={{ flexDirection: 'row' }}>
                                     <Text style={{
                                         color: colors.grey,
@@ -69,27 +66,34 @@ const ListPhone = () => {
                                     }}>{item.quantity > 0 ? <Text>Còn hàng</Text> : <Text>Hết hàng</Text>} </Text>
                                 </View> */}
                             </View>
-    
+                        </View>
                             <View style={styles.viewButton}>
-                                <TouchableOpacity style={styles.button}>
-                                    <Text style={{ color: 'white', lineHeight: 29.7, fontWeight: "bold", fontSize: 12 }}>Mua ngay</Text>
+                                <TouchableOpacity style={styles.buttonCart}>
+                                <AntDesign name="shoppingcart"  size={20} color="white" />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.button}>
-                                    <Text style={{ color: 'white', textAlign: 'center', fontWeight: "bold", fontSize: 12 }}>Thêm vào giỏ hàng</Text>
+                                <TouchableOpacity style={styles.buttonBuy}>
+                                    <Text style={{ color: 'white', fontWeight: "bold", fontSize: 13}}>Mua ngay</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
-                    </View>
+                            <View style={{
+                                    height: 0.5,
+                                    backgroundColor: colors.grey,
+                                    marginTop: 20
+                                }}></View>
                 </TouchableOpacity>
+                                
             </View>
         );
     }
 
     return (
+        <View style={styles.container}>
+            <Text style={styles.text}>Danh sách sản phẩm</Text>
         <FlatList
             data={product}
             renderItem={ListItem}
         />
+        </View>
     );
 }
 
@@ -99,38 +103,56 @@ const styles = StyleSheet.create({
         width: 100,
         resizeMode: 'cover',
         borderRadius: 8,
-        marginRight: 15,
-        marginTop: 8
-    },
-    view: {
-        height: 150,
-        paddingTop: 20,
-        paddingStart: 10,
-        flexDirection: 'row',
-        marginVertical: 6,
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRadius: 10,
-        shadowRadius: 10,
+        justifyContent:"center"
     },
     viewButton: {
-        // backgroundColor:'red',
-        flex: 0.5,
-        margin: 10,
-        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent:'flex-end',
     },
 
     // Fix height & width
-    button: {
+    buttonCart: {
         backgroundColor: colors.hetHang,
-        borderRadius: 10,
-        padding: 5,
-        width: 90,
-        marginBottom: 5,
-        marginRight: 10,
+        borderRadius: 5,
+        paddingTop:5,
+        paddingBottom:5,
+        width:50,
         alignItems: 'center',
-        height: 45
-    }
+    },
+    buttonBuy:{
+        backgroundColor: colors.hetHang,
+        borderRadius: 5,
+        width: 80,
+        alignItems: 'center',
+        justifyContent:"center",
+        marginLeft:10,
+    },
+    containerInfo: {
+        flexDirection: 'row',
+     
+    },
+    containerItem:{
+        flex: 1, 
+        backgroundColor: 'white',
+        marginTop:15
+    },
+    textCategory:{
+        marginTop:5
+    },
+    textPrice:{
+        marginTop:10
+    },
+    text:{
+        fontSize:18,
+        fontWeight:"bold",
+        marginTop:50,
+        marginBottom:10
+    },
+    container:{
+        paddingHorizontal:10,
+        flex:1,
+        backgroundColor:"white"
+    },
 });
 
 export default ListPhone;

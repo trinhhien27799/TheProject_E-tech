@@ -34,7 +34,7 @@ const Home = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="cyan" />
             <MainHeader route={route.params} navigation={navigation} />
-            <SectionList
+            <SectionList style={{backgroundColor:"white"}}
                 sections={sections}
                 keyExtractor={(item, index) => item + index}
                 renderItem={renderItem}
@@ -46,6 +46,6 @@ const Home = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
 
-    container: { flex: 1 }
+    container: { flex: 1, backgroundColor: "#5182CC", }
 })
 export default Home
