@@ -20,16 +20,19 @@ export default function Makhuyenmai() {
 
   const [voucherCode, setVoucherCode] = useState('');
   const [voucherID, setVoucherID] = useState('');
-  const [save, setSave] = useState('')
+  const [save, setSave] = useState('');
+
+  const [click, isClick] = useState(false);
 
   const handleVoucher = async () => {
     try {
       addVoucher(voucherCode, voucherID);
+      
     } catch (error) {
       console.error('Error:', error);
     }
   }
-
+  
   console.log(voucherArray);
 
   // const renderItemVoucher = (item) => (
@@ -91,11 +94,16 @@ export default function Makhuyenmai() {
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={styles.button2} onPress={() => {
-                                                setVoucherID(item.id);
+                                                setVoucherID(item._id);                                                
                                                 setVoucherCode(item.code);
-                                                handleVoucher();
+                                                console.log(voucherCode + ' ' + voucherID);
+                                                handleVoucher();                                                
                                             }}>
-                  <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
+                  {
+                    !click
+                    ? <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
+                    : <Text style={{ color: 'white', fontSize: 16 }}>Đã Lưu</Text>
+                  }
                 </TouchableOpacity>
               </View>
             </View>

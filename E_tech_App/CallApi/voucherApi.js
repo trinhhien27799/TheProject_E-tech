@@ -27,8 +27,10 @@ export const getAllVoucher = async () => {
 
 
 export const addVoucher = async (voucherCode , voucherID) => {
-    const username = await AsyncStorage.getItem('username');
+    const userId = await AsyncStorage.getItem('userId');
     const token = await AsyncStorage.getItem('token');
+
+    console.log(userId);
 
     try {
         const response = await fetch(`${API_BASE_URL}/api/voucher/add`, {
@@ -36,7 +38,7 @@ export const addVoucher = async (voucherCode , voucherID) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({username:username, token: token, voucherCode: voucherCode, voucherID: voucherID})
+            body: JSON.stringify({userId: userId, token: token, voucherCode: voucherCode, voucherID: voucherID})
         });
         const data = await response.json();
         console.log(data);

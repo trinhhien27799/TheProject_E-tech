@@ -22,7 +22,8 @@ import { formatPrice } from '../utils/format';
 
 
 
-const Pay = (voucher_idd, voucher_name) => {
+const Pay = ({route}) => {
+  const {voucher_idd, voucher_name} = route.params; 
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
@@ -254,7 +255,7 @@ const Pay = (voucher_idd, voucher_name) => {
               marginLeft: 20,
             }}>
             <View style={{ flex: 1 }}>
-              { voucher_idd == 0 ? <Text
+              { voucher_idd == '' ? <Text
                 style={{
                   fontSize: 14.5,
                   marginLeft: 10,
@@ -269,7 +270,7 @@ const Pay = (voucher_idd, voucher_name) => {
                   marginTop: 'auto',
                   marginBottom: 'auto',
                 }}>
-                voucher_name
+                {voucher_name}
               </Text>}
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('ApDungVoucher') }}>

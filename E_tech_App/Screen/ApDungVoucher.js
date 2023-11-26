@@ -18,6 +18,7 @@ export default function Makhuyenmai() {
   const myVoucherArray = myvouchers();
 
 
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
@@ -50,7 +51,7 @@ export default function Makhuyenmai() {
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={styles.button2} onPress={() => {
-                                                navigation.goBack( { voucher_idd:item.id , voucher_name: item.description})
+                                                navigation.navigate('PayScreen', { voucher_idd:item._id , voucher_name: item.description})
                                             }}>
                   <Text style={{ color: 'white', fontSize: 16 }}>Sử dụng</Text>
                 </TouchableOpacity>

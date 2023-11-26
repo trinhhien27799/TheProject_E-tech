@@ -46,6 +46,7 @@ import SettingScreen from './Screen/profile/setting';
 import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen';
 import CartScreen from './Screen/YourCart/CartScreen';
 import AddCommentScreen from './Screen/AddCommentScreen';
+import CommentButton from './Component/CommentButton';
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -107,6 +108,7 @@ const App = () => {
 
         <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
         <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

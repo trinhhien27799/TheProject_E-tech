@@ -86,9 +86,6 @@ const RadioView = ({ Checked }) => {
   return (
     <View>
       <Checkbox status={Checked ? 'checked' : 'unchecked'} />
-            )
-          }}
-        />
     </View>
   )
 }

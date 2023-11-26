@@ -5,188 +5,312 @@ import tailwind from 'twrnc'
 import OrderStatusHeader from '../Component/OrderStatusHeader';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../utils/format';
-const BillDetailScreen = ({route}) => {
-    const {item} = route.params;
+import CommentButton from '../Component/CommentButton';
+const BillDetailScreen = ({ route }) => {
+    const { item } = route.params;
 
     const currentDate = item.time;
     const splitDate = currentDate.split('T');
     const getDate = splitDate[0];
 
-    return (
-        <View style={styles.container}>
-            <ScrollView>
-                {/* Header */}
-                <View style={styles.header}>
-                    <OrderStatusHeader orderStatus={item.status}/>
-                    <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
-                    <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
-                    <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
-                    <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
-                </View>
-
-                <View style={styles.line}></View>
-                {/* Address */}
-
-                <View style={styles.addressContainer}>
-                    <View style={styles.addressHeader}>
-
-                        <Image
-                            source={require('../img/store.png')}
-                            style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
-                        />
-                        <View style={styles.addressInfo}>
-                            <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
-                            <Text style={styles.textAddressInfo}>{item.address.address}</Text>
-                        </View>
+    if (item.status == 2) {
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    {/* Header */}
+                    <View style={styles.header}>
+                        <OrderStatusHeader orderStatus={item.status} />
+                        <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
+                        <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
+                        <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
+                        <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
                     </View>
 
-                </View>
-                <View style={styles.line}></View>
+                    <View style={styles.line}></View>
 
-                {/* List Bill */}
-                <FlatList
-                    data={item.products}
-                    style={styles.listCart}
-                    renderItem={({ item }) => (
+                    {/* Address */}
+                    <View style={styles.addressContainer}>
+                        <View style={styles.addressHeader}>
 
-                        // Cart Item
-                        <View style={styles.itemContainer}>
-                            <View style={styles.cartItem}>
-
-                                <View style={styles.imgItemView}>
-                                    <Image 
-                                        style={styles.imgItem} 
-                                        source={{uri: item.image}}
-                                    />
-                                </View>
-
-                                <View style={styles.nameItemView}>
-                                    <View >
-                                        <Text style={styles.nameItem}>{item.product_name}</Text>
-                                        <Text style={styles.categoryItem}>Loại: </Text>
-                                        <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
-                                    </View>
-                                    <View>
-
-                                    </View>
-                                </View>
-
-                                <View style={styles.priceItemView}>
-                                    <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
-                                </View>
-                            </View>
-                            <View style={styles.textTotal}>
-                                <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
+                            <Image
+                                source={require('../img/store.png')}
+                                style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
+                            />
+                            <View style={styles.addressInfo}>
+                                <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
+                                <Text style={styles.textAddressInfo}>{item.address.address}</Text>
                             </View>
                         </View>
-                    )}
-                    keyExtractor={(item) => item.id}
-                />
 
-                {/* Total Container */}
-                <View style={styles.calContainer}>
-                    <View style={styles.calView}>
-                        <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
-                        <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
                     </View>
-                    <View style={styles.calView}>
-                        <Text style={styles.textInfo}>Phí vận chuyển:</Text>
-                        <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
-                    </View>
-                    <View style={styles.calView}>
-                        <Text style={styles.textInfo}>Voucher giảm giá:</Text>
-                        <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
-                    </View>
-                    <View style={styles.calViewTotal}>
-                        <Text style={styles.textBold}>Thành tiền:</Text>
-                        <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
-                    </View>
-                </View>
-                <View style={styles.line}></View>
+                    <View style={styles.line}></View>
 
-                <View style={styles.paymentContainer}>
-                    <View style={styles.addressHeader}>
-                        <Image
-                            source={require('../img/paymain.png')}
-                            style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
-                        />
-                        <View style={styles.paymentType}>
-                            <Text style={styles.textBold}>Phương thức thanh toán:</Text>
-                            <Text style={styles.textMoneyType}>{item.payment_method}</Text>
+                    {/* List Bill */}
+                    <FlatList
+                        data={item.products}
+                        style={styles.listCart}
+                        renderItem={({ item }) => (
+
+                            // Cart Item
+                            <View style={styles.itemContainer}>
+                                <View style={styles.cartItem}>
+
+                                    <View style={styles.imgItemView}>
+                                        <Image
+                                            style={styles.imgItem}
+                                            source={{ uri: item.image }}
+                                        />
+                                    </View>
+
+                                    <View style={styles.nameItemView}>
+                                        <View >
+                                            <Text style={styles.nameItem}>{item.product_name}</Text>
+                                            <Text style={styles.categoryItem}>Loại: </Text>
+                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                        </View>
+                                        <View>
+
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.priceItemView}>
+                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.textTotal}>
+                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
+                                    <CommentButton item={item} />
+                                </View>
+                            </View>
+                        )}
+                        keyExtractor={(item) => item.id}
+                    />
+
+                    {/* Total Container */}
+                    <View style={styles.calContainer}>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
+                            <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
+                        </View>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Phí vận chuyển:</Text>
+                            <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
+                        </View>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Voucher giảm giá:</Text>
+                            <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
+                        </View>
+                        <View style={styles.calViewTotal}>
+                            <Text style={styles.textBold}>Thành tiền:</Text>
+                            <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
                         </View>
                     </View>
-                </View>
-                <View style={styles.line}></View>
+                    <View style={styles.line}></View>
 
-                {/* Button */}
-                <View style={styles.Button}>
-                <View style={styles.confirmContainer}>
-            <TouchableOpacity  style={styles.buttonPayment}>
-              <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
-            </TouchableOpacity>
-          </View>
-          </View>
-            </ScrollView>
-        </View>
-    )
+                    <View style={styles.paymentContainer}>
+                        <View style={styles.addressHeader}>
+                            <Image
+                                source={require('../img/paymain.png')}
+                                style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
+                            />
+                            <View style={styles.paymentType}>
+                                <Text style={styles.textBold}>Phương thức thanh toán:</Text>
+                                <Text style={styles.textMoneyType}>{item.payment_method}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.line}></View>
+
+                    {/* Button */}
+                    <View style={styles.Button}>
+                        <View style={styles.confirmContainer}>
+                            <TouchableOpacity style={styles.buttonPayment}>
+                                <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    {/* Header */}
+                    <View style={styles.header}>
+                        <OrderStatusHeader orderStatus={item.status} />
+                        <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
+                        <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
+                        <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
+                        <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
+                    </View>
+
+                    <View style={styles.line}></View>
+
+                    {/* Address */}
+                    <View style={styles.addressContainer}>
+                        <View style={styles.addressHeader}>
+
+                            <Image
+                                source={require('../img/store.png')}
+                                style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
+                            />
+                            <View style={styles.addressInfo}>
+                                <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
+                                <Text style={styles.textAddressInfo}>{item.address.address}</Text>
+                            </View>
+                        </View>
+
+                    </View>
+                    <View style={styles.line}></View>
+
+                    {/* List Bill */}
+                    <FlatList
+                        data={item.products}
+                        style={styles.listCart}
+                        renderItem={({ item }) => (
+
+                            // Cart Item
+                            <View style={styles.itemContainer}>
+                                <View style={styles.cartItem}>
+
+                                    <View style={styles.imgItemView}>
+                                        <Image
+                                            style={styles.imgItem}
+                                            source={{ uri: item.image }}
+                                        />
+                                    </View>
+
+                                    <View style={styles.nameItemView}>
+                                        <View >
+                                            <Text style={styles.nameItem}>{item.product_name}</Text>
+                                            <Text style={styles.categoryItem}>Loại: </Text>
+                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                        </View>
+                                        <View>
+
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.priceItemView}>
+                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.textTotal}>
+                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
+                                </View>
+                            </View>
+                        )}
+                        keyExtractor={(item) => item.id}
+                    />
+
+                    {/* Total Container */}
+                    <View style={styles.calContainer}>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
+                            <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
+                        </View>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Phí vận chuyển:</Text>
+                            <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
+                        </View>
+                        <View style={styles.calView}>
+                            <Text style={styles.textInfo}>Voucher giảm giá:</Text>
+                            <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
+                        </View>
+                        <View style={styles.calViewTotal}>
+                            <Text style={styles.textBold}>Thành tiền:</Text>
+                            <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.line}></View>
+
+                    <View style={styles.paymentContainer}>
+                        <View style={styles.addressHeader}>
+                            <Image
+                                source={require('../img/paymain.png')}
+                                style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
+                            />
+                            <View style={styles.paymentType}>
+                                <Text style={styles.textBold}>Phương thức thanh toán:</Text>
+                                <Text style={styles.textMoneyType}>{item.payment_method}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.line}></View>
+
+                    {/* Button */}
+                    <View style={styles.Button}>
+                        <View style={styles.confirmContainer}>
+                            <TouchableOpacity style={styles.buttonPayment}>
+                                <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    }
+
 }
 const styles = StyleSheet.create({
-    Button:{
-        backgroundColor:'#ECECEE',
-       
+    Button: {
+        backgroundColor: '#ECECEE',
+
     },
     textPayment: {
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-      },
-      buttonPayment: {
+    },
+    buttonPayment: {
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center'
-      },
-      confirmContainer: {
+    },
+    confirmContainer: {
         backgroundColor: '#336BFA',
         marginLeft: 30,
         marginRight: 30,
         borderRadius: 7,
         height: 45,
         marginTop: 50,
-        marginBottom:30,
-        shadowOpacity:0.2
-      },
+        marginBottom: 30,
+        shadowOpacity: 0.2
+    },
     paymentContainer: {
         height: 50,
         marginLeft: 20,
         marginRight: 20,
-        
-        justifyContent:'center'
+
+        justifyContent: 'center'
     },
-    textMoneyType:{
-        fontSize:14,
+    textMoneyType: {
+        fontSize: 14,
         width: '50%'
     },
-    paymentType:{
-        flexDirection:'row',
-        marginLeft:10,
+    paymentType: {
+        flexDirection: 'row',
+        marginLeft: 10,
     },
-    textBold:{
+    textBold: {
         fontWeight: 'bold',
     },
-    calViewTotal:{
-        flexDirection:'row',
+    calViewTotal: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop:25
+        marginTop: 25
     },
-    calView:{
-        flexDirection:'row',
+    calView: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    calContainer:{
+    calContainer: {
         height: 180,
         marginLeft: 30,
         marginRight: 30,
-        marginTop:10
+        marginTop: 10
     },
     textTotal: {
         textAlign: 'right',
@@ -242,9 +366,8 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'column',
         borderBottomWidth: 1.3,
-        paddingBottom: 20,
+        paddingVertical: 20,
         borderBottomColor: '#D5D5D5',
-        height: 220,
         justifyContent: 'center'
 
     },
@@ -300,7 +423,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "whitesmoke",
-       
+
     },
 })
 

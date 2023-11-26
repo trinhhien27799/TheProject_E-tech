@@ -11,9 +11,11 @@ import IteamProduct from "../../Component/itemProducts";
 import ProfileHooks from "../../Component/hooks/profileHook";
 
 const Profile = ({ route }) => {
-
+    console.log(route.params);
     const { username, avatar, fullname } = route.params;
     const params = route.params;
+    const userID = params.use
+    // await AsyncStorage.setItem('userID', )
     const navigation = useNavigation();
     const {likeData,isLoading} = ProfileHooks();
     return (
