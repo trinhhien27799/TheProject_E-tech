@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
-import { setAuthToken } from "../../apiService";
 
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
@@ -21,18 +20,11 @@ const Login = ({ navigation }) => {
     const handleLogin = async () => {
         try {
             const username = email;
-            const response = await loginUser(username, password, navigation);
-            if (response.code === 200) {
-                AsyncStorage.setItem('token', response.token);
-                setAuthToken(response.token)
-                navigation.navigate('ButtonNavigation', { registrationData: data });
-                alert('Đăng nhập thành công')
-            } else {
-                alert(response.message)
-            }
+            loginUser(username,password,navigation);
+          
         } catch (error) {
             console.error('Error:', error);
-
+            
         }
     }
 
@@ -95,11 +87,11 @@ const Login = ({ navigation }) => {
                         </View>
                         <Text style={{ color: 'red', margin: 10 }}>{errorPassword}</Text>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('Quenmk1')
-                        }}
-                        style={{ alignSelf: 'flex-end' }}>
+                    <TouchableOpacity 
+                    onPress={() => {
+                        navigation.navigate('Quenmk1')
+                    }}
+                    style={{ alignSelf: 'flex-end' }}>
                         <Text style={styles.textForgot}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
                 </View>
@@ -119,7 +111,7 @@ const Login = ({ navigation }) => {
                             navigation.navigate('SignUp')
                         }}
                     >
-                        <Text style={{ marginLeft: 10, color: '#336BFA', fontWeight: 'bold' }}>
+                        <Text style={{ marginLeft: 10, color: '#336BFA',fontWeight:'bold' }}>
                             Đăng ký
                         </Text>
                     </TouchableOpacity>

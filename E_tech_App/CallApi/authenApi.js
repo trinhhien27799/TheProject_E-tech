@@ -1,5 +1,6 @@
 import api, { setAuthToken } from '../apiService'
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { setToken } from '../session'
 import { API_USER_URL } from './config'
 
 export const registerUser = async (username, email, password, navigation) => {
@@ -32,20 +33,43 @@ export const insertOtp = async (email, check) => {
         throw error;
     }
 }
-export const loginUser = async (username, password) => {
+export const loginUser = async (username, password, navigation) => {
     try {
-        const response = await api.post('/user/login', { username, password })
-        return response.data
+        const response = await fetch(`${API_USER_URL}/api/user/login`, {
+            method: 'POST',
+            headers: {
+
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (data.code === 200) {
+            AsyncStorage.setItem('token', data.token);
+            AsyncStorage.setItem('username', data.user.username)
+            navigation.navigate('ButtonNavigation', { registrationData: data });
+            alert('Đăng nhập thành công')
+            // <ShowNotification title={'Đăng nhập thành công'}type={'success'}/>
+
+        } else {
+            alert(data.message)
+        }
+        return data;
     } catch (error) {
+
+        console.error('Lỗi yêu cầu mạng:', error);
         throw error;
     }
 }
 export const autoLogin = async () => {
     try {
         const token = await AsyncStorage.getItem("token")
-        if (!token) throw "can not get token"
-        setAuthToken(token)
-        const response = await api.post('/user/auto-login')
+        console.log(token);
+        if (!token)
+            throw "can not get token"
+        setToken(token)
+        const response = await api.post('/user/auto-login', { token: token })
         return response.data
     } catch (error) {
         console.error('autoLogin:', error);

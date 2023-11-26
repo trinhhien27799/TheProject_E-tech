@@ -60,7 +60,6 @@ const MainHeader = ({ navigation, route }) => {
                 <FlatList
                     ref={scrollView}
                     data={dataProduct}
-                    showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
