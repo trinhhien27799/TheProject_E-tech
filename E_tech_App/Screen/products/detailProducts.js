@@ -37,7 +37,6 @@ const DetailPoducts = () => {
 
     useEffect(() => {
         setImage(dataTest ? dataTest.image : product.image_preview)
-        setPrice(dataTest ? dataTest.price : product.max_price)
     }, [dataTest, product])
 
 
