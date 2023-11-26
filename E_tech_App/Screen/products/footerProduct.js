@@ -7,6 +7,7 @@ import ViewModal from "../../Component/viewModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default FooterProduct = ({ route }) => {
+    
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataIndex,setDataIndex] = useState([]);
 
@@ -14,6 +15,7 @@ export default FooterProduct = ({ route }) => {
     const toggleModal = async() => {
         const dataString  = await AsyncStorage.getItem('dataSelect');
         const data = JSON.parse(dataString);
+        console.log(data);
         setDataIndex(data);
         setIsModalVisible(!isModalVisible);
     };

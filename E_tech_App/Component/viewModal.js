@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native";
 import { addCart } from "../CallApi/cartApi";
 import { formatPrice } from "../utils/format";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const ViewModal = ({ route, data }) => {
-    
+    console.log(route);
+    console.log("================================================");
+    console.log(data);
     const [quantity, setQuantity] = useState(1);
     const [dataCart, setDataCart] = useState({
         "variations_id": data._id,
@@ -14,10 +16,10 @@ const ViewModal = ({ route, data }) => {
     })
     const navigation = useNavigation();
     const handleAdd = async () => {
-        navigation.goBack();
         await addCart({ dataCart: dataCart });
+        await AsyncStorage.removeItem('dataSelect');
+        navigation.navigate('Cart');
     }
-    console.log(data.ram == null);
     return (
         <ScrollView>
             <View style={styles.header}>
@@ -25,9 +27,9 @@ const ViewModal = ({ route, data }) => {
                     <Ionicons name="close" size={30} color="black" />
                 </TouchableOpacity>
             </View>
-            <Image source={{ uri: data.image }} style={styles.image} />
+            <Image source={{ uri: data.image_preview }} style={styles.image} />
             <View style={styles.priceContainer}>
-                <Text style={styles.price}>{formatPrice(data.price)}</Text>
+                <Text style={styles.price}>{formatPrice(data.max_price)}</Text>
                 <Text >Kho: {route.route.total_quantity}</Text>
             </View>
             <View style={styles.infoItem}>

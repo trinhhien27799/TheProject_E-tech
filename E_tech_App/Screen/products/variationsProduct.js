@@ -4,13 +4,22 @@ import { getBrandName } from "../../CallApi/productApi";
 import IteamBrand from "../../Component/itemBrand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatPrice } from "../../utils/format";
-export default VariationsProducts = ({ route,setDataTest }) => {
+import LottieView from 'lottie-react-native';
+export default VariationsProducts = ({ route, setDataTest }) => {
     const [branData, setBrandData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getBrandName({ brand_name: route.brand_name });
-            setBrandData(data);
-            
+            try {
+                setIsLoading(true);
+                const data = await getBrandName({ brand_id: route.brand_id });
+                setBrandData(data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setIsLoading(false);
+            }
+
         }
         fetchData();
     }, []);
@@ -19,79 +28,99 @@ export default VariationsProducts = ({ route,setDataTest }) => {
     const [selectedRAMROM, setSelectedRAMROM] = useState("");
     useEffect(() => {
         if (route.variations && route.variations.length > 0) {
-          const selectedVersion = route.variations[selectVersionIndex];
-          const dataIndex = route.variations[selectedColorIndex];
-          AsyncStorage.setItem('dataSelect',JSON.stringify(dataIndex));
-          setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
+            const selectedVersion = route.variations[selectVersionIndex];
+            const dataIndex = route.variations[selectedColorIndex];
+            AsyncStorage.setItem('dataSelect', JSON.stringify(dataIndex));
+            setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
+        }else{
+            const dataIndex = route;
+            AsyncStorage.setItem('dataSelect', JSON.stringify(dataIndex)); 
         }
-      }, [selectVersionIndex,selectedColorIndex]);
-      const checkRam = route.variations.filter(variation => variation.ram);
+    }, [selectVersionIndex, selectedColorIndex]);
+    const checkRam = route.variations.filter(variation => variation.ram);
+    const filteredBranData = branData.filter(item => item._id !== route._id);
     return (
         <View >
             {
                 checkRam.length > 0 ?
-                <>
-                <TextView title={'Lựa chọn phiên bản'} />
-            <FlatList
-                data={route.variations}
-                keyExtractor={item => item._id}
-                renderItem={({ item, index }) => {
-                    return <ItemViewVersion
-                        route={item}
-                        isSelected={selectVersionIndex == index}
-                        onPress={() => {
-                            setSelectVersionIndex(index);  
-                        }}
-                    />
-                }}
-                numColumns={3}
+                    <>
+                        <TextView title={'Lựa chọn phiên bản'} />
+                        <FlatList
+                            data={route.variations}
+                            keyExtractor={item => item._id}
+                            renderItem={({ item, index }) => {
+                                return <ItemViewVersion
+                                    route={item}
+                                    isSelected={selectVersionIndex == index}
+                                    onPress={() => {
+                                        setSelectVersionIndex(index);
+                                    }}
+                                />
+                            }}
+                            numColumns={3}
 
-            />
-                </>:null
+                        />
+                    </> : null
             }
-            <TextView title={'Lựa chọn màu sắc'} />
-            <FlatList
-                data={route.variations}
-                keyExtractor={item => item._id}
-                renderItem={({ item, index }) => {
-                    return <ItemView
-                        route={item}
-                        isSelected={selectedColorIndex == index}
-                        onPress={() => {
-                            setSelectedColorIndex(index);
-                            setDataTest(item)
-                        }}
-                        selectedRAMROM={selectedRAMROM}
-                    />
-                }}
-                numColumns={3}
+            {
+                route.variations.length > 0 ?
+                    <>
+                        <TextView title={'Lựa chọn màu sắc'} />
+                        <FlatList
+                            data={route.variations}
+                            keyExtractor={item => item._id}
+                            renderItem={({ item, index }) => {
+                                return <ItemView
+                                    route={item}
+                                    isSelected={selectedColorIndex == index}
+                                    onPress={() => {
+                                        setSelectedColorIndex(index);
+                                        setDataTest(item)
+                                    }}
+                                    selectedRAMROM={selectedRAMROM}
+                                />
+                            }}
+                            numColumns={3}
 
-            />
+                        />
+                    </> : null
+            }
             <TextView title={'Chi tiết sản phẩm'} />
-            <TextView title={'Sản phẩm tương tự'} />
-            <FlatList
-                data={branData}
-                keyExtractor={item => item._id}
-                horizontal
-                renderItem={({ item }) => {
-                    return <IteamBrand route={item} />
-                }}
-                style={styles.container}
-            />
+            {
+                filteredBranData.length > 0 ?
+                    <>
+                        <TextView title={'Sản phẩm tương tự'} />
+                        <LottieView
+                            autoPlay
+                            style={[styles.loading, { display: isLoading ? 'block' : 'none' }]}
+                            source={require('../../assets/logo.json')}
+                        />
+                        <FlatList
+                            data={filteredBranData}
+                            keyExtractor={item => item._id}
+                            horizontal
+                            renderItem={({ item }) => {
+                                return <IteamBrand route={item} />
+                            }}
+                            style={styles.container}
+                        />
+                    </> : null
+            }
+
         </View>
     );
 }
-const ItemView = ({ route, isSelected, onPress,selectedRAMROM }) => {
-    const select = selectedRAMROM == route.ram+'/'+route.rom; 
+const ItemView = ({ route, isSelected, onPress, selectedRAMROM }) => {
+    const select = selectedRAMROM == route.ram + '/' + route.rom;
 
-    
+
     return (
         <View>
             <TouchableOpacity
                 disabled={!select}
                 onPress={onPress}
             >
-                <View style={[{ borderColor: select?isSelected ? '#1E90FF' : 'grey':'grey' ,backgroundColor:select?null:'#E3E6E7'}, styles.viewItem]}>
+                <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : 'grey', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
                     <Text>{route.color}</Text>
                     <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(route.price)}</Text>
                 </View>
@@ -106,7 +135,7 @@ const TextView = ({ title }) => (
     </View>
 );
 const ItemViewVersion = ({ route, isSelected, onPress }) => {
-   
+
     return (
         <TouchableOpacity
             onPress={onPress}
