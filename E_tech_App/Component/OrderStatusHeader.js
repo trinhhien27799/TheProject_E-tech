@@ -7,7 +7,7 @@ import tailwind from 'twrnc';
 
 const OrderStatusHeader = ({ orderStatus }) => {
     switch (orderStatus) {
-        case 1:
+        case 0:
             return (
                 <View style={styles.titleContainer}>
                     <Text style={styles.textTitle}>Đơn hàng đang xác nhận</Text>
@@ -19,7 +19,7 @@ const OrderStatusHeader = ({ orderStatus }) => {
             );
             break;
 
-        case 2:
+        case 1:
             return (
                 <View style={styles.titleContainer}>
                     <Text style={styles.textTitle}>Đơn hàng đang giao hàng</Text>
@@ -31,7 +31,7 @@ const OrderStatusHeader = ({ orderStatus }) => {
             );
             break;
 
-        case 3:
+        case 2:
             return (
                 <View style={styles.titleContainer}>
                     <Text style={styles.textTitle}>Đơn hàng đã hoàn thành</Text>

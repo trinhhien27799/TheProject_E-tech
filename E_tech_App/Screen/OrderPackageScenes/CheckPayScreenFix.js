@@ -9,6 +9,7 @@ import OrderStatusSet from '../../Component/OrderStatusSet'
 import OrderStatusChangeButton from '../../Component/OrderStatusChangeButton'
 import { useNavigation } from '@react-navigation/native'
 import { getBill } from '../../Model/BillModel'
+import { formatPrice } from '../../utils/format'
 
 const CheckPayScreenFix = ({ orderList }) => {
     const navigation = useNavigation();
@@ -26,8 +27,8 @@ const CheckPayScreenFix = ({ orderList }) => {
                         <View style={tailwind``}>
                             <View style={tailwind`flex-row`}>
                                 <Image
-                                    source={{ uri: 'https://cdn.hoanghamobile.com/i/preview/Uploads/2023/09/13/iphone-15-pro-natural-titanium-pure-back-iphone-15-pro-natural-titanium-pure-front-2up-screen-usen.png' }}
-                                    style={tailwind`h-26 w-18`}
+                                    source={require('../../img/order_3500833.png')}
+                                    style={tailwind`h-16 w-16`}
                                 />
     
                                 <View style={tailwind`ml-3`}>
@@ -43,15 +44,15 @@ const CheckPayScreenFix = ({ orderList }) => {
                         </View>
                     </View>
     
-                    <View style={tailwind`bg-gray-200 w-full h-0.5 my-3`}></View>
+                    <View style={tailwind `bg-gray-200 w-full h-0.5 my-3`}></View>
     
-                    <View style={tailwind`justify-center flex-row flex-auto px-16`}>
-                        <View style={tailwind``}>
+                    <View style={tailwind `justify-center flex-row flex-auto px-18`}>
+                        <View>
                             <Text style={tailwind`py-2 justify-center`}>Số lượng sản phẩm: {item.products.length}</Text>
-                            <Text style={tailwind``}>Tổng tiền: {item.total_price + item.transport_fee}</Text>
+                            <Text style={tailwind``}>Tổng tiền: {formatPrice(item.total_price)}</Text>
                         </View>
     
-                        <View>
+                        <View style={tailwind `justify-center`}>
                             <OrderStatusChangeButton item={item} statusNum={item.status} />
                         </View>
                     </View>
@@ -69,13 +70,26 @@ const CheckPayScreenFix = ({ orderList }) => {
     //     newData = ListOrder;
     // }
 
-    return (
-        <FlatList
-            data={orderList}
-            renderItem={ProductCard}
-            style={tailwind `h-1000`}
-        />
-    )
+    if(orderList.length == 0){
+        return(
+            <View style={tailwind `h-200 justify-center`}>
+                <Image 
+                    source={require('../../img/package_862074.png')}
+                    style={tailwind `w-50 h-50 mb-10 self-center`}
+                />
+                <Text style={tailwind `text-base self-center font-bold`}>Chưa có đơn hàng</Text>
+            </View>
+        )
+    }
+    else{
+        return (
+            <FlatList
+                data={orderList}
+                renderItem={ProductCard}
+                style={tailwind`h-1000`}
+            />
+        )
+    } 
 }
 
 export default CheckPayScreenFix

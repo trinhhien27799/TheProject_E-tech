@@ -14,7 +14,7 @@ export const getAllBill = async (statusNum) => {
     }
 }
 
-export const getRealBill = async (statusNum) => {
+export const getRealBill = async () => {
     const username = await AsyncStorage.getItem('username');
     const token = await AsyncStorage.getItem('token');
 

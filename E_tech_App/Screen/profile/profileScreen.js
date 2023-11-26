@@ -40,6 +40,7 @@ const Profile = ({ route }) => {
                             <Image style={{ height: 10, width: 10, marginLeft: 5, alignSelf: "center", marginRight: '10%', tintColor: 'black' }} source={require('../../img/next.png')} />
                         </TouchableOpacity>
                     </View>
+                    
                     <OrderSreen />
                 </View>
                 <ButtonBody icon={require('../../img/tag.png')} label="Voucher của tôi" onPress={() => { navigation.navigate('MyVoucher') }} />
