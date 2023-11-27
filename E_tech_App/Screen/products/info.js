@@ -7,7 +7,7 @@ import { handleLike } from '../../CallApi/productApi'
 import { getUser } from "../../session";
 
 
-const Info = ({ productId, productName, price, vote, isLike }) => {
+const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike }) => {
 
     const [like, setLike] = useState(isLike)
     const onClick = async (boolean) => {
@@ -26,7 +26,7 @@ const Info = ({ productId, productName, price, vote, isLike }) => {
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{productName}</Text>
-            <Text style={{ marginTop: 5, marginBottom: 5, color: 'red', fontSize: 17 }}>{formatPrice(price)}</Text>
+            <Text style={{ marginTop: 5, marginBottom: 5, color: 'red', fontSize: 17 }}>{formatPrice(minPrice * (percentDiscount != 0 ? (1 - percentDiscount * 0.01) : 1))} - {formatPrice(maxPrice * (percentDiscount != 0 ? (1 - percentDiscount * 0.01) : 1))}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 {vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={vote} />}
                 <View style={{ flexDirection: 'row' }}>
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         padding: 10,
-        marginHorizontal:4
+        marginHorizontal: 4
     }
 });

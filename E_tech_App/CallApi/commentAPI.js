@@ -20,4 +20,17 @@ const checkComment = async (productId) => {
   }
 }
 
-export { getComments,checkComment }
+const pushComment = async (form) => {
+  try {
+    const rs = await api.post('/comment/add', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return rs.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export { getComments, checkComment, pushComment }
