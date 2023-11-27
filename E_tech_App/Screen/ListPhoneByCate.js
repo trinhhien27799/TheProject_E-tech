@@ -68,7 +68,7 @@ const ListPhone = ({ route }) => {
                 <View style={{ flexDirection: 'row' }}>
                     <View style={tailwind`mt-4 w-37`}>
                         <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-                        <Text style={{ marginTop: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
+                        <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
                         <Text style={{ marginTop: 5 }}>Hãng: {item.brand_name}</Text>
                     </View>
                 </View>

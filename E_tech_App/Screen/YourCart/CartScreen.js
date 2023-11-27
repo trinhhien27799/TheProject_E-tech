@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-web';
 import axios from 'axios';
 import { getCart } from '../../CallApi/cartApi';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import tailwind from 'twrnc';
 import { TotalProductBill } from '../../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../../utils/format';
@@ -12,6 +12,7 @@ import { formatPrice } from '../../utils/format';
 const CartScreen = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
+  const isFocus = useIsFocused()
 
   useEffect(() => {
     const fetchData =async()=>{
@@ -19,7 +20,7 @@ const CartScreen = () => {
       setCart(data);
     }
     fetchData();
-  }, []);
+  }, [isFocus]);
 
   return (
     <View style={styles.container}>

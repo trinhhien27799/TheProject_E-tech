@@ -56,7 +56,7 @@ const DetailPoducts = () => {
             case 0:
                 return <HeaderProduct variations={product.variations} />
             case 1:
-                return <Info productId={product._id} productName={product.product_name} price={product.min_price} vote={product.vote} isLike={product.like} />
+                return <Info productId={product._id} productName={product.product_name} minPrice={product.min_price} maxPrice={product.max_price} percentDiscount={product.percent_discount} vote={product.vote} isLike={product.like} />
             case 2:
                 return <Rule />
             case 3:

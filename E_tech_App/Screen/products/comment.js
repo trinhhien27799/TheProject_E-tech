@@ -1,19 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import StartRating from "../../Component/startRating";
-import { getUser } from "../../session";
-import { getComments, checkComment } from "../../CallApi/commentAPI";
-import DropDownPicker from "react-native-dropdown-picker";
-
+import React, { useEffect, useState } from "react"
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { getComments, checkComment, pushComment } from "../../CallApi/commentAPI"
+import DropDownPicker from "react-native-dropdown-picker"
+import { Rating, AirbnbRating } from 'react-native-ratings'
+import * as ImagePicker from 'expo-image-picker'
+import { getUser } from "../../session"
+import LottieView from 'lottie-react-native'
 
 const Comment = ({ productId }) => {
 
     const [comments, setComments] = useState([])
     const [listVariation, setlistVariation] = useState([])
-    const [selectedValue, setSelectedValue] = useState(null)
+    const [variationId, setVariationId] = useState(null)
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
-    const user = getUser()
+    const [images, setImages] = useState([])
+    const [content, setContent] = useState('')
+    const [allow, setAllow] = useState(false)
+    const [numStar, setNumStar] = useState(5)
+    const [loading, setLoading] = useState(false)
+
+
+    useEffect(() => {
+        setAllow(content.toString().trim().length > 0 && variationId != null)
+    }, [content, variationId])
+
+    const pickImages = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [9, 16],
+            quality: 1,
+            multiple: true,
+        })
+
+        if (!result.canceled) {
+            setImages(prevImages => [...prevImages, ...result.assets])
+        }
+    }
+
 
     const getData = async () => {
         try {
@@ -31,9 +56,6 @@ const Comment = ({ productId }) => {
         try {
             const response = await checkComment(productId)
             setlistVariation(response)
-            if (response.length > 0) {
-                setSelectedValue(response[0])
-            }
         } catch (error) {
             console.log(`CommentScreen: ${error}`)
         }
@@ -43,11 +65,6 @@ const Comment = ({ productId }) => {
         getData()
         checkData()
     }, [])
-
-    useEffect(() => {
-        console.log(selectedValue)
-    }, [selectedValue])
-
 
     const renderItem = ({ item }) => {
         return (
@@ -66,7 +83,7 @@ const Comment = ({ productId }) => {
                     />
                     <View style={{ marginStart: 8 }}>
                         <Text>{item.product.name}</Text>
-                        <Text style={{ fontSize: 13, overflow: "scroll",color:'grey' }}>{item.product.property}</Text>
+                        <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey' }}>{item.product.property}</Text>
                     </View>
                 </View>
                 <Text style={{ marginTop: 4, fontSize: 13, marginBottom: 8 }}>{item.content}</Text>
@@ -76,7 +93,7 @@ const Comment = ({ productId }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 80, height: 80 }}
+                            style={{ width: 155, aspectRatio: 16 / 9, resizeMode: 'contain' }}
                             source={{ uri: item }}
                         />
                     )}
@@ -86,6 +103,75 @@ const Comment = ({ productId }) => {
                 ></View>
             </View>
         )
+    }
+
+
+    const deleteImage = (pos) => {
+        const updatedImages = images.slice().filter((_, index) => index !== pos)
+        setImages(updatedImages)
+    }
+    const renderItemImage = ({ item, index }) => {
+        return (
+            <View style={{ position: 'relative' }}>
+                <Image
+                    style={{ width: 100, height: 180, resizeMode: 'contain' }}
+                    source={{ uri: item.uri }}
+                />
+                <View
+                    onTouchStart={() => {
+                        deleteImage(index)
+                    }}
+                    style={{ width: 100, position: 'absolute', bottom: 0, backgroundColor: 'rgba(255, 255, 255, 0.5)', paddingVertical: 16, alignItems: 'center' }}>
+                    <Image
+                        style={{ width: 25, height: 25 }}
+                        source={require('../../assets/bin.png')}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    const sendComment = async () => {
+        try {
+            setLoading(true)
+            const form = new FormData()
+            await Promise.all([
+                new Promise((resolve) => {
+                    images.forEach(async (asset, index) => {
+                        const fileName = `${index}v${Date.now()}.jpg`
+                        form.append('image', {
+                            uri: asset.uri,
+                            type: 'image/jpeg',
+                            name: fileName,
+                        })
+                        resolve()
+                    })
+                }),
+                new Promise((resolve) => {
+                    form.append('userId', getUser()._id)
+                    form.append('productId', productId)
+                    form.append('variationId', variationId)
+                    form.append('numStar', numStar)
+                    form.append('content', content.toString().trim())
+                    resolve()
+                }),
+            ])
+
+            const response = await pushComment(form)
+            if (response.code == 200) {
+                console.log('Đánh giá thành công')
+                const newListVariation = listVariation.filter((item) => item.variationId !== variationId)
+                setlistVariation(newListVariation)
+                setVariationId(null)
+                getData()
+            } else {
+                console.log('Đánh giá thất bại')
+            }
+        } catch (error) {
+            console.log(`Send Comment: ${error}`)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -99,23 +185,66 @@ const Comment = ({ productId }) => {
                             icon: (item) => <Image source={{ uri: item.image }} style={{ width: 20, height: 20, resizeMode: 'cover' }} />
                         }}
                         open={open}
-                        value={selectedValue}
+                        value={variationId}
                         items={listVariation}
                         setOpen={setOpen}
-                        setValue={setSelectedValue}
+                        setValue={setVariationId}
                         setItems={setlistVariation}
                         hideSelectedItemIcon={true}
                         placeholder="Chọn loại sản phẩm"
                     />
+                    <AirbnbRating
+                        count={5}
+                        reviews={["Rất tệ", "Tệ", "Bình thường", "Hài lòng", "Rất hài lòng"]}
+                        defaultRating={5}
+                        size={20}
+                    />
                     <TextInput
-                        placeholder="Nhập bình luận của bạn"
+                        placeholder="Cho chúng tôi biết cảm nhận của bạn về sản phẩm"
                         maxLength={200}
                         multiline
                         numberOfLines={4}
+                        onChangeText={setContent}
                     />
-                    <TouchableOpacity>
-                        <Text style={{ color: 'blue', textAlign: 'right' }}>Gửi Đánh giá</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                        <TouchableOpacity
+                            onPress={pickImages}
+                            style={{ backgroundColor: '#9b9b9b', width: 30, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}
+                        >
+                            <Image
+                                style={{ width: 15, height: 15 }}
+                                source={require('../../assets/plus.png')}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ marginStart: 10 }}>Thêm ảnh minh họa</Text>
+                    </View>
+                    <FlatList
+                        horizontal
+                        data={images}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderItemImage}
+                    />
+                    {loading
+                        ?
+                        <>
+                            <LottieView
+                                autoPlay
+                                style={{ width: 40, height: 40, marginTop: 10, position: 'absolute', right: 10, bottom: 10 }}
+                                source={require('../../assets/logo.json')}
+                            />
+                        </>
+                        :
+                        <TouchableOpacity
+                            onPress={() => {
+                                sendComment()
+                            }}
+                            disabled={!allow}
+                            style={{ marginTop: 10 }}>
+                            <Text style={{ color: allow ? 'blue' : 'grey', textAlign: 'right' }}>Gửi Đánh giá</Text>
+                        </TouchableOpacity>
+                    }
+
+
                 </View>
             }
             <Text style={styles.header}>{title}</Text>
@@ -139,4 +268,4 @@ const styles = StyleSheet.create({
         marginTop: 10, fontWeight: 'bold', fontSize: 15,
         marginBottom: 10
     },
-});
+})
