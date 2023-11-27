@@ -28,6 +28,7 @@ const Variations = ({ variations }) => {
                     <>
                         <TextView title={'Lựa chọn phiên bản'} />
                         <FlatList
+                            style={styles.flatlist}
                             data={variations}
                             keyExtractor={item => item._id}
                             renderItem={({ item, index }) => {
@@ -46,6 +47,7 @@ const Variations = ({ variations }) => {
             }
             <TextView title={'Lựa chọn màu sắc'} />
             <FlatList
+                style={styles.flatlist}
                 data={variations}
                 keyExtractor={item => item._id}
                 renderItem={({ item, index }) => {
@@ -74,9 +76,9 @@ const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
                 disabled={!select}
                 onPress={onPress}
             >
-                <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : 'grey', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
-                    <Text style={{color: select ? 'black' : 'grey'}}>{item.color}</Text>
-                    <Text style={{ fontSize: 10, color: select ? 'red' : 'grey', fontWeight: 'bold' }}>{formatPrice(item.price)}</Text>
+                <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : '#E3E6E7', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
+                    <Text style={{ color: select ? 'black' : 'grey' }}>{item.color}</Text>
+                    <Text style={{ fontSize: 13, color: select ? 'red' : 'grey', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -95,9 +97,9 @@ const ItemViewVersion = ({ item, isSelected, onPress }) => {
         <TouchableOpacity
             onPress={onPress}
         >
-            <View style={[{ borderColor: isSelected ? '#1E90FF' : 'grey' }, styles.viewItem]}>
+            <View style={[{ borderColor: isSelected ? '#1E90FF' : '#E3E6E7',backgroundColor: isSelected ? null : '#E3E6E7'}, styles.viewItem]}>
                 <Text>{item.ram}/{item.rom}</Text>
-                <Text style={{ fontSize: 10, color: 'red', fontWeight: 'bold' }}>{formatPrice(item.price)}</Text>
+                <Text style={{ fontSize: 13, color: 'red', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
 
@@ -111,18 +113,19 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         flexDirection: "column",
-        marginHorizontal:8
+        marginHorizontal: 8
     },
     viewItem: {
         height: 70,
         width: Dimensions.get("window").width * 0.25,
         borderWidth: 1,
         justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 10,
-        paddingLeft: 10,
-        paddingTop: 20,
-        paddingBottom: 20,
-        marginEnd: 10,
-        marginBottom: 10,
+        margin: 10,
+    },
+    flatlist: {
+        flexGrow: 0,
+        alignItems:'center'
     }
 });

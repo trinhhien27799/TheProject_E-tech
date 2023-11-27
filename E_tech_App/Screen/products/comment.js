@@ -29,7 +29,7 @@ const Comment = ({ productId }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [9, 16],
+            aspect: [14, 9],
             quality: 1,
             multiple: true,
         })
@@ -93,7 +93,7 @@ const Comment = ({ productId }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 155, aspectRatio: 16 / 9, resizeMode: 'contain' }}
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover',backgroundColor:'#eeeeee' }}
                             source={{ uri: item }}
                         />
                     )}

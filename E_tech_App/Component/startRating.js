@@ -10,8 +10,8 @@ export default StartRatings = ({route}) => {
                 <Animated.View>
                     <FontAwesome 
                     name={x <= route ? "star":"star-o"} 
-                    color='#F3FF00' 
-                    size={15} 
+                    color='#f6c204' 
+                    size={28} 
                     style={{marginHorizontal:2}}
                     />
                 </Animated.View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent:'center',
-        alignContent:'center',
+        alignContent:'center'
     },
     
 });

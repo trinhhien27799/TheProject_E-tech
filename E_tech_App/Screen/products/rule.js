@@ -8,7 +8,7 @@ const Rule = () => {
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: 'bold' }}>Thông tin sản phẩm</Text>
-            <View style={{ width: Dimensions.get('screen').width * 0.7 }}>
+            <View style={{ width: Dimensions.get('screen').width * 0.85 }}>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <Ionicons name="phone-portrait-sharp" size={20} />
                     <Text> Mới, đầy đủ phụ kiện từ nhà sản xuất</Text>
@@ -30,7 +30,7 @@ const Rule = () => {
 export default Rule
 const styles = StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height * 0.2,
+        flexGrow: 0,
         borderColor: colors.grey,
         borderWidth: 1,
         marginTop: 10,

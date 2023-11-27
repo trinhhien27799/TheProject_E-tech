@@ -6,7 +6,7 @@ import { Dimensions, View, Text, TouchableOpacity, Image, StyleSheet, FlatList }
 
 const HeaderProduct = ({ variations }) => {
     const navigation = useNavigation()
-    const [borderIndex, setBorderIndex] = useState(null)
+    const [borderIndex, setBorderIndex] = useState(0)
     const [image, setImage] = useState(null)
 
     const RenderItem = ({ item, index }) => (
@@ -19,7 +19,11 @@ const HeaderProduct = ({ variations }) => {
             <Image
                 key={index}
                 source={{ uri: item.image }}
-                style={{ height: 100, width: 100, margin: 5, borderRadius: 15, borderColor: borderIndex == index ? 'black' : null, borderWidth: 1 }} />
+                style={{
+                    height: 100, width: 100, resizeMode: 'contain',
+                    backgroundColor: 'white', margin: 5, borderRadius: 15,
+                    borderColor: borderIndex == index ? 'black' : null, borderWidth: 1
+                }} />
         </TouchableOpacity>
     )
 
@@ -65,7 +69,8 @@ const styles = StyleSheet.create({
     },
     imagePd: {
         flex: 1,
-        resizeMode: 'cover'
+        resizeMode: 'contain',
+        backgroundColor: 'white'
     },
     viewPrevious: {
         position: 'absolute',
