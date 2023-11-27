@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Dimensions, FlatList, TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatPrice } from "../../utils/format";
+import { setProductSelected } from "../../session";
 
 
-const VariationsProducts = ({ variations }) => {
+const Variations = ({ variations }) => {
 
 
     const [selectedColorIndex, setSelectedColorIndex] = useState(0);
@@ -16,7 +16,7 @@ const VariationsProducts = ({ variations }) => {
         if (variations && variations.length > 0) {
             const selectedVersion = variations[selectVersionIndex];
             const dataIndex = variations[selectedColorIndex];
-            AsyncStorage.setItem('dataSelect', JSON.stringify(dataIndex));
+            setProductSelected(dataIndex)
             setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
         }
     }, [selectVersionIndex, selectedColorIndex]);
@@ -120,7 +120,7 @@ const ItemViewVersion = ({ item, isSelected, onPress }) => {
     );
 }
 
-export default VariationsProducts
+export default Variations
 
 
 const styles = StyleSheet.create({

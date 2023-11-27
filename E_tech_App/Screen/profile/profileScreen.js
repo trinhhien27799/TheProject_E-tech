@@ -8,14 +8,21 @@ import OrderSreen from "./orderSreen";
 import { getMyVoucher } from "../../CallApi/voucherApi";
 import { getLike } from "../../CallApi/productApi";
 import IteamProduct from "../../Component/itemProducts";
-import ProfileHooks from "../../Component/hooks/profileHook";
 
 const Profile = ({ route }) => {
 
     const { username, avatar, fullname } = route.params;
     const params = route.params;
     const navigation = useNavigation();
-    const {likeData,isLoading} = ProfileHooks();
+    const [likeData, setLikeData] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getMyVoucher();
+            const like = await getLike();
+            setLikeData(like); 
+        }
+        fetchData();
+    }, [])
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <HeaderProfile username={fullname} urlImage={avatar} email={username} navigation={navigation} />

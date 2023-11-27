@@ -4,7 +4,7 @@ import colors from '../../Component/colors';
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const Rule = () => {
+const Rule = () => {
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: 'bold' }}>Thông tin sản phẩm</Text>
@@ -25,6 +25,9 @@ export const Rule = () => {
         </View>
     )
 }
+
+
+export default Rule
 const styles = StyleSheet.create({
     container: {
         height: Dimensions.get('window').height * 0.2,
@@ -33,6 +36,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 10,
         padding: 10,
-        marginHorizontal:8
+        marginHorizontal: 8
     }
 });

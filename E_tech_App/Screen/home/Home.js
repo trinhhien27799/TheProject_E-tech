@@ -36,7 +36,7 @@ const Home = ({ navigation, route }) => {
             <MainHeader route={route.params} navigation={navigation} />
             <SectionList style={{backgroundColor:"white"}}
                 sections={sections}
-                keyExtractor={(item, index) => item + index}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
             />
 
