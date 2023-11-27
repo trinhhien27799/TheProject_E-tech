@@ -20,10 +20,14 @@ const getProductSelected = () => {
 }
 
 
-const listCart = []
+var listCart = []
 
 const pushListCart = (object) => {
   listCart.push(object)
+}
+
+const getListCart = () => {
+  return listCart
 }
 
 const clearListCart = () => {
@@ -38,6 +42,6 @@ const deleteItemInListCart = (cartId) => {
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
-  pushListCart, clearListCart, deleteItemInListCart
+  pushListCart, getListCart, clearListCart, deleteItemInListCart
 }
 
