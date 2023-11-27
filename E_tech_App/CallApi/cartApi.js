@@ -1,4 +1,7 @@
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL } from "./config";
+
 import api from '../apiService'
 
 const getCart = async () => {
@@ -16,12 +19,13 @@ const getCart = async () => {
         if (data.code == 200) {
             alert('Lấy giỏ hàng thành công')
         }
-        return data
+        return data;
     } catch (error) {
-        console.error('Lỗi yêu cầu mạng:', error)
-        throw error
+        console.error('Lỗi yêu cầu mạng:', error);
+        throw error;
     }
 }
+
 
 
 const addCart = async (newCart) => {
