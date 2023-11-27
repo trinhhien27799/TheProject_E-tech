@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { getItemProduct } from "../../CallApi/productApi";
-import { useFocusEffect } from "@react-navigation/native";
 
 const useItemProduct = (productId)=>{
     const [loading,setLoading] = useState(true);
@@ -16,11 +15,9 @@ const useItemProduct = (productId)=>{
             setLoading(false);
         }
     }
-    useFocusEffect(
-        React.useCallback(()=>{
-            getData();
-        },[])
-    )
-    return {loading,dataItem,getData};
+    useEffect(()=>{
+        getData();
+    },[]);
+    return {loading,dataItem};
 }
 export default useItemProduct;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList,Dimensions} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { getAllProduct, getItemProduct } from "../../CallApi/productApi"
 import tailwind from 'twrnc'
@@ -33,7 +33,7 @@ const BestSeller = () => {
 
   const renderItem = ({ item, index }) => {
     const handleItem = async () => {
-      navigation.navigate('DetailPoducts',{productId:item._id});
+      navigation.navigate('DetailProducts',{productId:item._id});
     }
     return (
       <View style={styles.body}>
@@ -67,11 +67,15 @@ const BestSeller = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{title}</Text>
+        <View style={styles.headerTitle}>
+          <Image style={{width:25,height:25,marginRight:10}} source={require('../../img/newspaper.png')}/>
+          <Text style={{ fontWeight: '700', fontSize: 18,lineHeight:25 }}>{title}</Text>
+        </View>
         <TouchableOpacity onPress={() => { navigation.navigate('ListPhone') }}>
-          <Text style={{ fontWeight: '500', color: 'blue' }}>{more}</Text>
+          <Text style={{ fontWeight: '400', color: 'blue' }}>{more}</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.listView}>
       <FlatList
         data={product}
         numColumns={2}
@@ -79,6 +83,7 @@ const BestSeller = () => {
         renderItem={renderItem}
         style={styles.flatListContainer}
       />
+       </View>
     </View>
   )
 }
@@ -86,7 +91,14 @@ const BestSeller = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  listView: {
+    paddingHorizontal:10,
+    alignItems:"center",
+  },
+  flatListContainer:{
+    
   },
   header: {
     flexDirection: 'row',
@@ -94,15 +106,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
+  headerTitle:{
+    flexDirection: 'row',
+  },
   body: {
     backgroundColor: 'white',
-    margin: 10,
-    width: 180,
+    width: Dimensions.get('window').width/2 - 16, 
     height: 270,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: 'grey',
-    shadowRadius: 10,
+    shadowRadius: 7,
     alignItems: 'center',
+    shadowOpacity:0.2,
+    margin:6
   },
   saler: {
     position: 'absolute',
@@ -133,9 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
-  flatListContainer: {
-    alignItems: 'center'
-  },
+  
 })
 
 export default BestSeller

@@ -27,7 +27,6 @@ const getItemProduct = async (productId) => {
     const response = await api.post(`/product/${productId}`, {
       userId: getUser() ? getUser()._id : null
     })
-    console.log(response);
     return response.data
   } catch (error) {
     throw error
@@ -40,7 +39,15 @@ const handleLike = async (boolean, productId) => {
     const response = await api.post(`/favorite/${option}`, {
       productId: productId
     })
-    console.log(response);
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+const getRelated = async (productId) => {
+  try {
+    const response = await api.get(`/product/related/${productId}`)
     return response.data
   } catch (error) {
     throw error
@@ -48,7 +55,8 @@ const handleLike = async (boolean, productId) => {
 }
 
 
-export { getAllProduct, getAllProductByFilter, getItemProduct, handleLike }
+
+export { getAllProduct, getAllProductByFilter, getItemProduct, handleLike, getRelated }
 
 export const getLike = async () => {
   try {
@@ -132,9 +140,9 @@ export const getNotifi = async ({ action }) => {
 }
 
 
-export const getBrandName = async ({ brand_id }) => {
+export const getBrandName = async ({ brand_name }) => {
   try {
-    const response = await axios.get(`${API_USER_URL}/api/brand//get/${brand_id}`);
+    const response = await axios.get(`${API_USER_URL}/api/product/get/brand/${brand_name}`);
     return response.data;
   } catch (error) {
     console.log(error);

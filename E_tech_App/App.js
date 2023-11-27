@@ -21,7 +21,9 @@ import AddressTest from './Screen/AddressTest';
 import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
 import ResetPassword from './Screen/profile/resetPassword';
-import { Button } from 'react-native';
+
+
+import { Button ,TouchableOpacity} from 'react-native';
 import DialogAddress from './Screen/DialogAddress';
 import Pay from './Screen/Pay';
 import MapViewScreen from './Component/MapView';
@@ -38,15 +40,19 @@ import MyVoucher from './Screen/MyVoucher';
 import ShippingMethod from './Screen/ShippingMethod';
 
 import ListPhoneByCate from './Screen/ListPhoneByCate';
-import DetailProducts from './Screen/products/detailProducts';
+import DetailProducts from './Screen/products/main';
 import ProductComment from './Component/ProductComment';
 import SplashScreen from './Screen/splash/SplashScreen';
 import DetailCommentScreen from './Screen/DetailCommentScreen';
 import SettingScreen from './Screen/profile/setting';
 import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen';
 import CartScreen from './Screen/YourCart/CartScreen';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
+
 
 const Stack = createNativeStackNavigator();
 const Tabs = AnimatedTabBarNavigator();
@@ -57,6 +63,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Splash'
+
       >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
@@ -75,7 +82,7 @@ const App = () => {
 
         <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='DetailPoducts' component={DetailProducts} options={{ headerShown: false }} />
+        <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
         <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
@@ -98,7 +105,15 @@ const App = () => {
 
         <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
 
-        <Stack.Screen name='PayScreen' component={Pay} options={{ headerShown: false }} />
+        <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: true, 
+        headerLeft:() => (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        ),
+        headerTintColor: 'white',  
+        headerTitle:'Thanh toán',
+        headerStyle: { backgroundColor: '#3366ff' } }} />
         <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
         <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
         <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>

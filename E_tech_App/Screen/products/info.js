@@ -1,85 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import StartRating from "../../Component/startRating";
+import { Ionicons } from "@expo/vector-icons";
+import { formatPrice } from "../../utils/format";
+import { handleLike } from '../../CallApi/productApi'
+import { getUser } from "../../session";
 
 
-export const InfoProduct = ({ description }) => {
-    const [data, setData] = useState([])
-    const [more, setMore] = useState('')
-    const [hide, setHide] = useState(true)
-    const [noDescrition, setNoDescription] = useState('')
+const Info = ({ productId, productName, price, vote, isLike }) => {
 
-    useEffect(() => {
-        if (!description || description.length == 0) {
-            setNoDescription("Không có mô tả của sản phẩm này.")
-        }
-    }, [])
-
-    useEffect(() => {
-        if (hide) {
-            if (description.length > 6) {
-                setMore("Xem thêm")
-                const newArray = description.slice(0, 4)
-                setData(newArray)
-            } else {
-                setData(description)
+    const [like, setLike] = useState(isLike)
+    const onClick = async (boolean) => {
+        try {
+            const user = getUser()
+            if (!user) {
+                alert('Đăng nhập để tiếp tục')
+                return
             }
-        } else {
-            setMore("Ẩn bớt")
-            setData(description)
+            const response = await handleLike(boolean, productId)
+        } catch (error) {
+            console.log(error)
         }
-    }, [hide])
-
-    const renderItem = ({ item }) => {
-        return (
-            <View>
-                {item.title && <Text style={styles.title}>{item.title}</Text>}
-                {item.description && <Text style={styles.description}>{item.description}</Text>}
-                {item.image && <Image source={{ uri: item.image }} style={styles.image} />}
-            </View>
-        )
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Mô tả sản phẩm</Text>
-            <Text>{noDescrition}</Text>
-            <FlatList
-                data={data}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderItem}
-            />
-            <TouchableOpacity
-                onPress={() => { setHide(!hide) }}
-            >
-                <Text style={styles.more}>{more}</Text>
-            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{productName}</Text>
+            <Text style={{ marginTop: 5, marginBottom: 5, color: 'red', fontSize: 17 }}>{formatPrice(price)}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                {vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={vote} />}
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            onClick(!like)
+                            setLike(!like)
+                        }}
+                    >
+                        {
+                            like ?
+                                <Ionicons name="heart" color="red" size={25} style={{ marginRight: 10 }} />
+                                : <Ionicons name="heart-outline" color="red" size={25} style={{ marginRight: 10 }} />
+                        }
+                    </TouchableOpacity>
+                    <Ionicons name="share-social-outline" size={25} />
+                </View>
+            </View>
         </View>
 
     )
 }
+
+export default Info
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 8
-    },
-    header: {
-        marginTop: 10, fontWeight: 'bold', fontSize: 15,
-        marginBottom: 15
-    },
-    title: {
-        marginTop: 10, fontWeight: '500',
-        marginBottom: 8
-    },
-    description: {
-        marginBottom: 8
-    },
-    image: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height / 4,
-        marginBottom: 12,
-        resizeMode: 'cover'
-    },
-    more: {
-        color: 'blue'
+        marginTop: 10,
+        padding: 10,
+        marginHorizontal:4
     }
-
 });
