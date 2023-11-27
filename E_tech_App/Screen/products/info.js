@@ -47,7 +47,7 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} />}
+                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={28}/>}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                         onPress={() => {

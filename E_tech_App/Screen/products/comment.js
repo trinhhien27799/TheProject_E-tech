@@ -6,6 +6,7 @@ import { Rating, AirbnbRating } from 'react-native-ratings'
 import * as ImagePicker from 'expo-image-picker'
 import { getUser } from "../../session"
 import LottieView from 'lottie-react-native'
+import StartRating from '../../Component/startRating'
 
 const Comment = ({ productId }) => {
 
@@ -69,12 +70,14 @@ const Comment = ({ productId }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={{ marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                     <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
                     />
                     <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text>
+                    <View style={{ flex: 1 }}></View>
+                    <StartRating route={item.numStar} size={16} />
                 </View>
                 <View style={{ flexDirection: 'row', backgroundColor: '#eeeeee', padding: 4, borderRadius: 10, alignItems: 'center' }}>
                     <Image
@@ -93,7 +96,7 @@ const Comment = ({ productId }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover',backgroundColor:'#eeeeee' }}
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee' }}
                             source={{ uri: item }}
                         />
                     )}
