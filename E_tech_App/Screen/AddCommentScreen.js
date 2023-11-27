@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { Image } from 'react-native'
@@ -6,12 +6,28 @@ import { View, Text } from 'react-native'
 import tailwind from 'twrnc'
 import RatingStarComment from '../Component/RatingStar_Comment'
 import { useNavigation } from '@react-navigation/native'
+import { getVariationDetail } from '../CallApi/productApi'
 
 const AddCommentScreen = ({route}) => {
   const {product} = route.params;
   const navigation = useNavigation();
+  
+  const [variation, setVariation] = useState(null);
 
-  console.log(product);
+  const getVariation = async (variationID) => {
+    try {
+      const data = await getVariationDetail(variationID);
+      setVariation(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getVariation(product.variations_id)
+  }, []);
+
+  console.log(variation);
 
   return (
     <View>

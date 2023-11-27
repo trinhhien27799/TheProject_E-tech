@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     viewImage: {
         height: Dimensions.get('window').height * 0.5,
-        width: '100%',
+        width: '100%'
     },
     imagePd: {
         flex: 1,

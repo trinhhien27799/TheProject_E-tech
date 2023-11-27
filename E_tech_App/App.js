@@ -63,7 +63,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Splash'
-
       >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 

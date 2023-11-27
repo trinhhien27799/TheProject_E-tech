@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Image, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
@@ -10,8 +10,9 @@ import OrderStatusChangeButton from '../../Component/OrderStatusChangeButton'
 import { useNavigation } from '@react-navigation/native'
 import { getBill } from '../../Model/BillModel'
 import { formatPrice } from '../../utils/format'
+import BottomSheet from '@devvie/bottom-sheet'
 
-const CheckPayScreenFix = ({ orderList }) => {
+const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
     const navigation = useNavigation();
 
     const ProductCard = ({ item }) => {
@@ -53,7 +54,7 @@ const CheckPayScreenFix = ({ orderList }) => {
                         </View>
     
                         <View style={tailwind `justify-center`}>
-                            <OrderStatusChangeButton item={item} statusNum={item.status} />
+                            <OrderStatusChangeButton item={item} statusNum={item.status} cancelButton={cancelOnclick}/>
                         </View>
                     </View>
                 </View>
@@ -83,11 +84,13 @@ const CheckPayScreenFix = ({ orderList }) => {
     }
     else{
         return (
-            <FlatList
-                data={orderList}
-                renderItem={ProductCard}
-                style={tailwind`h-1000`}
-            />
+            <View>
+                <FlatList
+                    data={orderList}
+                    renderItem={ProductCard}
+                    style={tailwind`h-1000`}
+                />
+            </View>
         )
     } 
 }
