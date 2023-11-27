@@ -46,7 +46,7 @@ const ListPhone = ({ route }) => {
     }, [])
 
     const handleItem = async ({item})=>{
-        navigation.navigate('DetailPoducts',{productId:item._id});
+        navigation.navigate('DetailProducts',{productId:item._id});
     }
 
     const renderItem = ({ item, index }) => (
