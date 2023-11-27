@@ -33,8 +33,7 @@ const BestSeller = () => {
 
   const renderItem = ({ item, index }) => {
     const handleItem = async () => {
-
-      navigation.navigate('DetailPoducts',{productId:item._id});
+      navigation.navigate('DetailProducts',{productId:item._id});
     }
     return (
       <View style={styles.body}>

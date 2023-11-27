@@ -22,7 +22,7 @@ import BottomNavigation from './Screen/home/bottomNavigation';
 import NotificationScreen from './Screen/NotificationScreen';
 import ResetPassword from './Screen/profile/resetPassword';
 
-import OrderScene from './Screen/OrderPackageScenes/OrderScene';
+
 import { Button ,TouchableOpacity} from 'react-native';
 import DialogAddress from './Screen/DialogAddress';
 import Pay from './Screen/Pay';
@@ -61,7 +61,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='PayScreen'
+        initialRouteName='Splash'
 
       >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
