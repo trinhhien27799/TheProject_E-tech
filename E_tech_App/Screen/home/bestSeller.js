@@ -55,7 +55,7 @@ const BestSeller = () => {
             <View style={tailwind`mt-4 w-37`}>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
               <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
-              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} />}
+              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={25}/>}
             </View>
 
           </View>
