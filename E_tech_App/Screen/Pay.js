@@ -22,8 +22,7 @@ import { formatPrice } from '../utils/format';
 
 
 
-const Pay = ({route}) => {
-  const {voucher_idd, voucher_name} = route.params; 
+const Pay = ({voucher_idd, voucher_name}) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 

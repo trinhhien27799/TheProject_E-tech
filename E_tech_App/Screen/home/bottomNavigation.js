@@ -75,6 +75,21 @@ const BottomNavigation = ({navigation,route}) => {
           }}
         />
 
+      <Tabs.Screen
+        name="Voucher"
+        component={Makhuyenmai}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icon
+              name="bell"
+              size={size ? size : 24}
+              color={focused ? color : "#222222"}
+              focused={focused}
+            />
+          )
+        }}
+      />
+
         <Tabs.Screen
           name="Account"
           component={Profile}

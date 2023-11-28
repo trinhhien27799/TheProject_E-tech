@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   FlatList,
@@ -10,14 +10,26 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { myvouchers } from '../Model/voucher';
+
 import { useNavigation } from '@react-navigation/native';
+import { getMyVoucher } from '../CallApi/voucherApi';
 
 
-export default function MyVoucher() {
+const MyVoucher = () => {
+  const [voucher, setVoucher] = useState([]);
   const navigation = useNavigation();
-  const myVoucherArray = myvouchers();
-  console.log(myVoucherArray);
+
+  const myvouchers = async () => {
+    try {
+      const data = await getMyVoucher();
+      setVoucher(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {myvouchers()}, [])
 
   // const data = [
   //   {
@@ -87,7 +99,7 @@ export default function MyVoucher() {
       </View>
       <View>
         <FlatList
-          data={myVoucherArray}
+          data={voucher}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.view2}>
@@ -114,6 +126,8 @@ export default function MyVoucher() {
     </SafeAreaView>
   );
 }
+
+export default MyVoucher;
 
 const styles = StyleSheet.create({
   container: {

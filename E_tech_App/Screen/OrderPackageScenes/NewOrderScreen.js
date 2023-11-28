@@ -11,15 +11,20 @@ import { getRealBill } from '../../CallApi/billAPI';
 import { Image } from 'react-native';
 import BottomSheet from '@devvie/bottom-sheet';
 import { Dialog, Portal, Provider } from 'react-native-paper';
+import CancelOrderView from '../../Component/CancelOrderView';
 
 const NewOrderScreen = () => {
     const [value, setValue] = useState(null);
     const navigation = useNavigation();
     const [hoveredButton, setHoveredButton] = useState(1);
-    const [visible, setVisible] = useState(false);
     const myRef = useRef(null);
+    const [cancelBillObj, setCancelBillObj] = useState(null);
 
-    const openDialog = () => {setVisible(true)}
+    const openCancelModal = ({item}) => {
+        setCancelBillObj(item);
+        console.log(cancelBillObj);
+        myRef.current.open();
+    }
 
     var data = null;
 
@@ -102,16 +107,12 @@ const NewOrderScreen = () => {
                     style={tailwind`my-3 ml-3`}
                 />
 
-                <CheckPayScreenFix orderList={ChangeData(value)} cancelOnclick={openDialog}/>
+                <CheckPayScreenFix orderList={ChangeData(value)} cancelOnclick={openCancelModal}/>
             </View>
 
-            <Portal>
-                <Dialog visible={visible} onDismiss={!visible}>
-                    <Dialog.Content>
-                        <Text variant="bodyMedium">This is simple dialog</Text>
-                    </Dialog.Content>
-                </Dialog>
-            </Portal>
+            <BottomSheet ref={myRef} style={tailwind `bg-white`}>
+                <CancelOrderView />
+            </BottomSheet>
         </Provider>
     )
 }
