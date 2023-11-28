@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { getAllProduct, getItemProduct } from "../../CallApi/productApi"
+import { getAllProduct } from "../../CallApi/productApi"
 import tailwind from 'twrnc'
 import { formatPrice } from '../../utils/format'
 import StartRating from '../../Component/startRating'
@@ -55,7 +55,7 @@ const BestSeller = () => {
             <View style={tailwind`mt-4 w-37`}>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
               <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
-              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={25}/>}
+              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15}/>}
             </View>
 
           </View>

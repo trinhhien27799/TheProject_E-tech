@@ -1,3 +1,5 @@
+import { convertSpeed } from "geolib";
+
 var user = null
 
 var myVoucher = [];
@@ -43,14 +45,23 @@ const clearListCart = () => {
   listCart = []
 }
 
-const deleteItemInListCart = (cartId) => {
-  const listFilter = listCart.filter((item) => item._id != cartId)
+const deleteItemInListCart = (object) => {
+  const listFilter = listCart.filter((item) => item._id != object._id)
   listCart = listFilter
+}
+
+const updateItemInCart = ({ id, quantity }) => {
+  const newArray = listCart.map((item) => {
+    if (item._id == id) item.quantity = quantity
+    return item
+  })
+  listCart = newArray
 }
 
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
-  pushListCart, clearListCart, deleteItemInListCart, getMyVoucher, setMyVoucher
+  pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart,
+  getMyVoucher, setMyVoucher
 }
 

@@ -1,102 +1,178 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { TextInput } from 'react-native-web';
-import axios from 'axios';
-import { getCart } from '../../CallApi/cartApi';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import tailwind from 'twrnc';
-import { TotalProductBill } from '../../DataMathResolve/TotalProductBill';
-import { formatPrice } from '../../utils/format';
+import React, { useState, useEffect, useRef } from 'react'
+import { Animated, FlatList, View, Text, StyleSheet, Image, TouchableOpacity, TextComponent, Alert } from 'react-native'
+import { getCart, deleteCart } from '../../CallApi/cartApi'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { formatPrice } from '../../utils/format'
+import LoadingWidget from '../../Component/loading'
+import CartItem from './cartItem'
+import { getListCart, clearListCart } from '../../session'
+import LottieView from 'lottie-react-native'
 
 const CartScreen = () => {
-  const navigation = useNavigation();
-  const [cart, setCart] = useState([]);
+  const navigation = useNavigation()
+  const [data, setData] = useState([])
   const isFocus = useIsFocused()
+  const [loading, setLoading] = useState(true)
+  const [show, setShow] = useState(false)
+  const [update, setUpdate] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [allowDelete, setAllowDelete] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [clear, setClear] = useState(0)
+  const translateY = useRef(new Animated.Value(0)).current
+
+
+  const fetchData = async () => {
+    try {
+      setShow(false)
+      setLoading(true)
+      setData([])
+      const response = await getCart()
+      setData(response)
+      clearListCart()
+    } catch (error) {
+      console.log(`Cart Screen : ${error}`)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchData =async()=>{
-      const data = await getCart();
-      setCart(data);
-      console.log(data)
+    if (show) {
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 500, 
+        useNativeDriver: false,
+      }).start()
+    } else {
+      Animated.timing(translateY, {
+        toValue: 500,
+        duration: 500, 
+        useNativeDriver: false,
+      }).start()
     }
+  }, [show])
 
-    fetchData();
-  }, [isFocus]);
+  useEffect(() => {
+    fetchData()
+  }, [isFocus])
+
+  useEffect(() => {
+    var price = 0
+    getListCart().forEach((item) => {
+      price += item.price * item.quantity * (1 - item.percent_discount / 100)
+    })
+    setTotalPrice(price)
+    setAllowDelete(getListCart().length > 0)
+  }, [update, clear])
+
+  const deleteItems = async () => {
+    try {
+      setDeleteLoading(true)
+      const listId = getListCart().map((item) => { return item._id })
+      const response = await deleteCart(listId)
+      if (response > 0) {
+        const newData = data.filter(item => !getListCart().includes(item))
+        setData(newData)
+        setShow(false)
+        clearListCart()
+        setClear(new Date().getTime())
+      }
+    } catch (error) {
+      console.log('Xóa thất bại')
+    } finally {
+      setDeleteLoading(false)
+    }
+  }
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Xác nhận xóa',
+      'Bạn có chắc muốn xóa không?',
+      [{ text: 'Hủy', style: 'cancel', },
+      {
+        text: 'Xóa',
+        onPress: () => {
+          deleteItems()
+        },
+      },],
+      { cancelable: false }
+    )
+  }
+
+  const renderItem = ({ item, index }) => {
+    return <CartItem item={item} index={index} setShow={setShow} setUpdate={setUpdate} clear={clear} setData={setData} data={data} />
+  }
+
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
+      {loading ?
+        <LoadingWidget />
+        :
+        <View style={{ flex: 1 }}>
 
-        <View style={styles.header}>
-          <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
-        </View>
+          <View style={styles.header}>
+            <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
+            <View style={{ flex: 1 }} />
+            {data.length > 0 && (
+              deleteLoading ?
+                <LottieView
+                  autoPlay
+                  style={{ width: 28, height: 28 }}
+                  source={require('../../assets/logo.json')}
+                />
+                :
+                <TouchableOpacity
+                  onPress={handleDelete}
+                  disable={!allowDelete}>
+                  <Text style={{ fontSize: 18, color: allowDelete ? 'red' : 'grey' }}>Xóa</Text>
+                </TouchableOpacity>
+            )}
+          </View>
 
-        {/* List Cart */}
-        <FlatList
-          data={cart}
-          style={styles.listCart}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
+          <FlatList
+            data={data}
+            style={styles.listCart}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+          />
 
-              // Cart Item
-              <View style={styles.cartItem}>             
-                <View style={styles.imgItemView}>
-                  <Image style={styles.imgItem} source={{uri:item.image}}/>
-                </View>
-  
-                <View style={styles.nameItemView}>
-                  <View >
-                    <Text style={tailwind `text-base font-bold`}>{item.product_name}</Text>
-                    {/* <Text style={styles.categoryItem}>Loại: {item.brand_name}</Text> */}
-                  </View>
-                  {/* <View>
-                    <Text style={styles.statusItem}>{item.status}</Text>
-                  </View> */}
-                </View>
-  
-                <View style={styles.priceItemView}>
-                  <View>
-                    <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
-  
-                    <Text style={styles.textQuantity}>{item.quantity}</Text>
-                  </View>
-                  <TouchableOpacity
-                    
-                  >
-                    <Text style={styles.textDelete}>Xóa</Text>
-                  </TouchableOpacity>  
-                </View>
-              </View>
-  
-  
-            )
-          }}
-        />
-
-        {/* Payment Container */}
-        <View style={tailwind `border-2 border-blue-300 rounded-lg px-3 py-3 w-96 self-center`}>
-          <View style={tailwind `p-5`}>
+          {/* Payment Container */}
+          <Animated.View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderWidth: 1,
+              borderColor: 'blue',
+              margin: 10,
+              borderRadius: 10,
+              paddingHorizontal: 40,
+              paddingVertical: 15,
+              transform: [{ translateY }],
+            }}
+          >
             <View style={styles.productTotal}>
               <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
-              <Text style={styles.productTotalPriceText}>{formatPrice(TotalProductBill(cart))}</Text>
+              <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
             </View>
-          </View >
-          <View style={styles.confirmContainer}>
-            <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('PayScreen')}}>
-              <Text style={styles.textPayment}>Xác nhận thanh toán</Text>  
-            </TouchableOpacity>
-          </View>
+            <View style={styles.confirmContainer}>
+              <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
+                <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+
+
         </View>
-
-
-      </SafeAreaView>
+      }
     </View>
   )
 }
 
-export default CartScreen;
+export default CartScreen
 const styles = StyleSheet.create({
   textPayment: {
     color: 'white',
@@ -109,140 +185,41 @@ const styles = StyleSheet.create({
   },
   confirmContainer: {
     backgroundColor: '#336BFA',
-    marginLeft: 30,
-    marginRight: 30,
     borderRadius: 7,
     height: 45,
-    marginVertical: 10
-  },
-  line: {
-    borderBottomWidth: 0.8,
-    borderBottomColor: '#797979',
-    marginTop: 15,
-    width: '100%'
   },
   productTotalPriceText: {
     fontWeight: 'bold',
     fontSize: 16
   },
-  productTotalText: {
-    color: '#3C3C3C'
-  },
   productTotal: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 15
   },
   paymentText: {
     fontWeight: 'bold',
     fontSize: 16
   },
-  paymentBox: {
 
-    margin: 20
-  },
-  paymentContainer: {
-    backgroundColor: '#A9B7FF',
-    margin: 12,
-    height: 285,
-    borderRadius: 10,
-
-  },
-  textVoucher: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  textContainer: {
-
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    textAlign: 'center'
-
-
-  },
-  voucherContainer: {
-    backgroundColor: '#6388E6',
-    height: 60,
-    paddingLeft: 40,
-    paddingRight: 40,
-    justifyContent: 'center',
-    shadowOpacity: 0.3,
-
-  },
-  textDelete: {
-    textAlign: 'right',
-    color: '#326CC7'
-  },
-  textPrice: {
-    fontWeight: 'bold',
-    textAlign: 'right'
-  },
-  textQuantity: {
-    textAlign: 'right',
-    marginTop: 15,
-    fontWeight: 'bold',
-  },
-  priceItemView: {
-    width: '20%',
-    marginLeft: 10,
-    justifyContent: 'space-between',
-  },
-  statusItem: {
-    color: '#767676',
-    fontSize: 13
-  },
-  categoryItem: {
-    color: '#767676',
-    fontSize: 13,
-    marginTop: 5
-  },
-  nameItem: {
-    fontSize: 17,
-    fontWeight: 'bold',
-
-  },
-  nameItemView: {
-    width: '45%',
-    marginLeft: 10,
-    justifyContent: 'space-between',
-  },
-  imgItem: {
-    width: 80,
-    height: 80,
-    backgroundColor: '#D5D5D5',
-    justifyContent: 'center',
-    borderRadius: 5,
-  },
-  cartItem: {
-    width: '100%',
-    height: 120,
-    borderBottomWidth: 1.1,
-    borderBottomColor: '#D5D5D5',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingTop: 20,
-    paddingBottom: 20
-  },
   listCart: {
-    marginHorizontal: 20
+    paddingHorizontal: 10,
+    marginBottom: 10
   },
   header: {
-    height: 50,
     borderBottomWidth: 1.1,
     borderBottomColor: '#D5D5D5',
-    marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    alignItems: 'center',
+    padding: 10,
+    flexDirection: 'row'
   },
   textHeader: {
-    fontSize: 25,
-    fontWeight: 'bold',
-
+    fontSize: 22,
+    fontWeight: '500',
   },
   container: {
-    paddingVertical: 30,
     flex: 1,
     backgroundColor: "whitesmoke",
   },
+
 })
