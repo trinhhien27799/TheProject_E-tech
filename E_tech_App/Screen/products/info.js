@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import StartRating from "../../Component/startRating";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,9 +7,12 @@ import { handleLike } from '../../CallApi/productApi'
 import { getUser } from "../../session";
 
 
-const Info = ({ productId, productName, price, vote, isLike }) => {
+const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike }) => {
 
     const [like, setLike] = useState(isLike)
+    const [price, setPrice] = useState(0)
+    const [text1, setText1] = useState('')
+    const [text2, setText2] = useState('')
     const onClick = async (boolean) => {
         try {
             const user = getUser()
@@ -23,12 +26,28 @@ const Info = ({ productId, productName, price, vote, isLike }) => {
         }
     }
 
+    useEffect(() => {
+        const min = minPrice * (1 - percentDiscount / 100)
+        const max = maxPrice * (1 - percentDiscount / 100)
+        var txt1 = formatPrice(min)
+        if (max > min) txt1 += ` - ${formatPrice(max)}`
+        setText1(txt1)
+        if (percentDiscount > 0) {
+            var txt2 = formatPrice(minPrice)
+            if (maxPrice > minPrice) txt2 += ` - ${formatPrice(maxPrice)}`
+            setText2(txt2)
+        }
+    }, [])
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{productName}</Text>
-            <Text style={{ marginTop: 5, marginBottom: 5, color: 'red', fontSize: 17 }}>{formatPrice(price)}</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                {vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={vote} />}
+            <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+                <Text style={{ color: 'red', fontSize: 17 }}>{text1}</Text>
+                <Text style={{ color: 'grey', fontSize: 17, marginStart: 10, textDecorationLine: 'line-through' }}>{text2}</Text>
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={28}/>}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                         onPress={() => {
@@ -38,11 +57,11 @@ const Info = ({ productId, productName, price, vote, isLike }) => {
                     >
                         {
                             like ?
-                                <Ionicons name="heart" color="red" size={25} style={{ marginRight: 10 }} />
-                                : <Ionicons name="heart-outline" color="red" size={25} style={{ marginRight: 10 }} />
+                                <Ionicons name="heart" color="red" size={28} style={{ marginRight: 10 }} />
+                                : <Ionicons name="heart-outline" color="red" size={28} style={{ marginRight: 10 }} />
                         }
                     </TouchableOpacity>
-                    <Ionicons name="share-social-outline" size={25} />
+                    <Ionicons name="share-social-outline" size={28} />
                 </View>
             </View>
         </View>
@@ -55,6 +74,6 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         padding: 10,
-        marginHorizontal:4
+        marginHorizontal: 4
     }
 });

@@ -58,6 +58,7 @@ const Related = ({ productId }) => {
 
 
     return (
+        products.length > 0 &&
         <View style={styles.container}>
             <Text style={styles.header}>{title}</Text>
             <FlatList

@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     image: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height / 4,
+        width: Dimensions.get('screen').width-16,
+        aspectRatio:16/9,
         marginBottom: 12,
         resizeMode: 'cover'
     },

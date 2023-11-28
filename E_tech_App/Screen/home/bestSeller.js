@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList,Dimensions} from 'react-native'
+import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { getAllProduct, getItemProduct } from "../../CallApi/productApi"
 import tailwind from 'twrnc'
@@ -33,7 +33,7 @@ const BestSeller = () => {
 
   const renderItem = ({ item, index }) => {
     const handleItem = async () => {
-      navigation.navigate('DetailProducts',{productId:item._id});
+      navigation.navigate('DetailProducts', { productId: item._id });
     }
     return (
       <View style={styles.body}>
@@ -54,8 +54,8 @@ const BestSeller = () => {
           <View style={{ flexDirection: 'row' }}>
             <View style={tailwind`mt-4 w-37`}>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-              <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price : 0)}</Text>
-              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} />}
+              <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
+              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={25}/>}
             </View>
 
           </View>
@@ -68,22 +68,22 @@ const BestSeller = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTitle}>
-          <Image style={{width:25,height:25,marginRight:10}} source={require('../../img/newspaper.png')}/>
-          <Text style={{ fontWeight: '700', fontSize: 18,lineHeight:25 }}>{title}</Text>
+          <Image style={{ width: 25, height: 25, marginRight: 10 }} source={require('../../img/newspaper.png')} />
+          <Text style={{ fontWeight: '700', fontSize: 18, lineHeight: 25 }}>{title}</Text>
         </View>
         <TouchableOpacity onPress={() => { navigation.navigate('ListPhone') }}>
           <Text style={{ fontWeight: '400', color: 'blue' }}>{more}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.listView}>
-      <FlatList
-        data={product}
-        numColumns={2}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        style={styles.flatListContainer}
-      />
-       </View>
+        <FlatList
+          data={product}
+          numColumns={2}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          style={styles.flatListContainer}
+        />
+      </View>
     </View>
   )
 }
@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   listView: {
-    paddingHorizontal:10,
-    alignItems:"center",
+    paddingHorizontal: 10,
+    alignItems: "center",
   },
-  flatListContainer:{
-    
+  flatListContainer: {
+
   },
   header: {
     flexDirection: 'row',
@@ -106,19 +106,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  headerTitle:{
+  headerTitle: {
     flexDirection: 'row',
   },
   body: {
     backgroundColor: 'white',
-    width: Dimensions.get('window').width/2 - 16, 
+    width: Dimensions.get('window').width / 2 - 16,
     height: 270,
     borderRadius: 10,
     shadowColor: 'grey',
     shadowRadius: 7,
     alignItems: 'center',
-    shadowOpacity:0.2,
-    margin:6
+    shadowOpacity: 0.2,
+    margin: 6
   },
   saler: {
     position: 'absolute',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
-  
+
 })
 
 export default BestSeller
