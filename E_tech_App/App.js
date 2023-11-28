@@ -52,6 +52,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
+import CancelOrderView from './Screen/CancelOrderView';
 
 
 const Stack = createNativeStackNavigator();
@@ -123,6 +124,7 @@ const App = () => {
         <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
         <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
+        <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

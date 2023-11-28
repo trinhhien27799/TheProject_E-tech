@@ -76,7 +76,7 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
                         <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={cancelButton}
+                        onPress={() => navigation.navigate('CancelOrderScreen', {item: item})}
                         style={tailwind`${styleCancel}`}
                     >
                         <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>

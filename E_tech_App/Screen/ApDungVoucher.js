@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   FlatList,
@@ -10,26 +10,36 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { myvouchers } from '../Model/voucher';
 import { useNavigation } from '@react-navigation/native';
+import { getMyVoucher } from '../CallApi/voucherApi';
 
 export default function Makhuyenmai() {
+  const [voucher, setVoucher] = useState([]);
   const navigation = useNavigation();
-  const myVoucherArray = myvouchers();
 
+  const myvouchers = async () => {
+    try {
+      const data = await getMyVoucher();
+      setVoucher(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  useEffect(() => {myvouchers()}, [])
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
-        <TouchableOpacity onPress={() => { navigation.goback() }}>
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
         <Text style={styles.text}>Áp dụng Voucher của bạn</Text>
       </View>
       <View>
         <FlatList
-          data={myVoucherArray}
+          data={voucher}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.view2}>

@@ -18,15 +18,20 @@ const ShippingMethod = () => {
     const navigation = useNavigation();
     const [shipping, setShipping] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
+    const fetchData = async () => {
+        try {
             const data = await getShipping();
             setShipping(data);
+        } catch (error) {
+            console.log(error);
         }
+    }
+
+    useEffect(() => {
         fetchData();
     }, []);
 
-    const ShippingItem= ({ item }) => {
+    const ShippingItem = ({ item }) => {
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
                 <RadioButton />
@@ -37,7 +42,7 @@ const ShippingMethod = () => {
             </View>
         )
     }
-    
+
 
     return (
         <View style={tailwind`flex-auto p-12`}>
@@ -59,7 +64,7 @@ const ShippingMethod = () => {
                     <Text style={tailwind`self-center`}>Hủy</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} onPress={() => navigation.navigate('PayScreen', { shipping_id: item._id })}>
                     <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
                 </TouchableOpacity>
             </View>

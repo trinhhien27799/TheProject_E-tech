@@ -18,7 +18,9 @@ const CartScreen = () => {
     const fetchData =async()=>{
       const data = await getCart();
       setCart(data);
+      console.log(data)
     }
+
     fetchData();
   }, [isFocus]);
 
@@ -83,8 +85,7 @@ const CartScreen = () => {
           </View >
           <View style={styles.confirmContainer}>
             <TouchableOpacity style={styles.buttonPayment}  onPress={() => {navigation.navigate('PayScreen')}}>
-              <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
-            
+              <Text style={styles.textPayment}>Xác nhận thanh toán</Text>  
             </TouchableOpacity>
           </View>
         </View>

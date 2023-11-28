@@ -11,7 +11,7 @@ import { getRealBill } from '../../CallApi/billAPI';
 import { Image } from 'react-native';
 import BottomSheet from '@devvie/bottom-sheet';
 import { Dialog, Portal, Provider } from 'react-native-paper';
-import CancelOrderView from '../../Component/CancelOrderView';
+import CancelOrderView from '../CancelOrderView';
 
 const NewOrderScreen = () => {
     const [value, setValue] = useState(null);
@@ -20,9 +20,7 @@ const NewOrderScreen = () => {
     const myRef = useRef(null);
     const [cancelBillObj, setCancelBillObj] = useState(null);
 
-    const openCancelModal = ({item}) => {
-        setCancelBillObj(item);
-        console.log(cancelBillObj);
+    const openCancelModal = () => {
         myRef.current.open();
     }
 

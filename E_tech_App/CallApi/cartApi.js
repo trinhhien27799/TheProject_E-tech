@@ -1,9 +1,12 @@
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../apiService'
 
 const getCart = async () => {
+    const token = await AsyncStorage.getItem('token');
+
     try {
-        const response = await api.get('/cart/get-all')
+        const response = await api.post('/cart/get-all', {token: token})
         return response.data
     } catch (error) {
         throw error;

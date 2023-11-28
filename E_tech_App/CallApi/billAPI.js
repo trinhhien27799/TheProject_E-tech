@@ -34,3 +34,18 @@ export const createBill = async () => {
         console.log(error);
     }
 }
+
+export const cancelBill = async (item, reasonValue) => {
+    const token = await AsyncStorage.getItem('token');
+    const userId = item.item.address.userId;
+    const billId = item.item._id;
+
+    console.log(userId + ' ' + billId + ' ' + reasonValue);
+
+    try {
+        const res = await api.post('/bill/cancel', {token: token, userId: userId, id_bill: billId, cancel_order: reasonValue});
+        console.log(res.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
