@@ -134,6 +134,10 @@ const Comment = ({ productId }) => {
         )
     }
 
+    const handleRating = (ratedValue) => {
+        setNumStar(ratedValue)
+      }
+
     const sendComment = async () => {
         try {
             setLoading(true)
@@ -198,9 +202,12 @@ const Comment = ({ productId }) => {
                     />
                     <AirbnbRating
                         count={5}
+                        reviewSize={18}
                         reviews={["Rất tệ", "Tệ", "Bình thường", "Hài lòng", "Rất hài lòng"]}
                         defaultRating={5}
-                        size={20}
+                        size={18}
+                        onFinishRating={handleRating}
+                        ratingContainerStyle={{marginTop:8}}
                     />
                     <TextInput
                         placeholder="Cho chúng tôi biết cảm nhận của bạn về sản phẩm"
