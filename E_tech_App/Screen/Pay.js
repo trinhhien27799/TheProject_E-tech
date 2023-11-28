@@ -30,7 +30,8 @@ const Pay = ({route}) => {
 
   const [listIDcart, setListIDcart] = useState([]);
   const [address, setAddress] = useState('123 Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội');
-  const [transport_fee, setTransport_fee] = useState([]);
+  const [transport_fee, setTransport_fee] = useState(20000);
+  const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
 
   const [note, setNote] = useState([]);
 
