@@ -51,6 +51,7 @@ import CartScreen from './Screen/YourCart/CartScreen';
 import { Ionicons } from '@expo/vector-icons';
 
 import AddCommentScreen from './Screen/AddCommentScreen';
+import CommentButton from './Component/CommentButton';
 
 
 const Stack = createNativeStackNavigator();
@@ -62,7 +63,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName='Splash'
-
       >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
@@ -122,6 +122,7 @@ const App = () => {
 
         <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
         <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

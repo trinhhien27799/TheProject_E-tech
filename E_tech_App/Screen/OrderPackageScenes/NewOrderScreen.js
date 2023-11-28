@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Text } from 'react-native';
 import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native';
@@ -9,20 +9,27 @@ import { getAllUserBill, getBill } from '../../Model/BillModel';
 import CheckPayScreenFix from './CheckPayScreenFix';
 import { getRealBill } from '../../CallApi/billAPI';
 import { Image } from 'react-native';
+import BottomSheet from '@devvie/bottom-sheet';
+import { Dialog, Portal, Provider } from 'react-native-paper';
+import CancelOrderView from '../../Component/CancelOrderView';
 
 const NewOrderScreen = () => {
     const [value, setValue] = useState(null);
     const navigation = useNavigation();
     const [hoveredButton, setHoveredButton] = useState(1);
+    const myRef = useRef(null);
+    const [cancelBillObj, setCancelBillObj] = useState(null);
 
-    const handleMouseLeave = () => {
-        setHoveredButton(null);
-    };
+    const openCancelModal = ({item}) => {
+        setCancelBillObj(item);
+        console.log(cancelBillObj);
+        myRef.current.open();
+    }
 
     var data = null;
 
-    const styleHoverIn = tailwind `mr-3 bg-gray-200 p-3 rounded-lg border-2 border-blue-300 shadow-md`;
-    const styleHoverOut = tailwind `mr-3 bg-gray-200 p-3 rounded-lg shadow-md`;
+    const styleHoverIn = tailwind`mr-3 bg-gray-200 p-3 rounded-lg border-2 border-blue-300 shadow-md`;
+    const styleHoverOut = tailwind`mr-3 bg-gray-200 p-3 rounded-lg shadow-md`;
 
     const buttonValueList = [
         {
@@ -61,15 +68,15 @@ const NewOrderScreen = () => {
     console.log(data);
 
     const ChangeData = (valueNum) => {
-        if(valueNum != null){
+        if (valueNum != null) {
             return data.filter((item) => item.status == valueNum);
         }
-        else{
+        else {
             return data;
         }
     }
 
-    const ButtonCard = ({item}) => {
+    const ButtonCard = ({ item }) => {
         return (
             <TouchableOpacity
                 style={hoveredButton == item.id ? styleHoverIn : styleHoverOut}
@@ -81,26 +88,32 @@ const NewOrderScreen = () => {
     }
 
     return (
-        <View>
-            <TouchableOpacity
-                style={tailwind `bg-white w-10 h-10 m-3 justify-center rounded-full shadow-md`}
-                onPress={() => navigation.goBack()}
-            >
-                <Image 
-                    source={require('../../img/previous.png')}
-                    style={tailwind `w-7 h-7 self-center`}
+        <Provider>
+            <View>
+                <TouchableOpacity
+                    style={tailwind`bg-white w-10 h-10 m-3 justify-center rounded-full shadow-md`}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={require('../../img/previous.png')}
+                        style={tailwind`w-7 h-7 self-center`}
+                    />
+                </TouchableOpacity>
+
+                <FlatList
+                    data={buttonValueList}
+                    renderItem={ButtonCard}
+                    horizontal
+                    style={tailwind`my-3 ml-3`}
                 />
-            </TouchableOpacity>
 
-            <FlatList
-                data={buttonValueList}
-                renderItem={ButtonCard}
-                horizontal
-                style={tailwind `my-3 ml-3`}
-            />
+                <CheckPayScreenFix orderList={ChangeData(value)} cancelOnclick={openCancelModal}/>
+            </View>
 
-            <CheckPayScreenFix orderList={ChangeData(value)}/>
-        </View>
+            <BottomSheet ref={myRef} style={tailwind `bg-white`}>
+                <CancelOrderView />
+            </BottomSheet>
+        </Provider>
     )
 }
 

@@ -1,15 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { Image } from 'react-native'
 import { View, Text } from 'react-native'
 import tailwind from 'twrnc'
 import RatingStarComment from '../Component/RatingStar_Comment'
+import { useNavigation } from '@react-navigation/native'
+import { getVariationDetail } from '../CallApi/productApi'
 
-const AddCommentScreen = () => {
+const AddCommentScreen = ({route}) => {
+  const {product} = route.params;
+  const navigation = useNavigation();
+  
+  const [variation, setVariation] = useState(null);
+
+  const getVariation = async (variationID) => {
+    try {
+      const data = await getVariationDetail(variationID);
+      setVariation(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getVariation(product.variations_id)
+  }, []);
+
+  console.log(variation);
+
   return (
     <View>
-      <TouchableOpacity style={tailwind `w-12 h-12 bg-white m-5 justify-center rounded-full shadow-md`}>
+      <TouchableOpacity 
+        style={tailwind `w-12 h-12 bg-white m-5 justify-center rounded-full shadow-md`}
+        onPress={() => navigation.goBack()}
+      >
         <Image 
           source={require('../img/previous.png')}
           style={tailwind `w-8 h-8 self-center`}/>
@@ -22,7 +47,7 @@ const AddCommentScreen = () => {
           style={tailwind `w-22 h-30`}
         />
         <View style={tailwind `ml-3`}>
-          <Text>Product Name</Text>
+          <Text style={tailwind `w-80 mb-2`}>{product.product_name}</Text>
           <Text>Loại: Product Variation</Text>
         </View>
       </View>

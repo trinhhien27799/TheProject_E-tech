@@ -4,6 +4,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api, { setAuthToken } from '../apiService'
 import { getUser } from '../session.js'
 
+export const getVariationDetail = async (variationID) => {
+  try {
+    const rs = await api.get(`/product/variation/${variationID}`)
+    return rs.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const getAllProduct = async () => {
   try {
     const rs = await api.get('/product/get-all')

@@ -1,5 +1,14 @@
 var user = null
 
+var myVoucher = [];
+
+const setMyVoucher = (voucherArray) => {
+  myVoucher = voucherArray;
+}
+
+const getMyVoucher = () => {
+  return myVoucher;
+}
 
 const setUser = (newUser) => {
   user = newUser
@@ -42,6 +51,6 @@ const deleteItemInListCart = (cartId) => {
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
-  pushListCart, getListCart, clearListCart, deleteItemInListCart
+  pushListCart, clearListCart, deleteItemInListCart, getMyVoucher, setMyVoucher
 }
 

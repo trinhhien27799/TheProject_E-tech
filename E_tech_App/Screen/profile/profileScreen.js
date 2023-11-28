@@ -10,9 +10,11 @@ import { getLike } from "../../CallApi/productApi";
 import IteamProduct from "../../Component/itemProducts";
 
 const Profile = ({ route }) => {
-
+    console.log(route.params);
     const { username, avatar, fullname } = route.params;
     const params = route.params;
+    const userID = params.use
+    // await AsyncStorage.setItem('userID', )
     const navigation = useNavigation();
     const [likeData, setLikeData] = useState([]);
     useEffect(() => {

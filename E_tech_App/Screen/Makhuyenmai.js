@@ -13,23 +13,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { vouchers } from '../Model/voucher';
 import { addVoucher } from '../CallApi/voucherApi';
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from '../session';
 
 export default function Makhuyenmai() {
   const navigation = useNavigation();
   const voucherArray = vouchers();
 
   const [voucherCode, setVoucherCode] = useState('');
-  const [voucherID, setVoucherID] = useState('');
-  const [save, setSave] = useState('')
+  const [voucherId, setVoucherID] = useState('');
+  const [save, setSave] = useState('');
+
+  const [click, isClick] = useState(false);
 
   const handleVoucher = async () => {
     try {
-      addVoucher(voucherCode, voucherID);
+      addVoucher(voucherCode, voucherId);
+      
     } catch (error) {
       console.error('Error:', error);
     }
   }
-
+  
   console.log(voucherArray);
 
   // const renderItemVoucher = (item) => (
@@ -91,11 +95,16 @@ export default function Makhuyenmai() {
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity style={styles.button2} onPress={() => {
-                                                setVoucherID(item.id);
+                                                setVoucherID(item._id);                                                
                                                 setVoucherCode(item.code);
-                                                handleVoucher();
+                                                console.log(voucherCode + ' ' + voucherId);
+                                                handleVoucher();                                                
                                             }}>
-                  <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
+                  {
+                    !click
+                    ? <Text style={{ color: 'white', fontSize: 16 }}>Lưu</Text>
+                    : <Text style={{ color: 'white', fontSize: 16 }}>Đã Lưu</Text>
+                  }
                 </TouchableOpacity>
               </View>
             </View>
