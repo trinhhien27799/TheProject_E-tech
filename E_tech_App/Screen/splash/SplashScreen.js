@@ -21,10 +21,10 @@ const SplashScreen = () => {
         } finally {
             const user = getUser();
             if(user == null) {
-                navigation.navigate('Login');
+                navigation.replace('Login');
             }
             else{
-                navigation.navigate('ButtonNavigation', { registrationData: user });
+                navigation.replace('ButtonNavigation', { registrationData: user });
             }
         }
     }

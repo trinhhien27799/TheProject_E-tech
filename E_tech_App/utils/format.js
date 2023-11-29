@@ -2,4 +2,14 @@ function formatPrice(price) {
     return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 }
 
-export {formatPrice}
+function formatTime(time) {
+    const date = new Date(time);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return ('Vào lúc '+hours + ' giờ ' + minutes + ' phút - ngày ' + day + ', tháng ' + month + ', năm ' + year).toString();
+}
+
+export { formatPrice, formatTime }

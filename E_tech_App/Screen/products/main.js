@@ -64,7 +64,7 @@ const DetailPoducts = () => {
             case 4:
                 return <Related productId={product._id} />
             case 5:
-                return <Description description={product.description} /> 
+                return <Description description={product.description} />
             case 6:
                 return <Comment productId={product._id} />
             default:
@@ -105,7 +105,9 @@ const DetailPoducts = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'linear-gradient(to bottom, #87CEEB, #FFFFFF)',
+        backgroundColor: 'whitesmoke',
+        alignItems: 'center',
+        justifyContent:'center'
     },
 
 })

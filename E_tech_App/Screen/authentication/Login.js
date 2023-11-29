@@ -26,7 +26,7 @@ const Login = ({ navigation }) => {
             if (response.code === 200) {
                await AsyncStorage.setItem('token', response.token);
                 setAuthToken(response.token)
-                navigation.navigate('ButtonNavigation', { registrationData: response });
+                navigation.replace('ButtonNavigation', { registrationData: response });
                 alert('Đăng nhập thành công')
             } else {
                 alert(response.message)
