@@ -9,11 +9,9 @@ const getComments = async (productId) => {
   }
 }
 
-const checkComment = async (productId) => {
+const checkComment = async (data) => {
   try {
-    const rs = await api.post('/comment/check', {
-      productId: productId
-    })
+    const rs = await api.post('/comment/check', data)
     return rs.data
   } catch (error) {
     throw error
