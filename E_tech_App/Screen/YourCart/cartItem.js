@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { formatPrice } from '../../utils/format'
-import {  useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { updateCart } from '../../CallApi/cartApi'
 import Checkbox from 'expo-checkbox'
 import { pushListCart, deleteItemInListCart, getListCart, updateItemInCart } from '../../session'
@@ -83,8 +83,8 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
 
                 <View style={{ flex: 1, paddingHorizontal: 10 }}>
                     <Text style={styles.textName}>{item.product_name}</Text>
-                    <Text style={[{ color: 'grey' }]}>Kho: {item.max_quantity}</Text>
-                    <Text style={[{ color: 'red' }]}>{formatPrice(item.price * (1 - item.percent_discount / 100))}</Text>
+                    <Text style={{ color: 'grey', fontSize: 13 }}>Kho: {item.max_quantity}</Text>
+                    <Text style={{ color: 'red', fontSize: 13 }}>{formatPrice(item.price * (1 - item.percent_discount / 100))}</Text>
                 </View>
                 <Checkbox style={styles.checkbox} value={isChecked} onValueChange={(checked) => {
                     eventChecked(checked)
@@ -100,11 +100,11 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
                         }}
                         style={styles.viewButton}>
                         <Image style={styles.button}
-                            source={require('../../assets/plus.png')}
+                            source={require('../../assets/minus.png')}
                         />
                     </TouchableOpacity>
 
-                    <Text style={{ fontSize: 18, marginHorizontal: 7 }}>{quanItem}</Text>
+                    <Text style={{ fontSize: 16, marginHorizontal: 9 }}>{quanItem}</Text>
 
                     <TouchableOpacity
                         onPress={() => {
@@ -119,7 +119,7 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }} />
-                <Text style={{ fontSize: 16, color: 'red' }}>Thành tiền: {formatPrice(priceItem)}</Text>
+                <Text style={{ fontSize: 15, color: 'red' }}>Thành tiền: {formatPrice(priceItem)}</Text>
             </View>
         </View>
     )
@@ -136,27 +136,29 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     imgItem: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
+        width: 60,
+        height: 60,
+        borderRadius: 6,
         resizeMode: 'contain',
-        marginBottom: 8
+        marginBottom: 6
     },
     textName: {
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: '500',
-        overflow: 'hidden'
+        height:20,
     },
 
     button: {
-        width: 14,
-        height: 14,
+        width: 11,
+        height: 11,
         resizeMode: 'center'
     },
     viewButton: {
         backgroundColor: '#bbbbbb',
-        padding: 4,
-        borderRadius: 2
+        paddingHorizontal: 6,
+        borderRadius: 2,
+        flexGrow:0,
+        justifyContent:'center'
     },
     checkbox: {
         margin: 8,
