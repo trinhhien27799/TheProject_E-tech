@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { formatPrice } from '../../utils/format'
-import { useNavigation } from '@react-navigation/native'
+import {  useNavigation } from '@react-navigation/native'
 import { updateCart } from '../../CallApi/cartApi'
 import Checkbox from 'expo-checkbox'
 import { pushListCart, deleteItemInListCart, getListCart, updateItemInCart } from '../../session'
@@ -11,7 +11,7 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
 
     const [quanItem, setQuanItem] = useState(item.quantity)
     const [priceItem, setPriceItem] = useState(item.quantity * item.price * (1 - item.percent_discount / 100))
-    const [isChecked, setChecked] = useState(false);
+    const [isChecked, setChecked] = useState(false)
 
     const navigation = useNavigation()
 
@@ -25,6 +25,7 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
         }
     }
 
+
     useEffect(() => {
         setPriceItem(quanItem * item.price * (1 - item.percent_discount / 100))
         data.map((_, i, array) => {
@@ -36,6 +37,9 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
     }, [quanItem])
 
     useEffect(() => {
+        console.log
+        setQuanItem(item.quantity)
+        setPriceItem(item.quantity * item.price * (1 - item.percent_discount / 100))
         setChecked(false)
     }, [clear])
 

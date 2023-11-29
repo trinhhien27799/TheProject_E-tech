@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Animated, FlatList, View, Text, StyleSheet, Image, TouchableOpacity, TextComponent, Alert } from 'react-native'
 import { getCart, deleteCart } from '../../CallApi/cartApi'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { formatPrice } from '../../utils/format'
 import LoadingWidget from '../../Component/loading'
 import CartItem from './cartItem'
@@ -11,7 +11,6 @@ import LottieView from 'lottie-react-native'
 const CartScreen = () => {
   const navigation = useNavigation()
   const [data, setData] = useState([])
-  const isFocus = useIsFocused()
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [update, setUpdate] = useState(0)
@@ -26,7 +25,6 @@ const CartScreen = () => {
     try {
       setShow(false)
       setLoading(true)
-      setData([])
       const response = await getCart()
       setData(response)
       clearListCart()
@@ -41,21 +39,25 @@ const CartScreen = () => {
     if (show) {
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 500, 
+        duration: 500,
         useNativeDriver: false,
       }).start()
     } else {
       Animated.timing(translateY, {
         toValue: 500,
-        duration: 500, 
+        duration: 500,
         useNativeDriver: false,
       }).start()
     }
   }, [show])
 
   useEffect(() => {
-    fetchData()
-  }, [isFocus])
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData()
+    })
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     var price = 0
