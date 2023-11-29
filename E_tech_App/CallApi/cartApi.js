@@ -1,4 +1,5 @@
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../apiService'
 
 const getCart = async () => {
@@ -30,5 +31,14 @@ const deleteCart = async (listIdCart) => {
     }
 }
 
-export { addCart, deleteCart, getCart }
+const updateCart = async (data) => {
+    try {
+        const response = await api.post('/cart/update',data)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export { addCart, deleteCart, getCart,updateCart }
 

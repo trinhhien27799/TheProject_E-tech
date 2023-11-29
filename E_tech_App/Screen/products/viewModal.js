@@ -93,13 +93,11 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                 </View>
             </View>
             {loading ?
-                <>
                     <LottieView
                         autoPlay
                         style={{ width: 40, height: 40, marginTop: 10 }}
                         source={require('../../assets/logo.json')}
                     />
-                </>
                 :
                 <TouchableOpacity
                     style={{ backgroundColor: '#1E90FF', alignItems: 'center', justifyContent: 'center', borderRadius: 10, paddingVertical: 8, paddingHorizontal: 16, marginTop: 20 }}

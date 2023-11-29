@@ -20,9 +20,7 @@ const NewOrderScreen = () => {
     const myRef = useRef(null);
     const [cancelBillObj, setCancelBillObj] = useState(null);
 
-    const openCancelModal = ({item}) => {
-        setCancelBillObj(item);
-        console.log(cancelBillObj);
+    const openCancelModal = () => {
         myRef.current.open();
     }
 

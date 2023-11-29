@@ -20,18 +20,15 @@ import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi2';
 import { formatPrice } from '../utils/format';
 
-
-
-const Pay = ({voucher_idd, voucher_name}) => {
+const Pay = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
-
 
   const [listIDcart, setListIDcart] = useState([]);
   const [address, setAddress] = useState('123 Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội');
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
-
+  const [voucher_id, setVoucher_id] = useState();
   const [note, setNote] = useState([]);
 
   useEffect(() => {
@@ -44,7 +41,7 @@ const Pay = ({voucher_idd, voucher_name}) => {
 
   const handlePay = async () => {
     try {
-      createBill(address, listIDcart, transport_fee, shipping_id, voucher_idd, note);
+      createBill(address, listIDcart, transport_fee, shipping_id, voucher_id, note);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -137,7 +134,7 @@ const Pay = ({voucher_idd, voucher_name}) => {
                   </View>
                 </View>
               )}
-              keyExtractor={(item) => { item.id; setListIDcart == item.id }}
+              keyExtractor={(item) => { item._id }}
             />
           </View>
 
@@ -210,7 +207,8 @@ const Pay = ({voucher_idd, voucher_name}) => {
           <View>
                <TouchableOpacity  style={styles.contentView} onPress={() => { navigation.navigate('ApDungVoucher') }}>
             <View style={{ flex: 1 }}>
-              { voucher_idd == '' ? <Text
+              {/* { voucher_id == '' ?  */}
+              <Text
                 style={{
                   fontSize: 14.5,
                   marginTop: 'auto',
@@ -218,7 +216,8 @@ const Pay = ({voucher_idd, voucher_name}) => {
                   marginBottom: 'auto',
                 }}>
                 Chọn mã giảm giá của bạn
-              </Text> : <Text
+              </Text> 
+              {/* : <Text
                 style={{
                   fontSize: 14.5,
                   marginLeft: 2,
@@ -226,7 +225,7 @@ const Pay = ({voucher_idd, voucher_name}) => {
                   marginBottom: 'auto',
                 }}>
                 {voucher_name}
-              </Text>}
+              </Text>} */}
             </View>
            
             <Feather

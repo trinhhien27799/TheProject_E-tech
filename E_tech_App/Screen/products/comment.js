@@ -55,7 +55,8 @@ const Comment = ({ productId }) => {
 
     const checkData = async () => {
         try {
-            const response = await checkComment(productId)
+            const data = { productId: productId }
+            const response = await checkComment(data)
             setlistVariation(response)
         } catch (error) {
             console.log(`CommentScreen: ${error}`)
@@ -70,7 +71,7 @@ const Comment = ({ productId }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={{ marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
@@ -133,6 +134,10 @@ const Comment = ({ productId }) => {
             </View>
         )
     }
+
+    const handleRating = (ratedValue) => {
+        setNumStar(ratedValue)
+      }
 
     const sendComment = async () => {
         try {
@@ -198,9 +203,12 @@ const Comment = ({ productId }) => {
                     />
                     <AirbnbRating
                         count={5}
+                        reviewSize={18}
                         reviews={["Rất tệ", "Tệ", "Bình thường", "Hài lòng", "Rất hài lòng"]}
                         defaultRating={5}
-                        size={20}
+                        size={18}
+                        onFinishRating={handleRating}
+                        ratingContainerStyle={{marginTop:8}}
                     />
                     <TextInput
                         placeholder="Cho chúng tôi biết cảm nhận của bạn về sản phẩm"

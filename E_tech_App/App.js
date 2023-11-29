@@ -125,6 +125,7 @@ const App = () => {
         <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
         <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
+        <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
