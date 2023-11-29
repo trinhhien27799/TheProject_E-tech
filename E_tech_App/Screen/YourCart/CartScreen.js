@@ -56,7 +56,7 @@ const CartScreen = () => {
   
                 <View style={styles.priceItemView}>
                   <View>
-                    <Text style={styles.textPrice}>{formatPrice(item.price)}</Text>
+                    <Text style={styles.textPrice}>{formatPrice(item.price * (1 - item.percent_discount / 100))}</Text>
   
                     <Text style={styles.textQuantity}>{item.quantity}</Text>
                   </View>

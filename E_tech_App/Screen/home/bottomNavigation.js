@@ -81,7 +81,7 @@ const BottomNavigation = ({navigation,route}) => {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icon
-              name="bell"
+              name="gift"
               size={size ? size : 24}
               color={focused ? color : "#222222"}
               focused={focused}

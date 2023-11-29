@@ -9,6 +9,21 @@ const getComments = async (productId) => {
   }
 }
 
+const addComment = async (itemValidation, commentContent, numStar) => {
+  const variationID = itemValidation.id;
+  const productID = itemValidation.productId; 
+
+  console.log('click')
+
+  try {
+    const rs = await api.post(`/comment/add`, {variationID: variationID, productID: productID, content: commentContent, numStar: numStar});
+    console.log(rs.data);
+    return rs.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const checkComment = async (productId) => {
   try {
     const rs = await api.post('/comment/check', {
@@ -33,4 +48,4 @@ const pushComment = async (form) => {
   }
 }
 
-export { getComments, checkComment, pushComment }
+export { getComments, checkComment, pushComment, addComment }

@@ -6,12 +6,38 @@ import OrderStatusHeader from '../Component/OrderStatusHeader';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../utils/format';
 import CommentButton from '../Component/CommentButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const BillDetailScreen = ({ route }) => {
     const { item } = route.params;
+    console.log(item);
 
     const currentDate = item.time;
     const splitDate = currentDate.split('T');
     const getDate = splitDate[0];
+
+    const [isVisible, setIsVisible] = useState(true);
+
+    // useEffect(() => {
+    //     const hideComponent = async () => {
+    //         const timer = setTimeout(() => {
+    //             setIsVisible(false);
+    //             AsyncStorage.setItem('componentVisibility', 'hidden'); // Store the visibility state
+    //         }, 3000); // Change the duration to 3000 milliseconds (3 seconds)
+
+    //         return () => clearTimeout(timer); // Clean up the timer when the component unmounts
+    //     };
+
+    //     const checkVisibility = async () => {
+    //         const visibility = await AsyncStorage.getItem('componentVisibility'); // Retrieve the visibility state
+    //         if (visibility === 'hidden') {
+    //             setIsVisible(false);
+    //         } else {
+    //             hideComponent();
+    //         }
+    //     };
+
+    //     checkVisibility();
+    // }, []);
 
     if (item.status == 2) {
         return (
@@ -79,7 +105,7 @@ const BillDetailScreen = ({ route }) => {
                                 </View>
                                 <View style={styles.textTotal}>
                                     <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
-                                    <CommentButton item={item} />
+                                    {isVisible ? <CommentButton item={item} /> : <></>}                   
                                 </View>
                             </View>
                         )}

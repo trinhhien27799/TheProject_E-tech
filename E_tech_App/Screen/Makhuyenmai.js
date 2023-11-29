@@ -27,8 +27,8 @@ export default function Makhuyenmai() {
 
   const handleVoucher = async () => {
     try {
-      addVoucher(voucherCode, voucherId);
-      
+      const data = await addVoucher(voucherCode, voucherId);    
+      console.log(data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -80,7 +80,7 @@ export default function Makhuyenmai() {
               <View
                 style={{
                   width: '28%',
-                  paddingTop: 10,
+                  paddingVertical: 10,
                   borderColor: 'black',
                   borderRightWidth: 1,
                   alignContent: 'center',
@@ -118,12 +118,11 @@ export default function Makhuyenmai() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 30,
+    backgroundColor: '#fff'
   },
   view: {
     flexDirection: 'row',
-    height: 30,
+    paddingVertical: 10,
   },
   text: {
     marginLeft: 60,
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
   },
   view2: {
     width: '90%',
-    height: 120,
+    height: 150,
     marginLeft: 'auto',
     marginRight: 'auto',
     flexDirection: 'row',

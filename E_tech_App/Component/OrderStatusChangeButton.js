@@ -15,10 +15,10 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
     const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md ml-2';
 
     const AddCartArray = (productArray) => {
-        console.log(productArray.length);
+        console.log(productArray);
     
         for (let i = 0; i < productArray.length; i++) {
-            addCart({dataCart: productArray[i]});
+            addCart(productArray[i]);
         }
 
         navigation.navigate('CartScreen');

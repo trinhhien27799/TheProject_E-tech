@@ -34,3 +34,14 @@ export const createBill = async () => {
         console.log(error);
     }
 }
+
+export const cancelBill = async (item, reasonValue) => {
+    const billId = item.item._id;
+
+    try {
+        const res = await api.post('/bill/cancel', {id_bill: billId, cancel_order: reasonValue});
+        console.log(res.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
