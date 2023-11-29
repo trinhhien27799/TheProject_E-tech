@@ -55,7 +55,8 @@ const Comment = ({ productId }) => {
 
     const checkData = async () => {
         try {
-            const response = await checkComment(productId)
+            const data = { productId: productId }
+            const response = await checkComment(data)
             setlistVariation(response)
         } catch (error) {
             console.log(`CommentScreen: ${error}`)
@@ -70,7 +71,7 @@ const Comment = ({ productId }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={{ marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
