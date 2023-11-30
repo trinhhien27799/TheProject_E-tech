@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Animated, FlatList, View, Text, StyleSheet, Image, TouchableOpacity, TextComponent, Alert } from 'react-native'
+import { Animated, FlatList, View, Text, StyleSheet, Image, TouchableOpacity, TextComponent, Alert, Dimensions } from 'react-native'
 import { getCart, deleteCart } from '../../CallApi/cartApi'
 import { useNavigation } from '@react-navigation/native'
 import { formatPrice } from '../../utils/format'
@@ -25,6 +25,7 @@ const CartScreen = () => {
     try {
       setShow(false)
       setLoading(true)
+      setData([])
       const response = await getCart()
       setData(response)
       clearListCart()
@@ -56,8 +57,8 @@ const CartScreen = () => {
       fetchData()
     })
 
-    return unsubscribe;
-  }, [navigation]);
+    return unsubscribe
+  }, [navigation])
 
   useEffect(() => {
     var price = 0
@@ -109,67 +110,71 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      {loading ?
-        <LoadingWidget />
-        :
-        <View style={{ flex: 1 }}>
+      <View style={styles.header}>
+        <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
+        <View style={{ flex: 1 }} />
+        {data.length > 0 && (
+          deleteLoading ?
+            <LottieView
+              autoPlay
+              style={{ width: 28, height: 28 }}
+              source={require('../../assets/logo.json')}
+            />
+            :
+            <TouchableOpacity
+              onPress={handleDelete}
+              disable={!allowDelete}>
+              <Text style={{ fontSize: 18, color: allowDelete ? 'red' : 'grey' }}>Xóa</Text>
+            </TouchableOpacity>
+        )}
+      </View>
+      <View style={{
+        alignItems: 'center',
+        flex: 1
+      }}>
+        {loading ?
+          <LoadingWidget />
+          :
+          <>
 
-          <View style={styles.header}>
-            <Text style={styles.textHeader}>Giỏ hàng của bạn</Text>
-            <View style={{ flex: 1 }} />
-            {data.length > 0 && (
-              deleteLoading ?
-                <LottieView
-                  autoPlay
-                  style={{ width: 28, height: 28 }}
-                  source={require('../../assets/logo.json')}
-                />
-                :
-                <TouchableOpacity
-                  onPress={handleDelete}
-                  disable={!allowDelete}>
-                  <Text style={{ fontSize: 18, color: allowDelete ? 'red' : 'grey' }}>Xóa</Text>
+            <FlatList
+              data={data}
+              style={styles.listCart}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={renderItem}
+            />
+
+            {/* Payment Container */}
+            <Animated.View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                borderWidth: 1,
+                borderColor: 'blue',
+                margin: 10,
+                borderRadius: 10,
+                paddingHorizontal: 40,
+                paddingVertical: 15,
+                transform: [{ translateY }],
+              }}
+            >
+              <View style={styles.productTotal}>
+                <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
+                <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
+              </View>
+              <View style={styles.confirmContainer}>
+                <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
+                  <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
                 </TouchableOpacity>
-            )}
-          </View>
-
-          <FlatList
-            data={data}
-            style={styles.listCart}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItem}
-          />
-
-          {/* Payment Container */}
-          <Animated.View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              borderWidth: 1,
-              borderColor: 'blue',
-              margin: 10,
-              borderRadius: 10,
-              paddingHorizontal: 40,
-              paddingVertical: 15,
-              transform: [{ translateY }],
-            }}
-          >
-            <View style={styles.productTotal}>
-              <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
-              <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
-            </View>
-            <View style={styles.confirmContainer}>
-              <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
-                <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
-              </TouchableOpacity>
-            </View>
-          </Animated.View>
+              </View>
+            </Animated.View>
 
 
-        </View>
-      }
+          </>
+        }
+      </View>
     </View>
   )
 }
@@ -206,7 +211,8 @@ const styles = StyleSheet.create({
 
   listCart: {
     paddingHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    width: Dimensions.get('screen').width
   },
   header: {
     borderBottomWidth: 1.1,
@@ -216,12 +222,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   textHeader: {
-    fontSize: 22,
-    fontWeight: '500',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   container: {
     flex: 1,
-    backgroundColor: "whitesmoke",
+    backgroundColor: 'whitesmoke',
   },
 
 })

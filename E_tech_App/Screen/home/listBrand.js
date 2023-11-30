@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 8,
         flex: 1, 
-        backgroundColor: 'white',
+        backgroundColor: "whitesmoke"
     },
     title: {
         marginStart: 8,

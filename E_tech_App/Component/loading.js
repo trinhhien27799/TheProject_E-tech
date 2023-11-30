@@ -6,7 +6,7 @@ const LoadingWidget = () => {
         <View>
             <LottieView
                 autoPlay
-                style={[styles.container]}
+                style={[styles.viewLoading]}
                 source={require('../assets/logo.json')}
             />
         </View>
@@ -14,11 +14,9 @@ const LoadingWidget = () => {
 }
 export default LoadingWidget;
 const styles = StyleSheet.create({
-    container: {
-        height: 100,
-        width: 100,
-        marginTop: Dimensions.get('window').height * 0.3,
-        justifyContent: 'center',
-        alignSelf: 'center'
+    viewLoading: {
+        height: 45,
+        width: 45,
+        marginTop:20
     }
 });
