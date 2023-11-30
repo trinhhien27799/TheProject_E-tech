@@ -85,6 +85,7 @@ const CartScreen = () => {
       console.log('Xóa thất bại')
     } finally {
       setDeleteLoading(false)
+      setAllowDelete(false)
     }
   }
 
