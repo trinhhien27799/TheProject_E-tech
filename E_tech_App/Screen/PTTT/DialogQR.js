@@ -22,11 +22,11 @@ const DialogQR = () => {
           </Text>
         </View>
         <View style={styles.view3}>
-          <TouchableOpacity style={styles.button2} onPress={() => { navigation.goback() }}>
+          <TouchableOpacity style={styles.button2} onPress={() => { navigation.goBack() }}>
             <Text style={styles.text}>Hủy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button2} onPress={() => { alert('Thanh toán thành công!');navigation.navigate('Home') }}>
+          <TouchableOpacity style={styles.button2} onPress={() => { navigation.navigate('PayScreen') }}>
             <Text style={styles.text}>Xác nhận Thanh toán </Text>
           </TouchableOpacity>
         </View>

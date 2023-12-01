@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Image, Text } from 'react-native'
+import { Image, ScrollView, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
 import { FlatList } from 'react-native'
@@ -84,13 +84,13 @@ const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
     }
     else{
         return (
-            <View>
+            <ScrollView>
                 <FlatList
                     data={orderList}
                     renderItem={ProductCard}
-                    style={tailwind`h-1000`}
+                    style={tailwind `pb-40`}
                 />
-            </View>
+            </ScrollView>
         )
     } 
 }

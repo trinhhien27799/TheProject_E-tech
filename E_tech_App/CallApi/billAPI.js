@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api, { setAuthToken } from '../apiService'
+import { useNavigation } from '@react-navigation/native';
 
 export const getAllBill = async (statusNum) => {
     const username = await AsyncStorage.getItem('username');
@@ -36,11 +37,20 @@ export const createBill = async () => {
 }
 
 export const cancelBill = async (item, reasonValue) => {
-    const billId = item.item._id;
+    const billId = item._id;
+    const navigation = useNavigation()
 
     try {
         const res = await api.post('/bill/cancel', {id_bill: billId, cancel_order: reasonValue});
-        console.log(res.data);
+        const data = res.data;
+
+        if(data == 200){
+            alert('Hủy đơn hàng thành công');
+            navigation.goBack();
+        }
+        else{
+            alert('Hủy đơn hàng không thành công');
+        }
     } catch (error) {
         console.log(error);
     }

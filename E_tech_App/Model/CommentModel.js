@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { getAllComments } from "../CallApi/commentAPI";
+import { getComments } from "../CallApi/commentAPI";
 
-export const getComment = (productID) => {
+export const getAllComment = (productID) => {
     const [commentData, setCommentData] = useState(null);
 
     const getData = async () => {
         try {
-            const rs = await getAllComments(productID);
+            const rs = await getComments(productID);
             setCommentData(rs);
         } catch (error) {
             console.log(error);

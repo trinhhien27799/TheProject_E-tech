@@ -36,9 +36,6 @@ const DetailPoducts = () => {
         getData()
     }, [])
 
-
-
-
     const data = [
         { type: 0 },
         { type: 1 },
@@ -49,7 +46,6 @@ const DetailPoducts = () => {
         { type: 6 }
     ]
     const sections = [{ data, key: 'section' }]
-
 
     const renderItem = ({ item }) => {
         switch (item.type) {

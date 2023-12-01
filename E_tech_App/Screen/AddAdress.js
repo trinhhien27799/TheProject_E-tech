@@ -31,49 +31,6 @@ const AddAdress = () => {
         setAddress(text);
     }
 
-    const BottomModalInput = (getLocation) => {
-        var locationName = getLocation.country;
-        console.log(locationName)
-    
-        return (
-            <View style={tailwind`flex-auto justify-center`}>
-                <TextInput
-                    label={'Họ và tên'}
-                    placeholder={"Abc"}
-                    onChangeText={handleFullname}
-                    right={<TextInput.Icon icon={"account"} />}
-                    style={tailwind`w-96 self-center rounded-md`}
-                    mode='outlined'
-                />
-    
-                <TextInput
-                    label={'Số điện thoại'}
-                    placeholder={"028437535"}
-                    onChangeText={handlePhone}
-                    right={<TextInput.Icon icon={"phone"} />}
-                    style={tailwind`w-96 self-center rounded-md mt-5`}
-                    mode='outlined'
-                />
-    
-                <TextInput
-                    label={'Địa chỉ'}
-                    placeholder={"abc"}
-                    onChangeText={handleAddress}
-                    right={<TextInput.Icon icon={"map-outline"} />}
-                    style={tailwind`w-96 self-center rounded-md mt-5`}
-                    mode='outlined'
-                />
-    
-                <TouchableOpacity 
-                    style={tailwind`self-center justify-center bg-blue-400 w-36 h-10 mt-10 rounded-md`}
-                    onPress={() => {console.log(address + ' ' + phone + ' ' + fullname)}}
-                >
-                    <Text style={tailwind`self-center text-white font-bold`}>Thêm địa chỉ</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-
     const userLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
