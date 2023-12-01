@@ -6,12 +6,56 @@ import OrderStatusHeader from '../Component/OrderStatusHeader';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../utils/format';
 import CommentButton from '../Component/CommentButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { checkComment } from '../CallApi/commentAPI';
 const BillDetailScreen = ({ route }) => {
     const { item } = route.params;
+    console.log(item);
 
     const currentDate = item.time;
     const splitDate = currentDate.split('T');
     const getDate = splitDate[0];
+
+    const [getCacheArray, setGetCacheArray] = useState(null)
+
+    const setComment = (variations_id) => {
+        const getData = async () => {
+            try {
+                const data = await checkComment(variations_id);
+                setGetCacheArray(data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        useEffect(() => { getData() }, [])
+    }
+
+    
+
+    // useEffect(() => {
+    //     const hideComponent = async () => {
+    //         const timer = setTimeout(() => {
+    //             setIsVisible(false);
+    //             AsyncStorage.setItem('componentVisibility', 'hidden'); // Store the visibility state
+    //         }, 3000); // Change the duration to 3000 milliseconds (3 seconds)
+
+    //         return () => clearTimeout(timer); // Clean up the timer when the component unmounts
+    //     };
+
+    //     const checkVisibility = async () => {
+    //         const visibility = await AsyncStorage.getItem('componentVisibility'); // Retrieve the visibility state
+    //         if (visibility === 'hidden') {
+    //             setIsVisible(false);
+    //         } else {
+    //             hideComponent();
+    //         }
+    //     };
+
+    //     checkVisibility();
+    // }, []);
+
+
 
     if (item.status == 2) {
         return (
@@ -31,7 +75,6 @@ const BillDetailScreen = ({ route }) => {
                     {/* Address */}
                     <View style={styles.addressContainer}>
                         <View style={styles.addressHeader}>
-
                             <Image
                                 source={require('../img/store.png')}
                                 style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
@@ -49,40 +92,44 @@ const BillDetailScreen = ({ route }) => {
                     <FlatList
                         data={item.products}
                         style={styles.listCart}
-                        renderItem={({ item }) => (
+                        renderItem={({ item }) => {
+                            // console.log('variation id: ' + item.variations_id);
+                            // setComment(item.variations_id);
+                            return (
+                                // Cart Item
+                                <View style={styles.itemContainer}>
+                                    <View style={styles.cartItem}>
 
-                            // Cart Item
-                            <View style={styles.itemContainer}>
-                                <View style={styles.cartItem}>
-
-                                    <View style={styles.imgItemView}>
-                                        <Image
-                                            style={styles.imgItem}
-                                            source={{ uri: item.image }}
-                                        />
-                                    </View>
-
-                                    <View style={styles.nameItemView}>
-                                        <View >
-                                            <Text style={styles.nameItem}>{item.product_name}</Text>
-                                            <Text style={styles.categoryItem}>Loại: </Text>
-                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                        <View style={styles.imgItemView}>
+                                            <Image
+                                                style={styles.imgItem}
+                                                source={{ uri: item.image }}
+                                            />
                                         </View>
-                                        <View>
 
+                                        <View style={styles.nameItemView}>
+                                            <View >
+                                                <Text style={styles.nameItem}>{item.product_name}</Text>
+                                                <Text style={styles.categoryItem}>Loại: </Text>
+                                                <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                            </View>
+                                            <View>
+
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.priceItemView}>
+                                            <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
                                         </View>
                                     </View>
-
-                                    <View style={styles.priceItemView}>
-                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
+                                    <View style={styles.textTotal}>
+                                        <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
                                     </View>
+
+                                    <CommentButton item={item}/>
                                 </View>
-                                <View style={styles.textTotal}>
-                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
-                                    <CommentButton item={item} />
-                                </View>
-                            </View>
-                        )}
+                            )
+                        }}
                         keyExtractor={(item) => item.id}
                     />
 
@@ -169,39 +216,42 @@ const BillDetailScreen = ({ route }) => {
                     <FlatList
                         data={item.products}
                         style={styles.listCart}
-                        renderItem={({ item }) => (
+                        renderItem={({ item }) => {
+                            console.log('variation id: ' + item.variations_id);
 
-                            // Cart Item
-                            <View style={styles.itemContainer}>
-                                <View style={styles.cartItem}>
+                            return (
+                                // Cart Item
+                                <View style={styles.itemContainer}>
+                                    <View style={styles.cartItem}>
 
-                                    <View style={styles.imgItemView}>
-                                        <Image
-                                            style={styles.imgItem}
-                                            source={{ uri: item.image }}
-                                        />
-                                    </View>
-
-                                    <View style={styles.nameItemView}>
-                                        <View >
-                                            <Text style={styles.nameItem}>{item.product_name}</Text>
-                                            <Text style={styles.categoryItem}>Loại: </Text>
-                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                        <View style={styles.imgItemView}>
+                                            <Image
+                                                style={styles.imgItem}
+                                                source={{ uri: item.image }}
+                                            />
                                         </View>
-                                        <View>
 
+                                        <View style={styles.nameItemView}>
+                                            <View >
+                                                <Text style={styles.nameItem}>{item.product_name}</Text>
+                                                <Text style={styles.categoryItem}>Loại: </Text>
+                                                <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                                            </View>
+                                            <View>
+
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.priceItemView}>
+                                            <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
                                         </View>
                                     </View>
-
-                                    <View style={styles.priceItemView}>
-                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
+                                    <View style={styles.textTotal}>
+                                        <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
                                     </View>
                                 </View>
-                                <View style={styles.textTotal}>
-                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
-                                </View>
-                            </View>
-                        )}
+                            )
+                        }}
                         keyExtractor={(item) => item.id}
                     />
 

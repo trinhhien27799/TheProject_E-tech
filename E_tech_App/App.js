@@ -47,6 +47,10 @@ import DetailCommentScreen from './Screen/DetailCommentScreen'
 import SettingScreen from './Screen/profile/setting'
 import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen'
 import CartScreen from './Screen/YourCart/CartScreen'
+import AddCommentScreen from './Screen/AddCommentScreen';
+import CommentButton from './Component/CommentButton';
+import CancelOrderView from './Screen/CancelOrderView';
+import tailwind from 'twrnc';
 
 import { Ionicons } from '@expo/vector-icons'
 
@@ -150,75 +154,71 @@ export default App = () => {
     <View style={{ flex: 1 }}>
       <NavigationContainer
         ref={navigationContainerRef}>
-        <Stack.Navigator
-          initialRouteName='Splash'
-        >
-          <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
+     
+      <Stack.Navigator
+        initialRouteName='Splash' >
+        <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
-          <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-          <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-          <Stack.Screen name='ProductDetail' component={ProductDetail} options={{ headerShown: false }} />
-          <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
-          <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
-          <Stack.Screen name='Quenmk2' component={Quenmk2} options={{ headerShown: false }} />
-          <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
-          <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
-          <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
+        <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name='ProductDetail' component={ProductDetail} options={{ headerShown: false }} />
+        <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
+        <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
+        <Stack.Screen name='Quenmk2' component={Quenmk2} options={{ headerShown: false }} />
+        <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
+        <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
+        <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
 
-          <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
-          <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
-          <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
+        <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
+        <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
 
-          <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
-          <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
-          <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
-          <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
-          <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
-          <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
-          <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
-          <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
+        <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
+        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
+        <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
+        <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
+        <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+        <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
+        <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
+        <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
 
 
-          <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false }} />
-          <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false }} />
-          <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{
-            headerShown: true,
-            headerTintColor: 'white',
-            headerTitle: 'Chi tiết đơn hàng',
-            headerStyle: { backgroundColor: '#3366ff' }
-          }} />
+        <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
+        <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
+        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
+        <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
+        headerTintColor: 'white',  
+        headerTitle:'Chi tiết đơn hàng',
+        headerStyle: { backgroundColor: '#3366ff' }}} />
 
-          <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
+        <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
 
-          <Stack.Screen name='PayScreen' component={Pay} options={{
-            headerShown: true,
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-              </TouchableOpacity>
-            ),
-            headerTintColor: 'white',
-            headerTitle: 'Thanh toán',
-            headerStyle: { backgroundColor: '#3366ff' }
-          }} />
-          <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
-          <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />
+        <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: true, 
+        headerLeft:() => (
+          <TouchableOpacity style={tailwind `mr-2`} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        ),
+        headerTintColor: 'white',  
+        headerTitle:'Thanh toán',
+        headerStyle: { backgroundColor: '#3366ff' } }} />
+        <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
+        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>
 
-          <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
-          <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
+        <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
-          <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
-          <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
+        <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
 
       {notification &&
         <View

@@ -23,8 +23,9 @@ export const addVoucher = async (voucherCode , voucherId) => {
     }
 }
 export const getMyVoucher = async () => {
+
     try {
-        const response = await api.post(`/voucher/get`);
+        const response = await api.get(`/voucher/get`);
         return response.data;
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);

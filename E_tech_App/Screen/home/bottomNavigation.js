@@ -9,12 +9,13 @@ import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import Icon from 'react-native-vector-icons/Feather';
 import Makhuyenmai from '../Makhuyenmai';
 import Profile from '../profile/profileScreen';
+import { getUser } from '../../session';
 
 const Tabs = AnimatedTabBarNavigator();
 
 const BottomNavigation = ({navigation,route}) => {
 
-  const userData = route.params.registrationData;
+  const userData = getUser();
 
   return (
       <Tabs.Navigator
@@ -81,7 +82,7 @@ const BottomNavigation = ({navigation,route}) => {
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icon
-              name="bell"
+              name="gift"
               size={size ? size : 24}
               color={focused ? color : "#222222"}
               focused={focused}
