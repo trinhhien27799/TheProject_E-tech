@@ -7,6 +7,7 @@ import ProductComment from '../Component/ProductComment'
 import BottomSheet from '@devvie/bottom-sheet'
 import StarRatingModal from '../Component/CommentModal/StarRatingModal'
 import ProductVariationModal from '../Component/CommentModal/ProductVariationModal'
+import ProductCommentFix from '../Component/ProductCommentFix'
 
 const DetailCommentScreen = () => {
     const starOpenRef = useRef(null);
@@ -22,43 +23,66 @@ const DetailCommentScreen = () => {
 
     return (
         <View style={tailwind `h-full`}>
-            {/* Comment tab */}
-            <View style={tailwind`bg-blue-200 py-5 flex-row justify-center`}>
-                <TouchableOpacity style={tailwind`bg-green-200 w-20 h-20 justify-center rounded-lg`}>
-                    <Text style={tailwind`self-center`}>Tất cả</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                    style={tailwind`bg-green-200 w-20 h-20 justify-center mx-6 rounded-lg`}
-                    onPress={() => starOpenRef.current.open()}
-                >
-                    <View style={tailwind`flex-row self-center`}>
-                        <Text style={tailwind`mr-1`}>Số sao</Text>
+            <View style={tailwind `bg-white`}>
+                <View style={tailwind `flex-row mt-2`}>
+                    <TouchableOpacity
+                        style={tailwind`w-9 h-9 bg-white m-4 mt-8 justify-center rounded-full shadow-md`}
+                        onPress={() => navigation.goBack()}
+                    >
                         <Image
-                            style={tailwind`w-5 h-3 mt-1`}
-                            source={require('../img/down_7356260.png')}
-                        />
-                    </View>
+                            source={require('../img/previous.png')}
+                            style={tailwind`w-5 h-5 self-center`} />
+                    </TouchableOpacity>
 
-                    <Text style={tailwind`self-center`}>(Tất cả)</Text>
-                </TouchableOpacity>
+                    <Text style={tailwind `mt-8.5 text-base font-bold`}>Đánh giá sản phẩm</Text>
+                </View>
+                
 
-                <TouchableOpacity
-                    style={tailwind`bg-green-200 w-20 h-20 justify-center rounded-lg px-2`}
-                    onPress={() => variationOpenRef.current.open()}
-                >
-                    <View style={tailwind`flex-row self-center`}>
-                        <Text style={tailwind`mr-1`}>Phân loại</Text>
-                        <Image
-                            style={tailwind`w-5 h-3 mt-1`}
-                            source={require('../img/down_7356260.png')}
-                        />
-                    </View>
-                </TouchableOpacity>
+                {/* Comment tab */}
+                <View style={tailwind`mb-4 flex-row justify-center p-1 mb-3`}>
+                    <TouchableOpacity
+                        style={tailwind`bg-white border border-blue-300 w-20 h-20 justify-center rounded-lg shadow-md`}
+                        onPress={() => setSortRatingStar(null)}
+                    >
+                        <Text style={tailwind`self-center text-base`}>Tất cả</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={tailwind`bg-white border border-blue-300 w-20 h-20 justify-center rounded-lg shadow-md mx-6`}
+                        onPress={() => starOpenRef.current.open()}
+                    >
+                        <View style={tailwind`flex-row self-center`}>
+                            <Text style={tailwind`mr-1`}>Số sao</Text>
+                            <Image
+                                style={tailwind`w-5 h-3 mt-1`}
+                                source={require('../img/down_7356260.png')}
+                            />
+                        </View>
+
+                        <Text style={tailwind`self-center`}>
+                            {sortRatingStar == null ? 'Tất cả' : sortRatingStar + ' sao'}
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={tailwind`bg-white border border-blue-300 w-20 h-20 justify-center rounded-lg shadow-md px-2`}
+                        onPress={() => variationOpenRef.current.open()}
+                    >
+                        <View style={tailwind`flex-row self-center`}>
+                            <Text style={tailwind`mr-1`}>Phân loại</Text>
+                            <Image
+                                style={tailwind`w-5 h-3 mt-1`}
+                                source={require('../img/down_7356260.png')}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
 
+            
+
             {/* Comment line */}
-            <ProductComment starRating={sortRatingStar} productID={'65590e5cc77a4a005ce12f3b'}/>
+            <ProductCommentFix starRating={sortRatingStar} productID={'655538dbd76441d85e24f0ef'}/>
 
             {/* Bottom modal */}
             <BottomSheet ref={starOpenRef}>

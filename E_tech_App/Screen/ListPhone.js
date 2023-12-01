@@ -31,7 +31,7 @@ const ListPhone = () => {
     const ListItem = ({item}) => {
         return (
             <View style={styles.containerItem}>
-                <TouchableOpacity onPress={() => {navigation.navigate('ProductDetail', {product: item})}}>
+                <TouchableOpacity onPress={() => {navigation.navigate('DetailProducts', { productId: item._id });}}>
                         <View style={styles.containerInfo}>
                             <Image
                                 style={styles.image}

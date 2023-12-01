@@ -7,20 +7,44 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
-    RadioButton,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native';
+import { RadioButton } from 'react-native-paper';
 
 const PTTT = () => {
     const [selectedRadio, setSelectedRadio] = useState(1);
     const navigation = useNavigation();
-    const Check = () => {
-        if (setSelectedRadio == 1) {
-            () => { navigation.goback() }
+    
+    const Check = (value) => {
+        console.log(value);
+        if (value == 1) {
+            navigation.goBack() 
         } else {
-            () => { navigation.navigate('DialogQR') }
+            navigation.navigate('DialogQR') 
         }
     }
+
+    const selectedButtonList = [
+        {
+            value: 1,
+            name: 'Thanh toán bằng tiền mặt'
+        },
+        {
+            value: 2,
+            name: 'Thanh toán chuyển khoản (mã QR)'
+        },
+    ];
+
+    const selectedCard = ({ item }) => {
+        return (
+            <View>
+                <RadioButton value={item.value} />
+                <Text>{item.name}</Text>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -28,30 +52,30 @@ const PTTT = () => {
                     <Text style={styles.text1}>Phương thức thanh toán</Text>
                 </View>
 
-                <TouchableOpacity style={{ marginTop: 50 }} onPress={() => { setSelectedRadio(1); }}>
-                    <View style={{ flexDirection: 'row', alignContent: 'center', marginLeft: 30 }}>
-                        <View style={styles.radio}>
-                            {selectedRadio == 1 ? <View style={styles.radioBg}></View> : null}
-                        </View>
-                        <Text style={{ marginLeft: 5, fontSize: 15 }}>Thanh toán khi nhận hàng (Tiền mặt)</Text>
-                    </View>
-                </TouchableOpacity>
-                <View>
-                    <TouchableOpacity style={{ marginTop: 20 }} onPress={() => { setSelectedRadio(2); }} >
-                        <View style={{ flexDirection: 'row', alignContent: 'center', marginLeft: 30 }}>
-                            <View style={styles.radio}>
-                                {selectedRadio == 2 ? <View style={styles.radioBg}></View> : null}
-                            </View>
-                            <Text style={{ marginLeft: 5, fontSize: 15 }}>Chuyển khoản qua ngân hàng</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                {/* Flatlist */}
+                <RadioButton.Group
+                    onValueChange={(item) => setSelectedRadio(item)}
+                    value={selectedRadio}
+                >
+                    <FlatList
+                        data={selectedButtonList}
+                        renderItem={({ item }) => {
+                            return (
+                                <View>
+                                    <RadioButton value={item.value} />
+                                    <Text>{item.name}</Text>
+                                </View>
+                            )
+                        }}
+                    />
+                </RadioButton.Group>
+
                 <View style={styles.view3}>
                     <TouchableOpacity style={styles.button2} onPress={() => { navigation.goback() }}>
                         <Text style={styles.text}>Hủy</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button2} onPress={Check}>
+                    <TouchableOpacity style={styles.button2} onPress={() => Check(selectedRadio)}>
                         <Text style={styles.text}>Xác nhận</Text>
                     </TouchableOpacity>
                 </View>
@@ -63,7 +87,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        marginTop: 30,
+        marginTop: 80,
+        padding: 5
     },
     view: {
         marginRight: 'auto',

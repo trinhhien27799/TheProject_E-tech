@@ -23,7 +23,7 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                 if (option) {
                     clearListCart()
                     pushListCart()
-                    navigation.navigate('OrderScreen')
+                    navigation.navigate('NewOrderScreen')
                 }
                 console.log("Thêm giỏ hàng thành công")
             } else {

@@ -53,6 +53,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
 import CancelOrderView from './Screen/CancelOrderView';
+import tailwind from 'twrnc';
 
 
 
@@ -109,7 +110,7 @@ const App = () => {
 
         <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: true, 
         headerLeft:() => (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={tailwind `mr-2`} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         ),

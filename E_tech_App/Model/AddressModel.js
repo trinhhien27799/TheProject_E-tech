@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { getAddress } from "../CallApi/AddressAPI";
+
 export const ListAddress = [
     {
         id: 1,
@@ -12,4 +15,21 @@ export const ListAddress = [
         address: '123 Main St.'
     }
 ];
+
+export const getAllAddresses = () => {
+    const [addressData, setAddressData] = useState(null);
+
+    const getData = async () => {
+        try {
+            const data = await getAddress();
+            setAddressData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {getData()}, []);
+
+    return addressData;
+}
 
