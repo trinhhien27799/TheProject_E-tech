@@ -1,73 +1,162 @@
-import React from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './Screen/home/Home';
-import Profile from './Screen/profile/profileScreen';
-import ProductDetail from './Screen/ProductDetail';
-import ListPhone from './Screen/ListPhone';
-import Login from './Screen/authentication/Login';
-import SignUp from './Screen/authentication/SignUp';
-import editProfile from './Screen/profile/editProfile';
+import React, { useEffect, useRef, useState } from 'react'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Home from './Screen/home/Home'
+import Profile from './Screen/profile/profileScreen'
+import ProductDetail from './Screen/ProductDetail'
+import ListPhone from './Screen/ListPhone'
+import Login from './Screen/authentication/Login'
+import SignUp from './Screen/authentication/SignUp'
+import editProfile from './Screen/profile/editProfile'
 
-import SearchScreen from './Screen/search/searchScreen';
+import SearchScreen from './Screen/search/searchScreen'
 
 import Quenmk1 from './Screen/authentication/forgotEmail'
 import Quenmk2 from './Screen/authentication/confirmOTP'
 import Taomk from './Screen/authentication/Taomkmoi'
 import Taomk2 from './Screen/authentication/Taomkmoi2'
 
-import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-import AddressTest from './Screen/AddressTest';
-import BottomNavigation from './Screen/home/bottomNavigation';
-import NotificationScreen from './Screen/NotificationScreen';
-import ResetPassword from './Screen/profile/resetPassword';
+import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar"
+import AddressTest from './Screen/AddressTest'
+import BottomNavigation from './Screen/home/bottomNavigation'
+import NotificationScreen from './Screen/NotificationScreen'
+import ResetPassword from './Screen/profile/resetPassword'
 
 
-import { Button ,TouchableOpacity} from 'react-native';
-import DialogAddress from './Screen/DialogAddress';
-import Pay from './Screen/Pay';
-import MapViewScreen from './Component/MapView';
-import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen';
-import PTTT from './Screen/PTTT/PTTT';
-import DialogQR from './Screen/PTTT/DialogQR';
-import Makhuyenmai from './Screen/Makhuyenmai';
+import { Alert, Button, Image, Modal, Text, TouchableOpacity, View } from 'react-native'
+import DialogAddress from './Screen/DialogAddress'
+import Pay from './Screen/Pay'
+import MapViewScreen from './Component/MapView'
+import DemoShipMoneyResoveScreen from './DataMathResolve/DemoShipMoneyResoveScreen'
+import PTTT from './Screen/PTTT/PTTT'
+import DialogQR from './Screen/PTTT/DialogQR'
+import Makhuyenmai from './Screen/Makhuyenmai'
 import ApDungVoucher from './Screen/ApDungVoucher'
 
-import BillDetailScreen from './Screen/BillDetailScreen';
-import ViewItem from './Screen/search/viewItem';
-import AddAdress from './Screen/AddAdress';
-import MyVoucher from './Screen/MyVoucher';
-import ShippingMethod from './Screen/ShippingMethod';
+import BillDetailScreen from './Screen/BillDetailScreen'
+import ViewItem from './Screen/search/viewItem'
+import AddAdress from './Screen/AddAdress'
+import MyVoucher from './Screen/MyVoucher'
+import ShippingMethod from './Screen/ShippingMethod'
 
-import ListPhoneByCate from './Screen/ListPhoneByCate';
-import DetailProducts from './Screen/products/main';
-import ProductComment from './Component/ProductComment';
-import SplashScreen from './Screen/splash/SplashScreen';
-import DetailCommentScreen from './Screen/DetailCommentScreen';
-import SettingScreen from './Screen/profile/setting';
-import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen';
-import CartScreen from './Screen/YourCart/CartScreen';
-
-import { Ionicons } from '@expo/vector-icons';
-
+import ListPhoneByCate from './Screen/ListPhoneByCate'
+import DetailProducts from './Screen/products/main'
+import ProductComment from './Component/ProductComment'
+import SplashScreen from './Screen/splash/SplashScreen'
+import DetailCommentScreen from './Screen/DetailCommentScreen'
+import SettingScreen from './Screen/profile/setting'
+import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen'
+import CartScreen from './Screen/YourCart/CartScreen'
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
 import CancelOrderView from './Screen/CancelOrderView';
 import tailwind from 'twrnc';
 
+import { Ionicons } from '@expo/vector-icons'
+
+import AddCommentScreen from './Screen/AddCommentScreen'
+import CommentButton from './Component/CommentButton'
+import CancelOrderView from './Screen/CancelOrderView'
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
+import Constants from 'expo-constants'
+import SoundPlayer from './utils/notificationSound'
+import { getUser, setDeviceToken } from './session'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+})
 
 
 
-const Stack = createNativeStackNavigator();
-const Tabs = AnimatedTabBarNavigator();
+
+const registerForPushNotificationsAsync = async () => {
+  let token
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    })
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!')
+      return
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    })
+  } else {
+    alert('Must use physical device for Push Notifications')
+  }
+
+  return token.data
+}
 
 
-const App = () => {
+const Stack = createNativeStackNavigator()
+const Tabs = AnimatedTabBarNavigator()
+
+
+export default App = () => {
+
+
+  const notificationListener = useRef()
+  const responseListener = useRef()
+  const [notification, setNotification] = useState(null)
+  const navigationContainerRef = useRef()
+
+  const ClickNotification = (notification) => {
+    navigationContainerRef.current.navigate(notification.request.content.data.route)
+    setNotification(null)
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => {
+      setDeviceToken(token)
+    })
+    if (!getUser()) {
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        console.log(notification)
+        setNotification(notification)
+        SoundPlayer.playSound()
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      })
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        ClickNotification(response.notification)
+      })
+    }
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
+
+
   return (
-    <NavigationContainer>
+    <View style={{ flex: 1 }}>
+      <NavigationContainer
+        ref={navigationContainerRef}>
+     
       <Stack.Navigator
-        initialRouteName='Splash'
-      >
+        initialRouteName='Splash' >
         <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
@@ -130,7 +219,26 @@ const App = () => {
         <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+
+      {notification &&
+        <View
+          onTouchStart={() => {
+            ClickNotification(notification)
+          }}
+          style={{
+            backgroundColor: 'whitesmoke', padding: 10, marginHorizontal: 20, borderRadius: 14, elevation: 10, position: 'absolute',
+            top: 85, width: '90%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center'
+          }}>
+          <Image
+            style={{ width: 40, height: 40, resizeMode: 'center', borderRadius: 8 }}
+            source={{ uri: notification.request.content.data.image }} />
+          <View style={{ marginStart: 8,flex:1 }}>
+            <Text>{notification.request.content.title}</Text>
+            <Text>{notification.request.content.body}</Text>
+          </View>
+        </View>}
+
+    </View>
+  )
 }
 
-export default App;

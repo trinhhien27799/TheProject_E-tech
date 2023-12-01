@@ -121,8 +121,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flexGrow: 0,
-        paddingTop: 14,
-        paddingBottom:28,
+        paddingVertical: 18,
         backgroundColor: "#5182CC",
         flexDirection: 'row',
         justifyContent: 'space-around'

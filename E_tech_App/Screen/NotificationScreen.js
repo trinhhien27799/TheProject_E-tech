@@ -106,7 +106,7 @@ const NotificationScreen = () => {
                     <Image source={{ uri: item.image }} style={styles.img} />
                   </View>
                   <View style={tailwind`w-64 ml-5`}>
-                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.title}>{item.body}</Text>
                     <Text style={styles.title2}>{formatTime(item.time)}</Text>
                   </View>
                 </TouchableOpacity>
