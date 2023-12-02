@@ -7,7 +7,7 @@ import { Text } from 'react-native'
 import { View } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import tailwind from 'twrnc'
-import { cancelBill } from '../CallApi/billAPI'
+import { cancelBill } from '../CallApi/billApi'
 import { formatPrice } from '../utils/format'
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill'
 
