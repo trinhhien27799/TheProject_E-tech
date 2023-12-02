@@ -3,7 +3,6 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Home from './Screen/home/Home'
 import Profile from './Screen/profile/profileScreen'
-import ProductDetail from './Screen/ProductDetail'
 import ListPhone from './Screen/ListPhone'
 import Login from './Screen/authentication/Login'
 import SignUp from './Screen/authentication/SignUp'
@@ -54,9 +53,6 @@ import tailwind from 'twrnc';
 
 import { Ionicons } from '@expo/vector-icons'
 
-import AddCommentScreen from './Screen/AddCommentScreen'
-import CommentButton from './Component/CommentButton'
-import CancelOrderView from './Screen/CancelOrderView'
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
@@ -131,7 +127,7 @@ export default App = () => {
     })
     if (!getUser()) {
       notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        console.log(notification)
+        console.log("notification nhận được: ",notification)
         setNotification(notification)
         SoundPlayer.playSound()
         setTimeout(() => {
@@ -162,7 +158,6 @@ export default App = () => {
         <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name='ProductDetail' component={ProductDetail} options={{ headerShown: false }} />
         <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
         <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
         <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
