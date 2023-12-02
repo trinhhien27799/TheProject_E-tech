@@ -117,7 +117,7 @@ export default App = () => {
   const navigationContainerRef = useRef()
 
   const ClickNotification = (notification) => {
-    navigationContainerRef.current.navigate(notification.request.content.data.route)
+    navigationContainerRef.current.navigate(notification.request.content.data.route, { billId: notification.request.content.data.billId })
     setNotification(null)
   }
 
@@ -127,12 +127,12 @@ export default App = () => {
     })
     if (!getUser()) {
       notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        console.log("notification nhận được: ",notification)
+        console.log("notification nhận được: ", notification)
         setNotification(notification)
         SoundPlayer.playSound()
         setTimeout(() => {
           setNotification(null)
-        }, 5000)
+        }, 8000)
       })
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
         ClickNotification(response.notification)
@@ -150,70 +150,74 @@ export default App = () => {
     <View style={{ flex: 1 }}>
       <NavigationContainer
         ref={navigationContainerRef}>
-     
-      <Stack.Navigator
-        initialRouteName='Splash' >
-        <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
-        <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
-        <Stack.Screen name='Quenmk2' component={Quenmk2} options={{ headerShown: false }} />
-        <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
-        <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
-        <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
+        <Stack.Navigator
+          initialRouteName='Splash' >
+          <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
-        <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
-        <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
+          <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
+          <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
+          <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
+          <Stack.Screen name='Quenmk2' component={Quenmk2} options={{ headerShown: false }} />
+          <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
+          <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
+          <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
 
-        <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
-        <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
-        <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
-        <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
-        <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
-        <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
-        <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
-        <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
+          <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
+          <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
+          <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
+
+          <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
+          <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
+          <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
+          <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
+          <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+          <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
+          <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
+          <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
 
 
-        <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false}} />
-        <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false}} />
-        <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false}} />
-        <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{ headerShown: true, 
-        headerTintColor: 'white',  
-        headerTitle:'Chi tiết đơn hàng',
-        headerStyle: { backgroundColor: '#3366ff' }}} />
+          <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false }} />
+          <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false }} />
+          <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{
+            headerShown: true,
+            headerTintColor: 'white',
+            headerTitle: 'Chi tiết đơn hàng',
+            headerStyle: { backgroundColor: '#3366ff' }
+          }} />
 
-        <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
+          <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
 
-        <Stack.Screen name='PayScreen' component={Pay} options={{headerShown: true, 
-        headerLeft:() => (
-          <TouchableOpacity style={tailwind `mr-2`} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
-        ),
-        headerTintColor: 'white',  
-        headerTitle:'Thanh toán',
-        headerStyle: { backgroundColor: '#3366ff' } }} />
-        <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
-        <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate}/>
+          <Stack.Screen name='PayScreen' component={Pay} options={{
+            headerShown: true,
+            headerLeft: () => (
+              <TouchableOpacity style={tailwind`mr-2`} onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="white" />
+              </TouchableOpacity>
+            ),
+            headerTintColor: 'white',
+            headerTitle: 'Thanh toán',
+            headerStyle: { backgroundColor: '#3366ff' }
+          }} />
+          <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
+          <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />
 
-        <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
-        <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
+          <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
-        <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
+          <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
 
       {notification &&
         <View
@@ -227,7 +231,7 @@ export default App = () => {
           <Image
             style={{ width: 40, height: 40, resizeMode: 'center', borderRadius: 8 }}
             source={{ uri: notification.request.content.data.image }} />
-          <View style={{ marginStart: 8,flex:1 }}>
+          <View style={{ marginStart: 8, flex: 1 }}>
             <Text>{notification.request.content.title}</Text>
             <Text>{notification.request.content.body}</Text>
           </View>
