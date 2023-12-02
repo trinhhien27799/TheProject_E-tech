@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllBill, getRealBill } from "../CallApi/billAPI"
+import { getAllBill, getRealBill } from "../CallApi/billApi"
 
 export const getBill = (statusNum) => {
     console.log(statusNum);

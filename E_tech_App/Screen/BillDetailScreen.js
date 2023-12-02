@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
-import { Touchable } from 'react-native-web';
 import tailwind from 'twrnc'
 import OrderStatusHeader from '../Component/OrderStatusHeader';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { formatPrice } from '../utils/format';
 import CommentButton from '../Component/CommentButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { checkComment } from '../CallApi/commentAPI';
+import { getItemBill } from '../CallApi/billApi';
+
+
+
 const BillDetailScreen = ({ route }) => {
     const { item } = route.params;
     console.log(item);
@@ -31,7 +33,7 @@ const BillDetailScreen = ({ route }) => {
         useEffect(() => { getData() }, [])
     }
 
-    
+
 
     // useEffect(() => {
     //     const hideComponent = async () => {
@@ -126,7 +128,7 @@ const BillDetailScreen = ({ route }) => {
                                         <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
                                     </View>
 
-                                    <CommentButton item={item}/>
+                                    <CommentButton item={item} />
                                 </View>
                             )
                         }}
