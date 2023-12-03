@@ -40,7 +40,6 @@ import ShippingMethod from './Screen/ShippingMethod'
 
 import ListPhoneByCate from './Screen/ListPhoneByCate'
 import DetailProducts from './Screen/products/main'
-import ProductComment from './Component/ProductComment'
 import SplashScreen from './Screen/splash/SplashScreen'
 import DetailCommentScreen from './Screen/DetailCommentScreen'
 import SettingScreen from './Screen/profile/setting'
@@ -207,8 +206,6 @@ export default App = () => {
           <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
           <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
           <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />
-
-          <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
           <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
           <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
