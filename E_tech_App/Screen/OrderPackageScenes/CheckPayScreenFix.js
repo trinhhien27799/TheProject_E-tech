@@ -12,9 +12,10 @@ import { getBill } from '../../Model/BillModel'
 import { formatPrice } from '../../utils/format'
 import BottomSheet from '@devvie/bottom-sheet'
 
-const CheckPayScreenFix = ({ orderList}) => {
+const CheckPayScreenFix = ({ orderList }) => {
     const navigation = useNavigation();
     console.log(orderList);
+
 
     const ProductCard = ({ item }) => {
         const currentDate = item.time;
