@@ -15,7 +15,7 @@ const BillDetailScreen = ({ route }) => {
 
 
     const [item, setItem] = useState(null)
-    const [caches, setGetCacheArray] = useState(null)
+    const [caches, setGetCacheArray] = useState([])
 
 
     const getData = async () => {
