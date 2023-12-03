@@ -40,6 +40,7 @@ import ShippingMethod from './Screen/ShippingMethod'
 
 import ListPhoneByCate from './Screen/ListPhoneByCate'
 import DetailProducts from './Screen/products/main'
+import ProductComment from './Component/ProductComment'
 import SplashScreen from './Screen/splash/SplashScreen'
 import DetailCommentScreen from './Screen/DetailCommentScreen'
 import SettingScreen from './Screen/profile/setting'
@@ -52,15 +53,11 @@ import tailwind from 'twrnc';
 
 import { Ionicons } from '@expo/vector-icons'
 
-import AddCommentScreen from './Screen/AddCommentScreen'
-import CommentButton from './Component/CommentButton'
-import CancelOrderView from './Screen/CancelOrderView'
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import SoundPlayer from './utils/notificationSound'
 import { getUser, setDeviceToken } from './session'
-import PreviewComment from './Component/PreviewComment'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -211,15 +208,15 @@ export default App = () => {
           <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
           <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />
 
-        <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
-        <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='Comment' component={ProductComment} options={{ headerShown: false }} />
+          <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
-        <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
+          <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
 
       {notification &&
         <View
