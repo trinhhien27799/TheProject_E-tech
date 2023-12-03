@@ -10,11 +10,8 @@ import { getLike } from "../../CallApi/productApi";
 import IteamProduct from "../../Component/itemProducts";
 
 const Profile = ({ route }) => {
-    console.log(route.params);
-    const { username, avatar, fullname } = route.params;
+    const { username, avatar, fullname} = route.params;
     const params = route.params;
-    const userID = params.use
-    // await AsyncStorage.setItem('userID', )
     const navigation = useNavigation();
     const [likeData, setLikeData] = useState([]);
     useEffect(() => {
@@ -27,7 +24,7 @@ const Profile = ({ route }) => {
     }, [])
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile username={fullname} urlImage={avatar} email={username} navigation={navigation} />
+            <HeaderProfile urlBackround={avatar} username={fullname} urlImage={avatar} email={username} navigation={navigation} />
             <View>
                 <TouchableOpacity style={styles.viewEdit}
                     onPress={() => { navigation.navigate('EditProfile', route = { params }) }}
@@ -75,10 +72,9 @@ const Profile = ({ route }) => {
         </ScrollView>
     );
 }
-const HeaderProfile = ({ username, urlImage, email, navigation }) => {
-    const avatarBackround = "https://cdn.pixabay.com/photo/2023/11/17/22/10/road-8395119_1280.jpg";
+const HeaderProfile = ({ username, urlImage, email, navigation,urlBackround }) => {
     return (
-        <ImageBackground source={{ uri: avatarBackround }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
+        <ImageBackground source={{ uri: urlBackround }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.goBack();
@@ -139,7 +135,8 @@ const styles = StyleSheet.create({
     },
     imageHeader: {
         flex: 1,
-        resizeMode: 'cover'
+        resizeMode: 'cover',
+        borderRadius:100,
     },
     viewIcon: {
         height: 50,

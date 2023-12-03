@@ -15,6 +15,7 @@ const Tabs = AnimatedTabBarNavigator();
 
 const BottomNavigation = ({navigation,route}) => {
 
+
   const userData = getUser();
 
   return (
