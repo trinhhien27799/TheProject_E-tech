@@ -13,7 +13,7 @@ export const getAllBill = async (statusNum) => {
 
 export const getRealBill = async () => {
     try {
-        const bill = await api.post('/bill/get-all');
+        const bill = await api.get('/bill/get-all');
         return bill.data;
     } catch (error) {
         console.log(error);

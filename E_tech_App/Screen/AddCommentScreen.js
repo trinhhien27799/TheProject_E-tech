@@ -68,14 +68,18 @@ const AddCommentScreen = () => {
       <ScrollView>
         <View style={tailwind``}>
           <View style={tailwind`bg-white p-3`}>
-            <TouchableOpacity
-              style={tailwind`w-9 h-9 bg-white m-5 justify-center rounded-full shadow-md`}
-              onPress={() => navigation.goBack()}
-            >
-              <Image
-                source={require('../img/previous.png')}
-                style={tailwind`w-5 h-5 self-center`} />
-            </TouchableOpacity>
+            <View style={tailwind `flex-row`}>
+              <TouchableOpacity
+                style={tailwind`w-9 h-9 bg-white m-5 justify-center rounded-full shadow-md`}
+                onPress={() => navigation.goBack()}
+              >
+                <Image
+                  source={require('../img/previous.png')}
+                  style={tailwind`w-5 h-5 self-center`} />
+              </TouchableOpacity>
+
+              <Text style={tailwind `text-base font-bold mt-5.5`}>Tạo đánh giá</Text>
+            </View>
 
             {/* Product View */}
             <View style={tailwind`flex-row p-3`}>
@@ -84,7 +88,7 @@ const AddCommentScreen = () => {
                 style={tailwind`w-22 h-30`}
               />
               <View style={tailwind`ml-3`}>
-                <Text style={tailwind`w-80 mb-2 font-bold`}>{product.productName}</Text>
+                <Text style={tailwind`w-70 mb-2 font-bold`}>{product.productName}</Text>
                 <Text>Loại: {product.color}</Text>
               </View>
             </View>
@@ -98,7 +102,7 @@ const AddCommentScreen = () => {
             </View>
           </View>
 
-          <View>
+          <View style={tailwind `bg-white mt-5`}>
             {/* User Comment */}
             <View>
               <TextInput

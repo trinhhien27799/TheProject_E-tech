@@ -47,10 +47,6 @@ const BillDetailScreen = ({ route }) => {
         getCache()
     }, [item])
 
-
-
-
-
     // useEffect(() => {
     //     const hideComponent = async () => {
     //         const timer = setTimeout(() => {
@@ -93,7 +89,7 @@ const BillDetailScreen = ({ route }) => {
                     <View style={styles.addressHeader}>
                         <Image
                             source={require('../img/store.png')}
-                            style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
+                            style={tailwind`ml-3 w-5 h-5 self-center mb-7`}
                         />
                         <View style={styles.addressInfo}>
                             <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
@@ -324,7 +320,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     addressContainer: {
-        height: 80,
+        paddingVertical: 10,
         marginLeft: 20,
         marginRight: 20,
         marginTop: 15
@@ -359,7 +355,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ECECEE',
     },
     header: {
-        height: 180,
+        paddingVertical: 10,
         marginHorizontal: 30,
         marginVertical: 30,
     },
