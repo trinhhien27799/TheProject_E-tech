@@ -125,19 +125,18 @@ export default App = () => {
     registerForPushNotificationsAsync().then(token => {
       setDeviceToken(token)
     })
-    if (!getUser()) {
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        console.log("notification nhận được: ", notification)
-        setNotification(notification)
-        SoundPlayer.playSound()
-        setTimeout(() => {
-          setNotification(null)
-        }, 8000)
-      })
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        ClickNotification(response.notification)
-      })
-    }
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      console.log("notification nhận được: ", notification)
+      setNotification(notification)
+      SoundPlayer.playSound()
+      setTimeout(() => {
+        setNotification(null)
+      }, 8000)
+    })
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      ClickNotification(response.notification)
+    })
+
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current)
