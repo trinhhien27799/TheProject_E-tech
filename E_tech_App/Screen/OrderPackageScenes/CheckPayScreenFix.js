@@ -54,7 +54,7 @@ const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
                         </View>
     
                         <View style={tailwind `justify-center`}>
-                            <OrderStatusChangeButton item={item} statusNum={item.status} cancelButton={cancelOnclick}/>
+                            <OrderStatusChangeButton item={item} statusNum={item.status}/>
                         </View>
                     </View>
                 </View>

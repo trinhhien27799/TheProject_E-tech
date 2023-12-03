@@ -20,18 +20,36 @@ export const getAddress = async () => {
 }
 
 export const deleteAddress = async (data) => {
-    console.log(data);
+    console.log(data._id);
     try {
-        const rs = await api.post(`/user/address/delete`, {data: data});
+        const rs = await api.post(`/user/address/delete`, {_id: data._id});
         const dataRs = rs.data;
 
-        if (dataRs == 200){
+        if (dataRs.code == 200){
             alert('Xóa thành công')
         }
         else{
-            alert('Xóa không thành công')
+            alert(dataRs)
+            console.log(dataRs)
         }
     } catch (error) {
         console.log(error);
     }
 }
+
+export const editAddress = async (_id, fullname, numberphone, address) => {
+    try {
+        const rs = await api.post(`/user/address/update`, {_id: _id, fullname: fullname, numberphone: numberphone, address: address});
+        const dataRs = rs.data;
+
+        if (dataRs.code == 200){
+            alert('Cập nhật thành công')
+        }
+        else{
+            alert(dataRs)
+            console.log(dataRs)
+        }
+    } catch (error) {
+        console.log(error);
+    }
+} 

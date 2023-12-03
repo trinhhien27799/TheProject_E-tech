@@ -5,16 +5,14 @@ import {ShipMoneyResolve_City} from './ShipMoneyResolve'
 import { getAllBill } from '../CallApi/billAPI';
 import { getAllUserBill, getBill } from '../Model/BillModel';
 import RatingStar from '../Component/RatingStar';
-import ProductComment from '../Component/ProductComment';
+import PreviewComment from '../Component/PreviewComment';
 
 const DemoShipMoneyResoveScreen = () => {
     const demoBill = getBill();
 
-    console.log(productData);
-
     return (
         <View style={tailwind `flex-auto justify-center`}>
-            <ProductComment/>
+           <PreviewComment />
         </View>
     )
 }

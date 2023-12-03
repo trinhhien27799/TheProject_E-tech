@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     fontSize: 14,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   viewItem: {
     width: '95%',
     flexDirection: 'row',
-    padding: 10,
+    padding: 18,
     borderWidth: 1,
     borderRadius: 10,
     margin: Dimensions.get('window').width * 0.05 / 2,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.1,
     borderBottomColor: '#D5D5D5',
     alignItems: 'center',
-    padding: 10,
+    padding: 18,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },

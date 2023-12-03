@@ -3,15 +3,19 @@ import { Image, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
 import tailwind from 'twrnc'
-import ProductComment from '../Component/ProductComment'
 import BottomSheet from '@devvie/bottom-sheet'
 import StarRatingModal from '../Component/CommentModal/StarRatingModal'
 import ProductVariationModal from '../Component/CommentModal/ProductVariationModal'
 import ProductCommentFix from '../Component/ProductCommentFix'
+import { useNavigation } from '@react-navigation/native'
 
-const DetailCommentScreen = () => {
+const DetailCommentScreen = ({route}) => {
+    const productID = route.params;
+    console.log('productId: ' + productID)
+
     const starOpenRef = useRef(null);
     const variationOpenRef = useRef(null);
+    const navigation = useNavigation();
 
     const [sortRatingStar, setSortRatingStar] = useState(null);
 
