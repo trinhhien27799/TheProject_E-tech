@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
-import { createBill } from '../CallApi/billApi2';
+import { createBill } from '../CallApi/billApi'; 
 import { formatPrice } from '../utils/format';
 import { getAllAddresses } from '../Model/AddressModel';
 import { getAddress } from '../Component/HandleObj/AddressHandle';

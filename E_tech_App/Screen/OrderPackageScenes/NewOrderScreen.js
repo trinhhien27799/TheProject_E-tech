@@ -7,7 +7,7 @@ import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { getAllUserBill, getBill } from '../../Model/BillModel';
 import CheckPayScreenFix from './CheckPayScreenFix';
-import { getRealBill } from '../../CallApi/billAPI';
+import { getRealBill } from '../../CallApi/billApi';
 import { Image } from 'react-native';
 import BottomSheet from '@devvie/bottom-sheet';
 import { Dialog, Portal, Provider } from 'react-native-paper';
