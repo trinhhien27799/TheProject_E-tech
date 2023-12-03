@@ -7,22 +7,16 @@ import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { getAllUserBill, getBill } from '../../Model/BillModel';
 import CheckPayScreenFix from './CheckPayScreenFix';
-import { getRealBill } from '../../CallApi/billAPI';
+import { getRealBill } from '../../CallApi/billApi';
 import { Image } from 'react-native';
 import BottomSheet from '@devvie/bottom-sheet';
 import { Dialog, Portal, Provider } from 'react-native-paper';
-import CancelOrderView from '../CancelOrderView';
 
-const NewOrderScreen = () => {
+const NewOrderScreen = ({route}) => {
+    const getValueOrder = route.params;
     const [value, setValue] = useState(null);
     const navigation = useNavigation();
     const [hoveredButton, setHoveredButton] = useState(1);
-    const myRef = useRef(null);
-    const [cancelBillObj, setCancelBillObj] = useState(null);
-
-    const openCancelModal = () => {
-        myRef.current.open();
-    }
 
     var data = null;
 
@@ -88,29 +82,31 @@ const NewOrderScreen = () => {
     return (
         <Provider>
             <View>
-                <TouchableOpacity
-                    style={tailwind`bg-white w-10 h-10 m-3 justify-center rounded-full shadow-md`}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Image
-                        source={require('../../img/previous.png')}
-                        style={tailwind`w-7 h-7 self-center`}
+                <View style={tailwind`bg-white`}>
+                    <View style={tailwind`flex-row`}>
+                        <TouchableOpacity
+                            style={tailwind`bg-white w-10 h-10 m-3 justify-center rounded-full shadow-md`}
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Image
+                                source={require('../../img/previous.png')}
+                                style={tailwind`w-7 h-7 self-center`}
+                            />
+                        </TouchableOpacity>
+
+                        <Text style={tailwind`text-base font-bold mt-4.7`}>Đơn hàng của bạn</Text>
+                    </View>
+
+                    <FlatList
+                        data={buttonValueList}
+                        renderItem={ButtonCard}
+                        horizontal
+                        style={tailwind`my-3 ml-3`}
                     />
-                </TouchableOpacity>
+                </View>
 
-                <FlatList
-                    data={buttonValueList}
-                    renderItem={ButtonCard}
-                    horizontal
-                    style={tailwind`my-3 ml-3`}
-                />
-
-                <CheckPayScreenFix orderList={ChangeData(value)} cancelOnclick={openCancelModal}/>
+                <CheckPayScreenFix orderList={ChangeData(value)}/>
             </View>
-
-            <BottomSheet ref={myRef} style={tailwind `bg-white`}>
-                <CancelOrderView />
-            </BottomSheet>
         </Provider>
     )
 }

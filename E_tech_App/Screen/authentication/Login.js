@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, TouchableOpacity, StyleSheet, Text, TextInput, Image, View, Dimensions } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, TextInput, Image, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Checkbox from "expo-checkbox";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
 import { setAuthToken } from "../../apiService";
+import { updateDeviceToken } from "../../CallApi/tokenDeviceApi";
+import { setUser } from "../../session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
@@ -24,10 +25,12 @@ const Login = ({ navigation }) => {
             const username = email;
             const response = await loginUser(username, password, navigation);
             if (response.code === 200) {
-               await AsyncStorage.setItem('token', response.token);
                 setAuthToken(response.token)
+                setUser(response.user)
                 navigation.replace('ButtonNavigation', { registrationData: response });
                 alert('Đăng nhập thành công')
+                await updateDeviceToken()
+                await AsyncStorage.setItem("token", response.token)
             } else {
                 alert(response.message)
             }

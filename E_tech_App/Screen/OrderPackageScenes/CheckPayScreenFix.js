@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Image, Text } from 'react-native'
+import { Image, ScrollView, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
 import { FlatList } from 'react-native'
@@ -21,7 +21,7 @@ const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
         const getDate = splitDate[0];
 
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('OrderDetailScreen', {item: item})}>
+            <TouchableOpacity onPress={() => navigation.navigate('OrderDetailScreen', {billId: item._id})}>
                 <View style={tailwind`mt-3 bg-white p-5`}>
                     <View >
                         {/* Product View */}
@@ -54,7 +54,7 @@ const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
                         </View>
     
                         <View style={tailwind `justify-center`}>
-                            <OrderStatusChangeButton item={item} statusNum={item.status} cancelButton={cancelOnclick}/>
+                            <OrderStatusChangeButton item={item} statusNum={item.status}/>
                         </View>
                     </View>
                 </View>
@@ -84,13 +84,13 @@ const CheckPayScreenFix = ({ orderList, cancelOnclick }) => {
     }
     else{
         return (
-            <View>
+            <ScrollView>
                 <FlatList
                     data={orderList}
                     renderItem={ProductCard}
-                    style={tailwind`h-1000`}
+                    style={tailwind `pb-40`}
                 />
-            </View>
+            </ScrollView>
         )
     } 
 }

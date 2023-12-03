@@ -90,7 +90,7 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
                     eventChecked(checked)
                 }} />
             </View>
-            <View style={{ flexDirection: 'row', }}>
+            <View style={{ flexDirection: 'row', marginTop: 10}}>
                 <View style={{ flexDirection: 'row', width: 80, justifyContent: 'center' }}>
                     <TouchableOpacity
                         onPress={() => {
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     textName: {
         fontSize: 15,
         fontWeight: '500',
-        height:20,
     },
 
     button: {

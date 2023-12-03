@@ -2,27 +2,54 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import api, { setAuthToken } from '../apiService'
 
 export const addAddress = async (fullname, phone, address) => {
-    const username = await AsyncStorage.getItem('username');
-    const token = await AsyncStorage.getItem('token');
-
     try {
-        const rs = await api.post(`/user/address/new`, {username: username, token: token, numberphone: phone, address: address, fullname: fullname});
+        const rs = await api.post(`/user/address/new`, {numberphone: phone, address: address, fullname: fullname});
         return rs.data;
     } catch (error) {
         console.log(error);
     }
-    console.log(username + ' ' + token);
 }
 
 export const getAddress = async () => {
-    const username = await AsyncStorage.getItem('username');
-    const token = await AsyncStorage.getItem('token');
-
     try {
-        const rs = await api.post(`/user/address/get-all`, {username: username, token: token});
+        const rs = await api.post(`/user/address/get-all`);
         return rs.data;
     } catch (error) {
         console.log(error);
     }
-    console.log(username + ' ' + token);
 }
+
+export const deleteAddress = async (data) => {
+    console.log(data._id);
+    try {
+        const rs = await api.post(`/user/address/delete`, {_id: data._id});
+        const dataRs = rs.data;
+
+        if (dataRs.code == 200){
+            alert('Xóa thành công')
+        }
+        else{
+            alert(dataRs)
+            console.log(dataRs)
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const editAddress = async (_id, fullname, numberphone, address) => {
+    try {
+        const rs = await api.post(`/user/address/update`, {_id: _id, fullname: fullname, numberphone: numberphone, address: address});
+        const dataRs = rs.data;
+
+        if (dataRs.code == 200){
+            alert('Cập nhật thành công')
+        }
+        else{
+            alert(dataRs)
+            console.log(dataRs)
+        }
+    } catch (error) {
+        console.log(error);
+    }
+} 

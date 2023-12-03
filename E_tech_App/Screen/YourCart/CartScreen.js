@@ -85,6 +85,7 @@ const CartScreen = () => {
       console.log('Xóa thất bại')
     } finally {
       setDeleteLoading(false)
+      setAllowDelete(false)
     }
   }
 
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
   textPayment: {
     color: 'white',
     fontSize: 16,
+    fontWeight: 'bold'
   },
   buttonPayment: {
     alignItems: 'center',
@@ -227,7 +229,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: 'white',
+    padding: 12
   },
 
 })

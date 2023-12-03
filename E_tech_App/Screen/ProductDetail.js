@@ -17,7 +17,6 @@ import { Feather } from '@expo/vector-icons'
 import ViewMoreText from 'react-native-view-more-text'
 import tailwind from 'twrnc'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import ProductComment from '../Component/ProductComment'
 import { getItemProduct } from '../CallApi/productApi'
 import { formatPrice } from '../utils/format'
 

@@ -7,7 +7,7 @@ import { addCart } from '../CallApi/cartApi'
 import { Dialog, Provider } from 'react-native-paper'
 import BottomSheet from '@devvie/bottom-sheet'
 
-const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {  
+const OrderStatusChangeButton = ({ statusNum, item }) => {  
     const navigation = useNavigation();
 
     const styleFeedback = 'self-end p-2 bg-gray-500 rounded-md';
@@ -15,10 +15,10 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
     const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md ml-2';
 
     const AddCartArray = (productArray) => {
-        console.log(productArray.length);
+        console.log(productArray);
     
         for (let i = 0; i < productArray.length; i++) {
-            addCart({dataCart: productArray[i]});
+            addCart(productArray[i]);
         }
 
         navigation.navigate('CartScreen');
@@ -57,7 +57,7 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
             )
             break;
 
-        case 2:
+        case 1:
             return (
                 <View>
                     <View style={tailwind`w-full flex-row justify-end`}>
@@ -76,7 +76,7 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
                         <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('CancelOrderScreen', {item: item})}
+                        onPress={() => navigation.navigate('CancelOrderScreen', {item})}
                         style={tailwind`${styleCancel}`}
                     >
                         <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>

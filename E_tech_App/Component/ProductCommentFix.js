@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import tailwind from 'twrnc'
 import RatingStar from './RatingStar'
-import { getComment } from '../Model/CommentModel'
+import { getAllComment, getComment } from '../Model/CommentModel'
 
 const CommentCard = ({ item }) => {
     return (
-        <View style={tailwind `bg-white mt-3 w-90 self-center p-3 shadow-lg rounded-lg`}>
+        <View style={tailwind `bg-white mt-3 self-center p-3 w-full`}>
             {/* Comment header: avatar, username, date */}
             <View style={tailwind `flex-row`}>
                 <View style={tailwind `flex-row`}>
@@ -17,7 +17,7 @@ const CommentCard = ({ item }) => {
                     <View>
                         <View style={tailwind `flex-row`}>
                             <Text style={tailwind`ml-2 mt-2 font-bold`}>{item.author.fullname}</Text>
-                            <RatingStar starNum={item.numStar} style={'h-4 ml-37'}/>
+                            <RatingStar starNum={item.numStar} style={'h-4 ml-25'}/>
                         </View>
                         <Text style={tailwind`ml-2 mt-1`}>{item.date}</Text>
                     </View>              
@@ -30,46 +30,36 @@ const CommentCard = ({ item }) => {
             </View>
 
             {/* Comment button */}
-            <View style={tailwind `flex-row py-2 justify-center`}>
-                <TouchableOpacity>
-                    <Image 
-                        source={require('../img/positive_1972459.png')}
-                        style={tailwind `w-5 h-5`}
-                    />
+            <View style={tailwind `flex-row py-2 justify-center border border-gray-400 rounded-lg`}>
+                <TouchableOpacity style={tailwind `border-r p-3 w-50 border-gray-400`}>
+                    <View style={tailwind `flex-row self-center`}>
+                        <Image
+                            source={require('../img/positive_1972459.png')}
+                            style={tailwind`w-5 h-5 mr-3`}
+                        />
+
+                        <Text>Thích</Text>
+                    </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Image
-                        source={require('../img/more_512222.png')}
-                        style={tailwind`w-5 h-5 ml-74`}
-                    />
+                <TouchableOpacity style={tailwind `p-3 w-50`}>
+                    <View style={tailwind `self-center flex-row`}>
+                        <Image
+                            source={require('../img/more_512222.png')}
+                            style={tailwind`w-5 h-5 mr-3`}
+                        />
+
+                        <Text>Phản Hồi</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
         </View>
     )
 }
 
-const ProductComment = ({starRating, productID}) => {
-    const commentArray = [
-        {
-            id: 1,
-            username: 'hello',
-            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            date: '2023-11-11 / 21:00',
-            comment: 'Sheeeeeesssshhhh',
-            starNum: 3
-        },
-        {
-            id: 2,
-            username: 'hola',
-            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            date: '2023-11-11 / 21:00',
-            comment: 'Sheeeeeesssshhhh',
-            starNum: 5
-        },
-    ];
-
-    const commentData = getComment(productID);
+const ProductCommentFix = ({starRating, productID}) => {
+    const commentData = getAllComment(productID);
+    console.log(commentData)
 
     const StarRatingSort = (starNum) => {
         if(starNum != null){
@@ -78,7 +68,7 @@ const ProductComment = ({starRating, productID}) => {
         }
         
         else{
-            return commentArray;
+            return commentData;
         }
     }
     // abc
@@ -87,11 +77,11 @@ const ProductComment = ({starRating, productID}) => {
     return (
         <View>
             <FlatList
-                data={starRating}
+                data={setData}
                 renderItem={CommentCard}
             />
         </View>
     )
 }
 
-export default ProductComment
+export default ProductCommentFix

@@ -17,31 +17,66 @@ import { useNavigation } from '@react-navigation/native';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { ShipMoneyResolve_City } from '../DataMathResolve/ShipMoneyResolve';
 import { getCart } from '../CallApi/cartApi';
-import { createBill } from '../CallApi/billApi2';
+import { createBill } from '../CallApi/billApi'; 
 import { formatPrice } from '../utils/format';
+import { getAllAddresses } from '../Model/AddressModel';
+import { getAddress } from '../Component/HandleObj/AddressHandle';
+import { getHandleVoucher } from '../Component/HandleObj/VoucherHandle';
+import { getHandleShipping } from '../Component/HandleObj/ShippingHandle';
+import { clearListCart, getListCart } from '../session';
 
 const Pay = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
-  const [listIDcart, setListIDcart] = useState([]);
-  const [address, setAddress] = useState('123 Trịnh Văn Bô, Phương Canh, Nam Từ Liêm, Hà Nội');
+  var address = getAddress();
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
   const [voucher_id, setVoucher_id] = useState();
-  const [note, setNote] = useState([]);
+  const [note, setNote] = useState('');
+  const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
+  
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getCart();
-      setCart(data);
-    }
-    fetchData();
-  }, []);
+    setCart(getListCart())
+}, [])
 
+  // useEffect(() => {
+  //   setSelectedAddresses(getAddress());
+  // }, [])
+
+  // useEffect(() => {
+  //   setVoucher_id(getHandleVoucher());
+  // }, [])
+
+  // useEffect(() => {
+  //   setShipping_id(getHandleShipping());
+  // })
+
+  const listAddressData = getAllAddresses();
+  console.log('address: ' + selectedAddresses);
+  console.log('voucher: ' + voucher_id);
+  console.log('shipping: ' + shipping_id);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getCart();
+  //     setCart(data);
+  //   }
+  //   fetchData();
+  // }, []);
+
+  
+  const getListId = cart.map((item) => item._id);
+  console.log(getListId);
+//
   const handlePay = async () => {
     try {
-      createBill(address, listIDcart, transport_fee, shipping_id, voucher_id, note);
+      const data = await createBill(selectedAddresses, getListId, transport_fee, shipping_id, voucher_id, note);
+      if(data.message !== null){
+        clearListCart();
+        navigation.navigate('ButtonNavigation');
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -68,11 +103,19 @@ const Pay = () => {
           </View>
 
           <View>
-            <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ChooseAddressScreen') }}>
+            <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ChooseAddressScreen', {listOnlyAddresses: listAddressData}) }}>
               {/* Address Detail */}
               <View>
                 <Text style={styles.textInfo} >Tên người mua - Số điện thoại</Text>
-                <Text style={{ marginTop: 5 }}>Địa chỉ</Text>
+                {selectedAddresses == null
+                  ? <Text style={{ marginTop: 5 }}>
+                    Địa chỉ
+                  </Text>
+                  : <Text style={{ marginTop: 5 }}>
+                    {selectedAddresses}
+                  </Text>
+                }
+                
               </View>
 
               <Feather
@@ -151,7 +194,8 @@ const Pay = () => {
                 borderWidth: 0.3,
                 borderRadius: 3,
                 padding: 5,
-                height: 70
+                height: 70,
+                marginVertical: 10
               }}
             />
              <View style={{flexDirection:'row',justifyContent:'space-between', marginTop:10}}>
@@ -180,7 +224,7 @@ const Pay = () => {
           <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ShippingMethod') }}>
               {/* Address Detail */}
               <View>
-                <Text> Chọn phương thức vận chuyển</Text>
+                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id}</Text>
               </View>
 
               <Feather

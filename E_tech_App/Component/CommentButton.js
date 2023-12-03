@@ -4,9 +4,12 @@ import { TouchableOpacity } from 'react-native'
 import { Text } from 'react-native'
 import { View } from 'react-native'
 import tailwind from 'twrnc'
+import { getVariationModal } from '../Model/Variation'
 
 const CommentButton = ({item}) => {
   const navigation = useNavigation();
+  const variation = getVariationModal(item.variations_id);
+  console.log(variation);
 
   return (
     <View style={tailwind`border border-blue-300 flex-row my-3 p-3 w-88 self-center rounded-md`}>
@@ -14,14 +17,13 @@ const CommentButton = ({item}) => {
 
       <TouchableOpacity 
         style={tailwind`ml-12 bg-blue-500 justify-center p-2 rounded-md`}
-        onPress={() => navigation.navigate('AddCommentScreen', {product: item})}
+        onPress={() => navigation.navigate('AddCommentScreen', {product: variation})}
       >
         <Text style={tailwind `font-bold text-white`}>Đánh Giá</Text>
       </TouchableOpacity>
 
     </View>
-  )
-  
+  ) 
 }
 
 export default CommentButton

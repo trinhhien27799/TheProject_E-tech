@@ -1,176 +1,117 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, View, Image, ScrollView, Button, TouchableOpacity } from 'react-native';
-import { Touchable } from 'react-native-web';
 import tailwind from 'twrnc'
 import OrderStatusHeader from '../Component/OrderStatusHeader';
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
-import { formatPrice } from '../utils/format';
+import { formatPrice, formatTime } from '../utils/format';
 import CommentButton from '../Component/CommentButton';
+import { checkComment } from '../CallApi/commentAPI';
+import { getItemBill } from '../CallApi/billApi';
+
+
+
 const BillDetailScreen = ({ route }) => {
-    const { item } = route.params;
+    const { billId } = route.params;
 
-    const currentDate = item.time;
-    const splitDate = currentDate.split('T');
-    const getDate = splitDate[0];
 
-    if (item.status == 2) {
-        return (
-            <View style={styles.container}>
-                <ScrollView>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <OrderStatusHeader orderStatus={item.status} />
-                        <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
-                        <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
-                        <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
-                        <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
-                    </View>
+    const [item, setItem] = useState(null)
+    const [caches, setGetCacheArray] = useState(null)
 
-                    <View style={styles.line}></View>
 
-                    {/* Address */}
-                    <View style={styles.addressContainer}>
-                        <View style={styles.addressHeader}>
-
-                            <Image
-                                source={require('../img/store.png')}
-                                style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
-                            />
-                            <View style={styles.addressInfo}>
-                                <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
-                                <Text style={styles.textAddressInfo}>{item.address.address}</Text>
-                            </View>
-                        </View>
-
-                    </View>
-                    <View style={styles.line}></View>
-
-                    {/* List Bill */}
-                    <FlatList
-                        data={item.products}
-                        style={styles.listCart}
-                        renderItem={({ item }) => (
-
-                            // Cart Item
-                            <View style={styles.itemContainer}>
-                                <View style={styles.cartItem}>
-
-                                    <View style={styles.imgItemView}>
-                                        <Image
-                                            style={styles.imgItem}
-                                            source={{ uri: item.image }}
-                                        />
-                                    </View>
-
-                                    <View style={styles.nameItemView}>
-                                        <View >
-                                            <Text style={styles.nameItem}>{item.product_name}</Text>
-                                            <Text style={styles.categoryItem}>Loại: </Text>
-                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
-                                        </View>
-                                        <View>
-
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.priceItemView}>
-                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.textTotal}>
-                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
-                                    <CommentButton item={item} />
-                                </View>
-                            </View>
-                        )}
-                        keyExtractor={(item) => item.id}
-                    />
-
-                    {/* Total Container */}
-                    <View style={styles.calContainer}>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
-                            <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
-                        </View>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Phí vận chuyển:</Text>
-                            <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
-                        </View>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Voucher giảm giá:</Text>
-                            <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
-                        </View>
-                        <View style={styles.calViewTotal}>
-                            <Text style={styles.textBold}>Thành tiền:</Text>
-                            <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.line}></View>
-
-                    <View style={styles.paymentContainer}>
-                        <View style={styles.addressHeader}>
-                            <Image
-                                source={require('../img/paymain.png')}
-                                style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
-                            />
-                            <View style={styles.paymentType}>
-                                <Text style={styles.textBold}>Phương thức thanh toán:</Text>
-                                <Text style={styles.textMoneyType}>{item.payment_method}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.line}></View>
-
-                    {/* Button */}
-                    <View style={styles.Button}>
-                        <View style={styles.confirmContainer}>
-                            <TouchableOpacity style={styles.buttonPayment}>
-                                <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
-        )
+    const getData = async () => {
+        try {
+            const response = await getItemBill(billId)
+            setItem(response)
+        } catch (error) {
+            console.log('BillDetailScreen: ', error)
+        }
     }
-    else {
-        return (
-            <View style={styles.container}>
-                <ScrollView>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <OrderStatusHeader orderStatus={item.status} />
-                        <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
-                        <Text style={styles.textInfo}>Ngày mua: {getDate}</Text>
-                        <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
-                        <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
-                    </View>
 
-                    <View style={styles.line}></View>
+    const getCache = async (data) => {
+        try {
+            const data = await checkComment(data);
+            console.log("-----------------\n",data)
+            setGetCacheArray(data);
+        } catch (error) {
+            console.log('BillDetailScreen: ', error)
+        }
+    }
 
-                    {/* Address */}
-                    <View style={styles.addressContainer}>
-                        <View style={styles.addressHeader}>
 
-                            <Image
-                                source={require('../img/store.png')}
-                                style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
-                            />
-                            <View style={styles.addressInfo}>
-                                <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
-                                <Text style={styles.textAddressInfo}>{item.address.address}</Text>
-                            </View>
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+    useEffect(() => {
+        getCache()
+    }, [item])
+
+
+
+
+
+    // useEffect(() => {
+    //     const hideComponent = async () => {
+    //         const timer = setTimeout(() => {
+    //             setIsVisible(false);
+    //             AsyncStorage.setItem('componentVisibility', 'hidden'); // Store the visibility state
+    //         }, 3000); // Change the duration to 3000 milliseconds (3 seconds)
+
+    //         return () => clearTimeout(timer); // Clean up the timer when the component unmounts
+    //     };
+
+    //     const checkVisibility = async () => {
+    //         const visibility = await AsyncStorage.getItem('componentVisibility'); // Retrieve the visibility state
+    //         if (visibility === 'hidden') {
+    //             setIsVisible(false);
+    //         } else {
+    //             hideComponent();
+    //         }
+    //     };
+
+    //     checkVisibility();
+    // }, []);
+
+    return (
+        item &&
+        <View style={styles.container}>
+            <ScrollView>
+                {/* Header */}
+                <View style={styles.header}>
+                    <OrderStatusHeader orderStatus={item.status} />
+                    <Text style={styles.textInfo}>Mã đơn hàng: {item._id}</Text>
+                    <Text style={styles.textInfo}>Ngày mua: {formatTime(item.time)}</Text>
+                    <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
+                    <Text style={styles.textInfo}>Người mua: {item.address.fullname} </Text>
+                </View>
+
+                <View style={styles.line}></View>
+
+                {/* Address */}
+                <View style={styles.addressContainer}>
+                    <View style={styles.addressHeader}>
+                        <Image
+                            source={require('../img/store.png')}
+                            style={tailwind`ml-3 w-5 h-5 self-center mt--10`}
+                        />
+                        <View style={styles.addressInfo}>
+                            <Text style={styles.textAddress}>Địa chỉ nhận hàng</Text>
+                            <Text style={styles.textAddressInfo}>{item.address.address}</Text>
                         </View>
-
                     </View>
-                    <View style={styles.line}></View>
 
-                    {/* List Bill */}
-                    <FlatList
-                        data={item.products}
-                        style={styles.listCart}
-                        renderItem={({ item }) => (
+                </View>
+                <View style={styles.line}></View>
 
+                {/* List Bill */}
+                <FlatList
+                    data={item.products}
+                    style={styles.listCart}
+                    renderItem={({ item }) => {
+                        // console.log('variation id: ' + item.variations_id);
+                        // setComment(item.variations_id);
+                        return (
                             // Cart Item
                             <View style={styles.itemContainer}>
                                 <View style={styles.cartItem}>
@@ -200,58 +141,61 @@ const BillDetailScreen = ({ route }) => {
                                 <View style={styles.textTotal}>
                                     <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
                                 </View>
+
+                                {caches.length > 0 && <CommentButton item={item} />}
                             </View>
-                        )}
-                        keyExtractor={(item) => item.id}
-                    />
+                        )
+                    }}
+                    keyExtractor={(item) => item.id}
+                />
 
-                    {/* Total Container */}
-                    <View style={styles.calContainer}>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
-                            <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
-                        </View>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Phí vận chuyển:</Text>
-                            <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
-                        </View>
-                        <View style={styles.calView}>
-                            <Text style={styles.textInfo}>Voucher giảm giá:</Text>
-                            <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
-                        </View>
-                        <View style={styles.calViewTotal}>
-                            <Text style={styles.textBold}>Thành tiền:</Text>
-                            <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
+                {/* Total Container */}
+                <View style={styles.calContainer}>
+                    <View style={styles.calView}>
+                        <Text style={styles.textInfo}>Tổng đơn hàng:</Text>
+                        <Text style={styles.textInfo}>{formatPrice(TotalProductBill(item.products))}</Text>
+                    </View>
+                    <View style={styles.calView}>
+                        <Text style={styles.textInfo}>Phí vận chuyển:</Text>
+                        <Text style={styles.textInfo}>{formatPrice(item.transport_fee)}</Text>
+                    </View>
+                    <View style={styles.calView}>
+                        <Text style={styles.textInfo}>Voucher giảm giá:</Text>
+                        <Text style={styles.textInfo}>- {formatPrice(500000)}</Text>
+                    </View>
+                    <View style={styles.calViewTotal}>
+                        <Text style={styles.textBold}>Thành tiền:</Text>
+                        <Text style={styles.textBold}>{formatPrice(TotalProductBill(item.products) + item.transport_fee - 500000)}</Text>
+                    </View>
+                </View>
+                <View style={styles.line}></View>
+
+                <View style={styles.paymentContainer}>
+                    <View style={styles.addressHeader}>
+                        <Image
+                            source={require('../img/paymain.png')}
+                            style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
+                        />
+                        <View style={styles.paymentType}>
+                            <Text style={styles.textBold}>Phương thức thanh toán:</Text>
+                            <Text style={styles.textMoneyType}>{item.payment_method}</Text>
                         </View>
                     </View>
-                    <View style={styles.line}></View>
+                </View>
+                <View style={styles.line}></View>
 
-                    <View style={styles.paymentContainer}>
-                        <View style={styles.addressHeader}>
-                            <Image
-                                source={require('../img/paymain.png')}
-                                style={tailwind`ml-3 w-5 h-5 self-center mt--1`}
-                            />
-                            <View style={styles.paymentType}>
-                                <Text style={styles.textBold}>Phương thức thanh toán:</Text>
-                                <Text style={styles.textMoneyType}>{item.payment_method}</Text>
-                            </View>
-                        </View>
+                {/* Button */}
+                <View style={styles.Button}>
+                    <View style={styles.confirmContainer}>
+                        <TouchableOpacity style={styles.buttonPayment}>
+                            <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.line}></View>
+                </View>
+            </ScrollView>
+        </View>
 
-                    {/* Button */}
-                    <View style={styles.Button}>
-                        <View style={styles.confirmContainer}>
-                            <TouchableOpacity style={styles.buttonPayment}>
-                                <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
-        )
-    }
+    )
 
 }
 const styles = StyleSheet.create({

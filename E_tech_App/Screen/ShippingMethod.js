@@ -16,7 +16,8 @@ import { getShipping } from '../CallApi/shippingApi';
 
 const ShippingMethod = () => {
     const navigation = useNavigation();
-    const [shipping, setShipping] = useState([]);
+    const [shipping, setShipping] = useState(null);
+    const [handleShipping, setHandleShipping] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -34,7 +35,7 @@ const ShippingMethod = () => {
     const ShippingItem = ({ item }) => {
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
-                <RadioButton />
+                <RadioButton value={item._id}/>
 
                 <View style={tailwind`justify-center`}>
                     <Text>{item.name} ({item.price}đ)</Text>
@@ -43,17 +44,27 @@ const ShippingMethod = () => {
         )
     }
 
+    const setNewShipping = (shipping) => {
+        setHandleShipping(shipping);
+        navigation.goBack();
+    }
 
     return (
         <View style={tailwind`flex-auto p-12`}>
             <Text style={tailwind`text-lg mb-5 font-bold`}>Chọn Phương thức vận chuyển</Text>
 
             {/* Flatlist PTCV */}
-            <FlatList
-                data={shipping}
-                renderItem={ShippingItem}
-                style={tailwind``}
-            />
+            <RadioButton.Group
+                onValueChange={(item) => setHandleShipping(item)}
+                value={handleShipping}
+            >
+                <FlatList
+                    data={shipping}
+                    renderItem={ShippingItem}
+                    style={tailwind``}
+                />
+            </RadioButton.Group>
+            
 
             {/* Bottom button */}
             <View style={tailwind`flex-row self-end`}>
@@ -64,7 +75,7 @@ const ShippingMethod = () => {
                     <Text style={tailwind`self-center`}>Hủy</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} onPress={() => navigation.navigate('PayScreen', { shipping_id: item._id })}>
+                <TouchableOpacity style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`} onPress={() => setNewShipping(handleShipping)}>
                     <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
                 </TouchableOpacity>
             </View>

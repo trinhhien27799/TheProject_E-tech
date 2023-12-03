@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { getComments, checkComment, pushComment } from "../../CallApi/commentAPI"
 import DropDownPicker from "react-native-dropdown-picker"
 import { Rating, AirbnbRating } from 'react-native-ratings'
@@ -137,7 +137,7 @@ const Comment = ({ productId }) => {
 
     const handleRating = (ratedValue) => {
         setNumStar(ratedValue)
-      }
+    }
 
     const sendComment = async () => {
         try {
@@ -185,12 +185,11 @@ const Comment = ({ productId }) => {
     return (
         <View style={styles.container}>
             {listVariation.length > 0 &&
-                <View style={{ borderRadius: 10, backgroundColor: '#eeeeee', padding: 10 }}>
+                <View style={{ marginTop:10,borderRadius: 10, backgroundColor: 'white', padding: 20,width:'85%',alignItems:'center',alignSelf:'center' }}>
                     <DropDownPicker
                         schema={{
                             label: 'property',
-                            value: 'variationId',
-                            icon: (item) => <Image source={{ uri: item.image }} style={{ width: 20, height: 20, resizeMode: 'cover' }} />
+                            value: 'variationId'
                         }}
                         open={open}
                         value={variationId}
@@ -208,7 +207,7 @@ const Comment = ({ productId }) => {
                         defaultRating={5}
                         size={18}
                         onFinishRating={handleRating}
-                        ratingContainerStyle={{marginTop:8}}
+                        ratingContainerStyle={{ marginTop: 8 }}
                     />
                     <TextInput
                         placeholder="Cho chúng tôi biết cảm nhận của bạn về sản phẩm"
@@ -273,7 +272,8 @@ export default Comment
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 8
+        width:Dimensions.get('screen').width,
+        paddingHorizontal: 8,
     },
     header: {
         marginTop: 10, fontWeight: 'bold', fontSize: 15,

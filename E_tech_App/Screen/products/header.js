@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
     },
     viewPrevious: {
         position: 'absolute',
+        margin: 20,
         width: 40,
-        marginTop: '10%',
-        margin: 10,
+        height: 40,
         borderColor: 'grey',
         borderWidth: 1,
         borderRadius: 10,

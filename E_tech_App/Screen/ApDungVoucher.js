@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { getMyVoucher } from '../CallApi/voucherApi';
+import { setHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 
 export default function Makhuyenmai() {
   const [voucher, setVoucher] = useState([]);
@@ -21,13 +22,17 @@ export default function Makhuyenmai() {
     try {
       const data = await getMyVoucher();
       setVoucher(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {myvouchers()}, [])
+
+  const setNewVoucher = (voucher) => {
+    setHandleVoucher(voucher);
+    navigation.navigate('PayScreen');
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,9 +65,7 @@ export default function Makhuyenmai() {
                 <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
               </View>
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity style={styles.button2} onPress={() => {
-                                                navigation.navigate('PayScreen', { voucher_idd:item._id , voucher_name: item.description})
-                                            }}>
+                <TouchableOpacity style={styles.button2} onPress={() => setNewVoucher(item._id)}>
                   <Text style={{ color: 'white', fontSize: 16 }}>Sử dụng</Text>
                 </TouchableOpacity>
               </View>
