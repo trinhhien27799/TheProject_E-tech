@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export const getAllBill = async (statusNum) => {
     try {
-        const bill = await api.get(`/bill/${statusNum}`);
+        const bill = await api.post(`/bill/${statusNum}`);
         return bill.data;
     } catch (error) {
         console.log(error);
@@ -13,7 +13,7 @@ export const getAllBill = async (statusNum) => {
 
 export const getRealBill = async () => {
     try {
-        const bill = await api.get('/bill/get-all');
+        const bill = await api.post('/bill/get-all');
         return bill.data;
     } catch (error) {
         console.log(error);

@@ -71,7 +71,7 @@ const PTTT = () => {
                 </RadioButton.Group>
 
                 <View style={styles.view3}>
-                    <TouchableOpacity style={styles.button2} onPress={() => { navigation.goback() }}>
+                    <TouchableOpacity style={styles.button2} onPress={() => { navigation.goBack() }}>
                         <Text style={styles.text}>Hủy</Text>
                     </TouchableOpacity>
 

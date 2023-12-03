@@ -5,8 +5,9 @@ import ListItem from "../ListItem";
 import data from '../items';
 import { getAllProduct } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { formatPrice } from '../utils/format'
+import tailwind from "twrnc";
 const ListPhone = () => {
     const [product, setProduct] = useState(null);
     const navigation = useNavigation();
@@ -30,7 +31,7 @@ const ListPhone = () => {
 
     const ListItem = ({item}) => {
         return (
-            <View style={styles.containerItem}>
+            <View style={tailwind `flex-1 p-5 w-96 border border-gray-300 mt-2 self-center bg-white rounded-lg`}>
                 <TouchableOpacity onPress={() => {navigation.navigate('DetailProducts', { productId: item._id });}}>
                         <View style={styles.containerInfo}>
                             <Image
@@ -75,11 +76,6 @@ const ListPhone = () => {
                                     <Text style={{ color: 'white', fontWeight: "bold", fontSize: 13}}>Mua ngay</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{
-                                    height: 0.5,
-                                    backgroundColor: colors.grey,
-                                    marginTop: 20
-                                }}></View>
                 </TouchableOpacity>
                                 
             </View>
@@ -88,7 +84,15 @@ const ListPhone = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Danh sách sản phẩm</Text>
+            <View style={tailwind`bg-white flex-row py-3`}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}
+                    style={tailwind`bg-white p-1.5 rounded-full shadow-md ml-3`}
+                >
+                    <Ionicons name="arrow-back" size={30} color="black" />
+                </TouchableOpacity>
+                <Text style={tailwind`text-base mt-2 font-bold ml-3`}>Danh sách sản phẩm</Text>
+            </View>
         <FlatList
             data={product}
             renderItem={ListItem}
@@ -134,7 +138,8 @@ const styles = StyleSheet.create({
     containerItem:{
         flex: 1, 
         backgroundColor: 'white',
-        marginTop:15
+        marginTop:15,
+        padding: 20
     },
     textCategory:{
         marginTop:5
@@ -145,13 +150,11 @@ const styles = StyleSheet.create({
     text:{
         fontSize:18,
         fontWeight:"bold",
-        marginTop:50,
+        marginTop:20,
         marginBottom:10
     },
     container:{
-        paddingHorizontal:10,
         flex:1,
-        backgroundColor:"white"
     },
 });
 
