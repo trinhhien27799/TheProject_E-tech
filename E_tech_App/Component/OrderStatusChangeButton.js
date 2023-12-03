@@ -7,7 +7,7 @@ import { addCart } from '../CallApi/cartApi'
 import { Dialog, Provider } from 'react-native-paper'
 import BottomSheet from '@devvie/bottom-sheet'
 
-const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {  
+const OrderStatusChangeButton = ({ statusNum, item }) => {  
     const navigation = useNavigation();
 
     const styleFeedback = 'self-end p-2 bg-gray-500 rounded-md';
@@ -57,7 +57,7 @@ const OrderStatusChangeButton = ({ statusNum, item, cancelButton }) => {
             )
             break;
 
-        case 2:
+        case 1:
             return (
                 <View>
                     <View style={tailwind`w-full flex-row justify-end`}>

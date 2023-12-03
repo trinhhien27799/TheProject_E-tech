@@ -17,5 +17,6 @@ export const getAllComment = (productID) => {
         getData();
     }, []);
 
+    console.log('Comment: ' + commentData)
     return commentData;
 }

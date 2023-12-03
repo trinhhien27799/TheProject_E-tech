@@ -11,18 +11,12 @@ import { getRealBill } from '../../CallApi/billApi';
 import { Image } from 'react-native';
 import BottomSheet from '@devvie/bottom-sheet';
 import { Dialog, Portal, Provider } from 'react-native-paper';
-import CancelOrderView from '../CancelOrderView';
 
-const NewOrderScreen = () => {
+const NewOrderScreen = ({route}) => {
+    const getValueOrder = route.params;
     const [value, setValue] = useState(null);
     const navigation = useNavigation();
     const [hoveredButton, setHoveredButton] = useState(1);
-    const myRef = useRef(null);
-    const [cancelBillObj, setCancelBillObj] = useState(null);
-
-    const openCancelModal = () => {
-        myRef.current.open();
-    }
 
     var data = null;
 
@@ -111,7 +105,7 @@ const NewOrderScreen = () => {
                     />
                 </View>
 
-                <CheckPayScreenFix orderList={ChangeData(value)} cancelOnclick={openCancelModal} />
+                <CheckPayScreenFix orderList={ChangeData(value)}/>
             </View>
         </Provider>
     )

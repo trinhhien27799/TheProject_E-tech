@@ -14,49 +14,58 @@ import { ScrollView } from 'react-native'
 import { deleteAddress } from '../CallApi/AddressAPI'
 
 
-const AddressCard = ({ item }) => {
-    return (
-        <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
-            <RadioButton
-                value={item.address}
-            />
 
-            <View style={tailwind`justify-center`}>
-                <Text style={tailwind`w-40`}>{item.address}</Text>
-            </View>
-
-            <View style={tailwind`flex-row justify-center p-2 self-end ml-3`}>
-                <TouchableOpacity
-                    style={tailwind`mr-2 bg-blue-400 p-2 rounded-lg shadow-md`}
-                >
-                    <Image source={require('../img/edit.png')} style={tailwind`w-5 h-5`} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={tailwind`bg-red-400 p-2 rounded-lg shadow-md`}
-                    onPress={() => deleteAddress(item)}
-                >
-                    <Image source={require('../img/delete.png')} style={tailwind`w-5 h-5`} />
-                </TouchableOpacity>
-            </View>
-        </View>
-    )
-}
 
 const DialogAddress = ({ route }) => {
     const [getAddress, setGetAddress] = useState(null);
     const navigation = useNavigation();
+    const [value, setValue] = useState('');
 
     const { listOnlyAddresses } = route.params;
-    console.log(getAddress);
     const listData = listOnlyAddresses.data;
+    console.log(listData);
 
     const [visible, setVisible] = React.useState(false);
 
     const hideDialog = () => setVisible(false);
 
+    const handleValueChange = (newValue) => {
+        setValue(newValue);
+        setVisible(true);
+    };
+
     const sendValueToScreen = (address) => {
         setAddress(address)
         navigation.navigate('PayScreen');
+    }
+
+    const AddressCard = ({ item }) => {
+        return (
+            <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
+                <RadioButton
+                    value={item.address}
+                />
+    
+                <View style={tailwind`justify-center`}>
+                    <Text style={tailwind`w-40`}>{item.address}</Text>
+                </View>
+    
+                <View style={tailwind`flex-row justify-center p-2 self-end ml-3`}>
+                    <TouchableOpacity
+                        style={tailwind`mr-2 bg-blue-400 p-2 rounded-lg shadow-md`}
+                        onPress={() => handleValueChange(item)}
+                    >
+                        <Image source={require('../img/edit.png')} style={tailwind`w-5 h-5`} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={tailwind`bg-red-400 p-2 rounded-lg shadow-md`}
+                        onPress={() => deleteAddress(item)}
+                    >
+                        <Image source={require('../img/delete.png')} style={tailwind`w-5 h-5`} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
     }
 
     return (
@@ -80,7 +89,7 @@ const DialogAddress = ({ route }) => {
                     {/* Thêm địa chỉ */}
                     <TouchableOpacity
                         style={tailwind`self-center mb-5`}
-                        onPress={() => { setVisible(true) }}
+                        onPress={() => { handleValueChange('') }}
                     >
                         <View style={tailwind`flex-row`}>
                             <Text>Thêm địa chỉ</Text>
@@ -111,7 +120,7 @@ const DialogAddress = ({ route }) => {
 
                 <Dialog visible={visible} onDismiss={hideDialog} style={tailwind`bg-white`}>
                     <Dialog.Content>
-                        <BottomModalInput />
+                        <BottomModalInput value={value}/>
                     </Dialog.Content>
                 </Dialog>
             </Provider>
