@@ -25,6 +25,7 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                     pushListCart()
                     navigation.navigate('OrderScreen')
                 }
+                navigation.navigate('Cart')
                 console.log("Thêm giỏ hàng thành công")
             } else {
                 setIsModalVisible(true)

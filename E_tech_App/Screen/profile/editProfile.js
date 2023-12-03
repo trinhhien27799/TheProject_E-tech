@@ -15,8 +15,7 @@ const EditProfile = ({ navigation, route }) => {
     const [image, setImage] = useState(userData.avatar);
     const [fullname,setFullname] = useState(userData.fullname);
     const saveProfile = async() => {
-        const usename = userData.username;
-        const Avatar = await updateAvatar(usename,image)
+        const Avatar = await updateAvatar(image)
         const updateName = await updateFullname(fullname)
         if(Avatar.code == 200 && updateName.code == 200){
             navigation.goBack();

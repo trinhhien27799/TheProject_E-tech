@@ -15,7 +15,6 @@ const Tabs = AnimatedTabBarNavigator();
 const BottomNavigation = ({navigation,route}) => {
 
   const userData = route.params.registrationData;
-
   return (
       <Tabs.Navigator
         // default configuration from React Navigation
