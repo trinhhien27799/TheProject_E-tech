@@ -146,31 +146,33 @@ const CartScreen = () => {
             />
 
             {/* Payment Container */}
-            <Animated.View
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                borderWidth: 1,
-                borderColor: 'blue',
-                margin: 10,
-                borderRadius: 10,
-                paddingHorizontal: 40,
-                paddingVertical: 15,
-                transform: [{ translateY }],
-              }}
-            >
-              <View style={styles.productTotal}>
-                <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
-                <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
-              </View>
-              <View style={styles.confirmContainer}>
-                <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
-                  <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
+            {allowDelete &&
+              <Animated.View
+                style={{
+                  position: 'relative',
+                  width: '90%',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  borderWidth: 1,
+                  borderColor: 'blue',
+                  margin: 10,
+                  borderRadius: 10,
+                  paddingHorizontal: 40,
+                  paddingVertical: 15,
+                  transform: [{ translateY }],
+                }}
+              >
+                <View style={styles.productTotal}>
+                  <Text style={styles.productTotalPriceText}>Tổng cộng:</Text>
+                  <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
+                </View>
+                <View style={styles.confirmContainer}>
+                  <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
+                    <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
+                  </TouchableOpacity>
+                </View>
+              </Animated.View>}
 
 
           </>
