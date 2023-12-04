@@ -11,17 +11,19 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import tailwind from 'twrnc';
+import { Ionicons } from '@expo/vector-icons';
 
 const PTTT = () => {
     const [selectedRadio, setSelectedRadio] = useState(1);
     const navigation = useNavigation();
-    
+
     const Check = (value) => {
         console.log(value);
         if (value == 1) {
-            navigation.goBack() 
+            navigation.goBack()
         } else {
-            navigation.navigate('DialogQR') 
+            navigation.navigate('DialogQR')
         }
     }
 
@@ -36,21 +38,20 @@ const PTTT = () => {
         },
     ];
 
-    const selectedCard = ({ item }) => {
-        return (
-            <View>
-                <RadioButton value={item.value} />
-                <Text>{item.name}</Text>
-            </View>
-        )
-    }
-
     return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <View style={styles.view}>
-                    <Text style={styles.text1}>Phương thức thanh toán</Text>
-                </View>
+        <SafeAreaView style={tailwind``}>
+            <View style={tailwind`bg-white flex-row py-3`}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}
+                    style={tailwind`bg-white p-1.5 rounded-full shadow-md ml-3`}
+                >
+                    <Ionicons name="arrow-back" size={30} color="black" />
+                </TouchableOpacity>
+                <Text style={tailwind`text-base mt-2 font-bold ml-3`}>Phương thức thanh toán</Text>
+            </View>
+
+            <View style={tailwind`p-5`}>
+                <Text style={tailwind`text-lg font-bold self-center mb-3`}>Phương thức thanh toán</Text>
 
                 {/* Flatlist */}
                 <RadioButton.Group
@@ -61,22 +62,22 @@ const PTTT = () => {
                         data={selectedButtonList}
                         renderItem={({ item }) => {
                             return (
-                                <View>
+                                <View style={tailwind`flex-row py-2 `}>
                                     <RadioButton value={item.value} />
-                                    <Text>{item.name}</Text>
+                                    <Text style={tailwind`mt-1.6`}>{item.name}</Text>
                                 </View>
                             )
                         }}
                     />
                 </RadioButton.Group>
 
-                <View style={styles.view3}>
-                    <TouchableOpacity style={styles.button2} onPress={() => { navigation.goBack() }}>
-                        <Text style={styles.text}>Hủy</Text>
+                <View style={tailwind`flex-row mt-3 self-center`}>
+                    <TouchableOpacity style={tailwind `bg-blue-600 w-40 rounded-xl justify-center shadow-md py-4`} onPress={() => { navigation.goBack() }}>
+                        <Text style={tailwind `font-bold text-base text-white self-center`}>Hủy</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button2} onPress={() => Check(selectedRadio)}>
-                        <Text style={styles.text}>Xác nhận</Text>
+                    <TouchableOpacity style={tailwind `bg-blue-600 w-40 rounded-xl justify-center shadow-md ml-5`} onPress={() => Check(selectedRadio)}>
+                        <Text style={tailwind `font-bold text-base text-white self-center`}>Xác nhận</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        marginTop: 80,
         padding: 5
     },
     view: {
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 180,
     },
 });
 export default PTTT;

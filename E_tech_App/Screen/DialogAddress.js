@@ -12,6 +12,7 @@ import { setAddress } from '../Component/HandleObj/AddressHandle'
 import { BottomModalInput } from '../Component/AddAdressDialog'
 import { ScrollView } from 'react-native'
 import { deleteAddress } from '../CallApi/AddressAPI'
+import { Ionicons } from '@expo/vector-icons'
 
 
 
@@ -36,7 +37,25 @@ const DialogAddress = ({ route }) => {
 
     const sendValueToScreen = (address) => {
         setAddress(address)
-        navigation.navigate('PayScreen', {data:{address:address}});
+        navigation.navigate('PayScreen', { data: { address: address } });
+    }
+
+    const setLockButton = (value) => {
+        if(value == null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    const setBgLockButton = (value) => {
+        if(value == null){
+            return 'bg-blue-300 justify-center w-24 h-8 rounded-md';
+        }
+        else{
+            return 'bg-blue-500 justify-center w-24 h-8 rounded-md';
+        }
     }
 
     const AddressCard = ({ item }) => {
@@ -45,12 +64,12 @@ const DialogAddress = ({ route }) => {
                 <RadioButton
                     value={item.address}
                 />
-    
+
                 <View style={tailwind`justify-center`}>
                     <Text style={tailwind`w-40`}>{item.address}</Text>
                 </View>
-    
-                <View style={tailwind`flex-row justify-center p-2 self-end ml-3`}>
+
+                <View style={tailwind`flex-row justify-center p-2 self-end ml-10`}>
                     <TouchableOpacity
                         style={tailwind`mr-2 bg-blue-400 p-2 rounded-lg shadow-md`}
                         onPress={() => handleValueChange(item)}
@@ -69,62 +88,76 @@ const DialogAddress = ({ route }) => {
     }
 
     return (
-        <ScrollView>
-            <Provider>
-                <View style={tailwind`flex-auto p-12`}>
-                    <Text style={tailwind`text-lg mb-5 font-bold`}>Chọn địa chỉ</Text>
+        <View>
+            <View style={tailwind`bg-white flex-row py-3`}>
+                <TouchableOpacity
+                    onPress={() => { navigation.goBack() }}
+                    style={tailwind`bg-white p-1.5 rounded-full shadow-md ml-3`}
+                >
+                    <Ionicons name="arrow-back" size={30} color="black" />
+                </TouchableOpacity>
+                <Text style={tailwind`text-base mt-2 font-bold ml-3`}>Địa chỉ giao hàng</Text>
+            </View>
 
-                    {/* Flatlist địa chỉ */}
-                    <RadioButton.Group
-                        onValueChange={(item) => setGetAddress(item)}
-                        value={getAddress}
-                    >
-                        <FlatList
-                            data={listData}
-                            renderItem={AddressCard}
-                            style={tailwind``}
-                        />
-                    </RadioButton.Group>
+            <ScrollView>
+                <Provider>
+                    <View style={tailwind`flex-auto p-8`}>
+                        <Text style={tailwind`text-lg mb-5 font-bold self-center`}>Chọn địa chỉ</Text>
 
-                    {/* Thêm địa chỉ */}
-                    <TouchableOpacity
-                        style={tailwind`self-center mb-5`}
-                        onPress={() => { handleValueChange('') }}
-                    >
-                        <View style={tailwind`flex-row`}>
-                            <Text>Thêm địa chỉ</Text>
-                            <Image
-                                source={require('../img/add_box.png')}
-                                style={tailwind`w-5 h-5 ml-2`}
+                        {/* Flatlist địa chỉ */}
+                        <RadioButton.Group
+                            onValueChange={(item) => setGetAddress(item)}
+                            value={getAddress}
+                        >
+                            <FlatList
+                                data={listData}
+                                renderItem={AddressCard}
+                                style={tailwind``}
                             />
+                        </RadioButton.Group>
+
+                        {/* Thêm địa chỉ */}
+                        <TouchableOpacity
+                            style={tailwind`self-center mb-5`}
+                            onPress={() => { handleValueChange('') }}
+                        >
+                            <View style={tailwind`flex-row`}>
+                                <Text>Thêm địa chỉ</Text>
+                                <Image
+                                    source={require('../img/add_box.png')}
+                                    style={tailwind`w-5 h-5 ml-2`}
+                                />
+                            </View>
+                        </TouchableOpacity>
+
+                        {/* Bottom button */}
+                        <View style={tailwind`flex-row self-end mb-15`}>
+                            <TouchableOpacity
+                                style={tailwind`justify-center w-24 h-8 rounded-md border-gray-800 border mr-3`}
+                                onPress={() => navigation.goBack()}
+                            >
+                                <Text style={tailwind`self-center`}>Hủy</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={tailwind `${setBgLockButton(getAddress)}`}
+                                onPress={() => { sendValueToScreen(getAddress) }}
+                                disabled={setLockButton(getAddress)}
+                            >
+                                <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-
-                    {/* Bottom button */}
-                    <View style={tailwind`flex-row self-end`}>
-                        <TouchableOpacity
-                            style={tailwind`justify-center w-24 h-8 rounded-md border-gray-800 border mr-3`}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <Text style={tailwind`self-center`}>Hủy</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={tailwind`bg-blue-500 justify-center w-24 h-8 rounded-md`}
-                            onPress={() => { sendValueToScreen(getAddress) }}
-                        >
-                            <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
-                        </TouchableOpacity>
                     </View>
-                </View>
 
-                <Dialog visible={visible} onDismiss={hideDialog} style={tailwind`bg-white`}>
-                    <Dialog.Content>
-                        <BottomModalInput value={value}/>
-                    </Dialog.Content>
-                </Dialog>
-            </Provider>
-        </ScrollView>
+                    <Dialog visible={visible} onDismiss={hideDialog} style={tailwind`bg-white`}>
+                        <Dialog.Content>
+                            <BottomModalInput value={value} />
+                        </Dialog.Content>
+                    </Dialog>
+                </Provider>
+            </ScrollView>
+        </View>
+
     )
 }
 
