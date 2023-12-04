@@ -101,7 +101,11 @@ const NotificationScreen = () => {
               data={data}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity style={[{ borderColor: item.seen ? 'grey' : 'blue', opacity: item.seen ? 0.6 : 1 }, styles.viewItem]}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(item.route, { dataId: item.dataId })
+                  }}
+                  style={[{ borderColor: item.seen ? 'grey' : 'blue', opacity: item.seen ? 0.6 : 1 }, styles.viewItem]}>
                   <View>
                     <Image source={{ uri: item.image }} style={styles.img} />
                   </View>
