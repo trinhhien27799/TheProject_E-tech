@@ -12,7 +12,7 @@ export const addAddress = async (fullname, phone, address) => {
 
 export const getAddress = async () => {
     try {
-        const rs = await api.post(`/user/address/get-all`);
+        const rs = await api.get(`/user/address/get-all`);
         return rs.data;
     } catch (error) {
         console.log(error);

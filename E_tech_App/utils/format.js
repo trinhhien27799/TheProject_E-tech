@@ -9,7 +9,8 @@ function formatTime(time) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return ('Vào lúc '+hours + ' giờ ' + minutes + ' phút - ngày ' + day + ', tháng ' + month + ', năm ' + year).toString();
+    return (day + '/' + month + '/' + year + ' - ' + hours + ':' + minutes).toString();
+    // return ('Vào lúc '+hours + ' giờ ' + minutes + ' phút - ngày ' + day + ', tháng ' + month + ', năm ' + year).toString();
 }
 
 export { formatPrice, formatTime }

@@ -36,7 +36,7 @@ const DialogAddress = ({ route }) => {
 
     const sendValueToScreen = (address) => {
         setAddress(address)
-        navigation.navigate('PayScreen');
+        navigation.navigate('PayScreen', {data:{address:address}});
     }
 
     const AddressCard = ({ item }) => {

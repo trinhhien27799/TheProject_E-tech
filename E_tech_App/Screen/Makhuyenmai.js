@@ -15,6 +15,7 @@ import { addVoucher } from '../CallApi/voucherApi';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../session';
 import tailwind from 'twrnc';
+import { formatPrice, formatTime } from '../utils/format';
 
 export default function Makhuyenmai() {
   const navigation = useNavigation();
@@ -66,14 +67,8 @@ export default function Makhuyenmai() {
 
   return (
     <SafeAreaView style={tailwind `flex-1`}>
-      <View style={tailwind `bg-white flex-row py-3`}>
-        <TouchableOpacity 
-          style={tailwind `bg-white p-1.5 rounded-full shadow-md ml-3`}
-          onPress={() => { navigation.goBack() }}
-        >
-          <Ionicons name="arrow-back" size={30} color="black" />
-        </TouchableOpacity>
-        <Text style={tailwind `text-base mt-2 font-bold ml-3`}>Voucher của Shop</Text>
+      <View style={tailwind `bg-white flex-row py-5`}>
+        <Text style={tailwind `text-lg font-bold ml-5`}>Voucher của Shop</Text>
       </View>
 
       <View>
@@ -94,8 +89,8 @@ export default function Makhuyenmai() {
                 </View>
                 <View style={{ paddingTop: 10, width: '60%', marginLeft: 10 }}>
                   <Text style={tailwind `text-base font-bold mb-1`} >{item.description}</Text>
-                  <Text >Đơn tối thiểu {item.condition}.000đ</Text>
-                  <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
+                  <Text >Đơn tối thiểu: {formatPrice(item.condition)}</Text>
+                  <Text style={styles.title2}>HSD: {formatTime(item.expiration_date)}</Text>
                 </View>
               </View>
 
