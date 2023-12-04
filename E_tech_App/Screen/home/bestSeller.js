@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     shadowColor: 'grey',
     shadowRadius: 7,
     alignItems: 'center',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.8,
     margin: 6
   },
   saler: {

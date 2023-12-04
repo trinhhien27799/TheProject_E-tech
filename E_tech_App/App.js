@@ -192,17 +192,7 @@ export default App = () => {
 
           <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
 
-          <Stack.Screen name='PayScreen' component={Pay} options={{
-            headerShown: true,
-            headerLeft: () => (
-              <TouchableOpacity style={tailwind`mr-2`} onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-              </TouchableOpacity>
-            ),
-            headerTintColor: 'white',
-            headerTitle: 'Thanh toán',
-            headerStyle: { backgroundColor: '#3366ff' }
-          }} />
+          <Stack.Screen name='PayScreen' component={Pay} options={{ headerShown: false }} />
           <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
           <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
           <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />

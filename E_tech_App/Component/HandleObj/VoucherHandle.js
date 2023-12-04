@@ -5,5 +5,6 @@ export const setHandleVoucher = (newValue) => {
 };
 
 export const getHandleVoucher = () => {
+    console.log('voucher handle: ' + value)
     return value;
 };

@@ -13,6 +13,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { getMyVoucher } from '../CallApi/voucherApi';
 import { setHandleVoucher } from '../Component/HandleObj/VoucherHandle';
+import tailwind from 'twrnc';
+import { formatPrice, formatTime } from '../utils/format';
 
 export default function Makhuyenmai() {
   const [voucher, setVoucher] = useState([]);
@@ -31,45 +33,49 @@ export default function Makhuyenmai() {
 
   const setNewVoucher = (voucher) => {
     setHandleVoucher(voucher);
-    navigation.navigate('PayScreen');
+    navigation.navigate('PayScreen', {data:{voucher:voucher}});
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.view}>
-        <TouchableOpacity onPress={() => { navigation.goBack() }}>
+    <SafeAreaView style={tailwind `flex-1`}>
+      <View style={tailwind `bg-white flex-row py-3`}>
+        <TouchableOpacity 
+          onPress={() => { navigation.goBack() }}
+          style={tailwind `bg-white p-1.5 rounded-full shadow-md ml-3`}
+        >
           <Ionicons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={styles.text}>Áp dụng Voucher của bạn</Text>
+        <Text style={tailwind `text-base mt-2 font-bold ml-3`}>Áp dụng Voucher của bạn</Text>
       </View>
       <View>
         <FlatList
           data={voucher}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={styles.view2}>
-              <View
-                style={{
-                  width: '28%',
-                  paddingTop: 10,
-                  borderColor: 'black',
-                  borderRightWidth: 1,
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image source={require('../img/sale.png')} style={styles.img} />
+            <View style={tailwind `bg-white mt-2 p-3 w-96 self-center border border-slate-300 rounded-lg`}>
+              <View style={tailwind`flex-row`}>
+                <View
+                  style={{
+                    width: '28%',
+                    paddingTop: 10,
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image source={require('../img/sale.png')} style={styles.img} />
+                </View>
+                <View style={{ paddingTop: 10, width: '65%', marginLeft: 10 }}>
+                  <Text style={tailwind `text-base font-bold`} >{item.description}</Text>
+                  <Text >Đơn tối thiểu {formatPrice(item.condition)}</Text>
+                  <Text style={styles.title2}>HSD: {formatTime(item.expiration_date)}</Text>
+                </View>
               </View>
-              <View style={{ paddingTop: 10, width: '50%', marginLeft: 10 }}>
-                <Text style={styles.title} >{item.description}</Text>
-                <Text >Đơn tối thiểu {item.condition}.000đ</Text>
-                <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
-              </View>
+
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity style={styles.button2} onPress={() => setNewVoucher(item._id)}>
-                  <Text style={{ color: 'white', fontSize: 16 }}>Sử dụng</Text>
+                <TouchableOpacity style={tailwind `bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`} onPress={() => setNewVoucher(item)}>
+                  <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Sử dụng</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </View>        
           )}
         />
       </View>

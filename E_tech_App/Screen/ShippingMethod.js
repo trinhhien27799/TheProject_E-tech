@@ -46,7 +46,7 @@ const ShippingMethod = () => {
 
     const setNewShipping = (shipping) => {
         setHandleShipping(shipping);
-        navigation.goBack();
+        navigation.navigate('PayScreen', {data:{shipping:shipping}});
     }
 
     return (

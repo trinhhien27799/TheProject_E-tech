@@ -20,12 +20,12 @@ import { getCart } from '../CallApi/cartApi';
 import { createBill } from '../CallApi/billApi'; 
 import { formatPrice } from '../utils/format';
 import { getAllAddresses } from '../Model/AddressModel';
-import { getAddress } from '../Component/HandleObj/AddressHandle';
+import { getAddress, setAddress } from '../Component/HandleObj/AddressHandle';
 import { getHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 import { getHandleShipping } from '../Component/HandleObj/ShippingHandle';
 import { clearListCart, getListCart } from '../session';
 
-const Pay = () => {
+const Pay = ({route}) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
@@ -36,27 +36,42 @@ const Pay = () => {
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
   
-
   useEffect(() => {
-    setCart(getListCart())
-}, [])
+    if(route.params?.data){
+      if(!route.params.data.voucher){
+        console.log('route: ' + route.params.data.voucher._id);
+        setVoucher_id(route.params.data.voucher.voucher._id)
+      }
+      else if(!route.params.data.shipping){
+        setShipping_id(route.params.data.shipping)
+      }
+      else if(!route.params.data.address){
+        setVoucher_id(route.params.data.address.address._id)
+      }
+    }
+  }, [route.params?.data])
 
-  // useEffect(() => {
-  //   setSelectedAddresses(getAddress());
-  // }, [])
 
-  // useEffect(() => {
-  //   setVoucher_id(getHandleVoucher());
-  // }, [])
+//   useEffect(() => {
+//     setCart(getListCart())
+// }, [])
 
-  // useEffect(() => {
-  //   setShipping_id(getHandleShipping());
-  // })
+//   useEffect(() => {
+//     setSelectedAddresses(getAddress());
+//   }, [])
+
+//   useEffect(() => {
+//     setVoucher_id(getHandleVoucher());
+//   }, [])
+
+//   useEffect(() => {
+//     setShipping_id(getHandleShipping());
+//   })
 
   const listAddressData = getAllAddresses();
-  console.log('address: ' + selectedAddresses);
-  console.log('voucher: ' + voucher_id);
-  console.log('shipping: ' + shipping_id);
+  // console.log('address: ' + selectedAddresses);
+  // console.log('voucher: ' + voucher_id);
+  // console.log('shipping: ' + shipping_id);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -85,9 +100,17 @@ const Pay = () => {
   // var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-
+    <SafeAreaView>
+      <View style={tailwind `bg-blue-600 flex-row py-3`}>
+        <TouchableOpacity 
+          onPress={() => { navigation.goBack() }}
+          style={tailwind `bg-white p-1.5 rounded-full shadow-md ml-3`}
+        >
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </TouchableOpacity>
+        <Text style={tailwind `text-base mt-2 text-white shadow-md font-bold ml-3`}>Thanh toán</Text>
+      </View>
+      <ScrollView style={styles.container}>
         <View style={styles.containerInfo}>
           {/* Address View */}
           <View>
@@ -233,6 +256,7 @@ const Pay = () => {
                 color="black"
               />
             </TouchableOpacity>
+
           {/* Split Space */}
           <View style={styles.textLine}></View>
 
@@ -259,7 +283,7 @@ const Pay = () => {
                   marginLeft: 2,
                   marginBottom: 'auto',
                 }}>
-                Chọn mã giảm giá của bạn
+                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id}
               </Text> 
               {/* : <Text
                 style={{
@@ -350,11 +374,10 @@ export default Pay;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white'
+    padding: 7
   },
   containerInfo: {
-    marginTop: 20,
+    marginTop: 10,
     marginHorizontal: 10,
   },
   contentView: {
@@ -423,6 +446,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     padding: 15,
+    marginBottom: 95
   },
   btnPayContainer:{
     margin:10
