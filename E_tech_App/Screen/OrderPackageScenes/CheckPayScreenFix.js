@@ -23,7 +23,7 @@ const CheckPayScreenFix = ({ orderList }) => {
         const getDate = splitDate[0];
 
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('OrderDetailScreen', {billId: item._id})}>
+            <TouchableOpacity onPress={() => navigation.navigate('OrderDetailScreen', {dataId: item._id})}>
                 <View style={tailwind`mt-3 bg-white p-5`}>
                     <View >
                         {/* Product View */}

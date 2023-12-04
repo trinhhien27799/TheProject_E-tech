@@ -156,7 +156,6 @@ const Comment = ({ productId }) => {
                     })
                 }),
                 new Promise((resolve) => {
-                    form.append('userId', getUser()._id)
                     form.append('productId', productId)
                     form.append('variationId', variationId)
                     form.append('numStar', numStar)
