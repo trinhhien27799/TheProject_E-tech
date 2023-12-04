@@ -11,7 +11,7 @@ import { getItemBill } from '../CallApi/billApi';
 
 
 const BillDetailScreen = ({ route }) => {
-    const { billId } = route.params;
+    const { dataId } = route.params;
 
 
     const [item, setItem] = useState(null)
@@ -20,7 +20,7 @@ const BillDetailScreen = ({ route }) => {
 
     const getData = async () => {
         try {
-            const response = await getItemBill(billId)
+            const response = await getItemBill(dataId)
             setItem(response)
         } catch (error) {
             console.log('BillDetailScreen: ', error)
