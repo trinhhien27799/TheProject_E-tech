@@ -11,8 +11,7 @@ import {
 } from 'react-native';
 import { isValidEmail, isPassWord, isValidUsername, isConfirm } from '../../Component/validation';
 import { Ionicons } from "@expo/vector-icons";
-import { registerUser, insertOtp } from '../../CallApi/authenApi';
-import Dialog from "react-native-dialog";
+import {  insertOtp } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 
 
@@ -206,17 +205,18 @@ const SignUp = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
+        disabled={!isValidOk()}
           onPress={() => {
             handleSignUp()
           }}
-          style={[styles.button]}>
+          style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
             ĐĂNG KÝ
           </Text>
         </TouchableOpacity>
         <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
-        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: -10 }}>
+        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
           <Text>Bạn đã có tài khoản? </Text>
           <TouchableOpacity
             onPress={() => {
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#336BFA',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 40,
+    marginTop: '5%',
   },
   viewInput: {
     width: '100%',
@@ -261,9 +261,6 @@ const styles = StyleSheet.create({
     paddingLeft: 22,
     flexDirection: 'row'
   },
-  viewContainerInput: {
-
-  },
   button: {
     backgroundColor: '#336BFA',
     alignItems: 'center',
@@ -272,7 +269,7 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     padding: 10,
     width: '50%',
-    marginTop: 50,
+    marginTop: '5%',
     
   },
 });

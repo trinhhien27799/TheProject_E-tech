@@ -11,7 +11,7 @@ import editProfile from './Screen/profile/editProfile'
 import SearchScreen from './Screen/search/searchScreen'
 
 import Quenmk1 from './Screen/authentication/forgotEmail'
-import Quenmk2 from './Screen/authentication/confirmOTP'
+import ConfirmOTP from './Screen/authentication/confirmOTP'
 import Taomk from './Screen/authentication/Taomkmoi'
 import Taomk2 from './Screen/authentication/Taomkmoi2'
 
@@ -57,6 +57,7 @@ import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import SoundPlayer from './utils/notificationSound'
 import { getUser, setDeviceToken } from './session'
+import ChatsScreen from './Screen/chats/ChatsScreen'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -160,7 +161,7 @@ export default App = () => {
           <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
           <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
           <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
-          <Stack.Screen name='Quenmk2' component={Quenmk2} options={{ headerShown: false }} />
+          <Stack.Screen name='ConfirmOTP' component={ConfirmOTP} options={{ headerShown: false }} />
           <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
           <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
           <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
@@ -181,6 +182,7 @@ export default App = () => {
 
 
           <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='ChatsScreen' component={ChatsScreen} options={{ headerShown: false }} />
           <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false }} />
           <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{

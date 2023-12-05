@@ -1,10 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet,TouchableOpacity,Text, View } from "react-native";
-const SettingScreen = ()=>{
+import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { getUser, setUser } from "../../session";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const SettingScreen = () => {
     const navigation = useNavigation();
-
-    return(
+    const handleClick = async () => {
+        await AsyncStorage.removeItem('token');
+        navigation.navigate('Login');
+    }
+    return (
         <View
         >
             <TouchableOpacity
@@ -19,9 +24,7 @@ const SettingScreen = ()=>{
                     marginTop: 70
                 }}
 
-                onPress={() => {
-                    navigation.navigate('Login');
-                }}
+                onPress={handleClick}
             >
                 <Text style={{ fontWeight: 'bold', color: 'white' }}>Đăng xuất</Text>
             </TouchableOpacity>

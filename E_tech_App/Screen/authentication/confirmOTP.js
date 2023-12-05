@@ -1,16 +1,9 @@
 import React, { useState,useRef,useEffect } from 'react';
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text,SafeAreaView,StyleSheet,TextInput, TouchableOpacity,View,} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { verifyOTP } from '../../CallApi/authenApi';
-const Quenmk2 = ({route}) => {
+import { insertOtp, verifyOTP } from '../../CallApi/authenApi';
+const ConfirmOTP = ({route}) => {
   const isSignUpPressed = route.params.isSignUpPressed;
   const email = route.params.email;
   const navigation = useNavigation();
@@ -44,7 +37,7 @@ useEffect(() => {
 }, [remainingTime, isSignUpPressed]);
 
 
-  // const isValidOk = () => !!otp.trim();
+  const isValidOk = () => !!otp.join().trim();
   const handleCheck = async () => {
     const otpString = otp.join("");
     try {
@@ -86,15 +79,19 @@ useEffect(() => {
         <View style={{justifyContent:'center',marginBottom:'5%',flexDirection:'row'}}>
            <TouchableOpacity
            disabled={!checkTime}
-           onPress={()=>setRemainingTime(120)}
+           onPress={()=>{
+            insertOtp(email,true);
+            setRemainingTime(120);
+            setCheckTime(false);
+           }}
            >
-            <Text style={{color:checkTime?'#0EF774':'#CED3D0'}}>Gửi lại mã xác nhận</Text>
+            <Text style={{color:checkTime?'black':'#CED3D0'}}>Gửi lại mã xác nhận</Text>
            </TouchableOpacity>
            {remainingTime>=1 ?(<Text style={{ color: 'red',marginLeft:5 }}>{remainingTime} giây</Text>):null }
            
         </View>
         <TouchableOpacity
-        //  disabled={!isValidOk()}
+         disabled={!isValidOk()}
           onPress={handleCheck}
           style={[styles.button]}
           >
@@ -252,4 +249,4 @@ otpText: {
 }
 });
 
-export default Quenmk2;
+export default ConfirmOTP;

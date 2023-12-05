@@ -103,7 +103,7 @@ const HeaderProfile = ({ username, urlImage, email, navigation,urlBackround }) =
                 }}
                 style={styles.viewIcon}
             >
-                <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/setting.png')} />
+                <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/exit.png')} />
             </TouchableOpacity>
         </ImageBackground>
     );

@@ -82,9 +82,9 @@ const MainHeader = ({ navigation, route }) => {
             <View >
                 <View style={styles.icon}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('NotificationsScreen')}
+                        onPress={() => navigation.navigate('ChatsScreen')}
                     >
-                        <Ionicons name="ios-notifications-outline" size={24} color="black" />
+                        <Ionicons name="chatbubble-ellipses-outline" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>

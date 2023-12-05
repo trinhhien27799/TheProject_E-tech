@@ -72,11 +72,11 @@ const Comment = ({ productId }) => {
         return (
             <View style={{ marginBottom: 8 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image
+                    {/* <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
-                    />
-                    <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text>
+                    /> */}
+                    {/* <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text> */}
                     <View style={{ flex: 1 }}></View>
                     <StartRating route={item.numStar} size={16} />
                 </View>

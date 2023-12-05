@@ -18,11 +18,10 @@ const Quenmk1 = () => {
   const [errorEmail, setErrorEmail] = useState('');
 
   const isValidOk = () => !!email.trim()&&isValidEmail(email);
-  const [isSignUpPressed, setIsSignUpPressed] = useState(false);
+  const [isSignUpPressed, setIsSignUpPressed] = useState(true);
   const handleCheck = async () => {
     try {
-        setIsSignUpPressed(true);
-        navigation.navigate('Quenmk2',{isSignUpPressed,email});
+        navigation.navigate('ConfirmOTP',{isSignUpPressed,email});
         insertOtp(email,true);
         setEmail('');
     } catch (error) {
