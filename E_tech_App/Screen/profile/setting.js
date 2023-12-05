@@ -25,6 +25,7 @@ const SettingScreen = () => {
                 }}
 
                 onPress={handleClick}
+
             >
                 <Text style={{ fontWeight: 'bold', color: 'white' }}>Đăng xuất</Text>
             </TouchableOpacity>

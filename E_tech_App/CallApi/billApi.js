@@ -2,21 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import api, { setAuthToken } from '../apiService'
 import { useNavigation } from '@react-navigation/native';
 
-export const getAllBill = async (statusNum) => {
+export const getBillByStatus = async (status) => {
     try {
-        const bill = await api.post(`/bill/${statusNum}`);
+        const bill = await api.get(`/bill/${status}`);
         return bill.data;
     } catch (error) {
-        console.log(error);
-    }
-}
-
-export const getRealBill = async () => {
-    try {
-        const bill = await api.get('/bill/get-all');
-        return bill.data;
-    } catch (error) {
-        console.log(error);
+        throw error
     }
 }
 
