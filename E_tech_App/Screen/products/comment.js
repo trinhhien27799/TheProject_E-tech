@@ -44,9 +44,12 @@ const Comment = ({ productId }) => {
     const getData = async () => {
         try {
             const response = await getComments(productId)
-            setComments(response)
-            if (response.length > 0) {
-                setTitle("Phản hồi từ người mua")
+            console.log(response)
+            if (response) {
+                setComments(response)
+                if (response.length > 0) {
+                    setTitle("Phản hồi từ người mua")
+                }
             }
         } catch (error) {
             console.log(`CommentScreen: ${error}`)
@@ -184,7 +187,7 @@ const Comment = ({ productId }) => {
     return (
         <View style={styles.container}>
             {listVariation.length > 0 &&
-                <View style={{ marginTop:10,borderRadius: 10, backgroundColor: 'white', padding: 20,width:'85%',alignItems:'center',alignSelf:'center' }}>
+                <View style={{ marginTop: 10, borderRadius: 10, backgroundColor: 'white', padding: 20, width: '85%', alignItems: 'center', alignSelf: 'center' }}>
                     <DropDownPicker
                         schema={{
                             label: 'property',
@@ -271,7 +274,7 @@ export default Comment
 
 const styles = StyleSheet.create({
     container: {
-        width:Dimensions.get('screen').width,
+        width: Dimensions.get('screen').width,
         paddingHorizontal: 8,
     },
     header: {

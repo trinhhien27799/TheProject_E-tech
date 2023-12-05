@@ -20,7 +20,7 @@ const SettingScreen = ()=>{
                 }}
 
                 onPress={() => {
-                    navigation.navigate('Login');
+                    navigation.replace('Login');
                 }}
             >
                 <Text style={{ fontWeight: 'bold', color: 'white' }}>Đăng xuất</Text>
