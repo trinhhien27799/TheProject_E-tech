@@ -1,96 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
-import StarRating from "./startRating"; // Assuming it's a correct component name
-import { Ionicons } from "@expo/vector-icons";
-import { getItemProduct, toggleLike } from "../CallApi/productApi";
+import React from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions } from "react-native";
+import StarRating from "./startRating"; 
 import { useNavigation } from "@react-navigation/native";
 import { formatPrice } from "../utils/format";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import tailwind from 'twrnc'
 
 const ItemFlatlist = ({ route }) => {
-  const [checkHeart, setCheckHeart] = useState(false);
-  useEffect(() => {
-    const fectData = async () => {
-      const resultCheckLike = await toggleLike({ product_id: route._id, action: 'check' });
-      
-      setCheckHeart(resultCheckLike)
-    };
-    fectData();
-  }, []);
-  const handleLike = async () => {
-    if (!checkHeart) {
-      setCheckHeart(true);
-      await toggleLike({ product_id: route._id, action: 'add' });
-    }else{
-      setCheckHeart(false);
-      await toggleLike({ product_id: route._id, action: 'delete' });
-
-    }
-  }
-
-  const handleItem = async ()=>{
-    // const dataItem = await getItemProduct(route._id);
-    navigation.navigate('DetailPoducts',{route});
-  }
   const navigation = useNavigation();
+  const handleItem = async ()=>{
+    navigation.navigate('DetailProducts', { productId: route._id });
+  }
   return (
-    <TouchableOpacity 
-    onPress={()=>{
-      handleItem();
-    }}
-    style={styles.item} key={route._id}>
-      <Image style={styles.image} source={{ uri: route.image_preview }} />
-      <Text style={styles.productName}>{route.product_name}</Text>
-      <Text style={styles.textPrice}>{formatPrice(route.min_price)}</Text>
-      {
-      route.min_price == route.max_price ? null:
-      <Text style={styles.discountedPrice}>{formatPrice(route.max_price)}</Text>
-      }
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        {route.vote === 0 ? <Text >Chưa có đánh giá</Text> : <StarRating route={route.vote} />}
-        <TouchableOpacity
-          onPress={handleLike}
-        >
-          {
-            checkHeart ? <Ionicons name="heart" size={15} color="red" /> : <Ionicons name="heart-outline" size={15} color="red" />
-          }
+    <View style={styles.body}>
+        {route.percent_discount > 0
+          ? (
+            <View style={styles.saler}>
+              <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+                Giảm {route.percent_discount}%
+              </Text>
+            </View>
+          ) :
+          null
+        }
+
+
+        <TouchableOpacity onPress={handleItem}>
+          <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: route.image_preview }} />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={tailwind`mt-4 w-37`}>
+              <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{route.product_name}</Text>
+              <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(route.min_price ? route.min_price * (route.percent_discount != 0 ? (1 - route.percent_discount * 0.01) : 1) : 0)}</Text>
+              {route.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={route.vote} size={15}/>}
+            </View>
+
+          </View>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  item: {
-    margin: 10,
-    padding: 10,
-    // backgroundColor: '#e0e0e0',
-    borderColor:'grey',
-    borderWidth:1,
-    borderRadius: 8,
-    width: '45%',
-    height: 300,
+  body: {
+    backgroundColor: 'white',
+    width: Dimensions.get('window').width / 2 - 16,
+    height: 270,
+    borderRadius: 10,
+    shadowColor: 'grey',
+    shadowRadius: 7,
+    alignItems: 'center',
+    shadowOpacity: 0.8,
+    margin: 6
   },
-  image: {
-    width: '100%',
-    height: '50%',
-    resizeMode: 'contain',
-    marginBottom: '5%',
-  },
-  productName: {
-    fontSize: 15,
-    marginTop: '5%',
-  },
-  textPrice: {
-    fontWeight: 'bold',
-    marginTop: '5%',
-    color: 'red', 
-  },
-  discountedPrice: {
-    fontSize: 12,
-    color: 'grey',
-    textDecorationLine: 'line-through',
+  saler: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 75,
+    height: 35,
+    backgroundColor: 'red',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 10,
+    zIndex: 2,
   },
 });
 
