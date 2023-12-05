@@ -13,15 +13,15 @@ export default OrderScreen = () => {
     return (
         <View style={styles.container}>
 
-            <TouchableOpacity onPress={hanldClick(null)} style={{flexDirection:'column'}}>
+            <TouchableOpacity onPress={()=>hanldClick(null)} style={{flexDirection:'column'}}>
                 <Image style={{ height: 20, width: 20,alignSelf:"center",marginBottom:"5%", marginRight: '10%', tintColor: 'black' }} source={require('../../img/list.png')} />
                 <Text>Tất cả đơn hàng</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={hanldClick(1)} style={{flexDirection:'column'}}>
+            <TouchableOpacity onPress={()=>hanldClick(1)} style={{flexDirection:'column'}}>
                 <Image style={{ height: 20, width: 20,alignSelf:"center",marginBottom:"5%", marginRight: '10%', tintColor: 'black' }} source={require('../../img/truck.png')} />
                 <Text>Chờ giao hàng</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={hanldClick(2)} style={{flexDirection:'column'}}>
+            <TouchableOpacity onPress={()=>hanldClick(2)} style={{flexDirection:'column'}}>
                 <Image style={{ height: 20, width: 20,alignSelf:"center",marginBottom:"5%", marginRight: '10%', tintColor: 'black' }} source={require('../../img/box.png')} />
                 <Text>Đã giao hàng</Text>
             </TouchableOpacity>

@@ -32,4 +32,4 @@ const pushComment = async (form) => {
   }
 }
 
-export { getComments, checkComment, pushComment, addComment }
+export { getComments, checkComment, pushComment}
