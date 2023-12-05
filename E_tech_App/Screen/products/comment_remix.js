@@ -8,7 +8,7 @@ import { getUser } from "../../session"
 import LottieView from 'lottie-react-native'
 import StartRating from '../../Component/startRating'
 
-const Comment = ({ productId }) => {
+const CommentRemix = ({ productId }) => {
 
     const [comments, setComments] = useState([])
     const [listVariation, setlistVariation] = useState([])
@@ -68,6 +68,7 @@ const Comment = ({ productId }) => {
         checkData()
     }, [])
 
+    console.log(comments);
     const renderItem = ({ item }) => {
         return (
             <View style={{ marginBottom: 8 }}>
@@ -259,6 +260,7 @@ const Comment = ({ productId }) => {
                 </View>
             }
             <Text style={styles.header}>{title}</Text>
+
             <FlatList
                 data={comments}
                 keyExtractor={(item, index) => index.toString()}
@@ -269,7 +271,7 @@ const Comment = ({ productId }) => {
     )
 }
 
-export default Comment
+export default CommentRemix
 
 const styles = StyleSheet.create({
     container: {

@@ -7,11 +7,12 @@ import tailwind from 'twrnc'
 import RatingStarComment from '../Component/RatingStar_Comment'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { getVariationDetail } from '../CallApi/productApi'
-import { addComment } from '../CallApi/commentAPI'
+import { addComment, pushComment } from '../CallApi/commentAPI'
 import * as ImagePicker from 'expo-image-picker';
 import { Modal } from 'react-native'
 import { Button } from 'react-native'
 import { getVariationModal } from '../Model/Variation'
+import { getUser } from '../session'
 
 const AddCommentScreen = () => {
   const route = useRoute();
@@ -23,6 +24,11 @@ const AddCommentScreen = () => {
   const [takeImage, setTakeImage] = useState([]);
   const [selectedPicture, setSelectedPicture] = useState(null);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [listVariation, setlistVariation] = useState([]);
+  const [variationId, setVariationId] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const productId = product.productId;
 
   const handlePicturePress = (picture) => {
     setSelectedPicture(picture);
@@ -42,24 +48,66 @@ const AddCommentScreen = () => {
   };
 
   const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access the photo library was denied.');
-      return;
-    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [14, 9],
+        quality: 1,
+        multiple: true,
+    })
 
-    const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.canceled) {
-      // Do something with the selected image
-      setTakeImage([...takeImage, result.uri]);
+        setTakeImage(prevImages => [...prevImages, ...result.assets])
     }
-  };
+}
 
   const handleValueChange = (value) => {
     // Do something with the value received from the child component
     setStarRatingCount(value);
     console.log(starRatingCount);
   };
+
+  const sendComment = async () => {
+    try {
+        setLoading(true)
+        const form = new FormData()
+        await Promise.all([
+            new Promise((resolve) => {
+                takeImage.forEach(async (asset, index) => {
+                    const fileName = `${index}v${Date.now()}.jpg`
+                    form.append('image', {
+                        uri: asset.uri,
+                        type: 'image/jpeg',
+                        name: fileName,
+                    })
+                    resolve()
+                })
+            }),
+            new Promise((resolve) => {
+                form.append('userId', getUser()._id)
+                form.append('productId', productId)
+                form.append('variationId', variationId)
+                form.append('numStar', starRatingCount)
+                form.append('content', commentContent.toString().trim())
+                resolve()
+            }),
+        ])
+
+        const response = await pushComment(form)
+        if (response.code == 200) {
+            console.log('Đánh giá thành công')
+            const newListVariation = listVariation.filter((item) => item.variationId !== variationId)
+            setlistVariation(newListVariation)
+            setVariationId(null)
+        } else {
+            console.log('Đánh giá thất bại')
+        }
+    } catch (error) {
+        console.log(`Send Comment: ${error}`)
+    } finally {
+        setLoading(false)
+    }
+}
 
   console.log('comment: ' + commentContent);
 
@@ -150,7 +198,7 @@ const AddCommentScreen = () => {
             {/* Comment button */}
             <TouchableOpacity
               style={tailwind`bg-blue-500 w-50 p-3 justify-center self-center mt-3 rounded-lg shadow-md mb-10`}
-              onPress={() => { addComment(variation, commentContent, starRatingCount) }}
+              onPress={() => { sendComment() }}
             >
               <Text style={tailwind`self-center font-bold text-white`}>Đánh Giá</Text>
             </TouchableOpacity>

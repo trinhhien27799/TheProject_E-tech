@@ -6,13 +6,12 @@ import { getAllBill } from '../CallApi/billApi';
 import { getAllUserBill, getBill } from '../Model/BillModel';
 import RatingStar from '../Component/RatingStar';
 import PreviewComment from '../Component/PreviewComment';
+import CommentRemix from '../Screen/products/comment_remix';
 
 const DemoShipMoneyResoveScreen = () => {
-    const demoBill = getBill();
-
     return (
         <View style={tailwind `flex-auto justify-center`}>
-           <PreviewComment />
+           <CommentRemix productId={'655534755515ec3c61314304'}/>
         </View>
     )
 }
