@@ -7,31 +7,33 @@ import { formatPrice, formatTime } from '../utils/format';
 import CommentButton from '../Component/CommentButton';
 import { checkComment } from '../CallApi/commentAPI';
 import { getItemBill } from '../CallApi/billApi';
+import ItemInBill from './itemInBill';
 
 
 
 const BillDetailScreen = ({ route }) => {
-    const { billId } = route.params;
+    const { dataId } = route.params;
 
 
     const [item, setItem] = useState(null)
-    const [caches, setGetCacheArray] = useState([])
 
 
     const getData = async () => {
         try {
-            const response = await getItemBill(billId)
+            const response = await getItemBill(dataId)
+            console.log('---------------------')
+            console.log(response)
             setItem(response)
         } catch (error) {
             console.log('BillDetailScreen: ', error)
         }
     }
 
-    const getCache = async (data) => {
+    const getCache = async (variationId) => {
         try {
-            const data = await checkComment(data);
-            console.log("-----------------\n",data)
-            setGetCacheArray(data);
+            const data = { variationId: variationId }
+            const response = await checkComment(data);
+            setGetCacheArray(response);
         } catch (error) {
             console.log('BillDetailScreen: ', error)
         }
@@ -40,34 +42,15 @@ const BillDetailScreen = ({ route }) => {
 
     useEffect(() => {
         getData()
-
     }, [])
 
-    useEffect(() => {
-        getCache()
-    }, [item])
 
-    // useEffect(() => {
-    //     const hideComponent = async () => {
-    //         const timer = setTimeout(() => {
-    //             setIsVisible(false);
-    //             AsyncStorage.setItem('componentVisibility', 'hidden'); // Store the visibility state
-    //         }, 3000); // Change the duration to 3000 milliseconds (3 seconds)
+    const renderItem = ({ item, index }) => {
 
-    //         return () => clearTimeout(timer); // Clean up the timer when the component unmounts
-    //     };
 
-    //     const checkVisibility = async () => {
-    //         const visibility = await AsyncStorage.getItem('componentVisibility'); // Retrieve the visibility state
-    //         if (visibility === 'hidden') {
-    //             setIsVisible(false);
-    //         } else {
-    //             hideComponent();
-    //         }
-    //     };
+        return <ItemInBill item={item} />
+    }
 
-    //     checkVisibility();
-    // }, []);
 
     return (
         item &&
@@ -104,45 +87,8 @@ const BillDetailScreen = ({ route }) => {
                 <FlatList
                     data={item.products}
                     style={styles.listCart}
-                    renderItem={({ item }) => {
-                        // console.log('variation id: ' + item.variations_id);
-                        // setComment(item.variations_id);
-                        return (
-                            // Cart Item
-                            <View style={styles.itemContainer}>
-                                <View style={styles.cartItem}>
-
-                                    <View style={styles.imgItemView}>
-                                        <Image
-                                            style={styles.imgItem}
-                                            source={{ uri: item.image }}
-                                        />
-                                    </View>
-
-                                    <View style={styles.nameItemView}>
-                                        <View >
-                                            <Text style={styles.nameItem}>{item.product_name}</Text>
-                                            <Text style={styles.categoryItem}>Loại: </Text>
-                                            <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
-                                        </View>
-                                        <View>
-
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.priceItemView}>
-                                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.textTotal}>
-                                    <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
-                                </View>
-
-                                {caches.length > 0 && <CommentButton item={item} />}
-                            </View>
-                        )
-                    }}
-                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item._id}
                 />
 
                 {/* Total Container */}
@@ -252,65 +198,21 @@ const styles = StyleSheet.create({
         marginRight: 30,
         marginTop: 10
     },
-    textTotal: {
-        textAlign: 'right',
-        fontSize: 13.5,
-        fontWeight: 'bold',
-        marginTop: 30
-    },
+
     textPrice: {
         fontWeight: 'bold',
         textAlign: 'right'
     },
-    textQuantity: {
-        textAlign: 'right',
-        fontSize: 13.5,
-        marginTop: 1
-    },
-    priceItemView: {
-        width: '30%',
-    },
+
+
     statusItem: {
         color: '#767676',
         fontSize: 13
     },
-    categoryItem: {
-        color: 'black',
-        fontSize: 13,
-        marginTop: 10
-    },
-    nameItem: {
-        fontSize: 15,
-        fontWeight: 'bold',
 
-    },
-    nameItemView: {
-        width: '35%',
 
-    },
-    imgItem: {
-        width: 80,
-        height: 110,
-        backgroundColor: '#D5D5D5',
-        justifyContent: 'center',
-        borderRadius: 5,
-    },
-    cartItem: {
-        width: '100%',
-        height: 135,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        paddingTop: 20,
-        paddingBottom: 20
-    },
-    itemContainer: {
-        flexDirection: 'column',
-        borderBottomWidth: 1.3,
-        paddingVertical: 20,
-        borderBottomColor: '#D5D5D5',
-        justifyContent: 'center'
 
-    },
+
     listCart: {
         maxHeight: 1000,
         marginLeft: 20,

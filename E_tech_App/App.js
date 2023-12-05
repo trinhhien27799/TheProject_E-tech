@@ -116,7 +116,7 @@ export default App = () => {
   const navigationContainerRef = useRef()
 
   const ClickNotification = (notification) => {
-    navigationContainerRef.current.navigate(notification.request.content.data.route, { billId: notification.request.content.data.billId })
+    navigationContainerRef.current.navigate(notification.request.content.data.route, { dataId: notification.request.content.data.dataId })
     setNotification(null)
   }
 
