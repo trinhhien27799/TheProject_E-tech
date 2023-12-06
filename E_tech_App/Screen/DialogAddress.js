@@ -38,7 +38,7 @@ const DialogAddress = ({ route }) => {
     }
 
     const sendValueToScreen = (address) => {
-        navigation.navigate('PayScreen');
+        navigation.navigate('PayScreen', {address: address, shipping: null, voucher: null});
     }
 
     const setLockButton = (value) => {

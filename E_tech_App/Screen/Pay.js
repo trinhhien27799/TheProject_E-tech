@@ -25,11 +25,13 @@ import { getHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 import { getHandleShipping } from '../Component/HandleObj/ShippingHandle';
 import { clearListCart, getListCart } from '../session';
 
-const Pay = () => {
+const Pay = ({route}) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
+  const {address, shipping, voucher} = route.params;
 
-  var address = getAddress();
+  console.log(address, shipping);
+
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
   const [voucher_id, setVoucher_id] = useState();
@@ -51,6 +53,22 @@ const Pay = () => {
   //   }
   // }, [route.params?.data])
 
+  useEffect(() => {
+    if(address != null){
+      setSelectedAddresses(address);
+    }
+    else if(shipping != null){
+      setShipping_id(shipping);
+    }
+    else if(voucher != null){
+      setVoucher_id(voucher);
+    }
+    else{
+      setSelectedAddresses(null);
+      setShipping_id(null);
+      setVoucher_id(null);
+    }
+  })
 
   useEffect(() => {
     setCart(getListCart())
@@ -60,7 +78,6 @@ const Pay = () => {
   //   setSelectedAddresses(getAddress());
   // }, [])
 
-  console.log(getAddress())
 
 //   useEffect(() => {
 //     setVoucher_id(getHandleVoucher());
@@ -125,13 +142,17 @@ const Pay = () => {
             <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ChooseAddressScreen', {listOnlyAddresses: listAddressData}) }}>
               {/* Address Detail */}
               <View>
-                <Text style={styles.textInfo} >Tên người mua - Số điện thoại</Text>
+                <Text style={styles.textInfo} >{
+                selectedAddresses == null 
+                ? 'Tên người mua - Số điện thoại'
+                : selectedAddresses.fullname + ' - ' + selectedAddresses.numberphone
+                }</Text>
                 {selectedAddresses == null
                   ? <Text style={{ marginTop: 5 }}>
                     Địa chỉ
                   </Text>
                   : <Text style={{ marginTop: 5 }}>
-                    {selectedAddresses}
+                    {selectedAddresses.address}
                   </Text>
                 }
                 
@@ -243,7 +264,7 @@ const Pay = () => {
           <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ShippingMethod') }}>
               {/* Address Detail */}
               <View>
-                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id}</Text>
+                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id.name}</Text>
               </View>
 
               <Feather
@@ -279,7 +300,7 @@ const Pay = () => {
                   marginLeft: 2,
                   marginBottom: 'auto',
                 }}>
-                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id}
+                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id.code}
               </Text> 
               {/* : <Text
                 style={{
