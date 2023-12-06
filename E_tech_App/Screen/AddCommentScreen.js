@@ -7,11 +7,12 @@ import tailwind from 'twrnc'
 import RatingStarComment from '../Component/RatingStar_Comment'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { getVariationDetail } from '../CallApi/productApi'
-import { addComment } from '../CallApi/commentAPI'
+import { addComment, pushComment } from '../CallApi/commentAPI'
 import * as ImagePicker from 'expo-image-picker';
 import { Modal } from 'react-native'
 import { Button } from 'react-native'
-import { pushComment } from '../CallApi/commentAPI' 
+import { getVariationModal } from '../Model/Variation'
+import { getUser } from '../session'
 
 const AddCommentScreen = () => {
   const route = useRoute();
@@ -23,6 +24,11 @@ const AddCommentScreen = () => {
   const [images, setImages] = useState([])
   const [selectedPicture, setSelectedPicture] = useState(null);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [listVariation, setlistVariation] = useState([]);
+  const [variationId, setVariationId] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const productId = product.productId;
 
   const handlePicturePress = (picture) => {
     setSelectedPicture(picture);

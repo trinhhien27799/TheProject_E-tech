@@ -37,7 +37,7 @@ const ShippingMethod = () => {
     const ShippingItem = ({ item }) => {
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
-                <RadioButton value={item._id}/>
+                <RadioButton value={item}/>
 
                 <View style={tailwind`justify-center`}>
                     <Text>{item.name} ({formatPrice(item.price)})</Text>
@@ -47,8 +47,8 @@ const ShippingMethod = () => {
     }
 
     const setNewShipping = (shipping) => {
-        setHandleShipping(shipping);
-        navigation.navigate('PayScreen', {data:{shipping:shipping}});
+        console.log(shipping);
+        navigation.navigate('PayScreen', {address: null, shipping: shipping, voucher: null});
     }
 
     const setLockButton = (value) => {
