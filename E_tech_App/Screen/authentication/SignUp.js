@@ -224,7 +224,8 @@ const SignUp = ({ navigation }) => {
         </TouchableOpacity>
         <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
-        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10, marginBottom: 50 }}>
+        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
+
           <Text>Bạn đã có tài khoản? </Text>
           <TouchableOpacity
             onPress={() => {
@@ -277,8 +278,8 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     padding: 10,
     width: '50%',
-    marginTop: 20,
-
+    marginTop: '5%',
+    
   },
 });
 
