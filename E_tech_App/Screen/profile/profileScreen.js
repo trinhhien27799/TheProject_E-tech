@@ -10,7 +10,7 @@ import { getLike } from "../../CallApi/productApi";
 import IteamProduct from "../../Component/itemProducts";
 
 const Profile = ({ route }) => {
-    const { username, avatar, fullname} = route.params;
+    const { username, avatar, fullname } = route.params;
     const params = route.params;
     const navigation = useNavigation();
     const [likeData, setLikeData] = useState([]);
@@ -18,7 +18,7 @@ const Profile = ({ route }) => {
         const fetchData = async () => {
             const data = await getMyVoucher();
             const like = await getLike();
-            setLikeData(like); 
+            setLikeData(like);
         }
         fetchData();
     }, [])
@@ -32,23 +32,7 @@ const Profile = ({ route }) => {
 
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>Edit Profile</Text>
                 </TouchableOpacity>
-                <View>
-                    <View style={{ marginLeft: '10%', marginTop: '5%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image style={{ height: 20, width: 20, marginRight: '10%', tintColor: 'black' }} source={require('../../img/notes.png')} />
-                            <Text>Đơn mua</Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => { }}
-                            style={{ flexDirection: 'row' }}
-                        >
-                            <Text>Lịch sử mua hàng</Text>
-                            <Image style={{ height: 10, width: 10, marginLeft: 5, alignSelf: "center", marginRight: '10%', tintColor: 'black' }} source={require('../../img/next.png')} />
-                        </TouchableOpacity>
-                    </View>
-                    
-                    <OrderSreen />
-                </View>
+                <OrderSreen />
                 <ButtonBody icon={require('../../img/tag.png')} label="Voucher của tôi" onPress={() => { navigation.navigate('MyVoucher') }} />
                 <View style={{ flexDirection: "row", marginLeft: "7%", alignItems: 'center', marginTop: '10%' }}>
                     <Image style={{ height: 25, width: 25, alignSelf: "center", marginRight: 5 }} source={require('../../img/shopping.png')} />
@@ -72,7 +56,7 @@ const Profile = ({ route }) => {
         </ScrollView>
     );
 }
-const HeaderProfile = ({ username, urlImage, email, navigation,urlBackround }) => {
+const HeaderProfile = ({ username, urlImage, email, navigation, urlBackround }) => {
     return (
         <ImageBackground source={{ uri: urlBackround }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
             <TouchableOpacity
@@ -136,7 +120,7 @@ const styles = StyleSheet.create({
     imageHeader: {
         flex: 1,
         resizeMode: 'cover',
-        borderRadius:100,
+        borderRadius: 100,
     },
     viewIcon: {
         height: 50,

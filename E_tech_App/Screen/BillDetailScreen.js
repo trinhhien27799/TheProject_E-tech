@@ -13,16 +13,12 @@ import ItemInBill from './itemInBill';
 
 const BillDetailScreen = ({ route }) => {
     const { dataId } = route.params;
-
-
     const [item, setItem] = useState(null)
 
 
     const getData = async () => {
         try {
             const response = await getItemBill(dataId)
-            console.log('---------------------')
-            console.log(response)
             setItem(response)
         } catch (error) {
             console.log('BillDetailScreen: ', error)
