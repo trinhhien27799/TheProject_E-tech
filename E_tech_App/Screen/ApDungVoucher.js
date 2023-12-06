@@ -32,8 +32,7 @@ export default function Makhuyenmai() {
   useEffect(() => {myvouchers()}, [])
 
   const setNewVoucher = (voucher) => {
-    setHandleVoucher(voucher);
-    navigation.navigate('PayScreen', {data:{voucher:voucher}});
+    navigation.navigate('PayScreen', {address: null, shipping: null, voucher: voucher});
   }
 
   return (
