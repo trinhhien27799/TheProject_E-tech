@@ -8,7 +8,7 @@ import { getUser } from "../../session"
 import LottieView from 'lottie-react-native'
 import StartRating from '../../Component/startRating'
 
-const Comment = ({ productId }) => {
+const CommentRemix = ({ productId }) => {
 
     const [comments, setComments] = useState([])
     const [listVariation, setlistVariation] = useState([])
@@ -44,12 +44,9 @@ const Comment = ({ productId }) => {
     const getData = async () => {
         try {
             const response = await getComments(productId)
-            console.log(response)
-            if (response) {
-                setComments(response)
-                if (response.length > 0) {
-                    setTitle("Phản hồi từ người mua")
-                }
+            setComments(response)
+            if (response.length > 0) {
+                setTitle("Phản hồi từ người mua")
             }
         } catch (error) {
             console.log(`CommentScreen: ${error}`)
@@ -71,15 +68,16 @@ const Comment = ({ productId }) => {
         checkData()
     }, [])
 
+    console.log(comments);
     const renderItem = ({ item }) => {
         return (
             <View style={{ marginBottom: 8 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    {/* <Image
+                    <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
-                    /> */}
-                    {/* <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text> */}
+                    />
+                    <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text>
                     <View style={{ flex: 1 }}></View>
                     <StartRating route={item.numStar} size={16} />
                 </View>
@@ -159,6 +157,7 @@ const Comment = ({ productId }) => {
                     })
                 }),
                 new Promise((resolve) => {
+                    form.append('userId', getUser()._id)
                     form.append('productId', productId)
                     form.append('variationId', variationId)
                     form.append('numStar', numStar)
@@ -187,7 +186,7 @@ const Comment = ({ productId }) => {
     return (
         <View style={styles.container}>
             {listVariation.length > 0 &&
-                <View style={{ marginTop: 10, borderRadius: 10, backgroundColor: 'white', padding: 20, width: '85%', alignItems: 'center', alignSelf: 'center' }}>
+                <View style={{ marginTop:10,borderRadius: 10, backgroundColor: 'white', padding: 20,width:'85%',alignItems:'center',alignSelf:'center' }}>
                     <DropDownPicker
                         schema={{
                             label: 'property',
@@ -261,6 +260,7 @@ const Comment = ({ productId }) => {
                 </View>
             }
             <Text style={styles.header}>{title}</Text>
+
             <FlatList
                 data={comments}
                 keyExtractor={(item, index) => index.toString()}
@@ -271,11 +271,11 @@ const Comment = ({ productId }) => {
     )
 }
 
-export default Comment
+export default CommentRemix
 
 const styles = StyleSheet.create({
     container: {
-        width: Dimensions.get('screen').width,
+        width:Dimensions.get('screen').width,
         paddingHorizontal: 8,
     },
     header: {
