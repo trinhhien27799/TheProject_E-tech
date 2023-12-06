@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { registerUser, insertOtp } from '../../CallApi/authenApi';
 import Dialog from "react-native-dialog";
 import VerifyDialog from './verifyOTP';
+import tailwind from 'twrnc';
 
 
 const SignUp = ({ navigation }) => {
@@ -29,7 +30,7 @@ const SignUp = ({ navigation }) => {
   const [showVerifyDialog, setShowVerifyDialog] = useState(false);
   const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
-  const [checkValue,setCheckValue] = useState(false);
+  const [checkValue, setCheckValue] = useState(false);
 
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
@@ -48,7 +49,7 @@ const SignUp = ({ navigation }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  
+
   }, [remainingTime, isSignUpPressed]);
   const handleSignUp = async () => {
     try {
@@ -59,19 +60,18 @@ const SignUp = ({ navigation }) => {
         setErrorPassword('');
         setErrorConfim('');
         // registerUser(username,email,password);
-        if(email == ''||password == ''||fullname == ''||confirmPass == ''){
+        if (email == '' || password == '' || fullname == '' || confirmPass == '') {
           alert("Vui lòng điền đầy đủ thông tin!!!");
-        }else
-        {
-          const insert = await insertOtp(email,false);
-          if(insert.code === 200){
+        } else {
+          const insert = await insertOtp(email, false);
+          if (insert.code === 200) {
             setShowVerifyDialog(true);
             setIsSignUpPressed(true);
-          }else{
+          } else {
             alert(insert.message);
-            
+
           }
-          
+
         }
 
       }
@@ -87,6 +87,15 @@ const SignUp = ({ navigation }) => {
   return (
     <ScrollView style={styles.safeArea}>
       <View style={styles.view}>
+        <TouchableOpacity
+          style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full mt-5`}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Ionicons name="arrow-back" style={tailwind`self-center`} size={20} color="black" />
+        </TouchableOpacity>
+
         <View style={{ marginVertical: 22 }}>
           <Text
             style={{
@@ -94,7 +103,6 @@ const SignUp = ({ navigation }) => {
               fontWeight: 'bold',
               marginVertical: 12,
               color: 'black',
-              marginTop: 80,
             }}>
             Đăng ký
           </Text>
@@ -216,14 +224,14 @@ const SignUp = ({ navigation }) => {
         </TouchableOpacity>
         <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
-        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: -10 }}>
+        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10, marginBottom: 50 }}>
           <Text>Bạn đã có tài khoản? </Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Login')
             }}
           >
-            <Text style={{ marginLeft: 10, color: '#336BFA', fontWeight: 'bold' }}>
+            <Text style={{ marginLeft: 2, color: '#336BFA', fontWeight: 'bold' }}>
               Đăng nhập
             </Text>
           </TouchableOpacity>
@@ -272,8 +280,8 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     padding: 10,
     width: '50%',
-    marginTop: 50,
-    
+    marginTop: 20,
+
   },
 });
 

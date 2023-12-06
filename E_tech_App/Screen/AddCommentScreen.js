@@ -13,7 +13,6 @@ import { Modal } from 'react-native'
 import { Button } from 'react-native'
 import { getVariationModal } from '../Model/Variation'
 import { getUser } from '../session'
-import { pushComment } from '../CallApi/commentAPI' 
 
 const AddCommentScreen = () => {
   const route = useRoute();

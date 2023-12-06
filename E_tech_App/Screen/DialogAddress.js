@@ -15,8 +15,6 @@ import { deleteAddress } from '../CallApi/AddressAPI'
 import { Ionicons } from '@expo/vector-icons'
 
 
-
-
 const DialogAddress = ({ route }) => {
     const [getAddress, setGetAddress] = useState(null);
     const navigation = useNavigation();
@@ -24,7 +22,6 @@ const DialogAddress = ({ route }) => {
 
     const { listOnlyAddresses } = route.params;
     const listData = listOnlyAddresses.data;
-    console.log(listData);
 
     const [visible, setVisible] = React.useState(false);
 
@@ -35,9 +32,13 @@ const DialogAddress = ({ route }) => {
         setVisible(true);
     };
 
+    const handleValue = (value) => {
+        setGetAddress(value);
+        setAddress(getAddress);
+    }
+
     const sendValueToScreen = (address) => {
-        setAddress(address)
-        navigation.navigate('PayScreen', { data: { address: address } });
+        navigation.navigate('PayScreen');
     }
 
     const setLockButton = (value) => {
@@ -62,7 +63,7 @@ const DialogAddress = ({ route }) => {
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
                 <RadioButton
-                    value={item.address}
+                    value={item}
                 />
 
                 <View style={tailwind`justify-center`}>
@@ -106,7 +107,7 @@ const DialogAddress = ({ route }) => {
 
                         {/* Flatlist địa chỉ */}
                         <RadioButton.Group
-                            onValueChange={(item) => setGetAddress(item)}
+                            onValueChange={(item) => handleValue(item)}
                             value={getAddress}
                         >
                             <FlatList

@@ -25,7 +25,7 @@ import { getHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 import { getHandleShipping } from '../Component/HandleObj/ShippingHandle';
 import { clearListCart, getListCart } from '../session';
 
-const Pay = ({route}) => {
+const Pay = () => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
 
@@ -36,29 +36,31 @@ const Pay = ({route}) => {
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
   
+  // useEffect(() => {
+  //   if(route.params?.data){
+  //     if(!route.params.data.voucher){
+  //       console.log('route: ' + route.params.data.voucher._id);
+  //       setVoucher_id(route.params.data.voucher.voucher._id)
+  //     }
+  //     else if(!route.params.data.shipping){
+  //       setShipping_id(route.params.data.shipping)
+  //     }
+  //     else if(!route.params.data.address){
+  //       setVoucher_id(route.params.data.address.address._id)
+  //     }
+  //   }
+  // }, [route.params?.data])
+
+
   useEffect(() => {
-    if(route.params?.data){
-      if(!route.params.data.voucher){
-        console.log('route: ' + route.params.data.voucher._id);
-        setVoucher_id(route.params.data.voucher.voucher._id)
-      }
-      else if(!route.params.data.shipping){
-        setShipping_id(route.params.data.shipping)
-      }
-      else if(!route.params.data.address){
-        setVoucher_id(route.params.data.address.address._id)
-      }
-    }
-  }, [route.params?.data])
+    setCart(getListCart())
+}, [])
 
+  // useEffect(() => {
+  //   setSelectedAddresses(getAddress());
+  // }, [])
 
-//   useEffect(() => {
-//     setCart(getListCart())
-// }, [])
-
-//   useEffect(() => {
-//     setSelectedAddresses(getAddress());
-//   }, [])
+  console.log(getAddress())
 
 //   useEffect(() => {
 //     setVoucher_id(getHandleVoucher());
@@ -73,13 +75,7 @@ const Pay = ({route}) => {
   // console.log('voucher: ' + voucher_id);
   // console.log('shipping: ' + shipping_id);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getCart();
-  //     setCart(data);
-  //   }
-  //   fetchData();
-  // }, []);
+  console.log(getAddress());
 
   
   const getListId = cart.map((item) => item._id);

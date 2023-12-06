@@ -108,7 +108,6 @@ const CartScreen = () => {
     return <CartItem item={item} index={index} setShow={setShow} setUpdate={setUpdate} clear={clear} setData={setData} data={data} />
   }
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>

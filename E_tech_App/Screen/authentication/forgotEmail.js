@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { isValidEmail } from '../../Component/validation';
 import { useNavigation } from '@react-navigation/native';
 import { insertOtp } from '../../CallApi/authenApi';
+import tailwind from 'twrnc';
 
 const Quenmk1 = () => {
   const navigation = useNavigation();
@@ -32,9 +33,14 @@ const Quenmk1 = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.view1}>
-      <Ionicons name="arrow-back" size={24} color="black"  onPress={() => {
-                        navigation.goBack();
-                    }}/>
+      <TouchableOpacity 
+        style={tailwind `bg-white w-10 h-10 justify-center shadow-md rounded-full m-3`}
+        onPress={() => {
+          navigation.goBack();
+      }}
+      >
+        <Ionicons name="arrow-back" style={tailwind `self-center`} size={20} color="black" />
+      </TouchableOpacity>
       </View>
       <View style={styles.view}>
         <View style={{marginLeft:5}}>
@@ -73,8 +79,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 10,
-    marginTop: '10%'
+    padding: 10
   },
   view: {
     flex: 1,
