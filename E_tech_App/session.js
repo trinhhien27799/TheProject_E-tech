@@ -37,7 +37,7 @@ const pushListCart = (object) => {
   listCart.push(object)
 }
 
-const getListCart = () => {  // khai bao cái hàm này là lấy được danh sách giỏ hàng 
+const getListCart = () => {
   return listCart
 }
 
@@ -58,6 +58,10 @@ const updateItemInCart = ({ id, quantity }) => {
   listCart = newArray
 }
 
+const setListCart = (list) => {
+  listCart = list
+}
+
 var deviceToken = null
 
 const setDeviceToken = (token) => {
@@ -69,10 +73,13 @@ const getDeviceToken = () => {
   return deviceToken
 }
 
+var lisProduct = []
+
+
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
-  pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart,
+  pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart,setListCart,
   getMyVoucher, setMyVoucher,
   setDeviceToken, getDeviceToken
 }

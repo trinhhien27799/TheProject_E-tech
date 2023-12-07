@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity, FlatList } from "react-native"
 import { getAllProduct } from "../../CallApi/productApi"
 import { useNavigation } from "@react-navigation/native"
+import { setlistProduct } from "../../session"
 
 
 const MainHeader = ({ navigation, route }) => {

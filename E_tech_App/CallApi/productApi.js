@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { API_USER_URL } from './config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import api, { setAuthToken } from '../apiService'
+
+import api from '../apiService'
 import { getUser } from '../session.js'
 
 export const getVariationDetail = async (variationID) => {
@@ -63,6 +61,30 @@ const getRelated = async (productId) => {
   }
 }
 
+const getFavorites = async () => {
+  try {
+    const user = getUser()
+    if (!user) throw "Đăng nhập để tiếp tục"
+    const response = await api.get('/favorite/get-all')
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+const deleteListFavorite = async (list) => {
+  try {
+    console.log(list)
+    const user = getUser()
+    if (!user) throw "Đăng nhập để tiếp tục"
+    const response = await api.post('/favorite/delete-list',
+      { listProductId: list })
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
 
 
-export { getAllProduct, getAllProductByFilter, getItemProduct, handleLike, getRelated }
+
+export { getAllProduct, getAllProductByFilter, getItemProduct, handleLike, getRelated, getFavorites, deleteListFavorite }

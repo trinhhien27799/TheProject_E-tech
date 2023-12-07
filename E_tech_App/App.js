@@ -16,7 +16,7 @@ import Taomk from './Screen/authentication/Taomkmoi'
 import Taomk2 from './Screen/authentication/Taomkmoi2'
 
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar"
-import AddressTest from './Screen/AddressTest'
+import AddressScreen from './Screen/address/AddressScreen'
 import BottomNavigation from './Screen/home/bottomNavigation'
 import NotificationScreen from './Screen/NotificationScreen'
 import ResetPassword from './Screen/profile/resetPassword'
@@ -34,7 +34,7 @@ import ApDungVoucher from './Screen/ApDungVoucher'
 
 import BillDetailScreen from './Screen/BillDetailScreen'
 import ViewItem from './Screen/search/viewItem'
-import AddAdress from './Screen/AddAdress'
+import AddAddress from './Screen/AddAdress'
 import MyVoucher from './Screen/MyVoucher'
 import ShippingMethod from './Screen/ShippingMethod'
 
@@ -48,16 +48,18 @@ import CartScreen from './Screen/YourCart/CartScreen'
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
 import CancelOrderView from './Screen/CancelOrderView';
-import tailwind from 'twrnc';
 
-import { Ionicons } from '@expo/vector-icons'
 
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import SoundPlayer from './utils/notificationSound'
 import { getUser, setDeviceToken } from './session'
+
+import FavoriteScreen from './Screen/favorite/FavoriteScreen'
+import NewAddress from './Screen/address/NewAddress'
 import ChatsScreen from './Screen/chats/ChatsScreen'
+
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -165,31 +167,38 @@ export default App = () => {
           <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
           <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
           <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
-
           <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
           <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
           <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
           <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
 
-          <Stack.Screen name='AddressScreen' component={AddressTest} options={{ headerShown: false }} />
-          <Stack.Screen name='AddAdressScreen' component={AddAdress} options={{ headerShown: true }} />
+          <Stack.Screen name='AddressScreen' component={AddressScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='AddAddressScreen' component={AddAddress} options={{
+            headerTitle: "Thêm địa chỉ"
+          }} />
+          <Stack.Screen name='NewAddress' component={NewAddress} options={{
+            headerTitle: "Thêm địa chỉ"
+          }} />
+
           <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
           <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
-          <Stack.Screen name='MyVoucher' component={MyVoucher} options={{ headerShown: false }} />
+          <Stack.Screen name='MyVoucher' component={MyVoucher} options={{
+            headerTitle: "Mã giảm giá đã lưu"
+          }} />
           <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
           <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
           <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
 
 
           <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='ResetPassword' component={ResetPassword} options={{
+            headerTitle: "Đổi mật khẩu"
+          }} />
           <Stack.Screen name='ChatsScreen' component={ChatsScreen} options={{ headerShown: false }} />
-          <Stack.Screen name='ResetPassword' component={ResetPassword} options={{ headerShown: false }} />
+
           <Stack.Screen name='ViewItem' component={ViewItem} options={{ headerShown: false }} />
           <Stack.Screen name='OrderDetailScreen' component={BillDetailScreen} options={{
-            headerShown: true,
-            headerTintColor: 'white',
-            headerTitle: 'Chi tiết đơn hàng',
-            headerStyle: { backgroundColor: '#3366ff' }
+            headerTitle: 'Chi tiết đơn hàng'
           }} />
 
           <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
@@ -204,6 +213,9 @@ export default App = () => {
           <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
           <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
           <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
+
+
+          <Stack.Screen name='FavoriteScreen' component={FavoriteScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
 

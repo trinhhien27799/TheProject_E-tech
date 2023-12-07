@@ -1,64 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import tailwind from "twrnc";
 import color from "../../colors";
-import { Ionicons } from "@expo/vector-icons";
 import OrderSreen from "./orderSreen";
-import { getMyVoucher } from "../../CallApi/voucherApi";
-import { getLike } from "../../CallApi/productApi";
-import IteamProduct from "../../Component/itemProducts";
+import { getUser } from "../../session";
+import { getBillByStatus } from "../../CallApi/billApi";
+import { err } from "react-native-svg";
 
 const Profile = ({ route }) => {
-    const { username, avatar, fullname } = route.params;
-    const params = route.params;
     const navigation = useNavigation();
-    const [likeData, setLikeData] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getMyVoucher();
-            const like = await getLike();
-            setLikeData(like);
-        }
-        fetchData();
-    }, [])
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile urlBackround={avatar} username={fullname} urlImage={avatar} email={username} navigation={navigation} />
+            <HeaderProfile navigation={navigation} />
             <View>
                 <TouchableOpacity style={styles.viewEdit}
-                    onPress={() => { navigation.navigate('EditProfile', route = { params }) }}
+                    onPress={() => { navigation.navigate('EditProfile') }}
                 >
 
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>Edit Profile</Text>
                 </TouchableOpacity>
                 <OrderSreen />
-                <ButtonBody icon={require('../../img/tag.png')} label="Voucher của tôi" onPress={() => { navigation.navigate('MyVoucher') }} />
-                <View style={{ flexDirection: "row", marginLeft: "7%", alignItems: 'center', marginTop: '10%' }}>
-                    <Image style={{ height: 25, width: 25, alignSelf: "center", marginRight: 5 }} source={require('../../img/shopping.png')} />
-                    <Text>Mua lại</Text>
-                </View>
-                <View>
-                    <View style={{ flexDirection: "row", marginLeft: "7%", alignItems: 'center', marginTop: '10%' }}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginRight: 5 }} source={require('../../img/heart.png')} />
+
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('MyVoucher') }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/voucher.png')} />
+                        <Text>Mã giảm giá đã lưu</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('FavoriteScreen') }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../img/heart.png')} />
                         <Text>Đã thích</Text>
                     </View>
-                    <FlatList
-                        data={likeData}
-                        horizontal
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => {
-                            return <IteamProduct key={item._id} route={item} />
-                        }}
-                    />
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('AddressScreen') }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/contact-list.png')} />
+                        <Text>Sổ địa chỉ</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('ResetPassword') }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/synchronize.png')} />
+                        <Text>Đổi mật khẩu</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
 }
-const HeaderProfile = ({ username, urlImage, email, navigation, urlBackround }) => {
+const HeaderProfile = ({ navigation }) => {
+    const user = getUser()
     return (
-        <ImageBackground source={{ uri: urlBackround }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
+        <ImageBackground source={{ uri: user.background }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.goBack();
@@ -74,11 +74,11 @@ const HeaderProfile = ({ username, urlImage, email, navigation, urlBackround }) 
                 left: Dimensions.get("window").height * .14
             }}>
                 <View style={styles.viewAvatar}>
-                    <Image style={styles.imageHeader} source={{ uri: urlImage }} />
+                    <Image style={styles.imageHeader} source={{ uri: user.avatar }} />
                 </View>
                 <View style={{ flexDirection: 'column' }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'black', textAlign: 'center' }}>{username}</Text>
-                    <Text style={{ marginTop: 15, color: 'black', textAlign: 'center' }}>{email}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'black', textAlign: 'center' }}>{user.fullname}</Text>
+                    <Text style={{ marginTop: 15, color: 'black', textAlign: 'center' }}>{user.username}</Text>
                 </View>
             </View>
             <TouchableOpacity
@@ -90,20 +90,6 @@ const HeaderProfile = ({ username, urlImage, email, navigation, urlBackround }) 
                 <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/exit.png')} />
             </TouchableOpacity>
         </ImageBackground>
-    );
-}
-const ButtonBody = ({ icon, label, onPress }) => {
-    return (
-        <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity
-                onPress={onPress}
-            >
-                <View style={styles.viewButton}>
-                    <Image style={{ height: 20, width: 20, marginLeft: 30, marginRight: 10 }} source={icon} />
-                    <Text style={{ fontWeight: 'bold', marginRight: 30, color: 'grey' }} numberOfLines={2}>{label}</Text>
-                </View>
-            </TouchableOpacity>
-        </View>
     );
 }
 export default Profile;
@@ -158,5 +144,14 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         backgroundColor: color.conHang,
         alignSelf: 'center'
+    },
+    viewItem: {
+        flexDirection: "row",
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'grey'
     }
 });

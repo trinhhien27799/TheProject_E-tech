@@ -82,7 +82,7 @@ const NotificationScreen = () => {
           >
             <Entypo
               name="dots-three-vertical"
-              size={24}
+              size={20}
               color="black"
             />
 
@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    borderBottomWidth: 1.1,
-    borderBottomColor: '#D5D5D5',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'grey',
     alignItems: 'center',
-    padding: 18,
+    padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },

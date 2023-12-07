@@ -1,22 +1,20 @@
-import { Dimensions, Text, View, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import LottieView from 'lottie-react-native'
 
 const LoadingWidget = () => {
     return (
-        <View>
-            <LottieView
-                autoPlay
-                style={[styles.viewLoading]}
-                source={require('../assets/logo.json')}
-            />
-        </View>
+        <LottieView
+            autoPlay
+            style={[styles.viewLoading]}
+            source={require('../assets/logo.json')}
+        />
     )
 }
 export default LoadingWidget;
 const styles = StyleSheet.create({
     viewLoading: {
-        height: 45,
-        width: 45,
-        marginTop:20
+        height: 40,
+        width: 40,
+        alignSelf:'center'
     }
 });

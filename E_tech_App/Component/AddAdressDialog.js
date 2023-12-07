@@ -6,17 +6,14 @@ import tailwind from "twrnc";
 import { addAddress, editAddress } from "../CallApi/AddressAPI";
 
 export const BottomModalInput = ({value}) => {
-    const obj = value;
-    console.log('obj: ' + obj);
-    console.log(obj)
 
-    const [address, setAddress] = useState(obj.address);
-    const [fullname, setFullnamne] = useState(obj.fullname);
-    const [phone, setPhone] = useState(obj.numberphone);
+    const [address, setAddress] = useState(value.address);
+    const [fullname, setFullnamne] = useState(value.fullname);
+    const [phone, setPhone] = useState(value.numberphone);
 
     return (
         <View style={tailwind`flex-auto justify-center`}>
-            <Text style={tailwind `self-center text-base font-bold my-3`}>{obj == null || obj == '' ? 'Thêm' : 'Sửa'} Địa Chỉ</Text>
+            <Text style={tailwind `self-center text-base font-bold my-3`}>{value == null || value == '' ? 'Thêm' : 'Sửa'} Địa Chỉ</Text>
 
             <TextInput
                 label={'Họ và tên'}
@@ -52,12 +49,12 @@ export const BottomModalInput = ({value}) => {
             <TouchableOpacity 
                 style={tailwind`self-center justify-center bg-blue-400 w-36 h-10 mt-10 rounded-md`}
                 onPress={() => {
-                    obj == null || obj == '' 
+                    value == null || value == '' 
                     ? addAddress(fullname, phone, address)
-                    : editAddress(obj._id, fullname, phone, address)  
+                    : editAddress(value._id, fullname, phone, address)  
                 }}
             >
-                <Text style={tailwind`self-center text-white font-bold`}>{obj == null || obj == '' ? 'Thêm' : 'Sửa'} Địa Chỉ</Text>
+                <Text style={tailwind`self-center text-white font-bold`}>{value == null || value == '' ? 'Thêm' : 'Sửa'} Địa Chỉ</Text>
             </TouchableOpacity>
         </View>
     )

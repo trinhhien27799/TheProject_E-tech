@@ -6,7 +6,7 @@ import { FlatList } from 'react-native'
 import tailwind from 'twrnc'
 
 import OrderStatusSet from '../../Component/OrderStatusSet'
-import OrderStatusChangeButton from '../../Component/OrderStatusChangeButton'
+import OrderStatusChangeButton from './OrderStatusChangeButton'
 import { useNavigation } from '@react-navigation/native'
 import { formatPrice } from '../../utils/format'
 import { formatTime } from '../../utils/format'
@@ -48,7 +48,7 @@ const CheckPayScreenFix = ({ orderList }) => {
                         </View>
 
                         <View style={tailwind`justify-center`}>
-                            <OrderStatusChangeButton item={item} statusNum={item.status} />
+                            <OrderStatusChangeButton item={item} />
                         </View>
                     </View>
                 </View>
@@ -60,7 +60,7 @@ const CheckPayScreenFix = ({ orderList }) => {
             data={orderList}
             keyExtractor={(item, index) => index.toString()}
             renderItem={ProductCard}
-            style={{ width: Dimensions.get('window').width}}
+            style={{ width: Dimensions.get('window').width }}
         />
     )
 }

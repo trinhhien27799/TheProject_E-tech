@@ -10,8 +10,9 @@ import * as Location from 'expo-location'
 import Geocoder from 'react-native-geocoding'
 import { useNavigation } from '@react-navigation/native'
 import { addAddress } from '../CallApi/AddressAPI'
+import { BottomModalInput } from '../Component/AddAdressDialog'
 
-const AddAdress = () => {
+const AddAddress = () => {
     const [mapRegion, setMapRegion] = useState(null);
     const [address, setAddress] = useState(null);
     const [fullname, setFullnamne] = useState('');
@@ -83,13 +84,13 @@ const AddAdress = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                
+{/*                 
                 <BottomSheet ref={sheetRef}>
                     <BottomModalInput locationName={address} />
-                </BottomSheet>
+                </BottomSheet> */}
             </View>
         </View>
     )
 }
 
-export default AddAdress
+export default AddAddress

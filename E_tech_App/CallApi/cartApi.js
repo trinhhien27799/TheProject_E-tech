@@ -1,5 +1,4 @@
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../apiService'
 
 const getCart = async () => {

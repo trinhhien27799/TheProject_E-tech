@@ -28,6 +28,8 @@ const SearchScreen = ({ route }) => {
             console.log(error);
         }
     }, []);
+
+    
     const handleSearch = async ({item}) => {
         if (!textSearch) {
             const newSearchItem = { product_name, brand_name };

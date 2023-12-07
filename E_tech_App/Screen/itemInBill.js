@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import CommentButton from "../Component/CommentButton";
 import { formatPrice } from "../utils/format";
+import { checkComment } from "../CallApi/commentAPI";
 
-const ItemInBill = ({ item }) => {
+const ItemInBill = ({ item,status }) => {
     const [caches, setGetCacheArray] = useState([])
     const getCache = async (variationId) => {
         try {
@@ -50,7 +51,7 @@ const ItemInBill = ({ item }) => {
                 <Text style={styles.textTotal}>Tổng cộng: {formatPrice(item.price * item.quantity)}</Text>
             </View>
 
-            {caches.length > 0 && <CommentButton item={item} />}
+            {(caches.length > 0 && status == 2) && <CommentButton item={item} />}
         </View>
     )
 }
