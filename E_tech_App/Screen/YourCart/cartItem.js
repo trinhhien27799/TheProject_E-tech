@@ -25,6 +25,16 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
         }
     }
 
+    useEffect(() => {
+        if (getListCart().length == 0) return
+        const index = getListCart().lastIndexOf(item)
+        if (index > -1) {
+            setChecked(true)
+            setUpdate(new Date().getTime())
+            setShow(index > -1)
+        }
+    }, [])
+
 
     useEffect(() => {
         setPriceItem(quanItem * item.price * (1 - item.percent_discount / 100))
@@ -37,10 +47,11 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
     }, [quanItem])
 
     useEffect(() => {
-        console.log
-        setQuanItem(item.quantity)
-        setPriceItem(item.quantity * item.price * (1 - item.percent_discount / 100))
-        setChecked(false)
+        if (getListCart().length == 0) {
+            setQuanItem(item.quantity)
+            setPriceItem(item.quantity * item.price * (1 - item.percent_discount / 100))
+            setChecked(false)
+        }
     }, [clear])
 
     const eventChecked = (checked) => {
@@ -90,7 +101,7 @@ const CartItem = ({ item, index, setShow, setUpdate, clear, setData, data }) => 
                     eventChecked(checked)
                 }} />
             </View>
-            <View style={{ flexDirection: 'row', marginTop: 10}}>
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
                 <View style={{ flexDirection: 'row', width: 80, justifyContent: 'center' }}>
                     <TouchableOpacity
                         onPress={() => {
@@ -133,7 +144,9 @@ const styles = StyleSheet.create({
         flexGrow: 0,
         borderBottomWidth: 0.5,
         borderBottomColor: '#D5D5D5',
-        paddingVertical: 10
+        paddingVertical: 10,
+        paddingHorizontal:15,
+        backgroundColor:'white'
     },
     imgItem: {
         width: 60,
@@ -156,8 +169,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#bbbbbb',
         paddingHorizontal: 6,
         borderRadius: 2,
-        flexGrow:0,
-        justifyContent:'center'
+        flexGrow: 0,
+        justifyContent: 'center'
     },
     checkbox: {
         margin: 8,

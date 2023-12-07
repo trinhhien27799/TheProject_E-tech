@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Text, FlatList, TouchableOpacity, View, Dimensions } from 'react-native'
+import { Text, FlatList, TouchableOpacity, View, Dimensions, StyleSheet } from 'react-native'
 import tailwind from 'twrnc'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import CheckPayScreenFix from './CheckPayScreenFix'
@@ -87,22 +87,15 @@ const NewOrderScreen = () => {
     }
 
     return (
-        <View style={{ backgroundColor: 'whitesmoke', alignItems: 'center', flex: 1, width: Dimensions.get('window').width }}>
-            <View style={{
-                backgroundColor: 'white', width: Dimensions.get('window').width, flexDirection: 'row',
-                borderBottomColor: 'grey', borderBottomWidth: 1
-            }}>
+        <View style={styles.container}>
+            <View style={styles.header}>
                 <TouchableOpacity
-                    style={tailwind`bg-white w-10 h-10 m-3 justify-center rounded-full shadow-md`}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Image
-                        source={require('../../img/previous.png')}
-                        style={tailwind`w-7 h-7 self-center`}
+                    onPress={() => { navigation.goBack() }}>
+                    <Image source={require('../../img/arrow-left.png')}
+                        style={{ width: 16, height: 16, marginEnd: 20 }}
                     />
                 </TouchableOpacity>
-
-                <Text style={tailwind`text-base font-bold mt-4.7`}>Đơn hàng của bạn</Text>
+                <Text style={styles.textHeader}>Đơn hàng của bạn</Text>
             </View>
 
             <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>
@@ -134,3 +127,24 @@ const NewOrderScreen = () => {
 }
 
 export default NewOrderScreen
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+      alignItems: 'center'
+    },
+    header: {
+      width: Dimensions.get('window').width,
+      borderBottomWidth: 1.1,
+      borderBottomColor: '#D5D5D5',
+      alignItems: 'center',
+      paddingVertical: 10,
+      flexDirection: 'row',
+      paddingHorizontal: 15,
+    },
+    textHeader: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+  })

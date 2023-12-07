@@ -1,49 +1,50 @@
-import { EvilIcons, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions } from "react-native";
-import userModel from "../../Model/user";
-import Dialog from "react-native-dialog";
 import { useNavigation } from "@react-navigation/native";
 import HeaderItem from "../../Component/headerItem";
 import * as ImagePicker from 'expo-image-picker';
-import { Camera, CameraType } from 'expo-camera';
 import { updateAvatar, updateFullname } from "../../CallApi/userApi";
+import { getUser } from "../../session";
 
-const EditProfile = ({ navigation, route }) => {
-    const userData = route.params.params;
+const EditProfile = () => {
+    const navigation = useNavigation()
+    const userData = getUser();
     const [isPasswordShow, setisPasswordShow] = useState(false);
     const [image, setImage] = useState(userData.avatar);
-    const [fullname,setFullname] = useState(userData.fullname);
-    const saveProfile = async() => {
+    const [fullname, setFullname] = useState(userData.fullname);
+
+
+    const saveProfile = async () => {
         const Avatar = await updateAvatar(image)
         const updateName = await updateFullname(fullname)
-        if(Avatar.code == 200 && updateName.code == 200){
+        if (Avatar.code == 200 && updateName.code == 200) {
             navigation.goBack();
-        }else if(Avatar.message){
+        } else if (Avatar.message) {
             alert(Avatar.message)
-        }else{
+        } else {
             alert(updateName.message)
         }
     }
-    
-    const imagePicker = async  () => {
+
+    const imagePicker = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-          });
-      
-          if (!result.canceled) {
+        });
+
+        if (!result.canceled) {
             setImage(result.assets[0].uri);
-          }
+        }
     }
 
     return (
         <View style={{ paddingTop: '5%' }}>
             <HeaderItem title={'Edit Profile'} />
             <TouchableOpacity
-                onPress={()=>imagePicker()}
+                onPress={() => imagePicker()}
             >
                 <Image style={styles.circleAvatar} source={{ uri: image }} resizeMode="cover" />
 
@@ -62,17 +63,17 @@ const EditProfile = ({ navigation, route }) => {
     );
 };
 
-const TextFields = ({fullname, user, isPasswordShow, setisPasswordShow,setFullname }) => {
+const TextFields = ({ fullname, user, isPasswordShow, setisPasswordShow, setFullname }) => {
     return (
         <View>
-            <ItemProfile value={fullname} title={'Full name'} setFullname={setFullname}/>
+            <ItemProfile value={fullname} title={'Full name'} setFullname={setFullname} />
             <ItemProfile value={user.username} title={'Email'} />
             <ItemProfile username={user.username} value={'mật khẩu là không có mật khẩu'} title={'Password'} isPasswordShow={isPasswordShow} setisPasswordShow={setisPasswordShow} />
         </View>
     );
 }
 
-const ItemProfile = ({setFullname, value, title, isPasswordShow, setisPasswordShow, username }) => {
+const ItemProfile = ({ setFullname, value, title, isPasswordShow, setisPasswordShow, username }) => {
     const navigation = useNavigation();
     return (
         <View style={{ margin: 20 }}>
@@ -83,7 +84,7 @@ const ItemProfile = ({setFullname, value, title, isPasswordShow, setisPasswordSh
                     value={value}
                     secureTextEntry={title == 'Password'}
                     editable={title != 'Password'}
-                    onChangeText={(text)=>setFullname(text)}
+                    onChangeText={(text) => setFullname(text)}
                 />
                 {title == 'Password' ? (
                     <TouchableOpacity

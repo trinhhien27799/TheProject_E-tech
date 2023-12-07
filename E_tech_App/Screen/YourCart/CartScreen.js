@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { formatPrice } from '../../utils/format'
 import LoadingWidget from '../../Component/loading'
 import CartItem from './cartItem'
-import { getListCart, clearListCart } from '../../session'
+import { getListCart, clearListCart, setListCart } from '../../session'
 import LottieView from 'lottie-react-native'
 
 const CartScreen = () => {
@@ -27,8 +27,11 @@ const CartScreen = () => {
       setLoading(true)
       setData([])
       const response = await getCart()
+      const resultArray = response.filter((itemA) =>
+        getListCart().some((itemB) => itemB._id === itemA._id)
+      )
+      setListCart(resultArray)
       setData(response)
-      clearListCart()
     } catch (error) {
       console.log(`Cart Screen : ${error}`)
     } finally {
@@ -214,16 +217,16 @@ const styles = StyleSheet.create({
   },
 
   listCart: {
-    paddingHorizontal: 10,
     marginBottom: 10,
     width: Dimensions.get('screen').width
   },
   header: {
-    borderBottomWidth: 1.1,
-    borderBottomColor: '#D5D5D5',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'grey',
     alignItems: 'center',
-    padding: 10,
-    flexDirection: 'row'
+    padding: 15,
+    flexDirection: 'row',
+    backgroundColor:'white'
   },
   textHeader: {
     fontSize: 20,
@@ -231,8 +234,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    padding: 12
+    backgroundColor: 'whitesmoke',
   },
 
 })

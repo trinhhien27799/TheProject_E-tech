@@ -4,7 +4,7 @@ import MainHeader from "./MainHeader"
 import Banner from "./banner"
 import ListProduct from "./listProduct"
 import BestSeller from "./bestSeller"
-import FavoriteScreen from "./FavoriteScreen"
+import FavoriteScreen from "../favorite/FavoriteScreen"
 import ListBrand from "./listBrand"
 
 const Home = ({ navigation, route }) => {

@@ -1,129 +1,195 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import HeaderItem from "../../Component/headerItem";
-import { Ionicons } from "@expo/vector-icons";
+
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from "react-native";
+import LoadingWidget from "../../Component/loading";
 import { resetPassword } from "../../CallApi/userApi";
-import { useNavigation, useRoute } from "@react-navigation/native";
-const ResetPassword = ({route}) => {
-    const navigation = useNavigation();
-    const username = route.params.username;
-    const [isPasswordShow, setPasswordShow] = useState(false);
-    const [isNewPassword, setNewPassword] = useState(false);
-    const [isConfirmPassword, setConfirmPassword] = useState(false);
-    const [isPassword, setIsPassword] = useState('');
-    const [isNewPass, setIsNewPass] = useState('');
-    const [isConfirmPass, setIsConfirmPass] = useState('');
-    const [error, setError] = useState('');
-    const [passWordError, setPassWordError] = useState('');
-    const [confirmPassErr, setconfirmPassErr] = useState('');
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "../../apiService";
 
-    const handlSave = () => {
 
-        if (validate()) {
-            resetPassword(username,isPassword,isNewPass);
+const ResetPassword = () => {
+    const [showPassOld, setShowPassOld] = useState(false)
+    const [showPassNew, setShowPassNew] = useState(false)
+    const [showPassNew2, setShowPassNew2] = useState(false)
 
+    const [passOld, setPassOld] = useState('')
+    const [passNew, setPassNew] = useState('')
+    const [passNew2, setPassNew2] = useState('')
+
+
+    const [warningPassOld, setWarningPassOld] = useState(null)
+    const [warningPassNew, setWarningPassNew] = useState(null)
+    const [warningPassNew2, setWarningPassNew2] = useState(null)
+
+    const [checkRepeatPassword, setCheckRepeatPassword] = useState('')
+
+    const [allowUpdate, setAllowUpdate] = useState(false)
+
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        setAllowUpdate(warningPassOld == false && warningPassNew == false && warningPassNew2 == false)
+    }, [warningPassOld, warningPassNew, warningPassNew2])
+
+
+    const onChangeTextPassOld = (text) => {
+        const newText = text.toString().trim()
+        setWarningPassOld(newText.length < 6)
+        setPassOld(newText)
+    }
+
+    const onChangeTextPassNew = (text) => {
+        const newText = text.toString().trim()
+        setWarningPassNew(newText.length < 6)
+        setPassNew(newText)
+    }
+
+    const onChangeTextPassNew2 = (text) => {
+        const newText = text.toString().trim()
+        if (newText.length < 6) {
+            setWarningPassNew2(true)
+            setCheckRepeatPassword("Mật khẩu nhiều hơn 5 kí tự...")
+        } else {
+            if (newText === passNew) {
+                setWarningPassNew2(false)
+            } else {
+                setWarningPassNew2(true)
+                setCheckRepeatPassword("Mật khẩu không trùng khớp...")
+            }
+        }
+        setPassNew2(newText)
+    }
+
+    const updatePassword = async () => {
+        try {
+            setLoading(true)
+            const response = await resetPassword(passOld, passNew)
+            if (response.token) {
+                setAuthToken(response.token)
+                await AsyncStorage.setItem('token', response.token)
+                alert("Cập nhật thành công")
+            } else {
+                alert(response)
+            }
+
+        } catch (error) {
+            console.log('updatePassword: ', error)
+            alert("Cập nhật thất bại")
+        } finally {
+            setLoading(false)
+            setWarningPassOld(null)
+            setWarningPassNew(null)
+            setWarningPassNew2(null)
+            setPassOld('')
+            setPassNew('')
+            setPassNew2('')
+            setShowPassOld(false)
+            setShowPassNew(false)
+            setShowPassNew2(false)
         }
     }
-    const validate = () => {
-        if (isPassword.length == 0 || isNewPass.length == 0 || isConfirmPass.length == 0) {
-            setError("Vui lòng điền đầy đủ thông tin")
-            setPassWordError("Vui lòng điền đầy đủ thông tin");
-            setconfirmPassErr("Vui lòng điền đầy đủ thông tin")
-            return false;
-        } else
-        if (isPassword.length < 6 || isNewPass.length < 6 || isConfirmPass.length < 6) {
-            setError("Mật khẩu phải trên 6 ký tự")
-            setPassWordError("Mật khẩu phải trên 6 ký tự");
-            setconfirmPassErr("Mật khẩu phải trên 6 ký tự")
-            return false;
-        }else
-            if (isPassword == isNewPass) {
-                setError('')
-                setconfirmPassErr('')
-                setPassWordError("Mật khẩu mới không được trùng mật khẩu cũ")
-                return false;
-            } else
-                if (isNewPass != isConfirmPass) {
-                    setPassWordError('');
-                    setconfirmPassErr("Mật khẩu không trùng khớp");
-                    return false;
-                } else
-                    setconfirmPassErr('')
-        return true;
-
-    }
-
 
     return (
-        <View style={styles.viewContainer}>
-            <HeaderItem title={'ResetPassword'} />
-            <TextFields title={'Nhập mật khẩu'} setPasswordShow={setPasswordShow} isPasswordShow={isPasswordShow} setChangeText={setIsPassword} />
-            {error && (<Text style={{ color: 'red', marginLeft: '5%' }}>{error}</Text>)}
-            <TextFields title={'Nhập mật khẩu mới'} setPasswordShow={setNewPassword} isPasswordShow={isNewPassword} setChangeText={setIsNewPass} />
-            {passWordError && (<Text style={{ color: 'red', marginLeft: '5%' }}>{passWordError}</Text>)}
-            <TextFields title={'Nhập lại mật khẩu'} setPasswordShow={setConfirmPassword} isPasswordShow={isConfirmPassword} setChangeText={setIsConfirmPass} />
-            {confirmPassErr && (<Text style={{ color: 'red', marginLeft: '5%' }}>{confirmPassErr}</Text>)}
-            <TouchableOpacity
-                style={styles.buttonSave}
-                onPress={handlSave}
-            >
-                <Text style={{ fontSize: 20, textAlign: 'center', color: 'white', fontWeight: 'bold' }}>
-                    Thay đổi mật khẩu
-                </Text>
-            </TouchableOpacity>
-        </View>
-    )
-}
-const TextFields = ({ setPasswordShow, isPasswordShow, title, setChangeText }) => {
-    return (
-        <View style={{ margin: 20 }}>
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-            <View style={styles.viewInput}>
-                <TextInput
-                    style={styles.textField}
-                    secureTextEntry={!isPasswordShow}
-                    onChangeText={(text) => setChangeText(text)}
+        <View style={styles.container}>
+            <Text style={styles.title}>Nhập mật khẩu cũ:</Text>
+            <View style={[styles.viewInput, { borderColor: warningPassOld == null ? 'black' : warningPassOld == true ? 'red' : 'green' }]}>
+                <TextInput placeholder="Mật khẩu nhiều hơn 5 kí tự..." style={styles.textInput}
+                    secureTextEntry={!showPassOld}
+                    onChangeText={(text) => { onChangeTextPassOld(text) }}
+                    value={passOld}
                 />
                 <TouchableOpacity
-                    onPress={() => {
-                        setPasswordShow(!isPasswordShow);
-                    }}
-                >
-                    <Ionicons size={15} name={isPasswordShow ? 'eye-off' : 'eye'} />
+                    onPress={() => { setShowPassOld(!showPassOld) }}>
+                    {showPassOld ?
+                        <Image style={styles.icon} source={require('../../assets/vision.png')} />
+                        :
+                        <Image style={styles.icon} source={require('../../assets/hide.png')} />}
                 </TouchableOpacity>
-
             </View>
-        </View>
+            {warningPassOld && <Text style={{ color: 'red' }}>Mật khẩu nhiều hơn 5 kí tự...</Text>}
 
+            <Text style={styles.title}>Nhập mật khẩu mới:</Text>
+            <View style={[styles.viewInput, { borderColor: warningPassNew == null ? 'black' : warningPassNew == true ? 'red' : 'green' }]}>
+                <TextInput placeholder="Mật khẩu nhiều hơn 5 kí tự..." style={styles.textInput}
+                    secureTextEntry={!showPassNew}
+                    onChangeText={(text) => { onChangeTextPassNew(text) }}
+                    value={passNew}
+                />
+                <TouchableOpacity
+                    onPress={() => { setShowPassNew(!showPassNew) }}>
+                    {showPassNew ?
+                        <Image style={styles.icon} source={require('../../assets/vision.png')} />
+                        :
+                        <Image style={styles.icon} source={require('../../assets/hide.png')} />}
+                </TouchableOpacity>
+            </View>
+            {warningPassNew && <Text style={{ color: 'red' }}>Mật khẩu nhiều hơn 5 kí tự...</Text>}
+
+            <Text style={styles.title}>Xác nhận mật khẩu mới:</Text>
+            <View style={[styles.viewInput, { borderColor: warningPassNew2 == null ? 'black' : warningPassNew2 == true ? 'red' : 'green' }]}>
+                <TextInput placeholder="Mật khẩu nhiều hơn 5 kí tự..." style={styles.textInput}
+                    secureTextEntry={!showPassNew2}
+                    onChangeText={(text) => { onChangeTextPassNew2(text) }}
+                    value={passNew2}
+                />
+                <TouchableOpacity
+                    onPress={() => { setShowPassNew2(!showPassNew2) }}>
+                    {showPassNew2 ?
+                        <Image style={styles.icon} source={require('../../assets/vision.png')} />
+                        :
+                        <Image style={styles.icon} source={require('../../assets/hide.png')} />}
+                </TouchableOpacity>
+            </View>
+            {warningPassNew2 && <Text style={{ color: 'red' }}>{checkRepeatPassword}</Text>}
+            <View style={{ height: 30, width: 0 }} />
+
+            {loading ? <LoadingWidget /> :
+                <TouchableOpacity
+                    onPress={updatePassword}
+                    disabled={!allowUpdate}
+                    style={[styles.viewButton, { backgroundColor: allowUpdate ? 'green' : 'grey' }]}>
+                    <Text style={styles.textButton}>Cập nhật</Text>
+                </TouchableOpacity>}
+        </View>
     )
 }
+
 
 export default ResetPassword;
 const styles = StyleSheet.create({
-    viewContainer: {
-        marginTop: '10%',
-        justifyContent: 'center',
+    container: {
+        paddingHorizontal: 20,
+        paddingTop: 25,
+    },
+    title: {
+        fontSize: 18,
+        marginTop: 20
     },
     viewInput: {
         flexDirection: 'row',
-        height: 50,
-        borderWidth: 1,
-        borderRadius: 10,
-        marginTop: 5,
-        padding: '3%',
-        borderColor: 'grey',
         alignItems: 'center',
+        borderRadius: 8,
+        borderWidth: 1,
+        marginTop: 10,
+        paddingHorizontal: 5
     },
-    textField: {
-        flex: 1
-    },
-    buttonSave: {
-        justifyContent: 'center',
-        alignSelf: 'center',
-        width: 200,
+    icon: {
+        width: 50,
         height: 50,
-        backgroundColor: '#2180F1',
-        marginTop: '5%',
-        borderRadius: 10,
+        resizeMode: 'center',
+    },
+    textInput: {
+        flex: 1,
+        marginStart: 15
+    },
+    viewButton: {
+        borderRadius: 8,
+        alignItems: 'center',
+        paddingVertical: 15,
+    },
+    textButton: {
+        color: 'white',
+        fontSize: 18
     }
+
 });
