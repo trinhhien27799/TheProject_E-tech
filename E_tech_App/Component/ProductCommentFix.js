@@ -17,9 +17,9 @@ const CommentCard = ({ item }) => {
                     <View>
                         <View style={tailwind `flex-row`}>
                             <Text style={tailwind`ml-2 mt-2 font-bold`}>{item.author.fullname}</Text>
-                            <RatingStar starNum={item.numStar} style={'h-4 ml-25'}/>
+                            <RatingStar starNum={item.numStar} style={'h-4 ml-14'}/>
                         </View>
-                        <Text style={tailwind`ml-2 mt-1`}>{item.date}</Text>
+                        <Text style={tailwind`ml-2 mt-1 w-65`}>{item.product.property}</Text>
                     </View>              
                 </View>
             </View>
@@ -29,8 +29,22 @@ const CommentCard = ({ item }) => {
                 <Text style={tailwind `justify-center text-base`}>{item.content}</Text>
             </View>
 
+            <View style={tailwind `mb-3`}>
+                <FlatList
+                    data={item.image}
+                    horizontal
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <Image
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10 }}
+                            source={{ uri: item }}
+                        />
+                    )}
+                />
+            </View>
+
             {/* Comment button */}
-            <View style={tailwind `flex-row py-2 justify-center border border-gray-400 rounded-lg`}>
+            {/* <View style={tailwind `flex-row py-2 justify-center border border-gray-400 rounded-lg`}>
                 <TouchableOpacity style={tailwind `border-r p-3 w-50 border-gray-400`}>
                     <View style={tailwind `flex-row self-center`}>
                         <Image
@@ -52,7 +66,7 @@ const CommentCard = ({ item }) => {
                         <Text>Phản Hồi</Text>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </View>
     )
 }

@@ -19,12 +19,7 @@ const PTTT = () => {
     const navigation = useNavigation();
 
     const Check = (value) => {
-        console.log(value);
-        if (value == 1) {
-            navigation.goBack()
-        } else {
-            navigation.navigate('DialogQR')
-        }
+        
     }
 
     const selectedButtonList = [
@@ -63,7 +58,7 @@ const PTTT = () => {
                         renderItem={({ item }) => {
                             return (
                                 <View style={tailwind`flex-row py-2 `}>
-                                    <RadioButton value={item.value} />
+                                    <RadioButton value={item} />
                                     <Text style={tailwind`mt-1.6`}>{item.name}</Text>
                                 </View>
                             )

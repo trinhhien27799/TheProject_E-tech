@@ -28,13 +28,14 @@ import { clearListCart, getListCart } from '../session';
 const Pay = ({route}) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
-  const {address, shipping, voucher} = route.params;
+  const {address, shipping, voucher, payment} = route.params;
 
   console.log(address, shipping);
 
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
   const [voucher_id, setVoucher_id] = useState();
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
   
@@ -63,10 +64,14 @@ const Pay = ({route}) => {
     else if(voucher != null){
       setVoucher_id(voucher);
     }
+    else if(payment != null){
+      setPaymentMethod(payment); 
+    }
     else{
       setSelectedAddresses(null);
       setShipping_id(null);
       setVoucher_id(null);
+      setPaymentMethod(null);
     }
   })
 
@@ -331,7 +336,10 @@ const Pay = ({route}) => {
               style={styles.imgIcon}
             />
             <Text style={styles.textTitle}>
-              Phương thức thanh toán
+              {paymentMethod == null
+              ? 'Phương thức thanh toán'
+              : paymentMethod.value
+              }
             </Text>
           </View>
           <View>
