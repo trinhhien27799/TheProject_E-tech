@@ -111,7 +111,6 @@ const CartScreen = () => {
     return <CartItem item={item} index={index} setShow={setShow} setUpdate={setUpdate} clear={clear} setData={setData} data={data} />
   }
 
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -171,7 +170,7 @@ const CartScreen = () => {
                   <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
                 </View>
                 <View style={styles.confirmContainer}>
-                  <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
+                  <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen', {address: null, shipping: null, voucher: null})}>
                     <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
                   </TouchableOpacity>
                 </View>

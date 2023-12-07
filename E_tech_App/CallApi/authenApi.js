@@ -70,20 +70,14 @@ export const verifyOTP = async (username, otp) => {
 export const forgotPassword = async (username, password, navigation) => {
 
     try {
-        const response = await fetch(`${API_USER_URL}/api/user/forgot-password`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-        })
-        const data = await response.json();
-        console.log(data);
+        const response = await api.post('/user/forgot-password',{username, password})
+        const data = await response.data;
         if (data.code === 200) {
             // navigation.navigate('ButtonNavigation');
             navigation.navigate('Taomk2')
         } else {
-            alert(data.message)
+            alert(data.message);
+            navigation.navigate('Login');
         }
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error);

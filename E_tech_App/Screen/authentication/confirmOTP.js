@@ -1,16 +1,10 @@
-import React, { useState,useRef,useEffect } from 'react';
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { verifyOTP } from '../../CallApi/authenApi';
-const Quenmk2 = ({route}) => {
+import { insertOtp, verifyOTP } from '../../CallApi/authenApi';
+import tailwind from 'twrnc';
+const ConfirmOTP = ({ route }) => {
   const isSignUpPressed = route.params.isSignUpPressed;
   const email = route.params.email;
   const navigation = useNavigation();
@@ -27,30 +21,30 @@ const Quenmk2 = ({route}) => {
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-};
-useEffect(() => {
-  if (isSignUpPressed) {
-    const interval = setInterval(() => {
-      if (remainingTime > 0) {
-        setRemainingTime(remainingTime - 1);
-      } else {
-        clearInterval(interval);
-        setCheckTime(true);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }
+  };
+  useEffect(() => {
+    if (isSignUpPressed) {
+      const interval = setInterval(() => {
+        if (remainingTime > 0) {
+          setRemainingTime(remainingTime - 1);
+        } else {
+          clearInterval(interval);
+          setCheckTime(true);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
 
-}, [remainingTime, isSignUpPressed]);
+  }, [remainingTime, isSignUpPressed]);
 
 
-  // const isValidOk = () => !!otp.trim();
+  const isValidOk = () => !!otp.join().trim();
   const handleCheck = async () => {
     const otpString = otp.join("");
     try {
       const verificationResult = await verifyOTP(email, otpString);
-      if(verificationResult.code ==200){
-        navigation.navigate('Taomk',email)
+      if (verificationResult.code == 200) {
+        navigation.navigate('Taomk', email)
       }
       alert(verificationResult.message);
     } catch (error) {
@@ -59,46 +53,56 @@ useEffect(() => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={tailwind `flex-1 justify-center`}>
       <View style={styles.view1}>
-        <Ionicons name="arrow-back" size={24} color="black" onPress={() => {
-          navigation.navigate('Quenmk1')
-        }} />
-        <Text style={styles.text}>Quên mật khẩu</Text>
+        <TouchableOpacity
+          style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full m-5`}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Ionicons name="arrow-back" style={tailwind`self-center`} size={20} color="black" />
+        </TouchableOpacity>
+
+        <Text style={tailwind `text-lg font-bold mt-6`}>Quên mật khẩu</Text>
       </View>
       <View style={styles.view}>
         <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10 }}>
           Xác thực email
         </Text>
-        <Text style={{ color: 'grey' }}> Nhập mã xác minh gồm 6 chữ số gửi tới địa chỉ email của bạn.</Text>
+        <Text style={{ color: 'grey' }}>Nhập mã xác minh gồm 6 chữ số gửi tới địa chỉ email của bạn.</Text>
         <View style={{ marginTop: 30 }}>
           <BoxVerity
-                firtInput={firtInput}
-                secondInput={secondInput}
-                thirdInput={thirdInput}
-                fourInput={fourInput}
-                fiveInput={fiveInput}
-                sixInput={sixInput}
-                otp={otp}
-                onOtpChange={handleOtpChange}
-            />
+            firtInput={firtInput}
+            secondInput={secondInput}
+            thirdInput={thirdInput}
+            fourInput={fourInput}
+            fiveInput={fiveInput}
+            sixInput={sixInput}
+            otp={otp}
+            onOtpChange={handleOtpChange}
+          />
         </View>
-        <View style={{justifyContent:'center',marginBottom:'5%',flexDirection:'row'}}>
-           <TouchableOpacity
-           disabled={!checkTime}
-           onPress={()=>setRemainingTime(120)}
-           >
-            <Text style={{color:checkTime?'#0EF774':'#CED3D0'}}>Gửi lại mã xác nhận</Text>
-           </TouchableOpacity>
-           {remainingTime>=1 ?(<Text style={{ color: 'red',marginLeft:5 }}>{remainingTime} giây</Text>):null }
-           
+        <View style={{ justifyContent: 'center', marginBottom: '5%', flexDirection: 'row' }}>
+          <TouchableOpacity
+            disabled={!checkTime}
+            onPress={() => {
+              insertOtp(email, true);
+              setRemainingTime(120);
+              setCheckTime(false);
+            }}
+          >
+            <Text style={{ color: checkTime ? 'black' : '#CED3D0' }}>Gửi lại mã xác nhận</Text>
+          </TouchableOpacity>
+          {remainingTime >= 1 ? (<Text style={{ color: 'red', marginLeft: 5 }}>{remainingTime} giây</Text>) : null}
+
         </View>
         <TouchableOpacity
-        //  disabled={!isValidOk()}
+          disabled={!isValidOk()}
           onPress={handleCheck}
-          style={[styles.button]}
-          >
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
+          style={tailwind `bg-blue-600 w-40 p-4 rounded-lg shadow-md self-center`}
+        >
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', alignSelf: 'center' }}>
             TIẾP TỤC
           </Text>
         </TouchableOpacity>
@@ -108,82 +112,82 @@ useEffect(() => {
 };
 const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, sixInput, onOtpChange }) => {
   return (
-      <View style={styles.boxContainer}>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  onChangeText={
-                      (text) => {
-                          text && secondInput.current.focus();
-                          onOtpChange(0, text);
-                      }
-                  }
-                  ref={firtInput}
+    <View style={styles.boxContainer}>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          onChangeText={
+            (text) => {
+              text && secondInput.current.focus();
+              onOtpChange(0, text);
+            }
+          }
+          ref={firtInput}
 
-              />
-          </View>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  ref={secondInput}
-                  onChangeText={(text) => {
-                      text && thirdInput.current.focus();
-                      onOtpChange(1, text);
-                  }}
-              />
-          </View>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  ref={thirdInput}
-                  onChangeText={(text) => {
-                      text && fourInput.current.focus();
-                      onOtpChange(2, text);
-                  }}
-              />
-          </View>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  ref={fourInput}
-                  onChangeText={(text) => {
-                      text && fiveInput.current.focus();
-                      onOtpChange(3, text);
-                  }}
-              />
-          </View>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  ref={fiveInput}
-                  onChangeText={(text) => {
-                      text && sixInput.current.focus();
-                      onOtpChange(4, text);
-                  }}
-              />
-          </View>
-          <View style={styles.otpBox}>
-              <TextInput
-                  style={styles.otpText}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  ref={sixInput}
-                  onChangeText={(text) => {
-                      onOtpChange(5, text);
-                  }}
-              />
-          </View>
+        />
       </View>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          ref={secondInput}
+          onChangeText={(text) => {
+            text && thirdInput.current.focus();
+            onOtpChange(1, text);
+          }}
+        />
+      </View>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          ref={thirdInput}
+          onChangeText={(text) => {
+            text && fourInput.current.focus();
+            onOtpChange(2, text);
+          }}
+        />
+      </View>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          ref={fourInput}
+          onChangeText={(text) => {
+            text && fiveInput.current.focus();
+            onOtpChange(3, text);
+          }}
+        />
+      </View>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          ref={fiveInput}
+          onChangeText={(text) => {
+            text && sixInput.current.focus();
+            onOtpChange(4, text);
+          }}
+        />
+      </View>
+      <View style={styles.otpBox}>
+        <TextInput
+          style={styles.otpText}
+          keyboardType="number-pad"
+          maxLength={1}
+          ref={sixInput}
+          onChangeText={(text) => {
+            onOtpChange(5, text);
+          }}
+        />
+      </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
   },
   view1: {
     flexDirection: 'row',
-    height: 30,
+    backgroundColor: 'white'
   },
   viewInput: {
     width: '100%',
@@ -234,22 +238,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row'
-},
-otpBox: {
+  },
+  otpBox: {
     borderRadius: 5,
     height: 60,
     width: 50,
     margin: 10,
     borderColor: 'black',
     borderWidth: 0.5
-},
-otpText: {
+  },
+  otpText: {
     fontSize: 25,
     padding: 0,
     textAlign: 'center',
     paddingHorizontal: 18,
     paddingVertical: 10
-}
+  }
 });
 
-export default Quenmk2;
+export default ConfirmOTP;

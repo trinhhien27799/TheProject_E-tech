@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+
 import { setUser } from "../../session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const SettingScreen = () => {
@@ -35,6 +36,7 @@ const SettingScreen = () => {
                     setUser(null)
                     navigation.replace('Login')
                 }}
+
             >
                 <Text style={{ fontWeight: 'bold', color: 'white' }}>Đăng xuất</Text>
             </TouchableOpacity>

@@ -28,37 +28,61 @@ import { clearListCart, getListCart } from '../session';
 const Pay = ({route}) => {
   const navigation = useNavigation();
   const [cart, setCart] = useState([]);
+  const {address, shipping, voucher, payment} = route.params;
 
-  var address = getAddress();
+  console.log(address, shipping);
+
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
   const [voucher_id, setVoucher_id] = useState();
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
   
+  // useEffect(() => {
+  //   if(route.params?.data){
+  //     if(!route.params.data.voucher){
+  //       console.log('route: ' + route.params.data.voucher._id);
+  //       setVoucher_id(route.params.data.voucher.voucher._id)
+  //     }
+  //     else if(!route.params.data.shipping){
+  //       setShipping_id(route.params.data.shipping)
+  //     }
+  //     else if(!route.params.data.address){
+  //       setVoucher_id(route.params.data.address.address._id)
+  //     }
+  //   }
+  // }, [route.params?.data])
+
   useEffect(() => {
-    if(route.params?.data){
-      if(!route.params.data.voucher){
-        console.log('route: ' + route.params.data.voucher._id);
-        setVoucher_id(route.params.data.voucher.voucher._id)
-      }
-      else if(!route.params.data.shipping){
-        setShipping_id(route.params.data.shipping)
-      }
-      else if(!route.params.data.address){
-        setVoucher_id(route.params.data.address.address._id)
-      }
+    if(address != null){
+      setSelectedAddresses(address);
     }
-  }, [route.params?.data])
+    else if(shipping != null){
+      setShipping_id(shipping);
+    }
+    else if(voucher != null){
+      setVoucher_id(voucher);
+    }
+    else if(payment != null){
+      setPaymentMethod(payment); 
+    }
+    else{
+      setSelectedAddresses(null);
+      setShipping_id(null);
+      setVoucher_id(null);
+      setPaymentMethod(null);
+    }
+  })
 
+  useEffect(() => {
+    setCart(getListCart())
+}, [])
 
-//   useEffect(() => {
-//     setCart(getListCart())
-// }, [])
+  // useEffect(() => {
+  //   setSelectedAddresses(getAddress());
+  // }, [])
 
-//   useEffect(() => {
-//     setSelectedAddresses(getAddress());
-//   }, [])
 
 //   useEffect(() => {
 //     setVoucher_id(getHandleVoucher());
@@ -73,13 +97,7 @@ const Pay = ({route}) => {
   // console.log('voucher: ' + voucher_id);
   // console.log('shipping: ' + shipping_id);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getCart();
-  //     setCart(data);
-  //   }
-  //   fetchData();
-  // }, []);
+  console.log(getAddress());
 
   
   const getListId = cart.map((item) => item._id);
@@ -129,13 +147,17 @@ const Pay = ({route}) => {
             <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ChooseAddressScreen', {listOnlyAddresses: listAddressData}) }}>
               {/* Address Detail */}
               <View>
-                <Text style={styles.textInfo} >Tên người mua - Số điện thoại</Text>
+                <Text style={styles.textInfo} >{
+                selectedAddresses == null 
+                ? 'Tên người mua - Số điện thoại'
+                : selectedAddresses.fullname + ' - ' + selectedAddresses.numberphone
+                }</Text>
                 {selectedAddresses == null
                   ? <Text style={{ marginTop: 5 }}>
                     Địa chỉ
                   </Text>
                   : <Text style={{ marginTop: 5 }}>
-                    {selectedAddresses}
+                    {selectedAddresses.address}
                   </Text>
                 }
                 
@@ -247,7 +269,7 @@ const Pay = ({route}) => {
           <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ShippingMethod') }}>
               {/* Address Detail */}
               <View>
-                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id}</Text>
+                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id.name}</Text>
               </View>
 
               <Feather
@@ -283,7 +305,7 @@ const Pay = ({route}) => {
                   marginLeft: 2,
                   marginBottom: 'auto',
                 }}>
-                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id}
+                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id.code}
               </Text> 
               {/* : <Text
                 style={{
@@ -314,7 +336,10 @@ const Pay = ({route}) => {
               style={styles.imgIcon}
             />
             <Text style={styles.textTitle}>
-              Phương thức thanh toán
+              {paymentMethod == null
+              ? 'Phương thức thanh toán'
+              : paymentMethod.value
+              }
             </Text>
           </View>
           <View>

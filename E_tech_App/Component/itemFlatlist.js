@@ -4,6 +4,7 @@ import StarRating from "./startRating";
 import { useNavigation } from "@react-navigation/native";
 import { formatPrice } from "../utils/format";
 import tailwind from 'twrnc'
+import StartRating from "./startRating";
 
 const ItemFlatlist = ({ route }) => {
   const navigation = useNavigation();
