@@ -7,6 +7,10 @@ import * as ImagePicker from 'expo-image-picker'
 import { getUser } from "../../session"
 import LottieView from 'lottie-react-native'
 import StartRating from '../../Component/startRating'
+import tailwind from "twrnc"
+import { useNavigation } from "@react-navigation/native"
+import { CountUserRatingStar } from "../../DataMathResolve/CountUserRatingStar"
+import { PieChart } from "react-native-chart-kit"
 
 const Comment = ({ productId }) => {
 
@@ -21,6 +25,7 @@ const Comment = ({ productId }) => {
     const [numStar, setNumStar] = useState(5)
     const [loading, setLoading] = useState(false)
 
+    const navigation = useNavigation();
 
     useEffect(() => {
         setAllow(content.toString().trim().length > 0 && variationId != null)
@@ -44,7 +49,6 @@ const Comment = ({ productId }) => {
     const getData = async () => {
         try {
             const response = await getComments(productId)
-            console.log(response)
             if (response) {
                 setComments(response)
                 if (response.length > 0) {
@@ -73,24 +77,24 @@ const Comment = ({ productId }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <View style={{ marginBottom: 8 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    {/* <Image
+            <View style={tailwind`bg-white mb-5 p-3 rounded-lg shadow-md`}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                    <Image
                         style={{ width: 24, height: 24 }}
                         source={{ uri: item.author.avatar }}
-                    /> */}
-                    {/* <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text> */}
+                    />
+                    <Text style={{ marginStart: 5, fontWeight: '500' }}>{item.author.fullname}</Text>
                     <View style={{ flex: 1 }}></View>
                     <StartRating route={item.numStar} size={16} />
                 </View>
-                <View style={{ flexDirection: 'row', backgroundColor: '#eeeeee', padding: 4, borderRadius: 10, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', backgroundColor: '#eeeeee', padding: 8, borderRadius: 10, alignItems: 'center', marginBottom: 10 }}>
                     <Image
                         style={{ width: 40, height: 40, resizeMode: 'cover', marginTop: 4, borderRadius: 4 }}
                         source={{ uri: item.product.image }}
                     />
                     <View style={{ marginStart: 8 }}>
                         <Text>{item.product.name}</Text>
-                        <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey' }}>{item.product.property}</Text>
+                        <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey', width: '80%' }}>{item.product.property}</Text>
                     </View>
                 </View>
                 <Text style={{ marginTop: 4, fontSize: 13, marginBottom: 8 }}>{item.content}</Text>
@@ -100,14 +104,11 @@ const Comment = ({ productId }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee' }}
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10 }}
                             source={{ uri: item }}
                         />
                     )}
                 />
-                <View
-                    style={{ width: '100%', height: 0.6, backgroundColor: 'grey', marginVertical: 10 }}
-                ></View>
             </View>
         )
     }
@@ -184,6 +185,57 @@ const Comment = ({ productId }) => {
         }
     }
 
+    const sortCount5Star = CountUserRatingStar(comments, 5);
+    const sortCount4Star = CountUserRatingStar(comments, 4);
+    const sortCount3Star = CountUserRatingStar(comments, 3);
+    const sortCount2Star = CountUserRatingStar(comments, 2);
+    const sortCount1Star = CountUserRatingStar(comments, 1);
+
+    const data = [
+        {
+            name: "5 sao",
+            population: sortCount5Star,
+            color: "rgba(131, 167, 234, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "4 sao",
+            population: sortCount4Star,
+            color: "#F00",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "3 sao",
+            population: sortCount3Star,
+            color: "red",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "2 sao",
+            population: sortCount2Star,
+            color: "#ffffff",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "1 sao",
+            population: sortCount1Star,
+            color: "rgb(0, 0, 255)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        }
+    ];
+
+    const chartConfig = {
+        backgroundGradientFrom: '#1E2923',
+        backgroundGradientTo: '#08130D',
+        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        strokeWidth: 2, // optional, default 3
+    }
+
     return (
         <View style={styles.container}>
             {listVariation.length > 0 &&
@@ -211,7 +263,7 @@ const Comment = ({ productId }) => {
                         onFinishRating={handleRating}
                         ratingContainerStyle={{ marginTop: 8 }}
                     />
-                    
+
                     <TextInput
                         placeholder="Cho chúng tôi biết cảm nhận của bạn về sản phẩm"
                         maxLength={200}
@@ -260,7 +312,41 @@ const Comment = ({ productId }) => {
 
                 </View>
             }
-            <Text style={styles.header}>{title}</Text>
+
+            {/* Chart View */}
+            {comments.length > 0
+                ? <View>
+                    <View style={tailwind`bg-white py-5 my-3 rounded-lg shadow-md`}>
+                        <Text style={tailwind`ml-5 mt-3 text-base font-bold`}>Thống kê bình luận</Text>
+
+                        <PieChart
+                            data={data}
+                            width={350}
+                            style={tailwind`self-center`}
+                            height={180}
+                            chartConfig={chartConfig}
+                            accessor={"population"}
+                            backgroundColor={"transparent"}
+                            paddingLeft={"15"}
+                            center={[12, 10]}
+                        />
+                    </View>
+
+                    <View style={tailwind`flex-row`}>
+                        <Text style={styles.header}>{title}</Text>
+
+                        {/* List Comment Button */}
+                        <TouchableOpacity
+                            style={tailwind`justify-center ml-37`}
+                            onPress={() => navigation.navigate('ListCommentScreen', { productID: productId })}
+                        >
+                            <Text style={tailwind`text-blue-500`}>Xem Thêm</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                : <></>
+            }
+
             <FlatList
                 data={comments}
                 keyExtractor={(item, index) => index.toString()}

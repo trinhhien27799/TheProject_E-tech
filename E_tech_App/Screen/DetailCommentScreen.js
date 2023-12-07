@@ -8,6 +8,7 @@ import StarRatingModal from '../Component/CommentModal/StarRatingModal'
 import ProductVariationModal from '../Component/CommentModal/ProductVariationModal'
 import ProductCommentFix from '../Component/ProductCommentFix'
 import { useNavigation } from '@react-navigation/native'
+import { ScrollView } from 'react-native'
 
 const DetailCommentScreen = ({route}) => {
     const productID = route.params;
@@ -86,7 +87,9 @@ const DetailCommentScreen = ({route}) => {
             
 
             {/* Comment line */}
-            <ProductCommentFix starRating={sortRatingStar} productID={'655538dbd76441d85e24f0ef'}/>
+            <ScrollView>
+                <ProductCommentFix starRating={sortRatingStar} productID={'655538dbd76441d85e24f0ef'} />
+            </ScrollView>
 
             {/* Bottom modal */}
             <BottomSheet ref={starOpenRef}>
