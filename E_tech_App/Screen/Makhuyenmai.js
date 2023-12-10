@@ -20,6 +20,7 @@ export default function Makhuyenmai() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadingAdd, setLoadingAdd] = useState(false)
+  const [saveSale, setSaveSale] = useState(false);
 
   const handleVoucher = async (voucherId, voucherCode) => {
     try {
@@ -28,6 +29,7 @@ export default function Makhuyenmai() {
       if (response.userId) {
         const newArray = data.filter(item => item._id !== voucherId)
         setData(newArray)
+        setSaveSale(true);
       } else {
         alert('Thêm thất bại')
       }
@@ -41,7 +43,7 @@ export default function Makhuyenmai() {
   const getData = async () => {
     try {
       setLoading(true)
-      const response = await getAllVoucher()
+      const response = await getAllVoucher();
       setData(response)
     } catch (error) {
       console.error('Makhuyenmai Screen:', error)
@@ -53,10 +55,11 @@ export default function Makhuyenmai() {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData()
+      console.log('data: ' + data);
     })
   }, [navigation])
 
-
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,10 +93,14 @@ export default function Makhuyenmai() {
                 <View style={{ alignItems: 'center', paddingTop: 5 }}>
                   <LoadingWidget />
                 </View> :
-                <TouchableOpacity style={[tailwind`bg-blue-600 py-1 justify-center mt-5 rounded-md shadow-md`, { width: '90%' }]} onPress={() => {
+                <TouchableOpacity style={[tailwind`bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`, { width: '90%' }]} disabled={saveSale} onPress={() => {
                   handleVoucher(item._id, item.code)
                 }}>
-                  <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Lưu</Text>
+                  {
+                    saveSale == false
+                    ? <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Lưu</Text>
+                    : <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Đã Lưu</Text>
+                  }
 
                 </TouchableOpacity>}
             </View>

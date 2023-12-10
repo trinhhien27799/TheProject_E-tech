@@ -1,20 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View,Text,TouchableOpacity,Image,StyleSheet } from 'react-native';
+import tailwind from 'twrnc';
 export default HeaderEdit = ({ title}) => {
     const navigation = useNavigation();
     return (
-        <View style={{ padding: 20 }}>
-            <View style={styles.viewHeader}>
+        <View style={tailwind `bg-white py-3 align-center`}>
+            <View style={tailwind `flex-row`}>
                 <TouchableOpacity
                     onPress={
                         () => navigation.goBack()
                     }
-                    style={{ flex: 1 }}
+                    style={tailwind `bg-white p-1 ml-3 shadow-md rounded-full`}
                 >
                     <Image style={{ height: 30, width: 30 }} source={require('../img/previous.png')} />
                 </TouchableOpacity>
-                <Text style={styles.textHeader}>{title}</Text>
+                <Text style={tailwind `text-lg mt-0.9 ml-3 font-bold`}>{title}</Text>
                 <View style={{ flex: 1 }}></View>
             </View>
         </View>

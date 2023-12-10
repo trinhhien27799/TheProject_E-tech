@@ -4,7 +4,8 @@ import { getUser } from '../session';
 
 export const getAllVoucher = async () => {
     try {
-        const route = getUser() ? 'get-by-user' : 'get-all'
+        const handleUser = getUser();
+        const route = handleUser != null ? 'get-by-user' : 'get-all'
         const response = await api.get(`/voucher/${route}`)
         return response.data;
     } catch (error) {

@@ -34,6 +34,8 @@ const ShippingMethod = () => {
         fetchData();
     }, []);
 
+    console.log(shipping)
+
     const ShippingItem = ({ item }) => {
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>

@@ -38,21 +38,15 @@ const Pay = ({route}) => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
-  
-  // useEffect(() => {
-  //   if(route.params?.data){
-  //     if(!route.params.data.voucher){
-  //       console.log('route: ' + route.params.data.voucher._id);
-  //       setVoucher_id(route.params.data.voucher.voucher._id)
-  //     }
-  //     else if(!route.params.data.shipping){
-  //       setShipping_id(route.params.data.shipping)
-  //     }
-  //     else if(!route.params.data.address){
-  //       setVoucher_id(route.params.data.address.address._id)
-  //     }
-  //   }
-  // }, [route.params?.data])
+
+  const verifyMethod = (ifMethod, elseMethod) => {
+    if(address != null || shipping_id != null || voucher_id != null){
+      ifMethod;
+    }
+    else{
+      elseMethod;
+    }
+  }
 
   useEffect(() => {
     if(address != null){
@@ -79,33 +73,13 @@ const Pay = ({route}) => {
     setCart(getListCart())
 }, [])
 
-  // useEffect(() => {
-  //   setSelectedAddresses(getAddress());
-  // }, [])
-
-
-//   useEffect(() => {
-//     setVoucher_id(getHandleVoucher());
-//   }, [])
-
-//   useEffect(() => {
-//     setShipping_id(getHandleShipping());
-//   })
-
   const listAddressData = getAllAddresses();
-  // console.log('address: ' + selectedAddresses);
-  // console.log('voucher: ' + voucher_id);
-  // console.log('shipping: ' + shipping_id);
-
-  console.log(getAddress());
-
   
   const getListId = cart.map((item) => item._id);
-  console.log(getListId);
 //
   const handlePay = async () => {
     try {
-      const data = await createBill(selectedAddresses, getListId, transport_fee, shipping_id, voucher_id, note);
+      const data = await createBill(selectedAddresses, getListId, transport_fee, shipping_id.pay, voucher_id, note);
       if(data.message !== null){
         clearListCart();
         navigation.navigate('ButtonNavigation');
@@ -377,9 +351,9 @@ const Pay = ({route}) => {
               </View>
               <View>
                 <Text style={styles.textTotal}>{formatPrice(TotalProductBill(cart))}</Text>
-                <Text style={styles.textTotal}>30.000đ</Text>
+                <Text style={styles.textTotal}>{formatPrice(5000)}</Text>
                 <Text style={styles.textTotal}>200.000đ</Text>
-                <Text style={styles.textHighlight}>1.850.000đ</Text>
+                <Text style={styles.textHighlight}>{formatPrice(TotalProductBill(cart))}</Text>
               </View>
             </View>
           </View>

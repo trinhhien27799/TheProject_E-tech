@@ -11,27 +11,31 @@ import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native'
 
 const DetailCommentScreen = ({route}) => {
-    const productID = route.params;
-    console.log('productId: ' + productID)
+    const {commentData, product} = route.params;
 
     const starOpenRef = useRef(null);
     const variationOpenRef = useRef(null);
     const navigation = useNavigation();
 
     const [sortRatingStar, setSortRatingStar] = useState(null);
+    const [sortVariation, setSortVariation] = useState(null);
 
     const handleRatingStarValue = (returnedValue) => {
         setSortRatingStar(returnedValue);
     }
 
-    console.log(sortRatingStar);
+    const handleVariationValue = (returnedValue) => {
+        setSortVariation(returnedValue);
+    }
+
+    console.log(sortVariation);
 
     return (
         <View style={tailwind `h-full`}>
             <View style={tailwind `bg-white`}>
-                <View style={tailwind `flex-row mt-2`}>
+                <View style={tailwind `flex-row mt-3 py-3`}>
                     <TouchableOpacity
-                        style={tailwind`w-9 h-9 bg-white m-4 mt-8 justify-center rounded-full shadow-md`}
+                        style={tailwind`w-9 h-9 bg-white mx-4  justify-center rounded-full shadow-md`}
                         onPress={() => navigation.goBack()}
                     >
                         <Image
@@ -39,7 +43,7 @@ const DetailCommentScreen = ({route}) => {
                             style={tailwind`w-5 h-5 self-center`} />
                     </TouchableOpacity>
 
-                    <Text style={tailwind `mt-8.5 text-base font-bold`}>Đánh giá sản phẩm</Text>
+                    <Text style={tailwind `mt-1 text-base font-bold`}>Đánh giá sản phẩm</Text>
                 </View>
                 
 
@@ -47,7 +51,10 @@ const DetailCommentScreen = ({route}) => {
                 <View style={tailwind`mb-4 flex-row justify-center p-1 mb-3`}>
                     <TouchableOpacity
                         style={tailwind`bg-white border border-blue-300 w-20 h-20 justify-center rounded-lg shadow-md`}
-                        onPress={() => setSortRatingStar(null)}
+                        onPress={() => {
+                            setSortRatingStar(null)
+                            setSortVariation(null)
+                        }}
                     >
                         <Text style={tailwind`self-center text-base`}>Tất cả</Text>
                     </TouchableOpacity>
@@ -88,7 +95,7 @@ const DetailCommentScreen = ({route}) => {
 
             {/* Comment line */}
             <ScrollView>
-                <ProductCommentFix starRating={sortRatingStar} productID={'655538dbd76441d85e24f0ef'} />
+                <ProductCommentFix starRating={sortRatingStar} commentData={commentData} variationSort={sortVariation}/>
             </ScrollView>
 
             {/* Bottom modal */}
@@ -96,8 +103,8 @@ const DetailCommentScreen = ({route}) => {
                 <StarRatingModal onValueReturn={handleRatingStarValue}/>
             </BottomSheet>
 
-            <BottomSheet ref={variationOpenRef}>
-                <ProductVariationModal/>
+            <BottomSheet style={tailwind `bg-white`} ref={variationOpenRef}>
+                <ProductVariationModal product={product} onValueReturn={handleVariationValue}/>
             </BottomSheet>
         </View>
     )

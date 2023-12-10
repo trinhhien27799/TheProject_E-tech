@@ -32,11 +32,11 @@ const CommentCard = ({ item }) => {
             <View style={tailwind `mb-3`}>
                 <FlatList
                     data={item.image}
-                    horizontal
+                    numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10 }}
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10, marginBottom: 10 }}
                             source={{ uri: item }}
                         />
                     )}
@@ -71,29 +71,44 @@ const CommentCard = ({ item }) => {
     )
 }
 
-const ProductCommentFix = ({starRating, productID}) => {
-    const commentData = getAllComment(productID);
-    console.log(commentData)
+const ProductCommentFix = ({starRating, commentData, variationSort}) => {
+    const currentData = commentData;
 
-    const StarRatingSort = (starNum) => {
+    const StarRatingSort = (starNum, variationSort) => {
         if(starNum != null){
-            const StarRatingSortData = commentData.filter((item) => item.numStar == starNum);
+            const StarRatingSortData = currentData.filter((item) => item.numStar == starNum);
             return StarRatingSortData;
+        }
+
+        else if(variationSort != null){
+            const variationStructure = `Màu sắc: ${variationSort.color}, bộ nhớ ngoài: ${variationSort.ram}, bộ nhớ trong: ${variationSort.rom}`;
+            const variationSortData = currentData.filter((item) => item.property == variationStructure);
+            return variationSortData;
         }
         
         else{
-            return commentData;
+            return currentData;
         }
     }
     // abc
-    var setData = StarRatingSort(starRating);
+    var setData = StarRatingSort(starRating, variationSort);
 
     return (
         <View>
-            <FlatList
+            {
+                setData.length == 0
+                ? <View style={tailwind `flex-1 h-170 justify-center`}>
+                    <Image 
+                        source={require('../img/thinking_2161947.png')}
+                        style={tailwind `w-50 h-50 self-center`}
+                    />
+                    <Text style={tailwind `text-base font-bold self-center mt-5`}>Oooooopppppsssss, chưa có comment</Text>
+                </View>
+                : <FlatList
                 data={setData}
                 renderItem={CommentCard}
             />
+            }      
         </View>
     )
 }

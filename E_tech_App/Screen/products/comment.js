@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native"
 import { CountUserRatingStar } from "../../DataMathResolve/CountUserRatingStar"
 import { PieChart } from "react-native-chart-kit"
 
-const Comment = ({ productId }) => {
+const Comment = ({ productId, product }) => {
 
     const [comments, setComments] = useState([])
     const [listVariation, setlistVariation] = useState([])
@@ -93,18 +93,18 @@ const Comment = ({ productId }) => {
                         source={{ uri: item.product.image }}
                     />
                     <View style={{ marginStart: 8 }}>
-                        <Text>{item.product.name}</Text>
-                        <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey', width: '80%' }}>{item.product.property}</Text>
+                        <Text style={tailwind `w-70`}>{item.product.name}</Text>
+                        <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey', width: '70%' }}>{item.product.property}</Text>
                     </View>
                 </View>
                 <Text style={{ marginTop: 4, fontSize: 13, marginBottom: 8 }}>{item.content}</Text>
                 <FlatList
                     data={item.image}
-                    horizontal
+                    numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <Image
-                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10 }}
+                            style={{ width: 155, aspectRatio: 14 / 9, resizeMode: 'cover', backgroundColor: '#eeeeee', marginRight: 10, marginBottom: 10 }}
                             source={{ uri: item }}
                         />
                     )}
@@ -317,7 +317,7 @@ const Comment = ({ productId }) => {
             {comments.length > 0
                 ? <View>
                     <View style={tailwind`bg-white py-5 my-3 rounded-lg shadow-md`}>
-                        <Text style={tailwind`ml-5 mt-3 text-base font-bold`}>Thống kê bình luận</Text>
+                        <Text style={tailwind`ml-5 text-base font-bold`}>Thống kê bình luận</Text>
 
                         <PieChart
                             data={data}
@@ -338,7 +338,7 @@ const Comment = ({ productId }) => {
                         {/* List Comment Button */}
                         <TouchableOpacity
                             style={tailwind`justify-center ml-37`}
-                            onPress={() => navigation.navigate('ListCommentScreen', { productID: productId })}
+                            onPress={() => navigation.navigate('ListCommentScreen', { commentData: comments, product: product })}
                         >
                             <Text style={tailwind`text-blue-500`}>Xem Thêm</Text>
                         </TouchableOpacity>

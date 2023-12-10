@@ -71,12 +71,12 @@ const HeaderProfile = ({ navigation }) => {
                 position: 'absolute',
                 flex: 1,
                 top: '70%',
-                left: Dimensions.get("window").height * .14
+                left: Dimensions.get("window").height * .12
             }}>
                 <View style={styles.viewAvatar}>
                     <Image style={styles.imageHeader} source={{ uri: user.avatar }} />
                 </View>
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{ flexDirection: 'column', marginVertical: 5 }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'black', textAlign: 'center' }}>{user.fullname}</Text>
                     <Text style={{ marginTop: 15, color: 'black', textAlign: 'center' }}>{user.username}</Text>
                 </View>
@@ -100,8 +100,7 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         marginBottom: '20%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-
+        justifyContent: 'space-between'
     },
     imageHeader: {
         flex: 1,

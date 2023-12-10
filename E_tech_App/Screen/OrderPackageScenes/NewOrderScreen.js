@@ -88,26 +88,29 @@ const NewOrderScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => { navigation.goBack() }}>
-                    <Image source={require('../../img/arrow-left.png')}
-                        style={{ width: 16, height: 16, marginEnd: 20 }}
+            <View style={tailwind `bg-white mb-3`}>
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => { navigation.goBack() }}
+                        
+                    >
+                        <Image source={require('../../img/arrow-left.png')}
+                            style={{ width: 16, height: 16, marginEnd: 20 }}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.textHeader}>Đơn hàng của bạn</Text>
+                </View>
+
+                <View style={{ paddingVertical: 10 }}>
+                    <FlatList
+                        ref={flatListRef}
+                        data={buttonValueList}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={ButtonCard}
+                        horizontal
+                        style={{ flexGrow: 0, width: Dimensions.get('window').width }}
                     />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Đơn hàng của bạn</Text>
-            </View>
-
-            <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>
-                <FlatList
-                    ref={flatListRef}
-                    data={buttonValueList}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={ButtonCard}
-                    horizontal
-                    style={{ flexGrow: 0, width: Dimensions.get('window').width }}
-                />
-
+                </View>
             </View>
 
             {loading ? <LoadingWidget /> :
@@ -131,17 +134,15 @@ export default NewOrderScreen
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'white',
       alignItems: 'center'
     },
     header: {
       width: Dimensions.get('window').width,
-      borderBottomWidth: 1.1,
-      borderBottomColor: '#D5D5D5',
       alignItems: 'center',
       paddingVertical: 10,
       flexDirection: 'row',
       paddingHorizontal: 15,
+      paddingVertical: 20
     },
     textHeader: {
       fontSize: 20,
