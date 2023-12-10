@@ -112,13 +112,13 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
     width: Dimensions.get('window').width / 2 - 16,
-    height: 270,
     borderRadius: 10,
     shadowColor: 'grey',
     shadowRadius: 7,
     alignItems: 'center',
     shadowOpacity: 0.8,
-    margin: 6
+    margin: 6,
+    padding: 15
   },
   saler: {
     position: 'absolute',

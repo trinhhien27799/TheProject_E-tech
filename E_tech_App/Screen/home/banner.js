@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, Dimensions, View, StyleSheet, Image, TouchableOpacity, Text } from "react-native"
 import { getBanner } from "../../CallApi/banner"
+import { useNavigation } from "@react-navigation/core"
 
 
 const card_width = Dimensions.get('window').width
@@ -8,6 +9,7 @@ const Banner = () => {
     const scrollViewRef = useRef()
     const [currentPage, setCurrentPage] = useState(0)
     const [dataBanner, setDataBanner] = useState([])
+    const navigation = useNavigation();
 
     useEffect(() => {
         const fectData = async () => {
@@ -37,6 +39,22 @@ const Banner = () => {
         }
     }, [currentPage, dataBanner])
 
+    console.log(dataBanner)
+
+    const renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity
+                onPress={() => navigation.navigate('DetailProducts', {productId: item.productId})}
+            >
+                <View style={styles.card}>
+                    <View>
+                        <Image
+                            style={styles.image} source={{ uri: item.image }} />
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <View style={{ flex: 1 }}>
@@ -54,18 +72,7 @@ const Banner = () => {
     )
 }
 
-const renderItem = ({ item }) => {
-    return (
-        <TouchableOpacity>
-            <View style={styles.card}>
-                <View>
-                    <Image
-                        style={styles.image} source={{ uri: item.image }} />
-                </View>
-            </View>
-        </TouchableOpacity>
-    )
-}
+
 
 const styles = StyleSheet.create({
     image: { height: 200, width: card_width, alignItems: 'center', resizeMode: 'cover', }

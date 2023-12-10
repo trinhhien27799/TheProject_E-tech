@@ -15,11 +15,11 @@ import tailwind from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 
 const PTTT = () => {
-    const [selectedRadio, setSelectedRadio] = useState(1);
+    const [selectedRadio, setSelectedRadio] = useState(null);
     const navigation = useNavigation();
 
     const Check = (value) => {
-        
+        navigation.navigate('PayScreen', {address: null, shipping: null, voucher: null, payment: value});
     }
 
     const selectedButtonList = [
@@ -58,7 +58,7 @@ const PTTT = () => {
                         renderItem={({ item }) => {
                             return (
                                 <View style={tailwind`flex-row py-2 `}>
-                                    <RadioButton value={item} />
+                                    <RadioButton value={item.id} />
                                     <Text style={tailwind`mt-1.6`}>{item.name}</Text>
                                 </View>
                             )

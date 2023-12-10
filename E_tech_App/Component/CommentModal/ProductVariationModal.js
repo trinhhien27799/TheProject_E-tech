@@ -28,9 +28,12 @@ const ProductVariationModal = ({ product, onValueReturn }) => {
                 <Text style={tailwind`font-bold`}>
                     {item.color}
                 </Text>
-                <Text>
-                    {item.ram}/{item.rom}
-                </Text>
+                {item.ram == null || item.rom == null
+                    ? <></>
+                    : <Text>
+                        {item.ram}/{item.rom}
+                    </Text>
+                }
             </TouchableOpacity>
         )
     }
