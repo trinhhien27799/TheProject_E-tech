@@ -35,7 +35,7 @@ const Pay = ({route}) => {
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
   const [voucher_id, setVoucher_id] = useState();
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("Thanh toán khi nhận hàng");
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
 
@@ -79,7 +79,7 @@ const Pay = ({route}) => {
 //
   const handlePay = async () => {
     try {
-      const data = await createBill(selectedAddresses, getListId, transport_fee, shipping_id.pay, voucher_id, note);
+      const data = await createBill(selectedAddresses, getListId, transport_fee._id, shipping_id.pay, voucher_id._id, note);
       if(data.message !== null){
         clearListCart();
         navigation.navigate('ButtonNavigation');
@@ -127,10 +127,10 @@ const Pay = ({route}) => {
                 : selectedAddresses.fullname + ' - ' + selectedAddresses.numberphone
                 }</Text>
                 {selectedAddresses == null
-                  ? <Text style={{ marginTop: 5 }}>
+                  ? <Text style={{ marginTop: 5, width: 300 }}>
                     Địa chỉ
                   </Text>
-                  : <Text style={{ marginTop: 5 }}>
+                  : <Text style={{ marginTop: 5, width: 300 }}>
                     {selectedAddresses.address}
                   </Text>
                 }

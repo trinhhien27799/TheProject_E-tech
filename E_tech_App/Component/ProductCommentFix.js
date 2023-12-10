@@ -81,7 +81,13 @@ const ProductCommentFix = ({starRating, commentData, variationSort}) => {
         }
 
         else if(variationSort != null){
-            const variationStructure = `Màu sắc: ${variationSort.color}, bộ nhớ ngoài: ${variationSort.ram}, bộ nhớ trong: ${variationSort.rom}`;
+            const variationStructure = null;
+            if(variationSort.ram == null || variationSort.rom == null){
+                variationStructure = `Màu sắc: ${variationSort.color}`
+            }
+            else{
+                variationStructure = `Màu sắc: ${variationSort.color}, bộ nhớ ngoài: ${variationSort.ram}, bộ nhớ trong: ${variationSort.rom}`;
+            }
             const variationSortData = currentData.filter((item) => item.property == variationStructure);
             return variationSortData;
         }
