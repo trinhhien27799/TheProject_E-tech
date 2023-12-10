@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getMyVoucher } from '../CallApi/voucherApi';
 import tailwind from 'twrnc';
 import LoadingWidget from '../Component/loading';
+import { formatPrice, formatTime } from '../utils/format';
 
 const MyVoucher = () => {
   const [voucher, setVoucher] = useState([]);
@@ -36,12 +37,12 @@ const MyVoucher = () => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => { navigation.navigate('ButtonNavigation', { screen: 'Cart' }) }}
-              style={styles.viewItem}>
-              <Image source={require('../img/sale.png')} style={styles.img} />
+              style={tailwind `bg-white w-96 p-3 flex-row border border-slate-300 rounded-lg mt-3`}>
+              <Image source={require('../img/sale.png')} style={tailwind `w-20 h-20 mt-1.5`} />
               <View style={styles.viewText}>
                 <Text style={tailwind`text-base font-bold mb-1`}>{item.description}</Text>
-                <Text >Đơn tối thiểu {item.condition}.000đ</Text>
-                <Text style={styles.title2}>HSD: {item.expiration_date}</Text>
+                <Text>Đơn tối thiểu {formatPrice(item.condition)}</Text>
+                <Text style={styles.title2}>HSD: {formatTime(item.expiration_date)}</Text>
               </View>
             </TouchableOpacity>
           )}

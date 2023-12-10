@@ -6,6 +6,7 @@ import HeaderItem from "../../Component/headerItem";
 import * as ImagePicker from 'expo-image-picker';
 import { updateAvatar, updateFullname } from "../../CallApi/userApi";
 import { getUser } from "../../session";
+import tailwind from "twrnc";
 
 const EditProfile = () => {
     const navigation = useNavigation()
@@ -41,7 +42,7 @@ const EditProfile = () => {
     }
 
     return (
-        <View style={{ paddingTop: '5%' }}>
+        <View>
             <HeaderItem title={'Edit Profile'} />
             <TouchableOpacity
                 onPress={() => imagePicker()}
@@ -51,14 +52,13 @@ const EditProfile = () => {
             </TouchableOpacity>
             <TextFields setFullname={setFullname} fullname={fullname} user={userData} isPasswordShow={isPasswordShow} setisPasswordShow={setisPasswordShow} />
             <TouchableOpacity
-                style={styles.button}
+                style={tailwind `bg-blue-500 w-30 p-4 self-center rounded-lg shadow-md`}
                 onPress={saveProfile}
             >
-                <Text>
+                <Text style={tailwind `text-base font-bold text-white self-center`}>
                     Save
                 </Text>
             </TouchableOpacity>
-
         </View>
     );
 };
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         width: 180,
         borderRadius: 200,
         alignSelf: 'center',
-        marginTop: 10
+        marginTop: 40
     },
     viewInput: {
         flexDirection: 'row',

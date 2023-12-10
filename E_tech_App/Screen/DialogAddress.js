@@ -21,7 +21,7 @@ const DialogAddress = ({ route }) => {
     const [value, setValue] = useState('');
 
     const { listOnlyAddresses } = route.params;
-    const listData = listOnlyAddresses.data;
+    const listData = listOnlyAddresses;
 
     const [visible, setVisible] = React.useState(false);
 

@@ -62,7 +62,7 @@ const DetailPoducts = () => {
             case 5:
                 return <Description description={product.description} />
             case 6:
-                return <Comment productId={product._id} />
+                return <Comment productId={product._id} product={product}/>
             default:
                 return null
         }

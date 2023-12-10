@@ -7,8 +7,6 @@ import { formatPrice, formatTime } from '../utils/format';
 import { getItemBill } from '../CallApi/billApi';
 import ItemInBill from './itemInBill';
 
-
-
 const BillDetailScreen = ({ route }) => {
     const { dataId } = route.params;
     const [data, setData] = useState(null)
@@ -34,14 +32,13 @@ const BillDetailScreen = ({ route }) => {
         return <ItemInBill item={item} status={data.status} />
     }
 
-
     return (
         data &&
         <View style={styles.container}>
             <ScrollView>
                 {/* Header */}
                 <View style={styles.header}>
-                    <OrderStatusHeader status={data.status} />
+                    <OrderStatusHeader orderStatus={data.status} />
                     <Text style={styles.textInfo}>Mã đơn hàng: {data._id}</Text>
                     <Text style={styles.textInfo}>Ngày mua: {formatTime(data.time)}</Text>
                     <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
