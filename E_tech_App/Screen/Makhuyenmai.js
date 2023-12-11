@@ -57,9 +57,11 @@ export default function Makhuyenmai() {
       getData()
       console.log('data: ' + data);
     })
+
+    return unsubscribe;
   }, [navigation])
 
-  
+  console.log(data);
 
   return (
     <SafeAreaView style={styles.container}>
