@@ -32,6 +32,14 @@ const PTTT = () => {
             name: 'Thanh toán chuyển khoản (mã QR)'
         },
     ];
+    const ButtonCard = ({ item }) => {
+        return (
+            <View style={tailwind`flex-row py-2 `}>
+                <RadioButton value={item} />
+                <Text style={tailwind`mt-1.6`}>{item.name}</Text>
+            </View>
+        )
+    }
 
     return (
         <SafeAreaView style={tailwind``}>
@@ -55,14 +63,7 @@ const PTTT = () => {
                 >
                     <FlatList
                         data={selectedButtonList}
-                        renderItem={({ item }) => {
-                            return (
-                                <View style={tailwind`flex-row py-2 `}>
-                                    <RadioButton value={item.id} />
-                                    <Text style={tailwind`mt-1.6`}>{item.name}</Text>
-                                </View>
-                            )
-                        }}
+                        renderItem={ButtonCard}
                     />
                 </RadioButton.Group>
 

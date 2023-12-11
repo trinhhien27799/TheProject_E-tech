@@ -16,9 +16,12 @@ import { setHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 import tailwind from 'twrnc';
 import { formatPrice, formatTime } from '../utils/format';
 
-export default function Makhuyenmai() {
+export default function Makhuyenmai({route}) {
   const [voucher, setVoucher] = useState([]);
   const navigation = useNavigation();
+  const {totalBill} = route.params;
+
+  console.log(totalBill);
 
   const myvouchers = async () => {
     try {
@@ -33,6 +36,15 @@ export default function Makhuyenmai() {
 
   const setNewVoucher = (voucher) => {
     navigation.navigate('PayScreen', {address: null, shipping: null, voucher: voucher});
+  }
+
+  const checkCondition = (totalBill, condition) => {
+    if(totalBill < condition){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   return (
@@ -70,9 +82,15 @@ export default function Makhuyenmai() {
               </View>
 
               <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity style={tailwind `bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`} onPress={() => setNewVoucher(item)}>
+                {
+                  checkCondition(totalBill, item.condition)
+                  ? <TouchableOpacity style={tailwind `bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`} onPress={() => setNewVoucher(item)}>
                   <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Sử dụng</Text>
                 </TouchableOpacity>
+                  : <TouchableOpacity style={tailwind `bg-slate-600 py-3 justify-center mt-5 rounded-md shadow-md`} disabled>
+                  <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Chưa đủ điều kiện</Text>
+                </TouchableOpacity>
+                }
               </View>
             </View>        
           )}

@@ -33,7 +33,7 @@ const Pay = ({route}) => {
   console.log(address, shipping);
 
   const [transport_fee, setTransport_fee] = useState(20000);
-  const [shipping_id, setShipping_id] = useState('65564a5792fc5d16ae6e3cdf');
+  const [shipping_id, setShipping_id] = useState(null);
   const [voucher_id, setVoucher_id] = useState();
   const [paymentMethod, setPaymentMethod] = useState("Thanh toán khi nhận hàng");
   const [note, setNote] = useState('');
@@ -67,6 +67,8 @@ const Pay = ({route}) => {
       setVoucher_id(null);
       setPaymentMethod(null);
     }
+
+    console.log(shipping_id);
   })
 
   useEffect(() => {
@@ -74,22 +76,45 @@ const Pay = ({route}) => {
 }, [])
 
   const listAddressData = getAllAddresses();
-  
-  const getListId = cart.map((item) => item._id);
-//
-  const handlePay = async () => {
-    try {
-      const data = await createBill(selectedAddresses, getListId, transport_fee._id, shipping_id.pay, voucher_id._id, note);
-      if(data.message !== null){
-        clearListCart();
-        navigation.navigate('ButtonNavigation');
-      }
-    } catch (error) {
-      console.error('Error:', error);
+  const checkVoucher = (voucher_id) => {
+    if(voucher_id == null){
+      return 0;
+    }
+    else{
+      return voucher_id.discount_value;
     }
   }
+
+  const checkShipping = (shipping_id) => {
+    if(shipping_id == null){
+      return 0;
+    }
+    else{
+      return shipping_id.price;
+    }
+  }
+  
+  const getListId = cart.map((item) => item._id);
+
+  const handlePay = async () => {
+    if(selectedAddresses == null || shipping_id == null){
+      alert("Thông tin đặt hàng của bạn đang bị thiếu")
+    }
+    else{
+      try {
+        const data = await createBill(selectedAddresses, getListId, transport_fee, shipping_id._id, voucher_id._id, note);
+        if (data.message !== null) {
+          clearListCart();
+          navigation.navigate('ButtonNavigation');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+  }
   // var totalResult = TotalProductBill(data);
-  // var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);
+  // var totalShipMoney = ShipMoneyResolve_City(data, 1, 2.987);\
 
   return (
     <SafeAreaView>
@@ -243,7 +268,7 @@ const Pay = ({route}) => {
           <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('ShippingMethod') }}>
               {/* Address Detail */}
               <View>
-                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id.name}</Text>
+                <Text>{shipping_id == null ? 'Chọn phương thức vận chuyển' : shipping_id.name + ' - ' + formatPrice(shipping_id.price)}</Text>
               </View>
 
               <Feather
@@ -269,7 +294,7 @@ const Pay = ({route}) => {
           </View>
           
           <View>
-               <TouchableOpacity  style={styles.contentView} onPress={() => { navigation.navigate('ApDungVoucher') }}>
+               <TouchableOpacity  style={styles.contentView} onPress={() => { navigation.navigate('ApDungVoucher', {totalBill: TotalProductBill(cart)}) }}>
             <View style={{ flex: 1 }}>
               {/* { voucher_id == '' ?  */}
               <Text
@@ -279,7 +304,7 @@ const Pay = ({route}) => {
                   marginLeft: 2,
                   marginBottom: 'auto',
                 }}>
-                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id.code}
+                {voucher_id == null ? 'Chọn mã giảm giá của bạn' : voucher_id.code + ' - ' + voucher_id.description}
               </Text> 
               {/* : <Text
                 style={{
@@ -351,9 +376,9 @@ const Pay = ({route}) => {
               </View>
               <View>
                 <Text style={styles.textTotal}>{formatPrice(TotalProductBill(cart))}</Text>
-                <Text style={styles.textTotal}>{formatPrice(5000)}</Text>
-                <Text style={styles.textTotal}>200.000đ</Text>
-                <Text style={styles.textHighlight}>{formatPrice(TotalProductBill(cart))}</Text>
+                <Text style={styles.textTotal}>{formatPrice(checkShipping(shipping_id))}</Text>
+                <Text style={styles.textTotal}>- {formatPrice(checkVoucher(voucher_id))}</Text>
+                <Text style={styles.textHighlight}>{formatPrice((TotalProductBill(cart) - checkVoucher(voucher_id)) + checkShipping(shipping_id))}</Text>
               </View>
             </View>
           </View>

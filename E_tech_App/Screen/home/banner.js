@@ -39,8 +39,6 @@ const Banner = () => {
         }
     }, [currentPage, dataBanner])
 
-    console.log(dataBanner)
-
     const renderItem = ({ item }) => {
         return (
             <TouchableOpacity
