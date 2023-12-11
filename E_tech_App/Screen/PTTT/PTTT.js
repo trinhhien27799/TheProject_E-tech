@@ -35,11 +35,13 @@ const PTTT = () => {
     const ButtonCard = ({ item }) => {
         return (
             <View style={tailwind`flex-row py-2 `}>
-                <RadioButton value={item} />
+                <RadioButton value={item}/>
                 <Text style={tailwind`mt-1.6`}>{item.name}</Text>
             </View>
         )
     }
+
+    console.log(selectedRadio)
 
     return (
         <SafeAreaView style={tailwind``}>
@@ -68,7 +70,7 @@ const PTTT = () => {
                 </RadioButton.Group>
 
                 <View style={tailwind`flex-row mt-3 self-center`}>
-                    <TouchableOpacity style={tailwind `bg-blue-600 w-40 rounded-xl justify-center shadow-md py-4`} onPress={() => { navigation.goBack() }}>
+                    <TouchableOpacity style={tailwind `bg-slate-600 w-40 rounded-xl justify-center shadow-md py-4`} onPress={() => { navigation.goBack() }}>
                         <Text style={tailwind `font-bold text-base text-white self-center`}>Hủy</Text>
                     </TouchableOpacity>
 

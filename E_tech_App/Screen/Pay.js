@@ -35,7 +35,7 @@ const Pay = ({route}) => {
   const [transport_fee, setTransport_fee] = useState(20000);
   const [shipping_id, setShipping_id] = useState(null);
   const [voucher_id, setVoucher_id] = useState();
-  const [paymentMethod, setPaymentMethod] = useState("Thanh toán khi nhận hàng");
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const [note, setNote] = useState('');
   const [selectedAddresses, setSelectedAddresses] = useState('6563170414a1947ecd79c246');
 
@@ -76,6 +76,7 @@ const Pay = ({route}) => {
 }, [])
 
   const listAddressData = getAllAddresses();
+  console.log(listAddressData);
   const checkVoucher = (voucher_id) => {
     if(voucher_id == null){
       return 0;
@@ -97,7 +98,7 @@ const Pay = ({route}) => {
   const getListId = cart.map((item) => item._id);
 
   const handlePay = async () => {
-    if(selectedAddresses == null || shipping_id == null){
+    if(selectedAddresses == null || shipping_id == null || paymentMethod == null){
       alert("Thông tin đặt hàng của bạn đang bị thiếu")
     }
     else{
@@ -335,17 +336,14 @@ const Pay = ({route}) => {
               style={styles.imgIcon}
             />
             <Text style={styles.textTitle}>
-              {paymentMethod == null
-              ? 'Phương thức thanh toán'
-              : paymentMethod.value
-              }
+              Phương thức thanh toán
             </Text>
           </View>
           <View>
             <TouchableOpacity style={styles.contentView} onPress={() => { navigation.navigate('PTTT') }}>
             <View>
               <Text>
-                Thanh toán khi nhận hàng
+                {paymentMethod == null ? 'Chọn phương thức thanh toán' : paymentMethod.name}
               </Text>
             </View>
          
