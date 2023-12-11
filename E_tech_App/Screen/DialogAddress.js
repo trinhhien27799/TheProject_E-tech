@@ -120,7 +120,7 @@ const DialogAddress = ({ route }) => {
                         {/* Thêm địa chỉ */}
                         <TouchableOpacity
                             style={tailwind`self-center mb-5`}
-                            onPress={() => { handleValueChange('') }}
+                            onPress={() => { navigation.navigate('NewAddress', { address: null }) }}
                         >
                             <View style={tailwind`flex-row`}>
                                 <Text>Thêm địa chỉ</Text>
