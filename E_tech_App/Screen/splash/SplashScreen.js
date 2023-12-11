@@ -18,13 +18,8 @@ const SplashScreen = () => {
         } catch (error) {
             console.log(`splash :${error}`)
         } finally {
-            const user = getUser();
-            if(user == null) {
-                navigation.replace('Login');
-            }
-            else{
-                navigation.replace('ButtonNavigation', { registrationData: user });
-            }
+            
+                navigation.replace('ButtonNavigation');
         }
     }
     useEffect(() => {

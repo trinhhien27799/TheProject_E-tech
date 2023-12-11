@@ -1,18 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import color from "../../colors";
 import OrderSreen from "./orderSreen";
 import { getUser } from "../../session";
-import { getBillByStatus } from "../../CallApi/billApi";
-import { err } from "react-native-svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const Profile = ({ route }) => {
     const navigation = useNavigation();
-
+    const clearToken = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            console.log('Token đã được xóa thành công.');
+        } catch (error) {
+            console.error('Lỗi khi xóa token:', error);
+        }
+    };
+    const Logout = ()=>{
+        Alert.alert('Đăng xuất','Bạn có muốn đăng xuất !!!',[
+            {
+                text:'Hủy',
+                onPress: () => {},
+            },
+            {
+                text: 'OK',
+                 onPress: () => {
+                    clearToken();
+                    navigation.replace('Login');
+                }
+            },
+        ])
+    }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile navigation={navigation} />
+            <HeaderProfile navigation={navigation} onPress={Logout}/>
             <View>
                 <TouchableOpacity style={styles.viewEdit}
                     onPress={() => { navigation.navigate('EditProfile') }}
@@ -55,7 +77,7 @@ const Profile = ({ route }) => {
         </ScrollView>
     );
 }
-const HeaderProfile = ({ navigation }) => {
+const HeaderProfile = ({ navigation,onPress }) => {
     const user = getUser()
     return (
         <ImageBackground source={{ uri: user.background }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
@@ -82,9 +104,7 @@ const HeaderProfile = ({ navigation }) => {
                 </View>
             </View>
             <TouchableOpacity
-                onPress={() => {
-                    navigation.navigate('SettingScreen');
-                }}
+                onPress={onPress}
                 style={styles.viewIcon}
             >
                 <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/exit.png')} />
