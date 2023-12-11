@@ -28,7 +28,7 @@ const AddCommentScreen = () => {
   const [variationId, setVariationId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const productId = product.productId;
+  console.log(product)
 
   const handlePicturePress = (picture) => {
     setSelectedPicture(picture);
@@ -125,7 +125,7 @@ const AddCommentScreen = () => {
               />
               <View style={tailwind`ml-3`}>
                 <Text style={tailwind`w-70 mb-2 font-bold`}>{product.productName}</Text>
-                <Text>Loại: {product.color}</Text>
+                <Text>Loại: {product.color} - {product.ram}/{product.rom}</Text>
               </View>
             </View>
 

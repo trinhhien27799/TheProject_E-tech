@@ -67,8 +67,6 @@ const Pay = ({route}) => {
       setVoucher_id(null);
       setPaymentMethod(null);
     }
-
-    console.log(shipping_id);
   })
 
   useEffect(() => {
@@ -170,12 +168,7 @@ const Pay = ({route}) => {
               />
             </TouchableOpacity>
             {/* Ship Bill */}
-            <View style={tailwind`flex-row mt-3`}>
-              <Text style={{ fontWeight: 'bold' }}>Phí vận chuyển: </Text>
-              <Text style={tailwind`flex-1 self-end`}>
-                {formatPrice(30000)}
-              </Text>
-            </View>
+           
           </View>
           {/* Split Space */}
           <View style={styles.textLine}></View>
