@@ -59,6 +59,7 @@ import { getUser, setDeviceToken } from './session'
 import FavoriteScreen from './Screen/favorite/FavoriteScreen'
 import NewAddress from './Screen/address/NewAddress'
 import ChatsScreen from './Screen/chats/ChatsScreen'
+import MoMoPaymentScreen from './Screen/pay/Momo'
 
 
 Notifications.setNotificationHandler({
@@ -153,8 +154,8 @@ export default App = () => {
         ref={navigationContainerRef}>
 
         <Stack.Navigator
-          initialRouteName='Splash' >
-          <Stack.Screen name='CartScreen' component={CartScreen} options={{ headerShown: false }} />
+          initialRouteName='MoMoPaymentScreen' >
+          <Stack.Screen name='MoMoPaymentScreen' component={MoMoPaymentScreen} options={{ headerShown: false }} />
 
           <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
           <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
