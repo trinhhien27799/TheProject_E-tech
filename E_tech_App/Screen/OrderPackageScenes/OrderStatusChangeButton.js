@@ -48,7 +48,7 @@ const OrderStatusChangeButton = ({ item }) => {
                         </TouchableOpacity>)}
                 {item.status == 0 &&
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('CancelOrderScreen', { item })}
+                        onPress={() => navigation.navigate('CancelOrderScreen', { dataId: item._id })}
                         style={tailwind`${styleCancel}`}
                     >
                         <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>
