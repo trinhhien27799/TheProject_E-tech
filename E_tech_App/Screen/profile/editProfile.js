@@ -19,7 +19,6 @@ const EditProfile = () => {
         try {
             const Avatar = await updateAvatar(image)
             const updateName = await updateFullname(fullname)
-            console.log(updateName.user);
             if(Avatar.code == 200 && updateName.code == 200){
                 setUser(Avatar.user);
                 setUser(updateName.user);
