@@ -170,7 +170,7 @@ const CartScreen = () => {
                   <Text style={[styles.productTotalPriceText, { color: 'red' }]}>{formatPrice(totalPrice)}</Text>
                 </View>
                 <View style={styles.confirmContainer}>
-                  <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen', {address: null, shipping: null, voucher: null})}>
+                  <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('PayScreen')}>
                     <Text style={styles.textPayment}>Xác nhận thanh toán</Text>
                   </TouchableOpacity>
                 </View>

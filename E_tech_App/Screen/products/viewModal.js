@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import { formatPrice } from "../../utils/format"
 import { addCart } from "../../CallApi/cartApi"
 import LottieView from 'lottie-react-native'
-import { pushListCart, clearListCart } from '../../session'
+import { pushListCart, clearListCart, getProductSelected } from '../../session'
 import { useNavigation } from "@react-navigation/native"
 import tailwind from "twrnc"
 const ViewModal = ({ data, setIsModalVisible, option }) => {
@@ -17,15 +17,19 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
             setLoading(true)
             const newCart = { variations_id: data._id, quantity: quantity }
             const response = await addCart(newCart)
-            if (!!response._id) {
+            console.log(option, response)
+            if (response?._id != null) {
                 setIsModalVisible(false)
                 setLoading(false)
                 if (option) {
                     clearListCart()
-                    pushListCart()
-                    navigation.navigate('NewOrderScreen', { getValueOrder: null })
+                    response.image = data.image
+                    response.price = data.price
+                    response.product_name = getProductSelected()?.product_name ?? 'Lỗi lấy thông tin'
+                    response.percent_discount = getProductSelected()?.percent_discount ?? 0
+                    pushListCart(response)
+                    navigation.navigate('PayScreen')
                 }
-                navigation.navigate('Cart')
                 console.log("Thêm giỏ hàng thành công")
             } else {
                 setIsModalVisible(true)
@@ -37,7 +41,8 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
         }
     }
     return (
-        <ScrollView>
+        <ScrollView
+            showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableOpacity
@@ -49,7 +54,7 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                 </View>
                 <Image source={{ uri: data.image }} style={styles.image} />
                 <View style={styles.priceContainer}>
-                    <Text style={styles.price}>{formatPrice(data.price)}</Text>
+                    <Text style={styles.price}>{formatPrice(data.price * (1 - getProductSelected().percent_discount / 100))}</Text>
                     <Text >Kho: {data.quantity}</Text>
                 </View>
                 <View style={styles.infoItem}>
@@ -102,12 +107,12 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                     />
                     :
                     <TouchableOpacity
-                        style={tailwind `bg-blue-600 w-50 p-3 rounded-lg shadow-md my-3`}
+                        style={tailwind`bg-blue-600 w-50 p-3 rounded-lg shadow-md my-3`}
                         onPress={() => {
                             handleAdd()
                         }}
                     >
-                        <Text style={tailwind `text-base font-bold text-white self-center`}>Thêm vào giỏ hàng</Text>
+                        <Text style={tailwind`text-base font-bold text-white self-center`}>Thêm vào giỏ hàng</Text>
                     </TouchableOpacity>}
             </View>
         </ScrollView>

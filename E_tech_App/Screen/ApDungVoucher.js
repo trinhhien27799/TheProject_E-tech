@@ -6,96 +6,76 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { getMyVoucher } from '../CallApi/voucherApi';
-import { setHandleVoucher } from '../Component/HandleObj/VoucherHandle';
 import tailwind from 'twrnc';
 import { formatPrice, formatTime } from '../utils/format';
+import { setVoucher } from '../session';
 
-export default function Makhuyenmai({route}) {
-  const [voucher, setVoucher] = useState([]);
+export default function Makhuyenmai({ route }) {
+  const [data, setData] = useState([]);
   const navigation = useNavigation();
-  const {totalBill} = route.params;
+  const { totalBill } = route.params;
 
   console.log(totalBill);
 
   const myvouchers = async () => {
     try {
-      const data = await getMyVoucher();
-      setVoucher(data);
+      const response = await getMyVoucher();
+      setData(response);
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {myvouchers()}, [])
+  useEffect(() => { myvouchers() }, [])
 
   const setNewVoucher = (voucher) => {
-    navigation.navigate('PayScreen', {address: null, shipping: null, voucher: voucher});
+    setVoucher(voucher)
+    navigation.goBack()
   }
 
-  const checkCondition = (totalBill, condition) => {
-    if(totalBill < condition){
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
 
   return (
-    <SafeAreaView style={tailwind `flex-1`}>
-      <View style={tailwind `bg-white flex-row py-3`}>
-        <TouchableOpacity 
-          onPress={() => { navigation.goBack() }}
-          style={tailwind `bg-white p-1.5 rounded-full shadow-md ml-3`}
-        >
-          <Ionicons name="arrow-back" size={30} color="black" />
-        </TouchableOpacity>
-        <Text style={tailwind `text-base mt-2 font-bold ml-3`}>Áp dụng Voucher của bạn</Text>
-      </View>
-      <View>
-        <FlatList
-          data={voucher}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={tailwind `bg-white mt-2 p-3 w-96 self-center border border-slate-300 rounded-lg`}>
-              <View style={tailwind`flex-row`}>
-                <View
-                  style={{
-                    width: '28%',
-                    paddingTop: 10,
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Image source={require('../img/sale.png')} style={styles.img} />
-                </View>
-                <View style={{ paddingTop: 10, width: '65%', marginLeft: 10 }}>
-                  <Text style={tailwind `text-base font-bold`} >{item.description}</Text>
-                  <Text >Đơn tối thiểu {formatPrice(item.condition)}</Text>
-                  <Text style={styles.title2}>HSD: {formatTime(item.expiration_date)}</Text>
-                </View>
+    <SafeAreaView style={tailwind`flex-1`}>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={tailwind`bg-white mt-2 p-3 w-96 self-center border border-slate-300 rounded-lg`}>
+            <View style={tailwind`flex-row`}>
+              <View
+                style={{
+                  width: '28%',
+                  paddingTop: 10,
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image source={require('../img/sale.png')} style={styles.img} />
               </View>
+              <View style={{ paddingTop: 10, width: '65%', marginLeft: 10 }}>
+                <Text style={tailwind`text-base font-bold`} >{item.description}</Text>
+                <Text >Đơn tối thiểu {formatPrice(item.condition)}</Text>
+                <Text style={styles.title2}>HSD: {formatTime(item.expiration_date)}</Text>
+              </View>
+            </View>
 
-              <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
-                {
-                  checkCondition(totalBill, item.condition)
-                  ? <TouchableOpacity style={tailwind `bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`} onPress={() => setNewVoucher(item)}>
-                  <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Sử dụng</Text>
-                </TouchableOpacity>
-                  : <TouchableOpacity style={tailwind `bg-slate-600 py-3 justify-center mt-5 rounded-md shadow-md`} disabled>
-                  <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Chưa đủ điều kiện</Text>
-                </TouchableOpacity>
-                }
-              </View>
-            </View>        
-          )}
-        />
-      </View>
+            <View style={{ paddingTop: 10, alignContent: 'center', justifyContent: 'center' }}>
+              {
+                totalBill > item.condition
+                  ? <TouchableOpacity style={tailwind`bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`} onPress={() => setNewVoucher(item)}>
+                    <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Sử dụng</Text>
+                  </TouchableOpacity>
+                  : <TouchableOpacity style={tailwind`bg-slate-600 py-3 justify-center mt-5 rounded-md shadow-md`} disabled>
+                    <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Chưa đủ điều kiện</Text>
+                  </TouchableOpacity>
+              }
+            </View>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 }
