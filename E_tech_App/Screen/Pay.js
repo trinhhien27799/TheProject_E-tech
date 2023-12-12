@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { Component, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import RNMomosdk from 'react-native-momosdk';
-import { createBill } from '../../CallApi/billApi';
+import { createBill } from '../CallApi/billApi'; 
 import { clearListCart } from '../../session';
 import LottieView from 'lottie-react-native'
 
