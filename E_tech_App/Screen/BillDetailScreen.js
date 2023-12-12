@@ -27,6 +27,7 @@ const BillDetailScreen = ({ route }) => {
         getData()
     }, [])
 
+    
 
     const renderItem = ({ item, index }) => {
         return <ItemInBill item={item} status={data.status} />

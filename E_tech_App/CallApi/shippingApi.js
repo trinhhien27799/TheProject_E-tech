@@ -1,6 +1,6 @@
 import api, { setAuthToken } from '../apiService'
 
-const getShipping = async () => {
+const getListShipping = async () => {
     try {
         const response = await api.get('/shipping/get-all')
         return response.data
@@ -10,4 +10,4 @@ const getShipping = async () => {
     }
 }
 
-export { getShipping }
+export { getListShipping }

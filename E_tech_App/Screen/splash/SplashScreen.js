@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import LottieView from 'lottie-react-native'
 import { autoLogin } from '../../CallApi/authenApi'
 
-import { getUser, setToken, setUser } from '../../session'
+import { getUser, setAddress, setToken, setUser } from '../../session'
 import { useNavigation } from '@react-navigation/native'
 
 const SplashScreen = () => {
@@ -13,6 +13,7 @@ const SplashScreen = () => {
             const response = await autoLogin();
             if (response.code == 200) {
                 setUser(response.user)
+                setAddress(response.user?.address ?? null)
                 console.log("Đăng nhập thành công")
             }
         } catch (error) {
@@ -20,6 +21,7 @@ const SplashScreen = () => {
         } finally {
             
                 navigation.replace('ButtonNavigation');
+
         }
     }
     useEffect(() => {

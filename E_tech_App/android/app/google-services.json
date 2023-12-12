@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166584660712",
+    "project_id": "shopping-6b085",
+    "storage_bucket": "shopping-6b085.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166584660712:android:dd73cb3f98876163260f5d",
+        "android_client_info": {
+          "package_name": "com.etech.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhFhb7HyADj2jcMHh5FpUXpN1gZ2l8p4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

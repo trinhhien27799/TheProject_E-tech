@@ -30,11 +30,9 @@ const FavoriteScreen = () => {
     fetchData()
   }, [])
 
-  const RenderItem = ({ item, index, }) => {
-    return <IteamProduct item={item} index={index} navigation={navigation} list={list} setList={setList} />
+  const RenderItem = ({ item }) => {
+    return <IteamProduct item={item} navigation={navigation} list={list} setList={setList} />
   }
-
-
 
   const handleDelete = () => {
     Alert.alert(

@@ -41,9 +41,9 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{productName}</Text>
-            <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+            <View style={{ paddingVertical: 10 }}>
                 <Text style={{ color: 'red', fontSize: 17 }}>{text1}</Text>
-                <Text style={{ color: 'grey', fontSize: 17, marginStart: 10, textDecorationLine: 'line-through' }}>{text2}</Text>
+                <Text style={{ color: 'grey', fontSize: 17, textDecorationLine: 'line-through' }}>{text2}</Text>
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -61,7 +61,6 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
                                 : <Ionicons name="heart-outline" color="red" size={28} style={{ marginRight: 10 }} />
                         }
                     </TouchableOpacity>
-                    <Ionicons name="share-social-outline" size={28} />
                 </View>
             </View>
         </View>

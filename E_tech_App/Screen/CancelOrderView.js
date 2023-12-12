@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, ScrollView, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { Image } from 'react-native'
@@ -10,6 +10,7 @@ import tailwind from 'twrnc'
 import { cancelBill } from '../CallApi/billApi'
 import { formatPrice } from '../utils/format'
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill'
+import { getItemProduct } from '../CallApi/productApi'
 
 const CancelOrderView = () => {
     const route = useRoute();
@@ -37,6 +38,10 @@ const CancelOrderView = () => {
             value: 'Sản phẩm không đúng với mô tả'
         },
     ];
+
+    console.log(item.products);
+
+
 
     const ReasonCard = ({ item }) => {
         return (
@@ -79,7 +84,7 @@ const CancelOrderView = () => {
                             <FlatList
                                 data={item.products}
                                 style={styles.listCart}
-                                renderItem={({ item }) => {
+                                renderItem={({ data }) => {
                                     return (
                                         // Cart Item
                                         <View style={styles.itemContainer}>

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
     width: Dimensions.get('window').width / 2 - 16,
-    height: 270,
+    padding: 10,
     borderRadius: 10,
     shadowColor: 'grey',
     shadowRadius: 7,

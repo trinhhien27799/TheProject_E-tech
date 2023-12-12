@@ -2,9 +2,11 @@ import { useNavigation } from "@react-navigation/native"
 import Checkbox from "expo-checkbox"
 import { useEffect, useState } from "react"
 import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import { setAddress } from "../../session"
 
-const AddressItem = ({ item, index, check, listCheck, setListCheck }) => {
+const AddressItem = ({ item, index, check, listCheck, setListCheck, choose, idSelected, setIdSelected }) => {
     const [isChecked, setChecked] = useState(false)
+    const [isCheckedSelected, setCheckedSelected] = useState(false)
     const navigation = useNavigation()
 
     const eventChecked = (checked) => {
@@ -15,17 +17,42 @@ const AddressItem = ({ item, index, check, listCheck, setListCheck }) => {
             setListCheck(listCheck.filter(i => i !== item._id))
         }
     }
+    const eventCheckedSelected = (checked) => {
+        if (checked) {
+            setAddress(item)
+            setIdSelected(item._id)
+        } else {
+            if (idSelected == item._id) alert('Địa chỉ đã được chọn')
+        }
+    }
 
     useEffect(() => {
         if (listCheck.length == 0) setChecked(false)
     }, [listCheck])
 
 
+    useEffect(() => {
+        if (idSelected == item._id) {
+            setCheckedSelected(true)
+            setListCheck(listCheck.filter(i => i !== item._id))
+        } else {
+            setCheckedSelected(false)
+        }
+    }, [idSelected])
+
+
     return (
         <View style={styles.container}>
-            <Text style={styles.avatar}>
-                {item.fullname[0].toUpperCase()}
-            </Text>
+            {
+                choose ?
+                    <Checkbox value={isCheckedSelected} onValueChange={(checked) => {
+                        eventCheckedSelected(checked)
+                    }} />
+                    :
+                    <Text style={styles.avatar}>
+                        {item.fullname[0].toUpperCase()}
+                    </Text>
+            }
             <View style={styles.viewItem}>
                 <View style={styles.row}>
                     <Image style={styles.icon} source={require('../../assets/male.png')} />
@@ -41,7 +68,7 @@ const AddressItem = ({ item, index, check, listCheck, setListCheck }) => {
                 </View>
             </View>
             {check ?
-                <Checkbox value={isChecked} onValueChange={(checked) => {
+                <Checkbox disabled={isCheckedSelected} value={isChecked} onValueChange={(checked) => {
                     eventChecked(checked)
                 }} />
                 :

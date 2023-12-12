@@ -1,16 +1,8 @@
-import { convertSpeed } from "geolib";
+import { object } from "prop-types"
+
+
 
 var user = null
-
-var myVoucher = [];
-
-const setMyVoucher = (voucherArray) => {
-  myVoucher = voucherArray;
-}
-
-const getMyVoucher = () => {
-  return myVoucher;
-}
 
 const setUser = (newUser) => {
   user = newUser
@@ -73,14 +65,56 @@ const getDeviceToken = () => {
   return deviceToken
 }
 
-var lisProduct = []
+var address = null
+
+const setAddress = (object) => {
+  address = object
+  console.log(address)
+}
+
+const getAddress = () => {
+  return address
+}
+
+var shipping = null
+
+const setShipping = (object) => {
+  shipping = object
+}
+
+const getShipping = () => {
+  return shipping
+}
+
+var voucher = null
+
+const setVoucher = (object) => {
+  voucher = object
+}
+
+const getVoucher = () => {
+  return voucher
+}
+
+var payment = null
+
+const setPayment = (object) => {
+  payment = object
+}
+
+const getPayment = () => {
+  return payment
+}
 
 
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
-  pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart,setListCart,
-  getMyVoucher, setMyVoucher,
-  setDeviceToken, getDeviceToken
+  pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart, setListCart,
+  setDeviceToken, getDeviceToken,
+  setAddress, getAddress,
+  getShipping, setShipping,
+  setVoucher, getVoucher,
+  setPayment, getPayment
 }
 

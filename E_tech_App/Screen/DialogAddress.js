@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { FlatList } from 'react-native'
@@ -11,30 +11,46 @@ import items from '../items'
 import { setAddress } from '../Component/HandleObj/AddressHandle'
 import { BottomModalInput } from '../Component/AddAdressDialog'
 import { ScrollView } from 'react-native'
-import { deleteAddress } from '../CallApi/AddressAPI'
+import { deleteAddress, getAddress } from '../CallApi/AddressAPI'
 import { Ionicons } from '@expo/vector-icons'
 
 
 const DialogAddress = ({ route }) => {
-    const [getAddress, setGetAddress] = useState(null);
+    const [chooseAddress, setChooseAddress] = useState(null);
     const navigation = useNavigation();
     const [value, setValue] = useState('');
+    const [data, setData] = useState(null);
 
     const { listOnlyAddresses } = route.params;
-    const listData = listOnlyAddresses;
+
+    const getData = async () => {
+        try {
+            const response = await getAddress()
+            setData(response)
+        } catch (error) {
+            console.log('Address Screen: ', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getData()
+        })
+
+        return unsubscribe
+    }, [navigation])
+
+    const listData = data;
+    console.log(listData);
 
     const [visible, setVisible] = React.useState(false);
 
     const hideDialog = () => setVisible(false);
 
-    const handleValueChange = (newValue) => {
-        setValue(newValue);
-        setVisible(true);
-    };
-
     const handleValue = (value) => {
-        setGetAddress(value);
-        setAddress(getAddress);
+        setChooseAddress(value);
     }
 
     const sendValueToScreen = (address) => {
@@ -73,7 +89,7 @@ const DialogAddress = ({ route }) => {
                 <View style={tailwind`flex-row justify-center p-2 self-end ml-10`}>
                     <TouchableOpacity
                         style={tailwind`mr-2 bg-blue-400 p-2 rounded-lg shadow-md`}
-                        onPress={() => handleValueChange(item)}
+                        onPress={() => navigation.navigate('NewAddress', { address: item })}
                     >
                         <Image source={require('../img/edit.png')} style={tailwind`w-5 h-5`} />
                     </TouchableOpacity>
@@ -108,7 +124,7 @@ const DialogAddress = ({ route }) => {
                         {/* Flatlist địa chỉ */}
                         <RadioButton.Group
                             onValueChange={(item) => handleValue(item)}
-                            value={getAddress}
+                            value={chooseAddress}
                         >
                             <FlatList
                                 data={listData}
@@ -141,20 +157,14 @@ const DialogAddress = ({ route }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={tailwind `${setBgLockButton(getAddress)}`}
-                                onPress={() => { sendValueToScreen(getAddress) }}
-                                disabled={setLockButton(getAddress)}
+                                style={tailwind `${setBgLockButton(chooseAddress)}`}
+                                onPress={() => { sendValueToScreen(chooseAddress) }}
+                                disabled={setLockButton(chooseAddress)}
                             >
                                 <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-
-                    <Dialog visible={visible} onDismiss={hideDialog} style={tailwind`bg-white`}>
-                        <Dialog.Content>
-                            <BottomModalInput value={value} />
-                        </Dialog.Content>
-                    </Dialog>
                 </Provider>
             </ScrollView>
         </View>

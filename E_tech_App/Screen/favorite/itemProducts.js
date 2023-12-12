@@ -5,9 +5,9 @@ import { Ionicons } from "@expo/vector-icons"
 import { formatPrice } from "../../utils/format"
 import Checkbox from "expo-checkbox"
 
-const IteamProduct = ({ item, index, navigation, list, setList }) => {
+const IteamProduct = ({ item, navigation, list, setList }) => {
     const [isChecked, setChecked] = useState(false)
-
+    console.log(item)
 
     useEffect(() => {
         if (list.length == 0) setChecked(false)

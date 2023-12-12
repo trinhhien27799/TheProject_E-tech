@@ -81,7 +81,7 @@ const ProductCommentFix = ({starRating, commentData, variationSort}) => {
         }
 
         else if(variationSort != null){
-            const variationStructure = null;
+            var variationStructure = null;
             if(variationSort.ram == null || variationSort.rom == null){
                 variationStructure = `Màu sắc: ${variationSort.color}`
             }

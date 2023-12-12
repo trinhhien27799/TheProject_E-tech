@@ -6,7 +6,7 @@ import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
 import { setAuthToken } from "../../apiService";
 import { updateDeviceToken } from "../../CallApi/tokenDeviceApi";
-import { setUser } from "../../session";
+import { setAddress, setUser } from "../../session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
@@ -27,7 +27,8 @@ const Login = ({ navigation }) => {
             if (response.code === 200) {
                 setAuthToken(response.token)
                 setUser(response.user)
-                navigation.replace('ButtonNavigation', { registrationData: response });
+                setAddress(response.user?.address ?? null)
+                navigation.replace('ButtonNavigation');
                 alert('Đăng nhập thành công')
                 await updateDeviceToken()
                 await AsyncStorage.setItem("token", response.token)
