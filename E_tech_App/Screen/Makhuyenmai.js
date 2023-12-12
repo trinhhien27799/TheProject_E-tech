@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import tailwind from 'twrnc'
 import { formatPrice, formatTime } from '../utils/format'
 import LoadingWidget from '../Component/loading'
+import ItemVoucher from './ItemVoucher'
 
 export default function Makhuyenmai() {
   const navigation = useNavigation()
@@ -40,50 +41,12 @@ export default function Makhuyenmai() {
     return unsubscribe;
   }, [navigation])
 
+
   const renderItem = ({ item, index }) => {
-    const [loadingAdd, setLoadingAdd] = useState(false)
-    const handleVoucher = async (voucherId, voucherCode) => {
-      try {
-        setLoadingAdd(true)
-        const response = await addVoucher(voucherCode, voucherId)
-        if (response.userId) {
-          const newArray = data.filter(item => item._id !== voucherId)
-          setData(newArray)
-        } else {
-          alert('Thêm thất bại')
-        }
-      } catch (error) {
-        console.error('Add voucher:', error)
-      } finally {
-        setLoadingAdd(false)
-      }
-    }
     return (
-      <View style={[tailwind`bg-white mt-2 p-3 w-96 self-center border border-slate-300 rounded-lg`, { alignItems: 'center' }]}>
-        <View style={[tailwind`flex-row`, { alignItems: 'center' }]}>
-          <Image source={require('../img/sale.png')} style={styles.img} />
-          <View style={{ paddingTop: 10, width: '60%', marginLeft: 10 }}>
-            <Text style={tailwind`text-base font-bold mb-1`} >{item.description}</Text>
-            <Text>Đơn tối thiểu: {formatPrice(item.condition)}</Text>
-            <Text style={styles.title}>HSD: {formatTime(item.expiration_date)}</Text>
-          </View>
-        </View>
-
-
-        {loadingAdd ?
-          <View style={{ alignItems: 'center', paddingTop: 5 }}>
-            <LoadingWidget />
-          </View> :
-          <TouchableOpacity style={[tailwind`bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`, { width: '90%' }]} onPress={() => {
-            handleVoucher(item._id, item.code)
-          }}>
-            <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Lưu</Text>
-
-          </TouchableOpacity>}
-      </View>
+      <ItemVoucher item={item} index={index} setData={setData} data={data} />
     )
   }
-
 
 
   return (
