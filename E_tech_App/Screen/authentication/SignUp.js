@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {  insertOtp } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 import tailwind from 'twrnc';
+import { setCheck } from '../../session';
 
 
 const SignUp = ({ navigation }) => {
@@ -26,11 +27,9 @@ const SignUp = ({ navigation }) => {
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
   const [isRepasswordShow, setisRepasswordShow] = useState(false);
-  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
   const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
   const [checkValue, setCheckValue] = useState(false);
-
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 
@@ -58,17 +57,15 @@ const SignUp = ({ navigation }) => {
       } else {
         setErrorPassword('');
         setErrorConfim('');
-        // registerUser(username,email,password);
         if (email == '' || password == '' || fullname == '' || confirmPass == '') {
           alert("Vui lòng điền đầy đủ thông tin!!!");
         } else {
           const insert = await insertOtp(email, false);
           if (insert.code === 200) {
-            setShowVerifyDialog(true);
+            setCheck(true);
             setIsSignUpPressed(true);
           } else {
             alert(insert.message);
-
           }
 
         }
@@ -79,12 +76,12 @@ const SignUp = ({ navigation }) => {
     }
   }
   const handleDelete = () => {
-    setShowVerifyDialog(false);
+    setCheck(false);
     setRemainingTime(120);
     setIsSignUpPressed(false);
   };
   return (
-    <ScrollView style={styles.safeArea}>
+      <ScrollView style={styles.safeArea}>
       <View style={styles.view}>
         <TouchableOpacity
           style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full mt-5`}
@@ -222,7 +219,7 @@ const SignUp = ({ navigation }) => {
             ĐĂNG KÝ
           </Text>
         </TouchableOpacity>
-        <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
+        <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
         <View style={styles.view3}></View>
         <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
 

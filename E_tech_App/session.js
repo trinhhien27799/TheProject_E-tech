@@ -7,7 +7,6 @@ var user = null
 const setUser = (newUser) => {
   user = newUser
 }
-
 const getUser = () => {
   return user
 }
@@ -105,6 +104,14 @@ const setPayment = (object) => {
 const getPayment = () => {
   return payment
 }
+var check = false;
+
+const setCheck = (newCheck)=>{
+  check = newCheck;
+}
+const getCheck = () => {
+  return check;
+}
 
 
 export {
@@ -115,6 +122,7 @@ export {
   setAddress, getAddress,
   getShipping, setShipping,
   setVoucher, getVoucher,
-  setPayment, getPayment
+  setPayment, getPayment,
+  setCheck,getCheck,
 }
 

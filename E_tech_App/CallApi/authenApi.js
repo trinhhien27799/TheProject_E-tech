@@ -73,7 +73,6 @@ export const forgotPassword = async (username, password, navigation) => {
         const response = await api.post('/user/forgot-password',{username, password})
         const data = await response.data;
         if (data.code === 200) {
-            // navigation.navigate('ButtonNavigation');
             navigation.navigate('Taomk2')
         } else {
             alert(data.message);

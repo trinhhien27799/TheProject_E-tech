@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import BotChats from "./BotChats";
 
 const ChatsScreen = () => {
     const navigation = useNavigation();
@@ -9,6 +10,9 @@ const ChatsScreen = () => {
     return (
         <View>
             <HeaderItem navigation={navigation} />
+            <ScrollView>
+                <BotChats />
+            </ScrollView>
         </View>
     )
 }
