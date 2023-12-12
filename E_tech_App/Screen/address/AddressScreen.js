@@ -116,33 +116,33 @@ const AddressScreen = () => {
                     </TouchableOpacity>
                     <Text style={styles.textHeader}>Sổ địa chỉ</Text>
                     <View style={{ flex: 1 }} />
-                    (loadingDelete ? <LoadingWidget /> :
-                    (check ?
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity
-                            onPress={cancelCheck}>
-                            <Text style={{ color: 'grey', fontSize: 16 }}>Hủy</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={handleDelete}
-                            disabled={listCheck.length == 0}
-                            style={{ marginStart: 20 }}>
-                            <Text style={{ color: listCheck.length == 0 ? 'grey' : 'red', fontSize: 16 }}>Xóa</Text>
-                        </TouchableOpacity>
-                    </View>
-                    :
-                    <TouchableOpacity
-                        onPress={() => {
-                            setShowPopup(!showPopup)
-                        }}
-                    >
-                        <Entypo
-                            name="dots-three-vertical"
-                            size={20}
-                            color="black"
-                        />
+                    {loadingDelete ? <LoadingWidget /> :
+                        (check ?
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity
+                                    onPress={cancelCheck}>
+                                    <Text style={{ color: 'grey', fontSize: 16 }}>Hủy</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={handleDelete}
+                                    disabled={listCheck.length == 0}
+                                    style={{ marginStart: 20 }}>
+                                    <Text style={{ color: listCheck.length == 0 ? 'grey' : 'red', fontSize: 16 }}>Xóa</Text>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setShowPopup(!showPopup)
+                                }}
+                            >
+                                <Entypo
+                                    name="dots-three-vertical"
+                                    size={20}
+                                    color="black"
+                                />
 
-                    </TouchableOpacity>))
+                            </TouchableOpacity>)}
                 </View>
                 {loading ? <LoadingWidget /> :
                     <FlatList
