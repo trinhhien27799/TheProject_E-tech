@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import color from "../../colors";
 import OrderSreen from "./orderSreen";
-import { getUser } from "../../session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUser } from "../../session";
 
 
-const Profile = ({ route }) => {
+const Profile = () => {
     const navigation = useNavigation();
+    const [user,setUser] = useState(getUser());
+    useFocusEffect(
+        React.useCallback(()=>{
+            const newUser = getUser();
+            setUser(newUser);
+        },[])
+    );
     const clearToken = async () => {
         try {
             await AsyncStorage.removeItem('token');
@@ -32,9 +39,10 @@ const Profile = ({ route }) => {
             },
         ])
     }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile navigation={navigation} onPress={Logout}/>
+            <HeaderProfile navigation={navigation} onPress={Logout} user={user}/>
             <View>
                 <TouchableOpacity style={styles.viewEdit}
                     onPress={() => { navigation.navigate('EditProfile') }}
@@ -77,8 +85,7 @@ const Profile = ({ route }) => {
         </ScrollView>
     );
 }
-const HeaderProfile = ({ navigation,onPress }) => {
-    const user = getUser()
+const HeaderProfile = ({ navigation,onPress,user }) => {
     return (
         <ImageBackground source={{ uri: user.background }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
             <TouchableOpacity
@@ -111,6 +118,7 @@ const HeaderProfile = ({ navigation,onPress }) => {
             </TouchableOpacity>
         </ImageBackground>
     );
+    
 }
 export default Profile;
 const styles = StyleSheet.create({
