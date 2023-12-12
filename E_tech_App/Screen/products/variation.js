@@ -4,7 +4,7 @@ import { formatPrice } from "../../utils/format";
 import { setProductSelected } from "../../session";
 
 
-const Variations = ({ variations }) => {
+const Variations = ({ variations, product_name, percent_discount }) => {
 
 
     const [selectedColorIndex, setSelectedColorIndex] = useState(0);
@@ -16,6 +16,8 @@ const Variations = ({ variations }) => {
         if (variations && variations.length > 0) {
             const selectedVersion = variations[selectVersionIndex];
             const dataIndex = variations[selectedColorIndex];
+            dataIndex.product_name = product_name;
+            dataIndex.percent_discount = percent_discount;
             setProductSelected(dataIndex)
             setSelectedRAMROM(`${selectedVersion.ram}/${selectedVersion.rom}`);
         }
@@ -97,7 +99,7 @@ const ItemViewVersion = ({ item, isSelected, onPress }) => {
         <TouchableOpacity
             onPress={onPress}
         >
-            <View style={[{ borderColor: isSelected ? '#1E90FF' : '#E3E6E7',backgroundColor: isSelected ? null : '#E3E6E7'}, styles.viewItem]}>
+            <View style={[{ borderColor: isSelected ? '#1E90FF' : '#E3E6E7', backgroundColor: isSelected ? null : '#E3E6E7' }, styles.viewItem]}>
                 <Text>{item.ram}/{item.rom}</Text>
                 <Text style={{ fontSize: 13, color: 'red', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
             </View>
@@ -126,6 +128,6 @@ const styles = StyleSheet.create({
     },
     flatlist: {
         flexGrow: 0,
-        alignItems:'center'
+        alignItems: 'center'
     }
 });

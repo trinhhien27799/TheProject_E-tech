@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, Dimensions, TouchableOpacity, Image, TouchableWithoutFeedback, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import LoadingWidget from '../../Component/loading'
-import { deleteListAddress, getAddress } from '../../CallApi/AddressAPI'
+import { deleteListAddress, getListAddress } from '../../CallApi/AddressAPI'
 import AddressItem from './AddressItem'
 import { Entypo } from '@expo/vector-icons'
+import { getAddress } from '../../session'
 
 
 
 const AddressScreen = () => {
     const navigation = useNavigation()
+    const route = useRoute()
+    const choose = route.params?.choose ?? false
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const [check, setCheck] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const [listCheck, setListCheck] = useState([])
     const [loadingDelete, setLoadingDelete] = useState(false)
+    const [idSelected, setIdSelected] = useState(getAddress()?._id ?? '')
+
+
     const getData = async () => {
         try {
-            const response = await getAddress()
+            const response = await getListAddress()
             setData(response)
         } catch (error) {
             console.log('Address Screen: ', error)
@@ -36,7 +42,10 @@ const AddressScreen = () => {
     }, [navigation])
 
     const RenderItem = ({ item, index }) => {
-        return <AddressItem item={item} index={index} check={check} listCheck={listCheck} setListCheck={setListCheck} />
+        return <AddressItem item={item} index={index}
+            check={check} listCheck={listCheck}
+            setListCheck={setListCheck} choose={choose}
+            idSelected={idSelected} setIdSelected={setIdSelected} />
     }
     const handleOutsidePress = () => {
         setShowPopup(false)

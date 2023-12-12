@@ -11,7 +11,7 @@ export const addAddress = async (fullname, phone, address) => {
     }
 }
 
-export const getAddress = async () => {
+export const getListAddress = async () => {
     try {
         if (!getUser()) throw "Đăng nhập để tiếp tục?"
         const rs = await api.get('/user/address/get-all');

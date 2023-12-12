@@ -56,13 +56,13 @@ const DetailPoducts = () => {
             case 2:
                 return <Rule />
             case 3:
-                return <Variations variations={product.variations} />
+                return <Variations variations={product.variations} product_name={product.product_name} percent_discount={product.percent_discount}/>
             case 4:
                 return <Related productId={product._id} />
             case 5:
                 return <Description description={product.description} />
             case 6:
-                return <Comment productId={product._id} product={product}/>
+                return <Comment productId={product._id} product={product} />
             default:
                 return null
         }
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'whitesmoke',
         alignItems: 'center',
-        justifyContent:'center'
+        justifyContent: 'center'
     },
 
 })

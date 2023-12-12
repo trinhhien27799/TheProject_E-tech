@@ -154,7 +154,7 @@ export default App = () => {
         ref={navigationContainerRef}>
 
         <Stack.Navigator
-          initialRouteName='MoMoPaymentScreen' >
+          initialRouteName='Splash' >
           <Stack.Screen name='MoMoPaymentScreen' component={MoMoPaymentScreen} options={{ headerShown: false }} />
 
           <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
@@ -181,14 +181,20 @@ export default App = () => {
             headerTitle: "Thêm địa chỉ"
           }} />
 
-          <Stack.Screen name='PTTT' component={PTTT} options={{ headerShown: false }} />
+          <Stack.Screen name='PTTT' component={PTTT} options={{
+            headerTitle: "Phương thức thanh toán"
+          }} />
           <Stack.Screen name='DialogQR' component={DialogQR} options={{ headerShown: false }} />
           <Stack.Screen name='MyVoucher' component={MyVoucher} options={{
             headerTitle: "Mã giảm giá đã lưu"
           }} />
           <Stack.Screen name='Makhuyenmai' component={Makhuyenmai} options={{ headerShown: false }} />
-          <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{ headerShown: false }} />
-          <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{ headerShown: false }} />
+          <Stack.Screen name='ApDungVoucher' component={ApDungVoucher} options={{
+            headerTitle: "Lựa chọn mã giảm giá"
+          }} />
+          <Stack.Screen name='ShippingMethod' component={ShippingMethod} options={{
+            headerTitle: "Phương thức vận chuyển"
+          }} />
 
 
           <Stack.Screen name='NotificationsScreen' component={NotificationScreen} options={{ headerShown: false }} />
@@ -204,7 +210,9 @@ export default App = () => {
 
           <Stack.Screen name='ChooseAddressScreen' component={DialogAddress} options={{ headerShown: false }} />
 
-          <Stack.Screen name='PayScreen' component={Pay} options={{ headerShown: false }} />
+          <Stack.Screen name='PayScreen' component={Pay} options={{
+            headerTitle: "Đặt hàng"
+          }} />
           <Stack.Screen name='MapScreen' component={MapViewScreen} options={{ headerShown: false }} />
           <Stack.Screen name='DemoShipMoney' component={DemoShipMoneyResoveScreen} />
           <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />

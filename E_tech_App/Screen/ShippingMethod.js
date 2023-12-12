@@ -1,124 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Image,
     Text,
     View,
-    StyleSheet,
     TouchableOpacity,
-    ScrollView,
     FlatList,
-    SafeAreaView,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import tailwind from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
-import { getShipping } from '../CallApi/shippingApi';
-import { Ionicons } from '@expo/vector-icons';
+import { getListShipping } from '../CallApi/shippingApi';
 import { formatPrice } from '../utils/format';
+import { setShipping, getShipping } from '../session';
+import LoadingWidget from '../Component/loading';
 
 const ShippingMethod = () => {
     const navigation = useNavigation();
-    const [shipping, setShipping] = useState(null);
-    const [handleShipping, setHandleShipping] = useState(null);
+    const [data, setData] = useState(null);
+    const [selected, setSelected] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const fetchData = async () => {
         try {
-            const data = await getShipping();
-            setShipping(data);
+            setLoading(true)
+            const data = await getListShipping();
+            setData(data);
+            setSelected(getShipping() ? getShipping()._id : data[0]._id)
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false)
         }
     }
 
     useEffect(() => {
+
         fetchData();
     }, []);
 
-    console.log(shipping)
 
-    const ShippingItem = ({ item }) => {
+    const ShippingItem = ({ item, index, selected, setSelected }) => {
+        const [check, setCheck] = useState('unchecked')
+        useEffect(() => {
+            setCheck(selected == item._id ? 'checked' : 'unchecked')
+        }, [selected])
         return (
             <View style={tailwind`flex-auto flex-row mb-5 bg-slate-50 py-3 rounded-md border border-gray-400`}>
-                <RadioButton value={item}/>
-
-                <View style={tailwind`justify-center`}>
-                    <Text>{item.name} ({formatPrice(item.price)})</Text>
+                <RadioButton value={item} status={check} />
+                <View style={{ flex: 1, justifyContent: 'center' }}
+                    onTouchStart={() => {
+                        setSelected(item._id)
+                        setShipping(item)
+                    }}>
+                    <Text style={{ fontSize: 16 }}>{item.name} ({formatPrice(item.price)})</Text>
                 </View>
             </View>
         )
     }
 
-    const setNewShipping = (shipping) => {
-        console.log(shipping);
-        navigation.navigate('PayScreen', {address: null, shipping: shipping, voucher: null});
-    }
-
-    const setLockButton = (value) => {
-        if(value == null){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    const setBgLockButton = (value) => {
-        if(value == null){
-            return 'bg-blue-300 justify-center w-24 h-8 rounded-md';
-        }
-        else{
-            return 'bg-blue-500 justify-center w-24 h-8 rounded-md';
-        }
-    }
 
     return (
-        <View>
-            <View style={tailwind`bg-white flex-row py-3`}>
-                <TouchableOpacity
-                    onPress={() => { navigation.goBack() }}
-                    style={tailwind`bg-white p-1.5 rounded-full shadow-md ml-3`}
-                >
-                    <Ionicons name="arrow-back" size={30} color="black" />
-                </TouchableOpacity>
-                <Text style={tailwind`text-base mt-2 font-bold ml-3`}>Phương thức thanh toán</Text>
-            </View>
-
-            <View style={tailwind`flex-auto p-5`}>
-                <Text style={tailwind`text-lg mb-5 font-bold self-center`}>Chọn Phương thức vận chuyển</Text>
-
-                {/* Flatlist PTCV */}
-                <RadioButton.Group
-                    onValueChange={(item) => setHandleShipping(item)}
-                    value={handleShipping}
-                >
-                    <FlatList
-                        data={shipping}
-                        renderItem={ShippingItem}
-                        style={tailwind``}
-                    />
-                </RadioButton.Group>
+        <View style={{ flex: 1, padding: 20 }}>
+            {loading ? <LoadingWidget /> :
+                <>
+                    <RadioButton.Group
+                        onValueChange={(item) => {
+                            setSelected(item._id)
+                            setShipping(item)
+                        }}
+                    >
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={data}
+                            renderItem={({ item, index }) => (
+                                <ShippingItem index={index} item={item} selected={selected} setSelected={setSelected} />
+                            )}
+                        />
+                    </RadioButton.Group>
 
 
-                {/* Bottom button */}
-                <View style={tailwind`flex-row self-end`}>
                     <TouchableOpacity
-                        style={tailwind`justify-center w-24 h-8 rounded-md border-gray-800 border mr-3`}
+                        style={{ backgroundColor: 'green', padding: 20, borderRadius: 8, alignItems: 'center' }}
                         onPress={() => navigation.goBack()}
                     >
-                        <Text style={tailwind`self-center`}>Hủy</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={tailwind `${setBgLockButton(handleShipping)}`} 
-                        onPress={() => setNewShipping(handleShipping)}
-                        disabled={setLockButton(handleShipping)}
-                    >
-                        <Text style={tailwind`self-center text-white`}>Xác nhận</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                        <Text style={{ color: 'white', fontSize: 17 }}>Xác nhận</Text>
+                    </TouchableOpacity></>}
         </View>
-        
+
     )
 }
 export default ShippingMethod;

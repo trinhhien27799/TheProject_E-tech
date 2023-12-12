@@ -11,13 +11,10 @@ export const getBillByStatus = async (status) => {
     }
 }
 
-export const createBill = async (address, listIDcart, transport_fee, shipping_id, voucher_id, note, navigation) => {
+export const createBill = async (data) => {
     try {
-        const res = await api.post('/bill/create', { address: address, listIdCart: listIDcart, transport_fee: transport_fee, shipping_id: shipping_id, voucher_id: voucher_id, note: note })
-        const data = res.data;
-        console.log(data.message);
-        alert(data.message)
-        return data;
+        const res = await api.post('/bill/create', data)
+        return res.data;
     } catch (error) {
         throw error;
     }
