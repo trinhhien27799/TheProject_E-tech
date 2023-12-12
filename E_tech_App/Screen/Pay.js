@@ -95,7 +95,7 @@ const Pay = () => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddressScreen', { choose: true })}>
-          <View style={{ flexDirection: 'row', padding: 10, backgroundColor: 'white', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
             {
               address ?
                 <View style={{ flex: 1 }}>
@@ -128,13 +128,13 @@ const Pay = () => {
         <FlatList
           scrollEnabled={false}
           data={data}
-          style={{ backgroundColor: 'white' }}
+          style={{marginBottom: 15}}
           keyExtractor={(item, index) => item._id}
           renderItem={({ item }) => (
             <View style={{
               flexDirection: 'row', borderWidth: 0.5, borderColor: 'grey',
               paddingVertical: 10, marginHorizontal: 15, borderRadius: 15, elevation: 10,
-              backgroundColor: 'white', marginVertical: 5,
+              backgroundColor: 'white', marginVertical: 10,
               alignItems: 'center'
             }}>
               <View style={tailwind`px-2`}>
@@ -162,7 +162,7 @@ const Pay = () => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate('ShippingMethod')}>
-          <View style={{ flexDirection: 'row', padding: 10, backgroundColor: 'white', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
             {
               shipping ?
                 <View style={{ flex: 1 }}>
@@ -186,7 +186,7 @@ const Pay = () => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('ApDungVoucher', { totalBill: total })} >
-          <View style={{ flexDirection: 'row', padding: 10, backgroundColor: 'white', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
             {
               voucher ?
                 <View style={{ flex: 1 }}>
@@ -209,7 +209,7 @@ const Pay = () => {
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('PTTT')}>
-          <View style={{ flexDirection: 'row', padding: 10, backgroundColor: 'white', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
             {
               payment ?
                 <View style={{ flex: 1 }}>
@@ -222,7 +222,7 @@ const Pay = () => {
             <Image style={styles.iconSmall} source={require('../assets/right.png')} />
           </View>
         </TouchableOpacity>
-        <Text style={[styles.textTitle, { backgroundColor: 'white', fontSize: 22 }]}>
+        <Text style={[styles.textTitle, { fontSize: 22, marginTop: 20 }]}>
           Chi tiết thanh toán
         </Text>
         <View style={styles.contentTotalView}>
@@ -259,14 +259,12 @@ export default Pay
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
+    backgroundColor: 'white'
   },
   itemTitle: {
     flexDirection: 'row',
-    backgroundColor: 'white',
     padding: 10,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 0.5,
-    elevation: 4,
     alignItems: 'center'
   },
   icon: {
@@ -304,7 +302,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     marginBottom: 15,
-    backgroundColor: 'white'
   },
   btnPay: {
     justifyContent: 'center',
