@@ -6,7 +6,6 @@ import LoadingWidget from "../../Component/loading"
 import { useNavigation } from "@react-navigation/native"
 import LottieView from 'lottie-react-native'
 
-
 const FavoriteScreen = () => {
   const navigation = useNavigation()
   const [data, setData] = useState([])
@@ -30,8 +29,12 @@ const FavoriteScreen = () => {
     fetchData()
   }, [])
 
+  console.log(data);
+
   const RenderItem = ({ item }) => {
-    return <IteamProduct item={item} navigation={navigation} list={list} setList={setList} />
+    if(item != null){
+      return <IteamProduct item={item} navigation={navigation} list={list} setList={setList} />
+    } 
   }
 
   const handleDelete = () => {
@@ -91,12 +94,13 @@ const FavoriteScreen = () => {
             </TouchableOpacity>
           )}
       </View>
+
       {loading ? <LoadingWidget /> :
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()}
           renderItem={RenderItem}
-          style={{ width: Dimensions.get('window').width }}
+          style={{ width: Dimensions.get('window').width, marginTop: 8 }}
         />}
     </View>
   )
@@ -107,15 +111,13 @@ export default FavoriteScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     alignItems: 'center'
   },
   header: {
     width: Dimensions.get('window').width,
-    borderBottomWidth: 1.1,
-    borderBottomColor: '#D5D5D5',
     alignItems: 'center',
-    paddingVertical: 10,
+    padding: 20,
+    backgroundColor: 'white',
     flexDirection: 'row',
     paddingHorizontal: 15,
   },

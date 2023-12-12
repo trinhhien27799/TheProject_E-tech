@@ -7,22 +7,38 @@ import { Text } from 'react-native'
 import { View } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import tailwind from 'twrnc'
-import { cancelBill } from '../CallApi/billApi'
-import { formatPrice } from '../utils/format'
+import { cancelBill, getItemBill } from '../CallApi/billApi'
+import { formatPrice, formatTime } from '../utils/format'
 import { TotalProductBill } from '../DataMathResolve/TotalProductBill'
-import { getItemProduct } from '../CallApi/productApi'
 
 const CancelOrderView = () => {
     const route = useRoute();
-    const data = route.params
-    const item = data.item;
+    const dataId = route.params
+
+    console.log(dataId.dataId);
+    const [data, setData] = useState(null)
+
+
+    const getData = async () => {
+        try {
+            const response = await getItemBill(dataId.dataId)
+            setData(response)
+        } catch (error) {
+            console.log('BillDetailScreen: ', error)
+        }
+    }
+
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    console.log('data: ' + data);
 
     const [takeValue, setTakeValue] = useState(null);
     const navigation = useNavigation();
 
     const headerTextStyle = 'mb-2'
-
-    console.log(item);
 
     const cancelReasonList = [
         {
@@ -38,10 +54,6 @@ const CancelOrderView = () => {
             value: 'Sản phẩm không đúng với mô tả'
         },
     ];
-
-    console.log(item.products);
-
-
 
     const ReasonCard = ({ item }) => {
         return (
@@ -73,18 +85,18 @@ const CancelOrderView = () => {
                     <View style={tailwind`p-5`}>
                         <Text style={tailwind `self-center text-base font-bold mb-5`}>Thông tin chi tiết đơn hàng</Text>
 
-                        <Text style={tailwind`${headerTextStyle}`}>Mã đơn hàng: {item._id}</Text>
-                        <Text style={tailwind`${headerTextStyle}`}>Ngày mua: {item.time}</Text>
+                        <Text style={tailwind`${headerTextStyle}`}>Mã đơn hàng: {data._id}</Text>
+                        <Text style={tailwind`${headerTextStyle}`}>Ngày mua: {formatTime(data.time)}</Text>
                         <Text style={tailwind`${headerTextStyle}`}>Ngày nhận hàng: </Text>
-                        <Text style={tailwind`${headerTextStyle}`}>Người mua: {item.address.fullname}</Text>
+                        <Text style={tailwind`${headerTextStyle}`}>Người mua: {data.address.fullname}</Text>
                         <Text style={tailwind`${headerTextStyle}`}>Các sản phẩm: </Text>
 
                         {/* List Bill */}
                         <View style={tailwind `border border-gray-300 rounded-lg w-96`}>
                             <FlatList
-                                data={item.products}
+                                data={data.products}
                                 style={styles.listCart}
-                                renderItem={({ data }) => {
+                                renderItem={({ item }) => {
                                     return (
                                         // Cart Item
                                         <View style={styles.itemContainer}>
