@@ -4,10 +4,10 @@ import StarRating from "../../Component/startRating" // Assuming it's a correct 
 import { Ionicons } from "@expo/vector-icons"
 import { formatPrice } from "../../utils/format"
 import Checkbox from "expo-checkbox"
+import tailwind from "twrnc"
 
 const IteamProduct = ({ item, navigation, list, setList }) => {
     const [isChecked, setChecked] = useState(false)
-    console.log(item)
 
     useEffect(() => {
         if (list.length == 0) setChecked(false)
@@ -24,7 +24,7 @@ const IteamProduct = ({ item, navigation, list, setList }) => {
         setList(newList)
     }
     return (
-        <View style={styles.container}>
+        <View style={tailwind `w-96 bg-white self-center rounded-lg shadow-lg flex-row items-center p-5 mb-3`}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate('DetailProducts', { productId: item._id })
@@ -37,6 +37,7 @@ const IteamProduct = ({ item, navigation, list, setList }) => {
             </TouchableOpacity>
             <View style={styles.viewChild}>
                 <Text style={styles.name}>{item.product_name}</Text>
+                <Text>Giá: {formatPrice(item.max_price)}</Text>
             </View>
             <Checkbox
                 style={styles.Checkbox}
@@ -74,7 +75,9 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 16,
+        width: 200,
+        marginBottom: 10
     },
     price: {
         fontWeight: '400',

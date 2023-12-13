@@ -14,7 +14,7 @@ import { getPayment, setPayment } from '../../session';
 
 const PTTT = () => {
 
-    const [selected, setSelected] = useState('1');
+    const [selected, setSelected] = useState(1);
     const navigation = useNavigation();
 
     const data = [

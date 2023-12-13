@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import HeaderItem from "../../Component/headerItem";
 import * as ImagePicker from 'expo-image-picker';
 import { updateAvatar, updateFullname } from "../../CallApi/userApi";
-import { getUser } from "../../session";
+import { getUser, setUser } from "../../session";
 import tailwind from "twrnc";
 
 const EditProfile = () => {
@@ -15,17 +15,23 @@ const EditProfile = () => {
     const [image, setImage] = useState(userData.avatar);
     const [fullname, setFullname] = useState(userData.fullname);
 
-
-    const saveProfile = async () => {
-        const Avatar = await updateAvatar(image)
-        const updateName = await updateFullname(fullname)
-        if (Avatar.code == 200 && updateName.code == 200) {
-            navigation.goBack();
-        } else if (Avatar.message) {
-            alert(Avatar.message)
-        } else {
-            alert(updateName.message)
+    const saveProfile = async() => {
+        try {
+            const Avatar = await updateAvatar(image)
+            const updateName = await updateFullname(fullname)
+            if(Avatar.code == 200 && updateName.code == 200){
+                setUser(Avatar.user);
+                setUser(updateName.user);
+                navigation.goBack();
+            }else if(Avatar.message){
+                alert(Avatar.message)
+            }else{
+                alert(updateName.message)
+            }
+        } catch (error) {
+            throw error
         }
+        
     }
 
     const imagePicker = async () => {
