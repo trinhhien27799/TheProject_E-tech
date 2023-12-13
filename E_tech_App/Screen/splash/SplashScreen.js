@@ -5,6 +5,7 @@ import { autoLogin } from '../../CallApi/authenApi'
 
 import { getUser, setAddress, setToken, setUser } from '../../session'
 import { useNavigation } from '@react-navigation/native'
+import { updateDeviceToken } from '../../CallApi/tokenDeviceApi'
 
 const SplashScreen = () => {
     const navigation = useNavigation()
@@ -15,6 +16,7 @@ const SplashScreen = () => {
                 setUser(response.user)
                 setAddress(response.user?.address ?? null)
                 console.log("Đăng nhập thành công")
+                await updateDeviceToken()
             }
         } catch (error) {
             console.log(`splash :${error}`)

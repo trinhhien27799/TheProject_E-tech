@@ -48,7 +48,6 @@ export const autoLogin = async () => {
         const response = await api.post('/user/auto-login')
         return response.data
     } catch (error) {
-        console.error('autoLogin:', error);
         throw error
     }
 }
@@ -80,7 +79,6 @@ export const forgotPassword = async (username, password, navigation) => {
             navigation.navigate('Login');
         }
     } catch (error) {
-        console.error('Lỗi yêu cầu mạng:', error);
         throw error;
     }
 }

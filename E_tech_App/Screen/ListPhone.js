@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList } from "react-native";
 import colors from "../colors";
-import ListItem from "../ListItem";
-import data from '../items';
 import { getAllProduct } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, Ionicons } from '@expo/vector-icons';

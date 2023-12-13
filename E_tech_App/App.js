@@ -22,7 +22,7 @@ import NotificationScreen from './Screen/NotificationScreen'
 import ResetPassword from './Screen/profile/resetPassword'
 
 
-import { Alert, Button, Image, Modal, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import DialogAddress from './Screen/DialogAddress'
 import Pay from './Screen/Pay'
 import MapViewScreen from './Component/MapView'
@@ -44,67 +44,16 @@ import SplashScreen from './Screen/splash/SplashScreen'
 import DetailCommentScreen from './Screen/DetailCommentScreen'
 import SettingScreen from './Screen/profile/setting'
 import NewOrderScreen from './Screen/OrderPackageScenes/NewOrderScreen'
-import CartScreen from './Screen/YourCart/CartScreen'
 import AddCommentScreen from './Screen/AddCommentScreen';
 import CommentButton from './Component/CommentButton';
 import CancelOrderView from './Screen/CancelOrderView';
-
-
-import * as Device from 'expo-device'
-import * as Notifications from 'expo-notifications'
-import Constants from 'expo-constants'
-import SoundPlayer from './utils/notificationSound'
-import { getUser, setDeviceToken } from './session'
 
 import FavoriteScreen from './Screen/favorite/FavoriteScreen'
 import NewAddress from './Screen/address/NewAddress'
 import ChatsScreen from './Screen/chats/ChatsScreen'
 import MoMoPaymentScreen from './Screen/pay/Momo'
-
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-})
-
-
-
-
-const registerForPushNotificationsAsync = async () => {
-  let token
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    })
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync()
-    let finalStatus = existingStatus
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync()
-      finalStatus = status
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!')
-      return
-    }
-    token = await Notifications.getExpoPushTokenAsync({
-      projectId: Constants.expoConfig.extra.eas.projectId,
-    })
-  } else {
-    alert('Must use physical device for Push Notifications')
-  }
-
-  return token.data
-}
+import { requestUserPermission, NotificationListenner } from './utils/notification_helper'
+import  SoundPlayer from './utils/notificationSound' 
 
 
 const Stack = createNativeStackNavigator()
@@ -112,40 +61,28 @@ const Tabs = AnimatedTabBarNavigator()
 
 
 export default App = () => {
-
-
-  const notificationListener = useRef()
-  const responseListener = useRef()
   const [notification, setNotification] = useState(null)
   const navigationContainerRef = useRef()
 
-  const ClickNotification = (notification) => {
-    navigationContainerRef.current.navigate(notification.request.content.data.route, { dataId: notification.request.content.data.dataId })
+
+  const ClickNotification = (route, dataId) => {
+    navigationContainerRef.current.navigate(route, { dataId: dataId })
     setNotification(null)
   }
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => {
-      setDeviceToken(token)
-    })
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log("notification nhận được: ", notification)
-      setNotification(notification)
-      SoundPlayer.playSound()
-      setTimeout(() => {
-        setNotification(null)
-      }, 8000)
-    })
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      ClickNotification(response.notification)
-    })
-
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current)
-      Notifications.removeNotificationSubscription(responseListener.current)
-    }
+    requestUserPermission()
+    NotificationListenner(setNotification)
   }, [])
+
+
+  useEffect(() => {
+    if (notification) {
+      SoundPlayer.playSound()
+    }
+  }, [notification])
+
+
 
 
   return (
@@ -231,18 +168,18 @@ export default App = () => {
       {notification &&
         <View
           onTouchStart={() => {
-            ClickNotification(notification)
+            ClickNotification(notification.data.route, notification.data.dataId)
           }}
           style={{
             backgroundColor: 'whitesmoke', padding: 10, marginHorizontal: 20, borderRadius: 14, elevation: 10, position: 'absolute',
             top: 85, width: '90%', alignSelf: 'center', flexDirection: 'row', alignItems: 'center'
           }}>
-          <Image
+          {notification.notification.android.imageUrl && <Image
             style={{ width: 40, height: 40, resizeMode: 'center', borderRadius: 8 }}
-            source={{ uri: notification.request.content.data.image }} />
+            source={{ uri: notification.notification.android.imageUrl }} />}
           <View style={{ marginStart: 8, flex: 1 }}>
-            <Text>{notification.request.content.title}</Text>
-            <Text>{notification.request.content.body}</Text>
+            <Text>{notification.notification.title} </Text>
+            <Text>{notification.notification.body}</Text>
           </View>
         </View>}
 
