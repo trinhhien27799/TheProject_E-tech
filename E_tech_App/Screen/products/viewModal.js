@@ -7,7 +7,7 @@ import LottieView from 'lottie-react-native'
 import { pushListCart, clearListCart, getProductSelected } from '../../session'
 import { useNavigation } from "@react-navigation/native"
 import tailwind from "twrnc"
-const ViewModal = ({ data, setIsModalVisible, option }) => {
+const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
     const navigation = useNavigation()
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -17,7 +17,6 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
             setLoading(true)
             const newCart = { variations_id: data._id, quantity: quantity }
             const response = await addCart(newCart)
-            console.log(option, response)
             if (response?._id != null) {
                 setIsModalVisible(false)
                 setLoading(false)
@@ -25,7 +24,7 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
                     clearListCart()
                     response.image = data.image
                     response.price = data.price
-                    response.product_name = getProductSelected()?.product_name ?? 'Lỗi lấy thông tin'
+                    response.product_name = product_name
                     response.percent_discount = getProductSelected()?.percent_discount ?? 0
                     pushListCart(response)
                     navigation.navigate('PayScreen')
@@ -41,129 +40,92 @@ const ViewModal = ({ data, setIsModalVisible, option }) => {
         }
     }
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setIsModalVisible(false)
-                        }}>
-                        <Ionicons name="close" size={40} color="black" />
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.container}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={{ uri: data.image }} style={styles.image} />
-                <View style={styles.priceContainer}>
-                    <Text style={styles.price}>{formatPrice(data.price * (1 - getProductSelected().percent_discount / 100))}</Text>
-                    <Text >Kho: {data.quantity}</Text>
+                <View style={styles.viewName}>
+                    <Text style={{ fontWeight: '500' }}>{product_name}</Text>
+                    <Text style={styles.price}>Màu sắc: {data.color}</Text>
+                    {data.ram && <Text style={styles.price}>Phiên bản: {data.ram}/{data.rom}</Text>}
+                    <Text style={styles.price}>Có sẵn: {data.quantity}</Text>
                 </View>
-                <View style={styles.infoItem}>
-                    <Text style={styles.title}>Màu sắc</Text>
-                    <View style={styles.viewItem}>
-                        <Text>{data.color}</Text>
-                    </View>
-                </View>
-                {
-                    data.ram &&
-                    <View style={styles.infoItem}>
-                        <Text style={styles.title}>Dung lượng</Text>
-                        <View style={styles.viewItem}>
-                            <Text>{data.ram}/{data.rom}</Text>
-                        </View>
-                    </View>
-
-                }
-                <View style={{ alignItems: 'center' }}>
-                    <View style={{ flexDirection: 'row', width: 100, justifyContent: 'space-between', alignItems: 'center' }}>
-                        <TouchableOpacity
-                            style={styles.quantityButton}
-                            onPress={() => {
-                                if (quantity > 1) {
-                                    setQuantity(quantity - 1)
-                                }
-                            }}
-                        >
-                            <Image source={require('../../img/minus.png')} style={{ height: 30, width: 30 }} />
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                            {quantity}
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.quantityButton}
-                            onPress={() => {
-                                setQuantity(quantity + 1)
-                            }}
-                        >
-                            <Image source={require('../../img/plus.png')} style={{ height: 30, width: 30 }} />
-
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                {loading ?
-                    <LottieView
-                        autoPlay
-                        style={{ width: 40, height: 40, marginTop: 10 }}
-                        source={require('../../assets/logo.json')}
-                    />
-                    :
-                    <TouchableOpacity
-                        style={tailwind`bg-blue-600 w-50 p-3 rounded-lg shadow-md my-3`}
-                        onPress={() => {
-                            handleAdd()
-                        }}
-                    >
-                        <Text style={tailwind`text-base font-bold text-white self-center`}>Thêm vào giỏ hàng</Text>
-                    </TouchableOpacity>}
             </View>
-        </ScrollView>
+
+
+
+
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+                <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => {
+                        if (quantity > 1) {
+                            setQuantity(quantity - 1)
+                        }
+                    }}
+                >
+                    <Image source={require('../../img/minus.png')} style={{ height: '80%', width: '80%' }} />
+                </TouchableOpacity>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', marginHorizontal: 10 }}>
+                    {quantity}
+                </Text>
+                <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => {
+                        if (quantity < data.quantity) {
+                            setQuantity(quantity + 1)
+                        }
+                    }}
+                >
+                    <Image source={require('../../img/plus.png')} style={{ height: '80%', width: '80%' }} />
+
+                </TouchableOpacity>
+            </View>
+            {loading ?
+                <LottieView
+                    autoPlay
+                    style={{ width: 40, height: 40, marginBottom: 10, alignSelf: 'center' }}
+                    source={require('../../assets/logo.json')}
+                />
+                :
+                <TouchableOpacity
+                    style={[tailwind`bg-blue-600 w-50 rounded-lg shadow-md my-3`, { alignSelf: 'center', paddingVertical: 10 }]}
+                    onPress={() => {
+                        handleAdd()
+                    }}
+                >
+                    <Text style={tailwind` font-bold text-white self-center`}>Thêm vào giỏ hàng</Text>
+                </TouchableOpacity>}
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        alignItems: 'center',
-    },
-    header: {
-        marginLeft: 330,
-        marginTop: 10
+        paddingHorizontal: 20,
+        backgroundColor: 'white',
+        borderTopLeftRadius: 14,
+        borderTopRightRadius: 14,
+        paddingVertical: 15
     },
     image: {
-        borderWidth: 2,
         height: 100,
         width: 100,
-        resizeMode: 'contain',
+        resizeMode: 'center',
         borderRadius: 10,
-        alignSelf: 'center'
     },
-    priceContainer: {
-        alignItems: 'center',
+    viewName: {
+        justifyContent: 'center',
+        flex:1
     },
     price: {
-        color: "red",
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    infoItem: {
-        marginBottom: 10,
-    },
-    title: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    viewItem: {
-        height: 40,
-        width: Dimensions.get("window").width - 100,
-        borderWidth: 2,
-        justifyContent: 'center',
-        borderRadius: 10,
-        paddingLeft: 10,
-        borderColor: '#1E90FF',
+        fontSize: 11,
+        fontWeight: '400'
     },
     quantityButton: {
-        width: 30,
-        height: 30,
+        width: 24,
+        height: 24,
         backgroundColor: '#1E90FF',
         alignItems: 'center',
         justifyContent: 'center',

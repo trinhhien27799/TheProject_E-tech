@@ -6,7 +6,7 @@ import Modal from "react-native-modal"
 import ViewModal from "./viewModal"
 import { getProductSelected } from "../../session"
 
-export default FooterProduct = () => {
+export default FooterProduct = ({product_name}) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [dataIndex, setDataIndex] = useState([])
@@ -46,7 +46,8 @@ export default FooterProduct = () => {
                 style={{ margin: 0 }}
             >
                 <View style={styles.modalContainer}>
-                    <ViewModal data={dataIndex} setIsModalVisible={setIsModalVisible} option={option} />
+                    <View style={{ flex: 1 }} />
+                    <ViewModal product_name={product_name} data={dataIndex} setIsModalVisible={setIsModalVisible} option={option} />
                 </View>
             </Modal>
         </View>
@@ -71,9 +72,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     modalContainer: {
-        backgroundColor: 'white',
-        height: Dimensions.get('window').height * 0.5,
-        marginTop: Dimensions.get('window').height * 0.5,
+        flex: 1,
         borderRadius: 10,
         alignItems: 'center',
     },

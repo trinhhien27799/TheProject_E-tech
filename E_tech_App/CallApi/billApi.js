@@ -20,6 +20,18 @@ export const createBill = async (data) => {
     }
 }
 
+export const updateStatusPaymentBill = async (billId) => {
+    try {
+        const res = await api.post('/bill/update-status-payment', {
+            billId: billId,
+            status: 1
+        })
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const cancelBill = async (item, reasonValue) => {
     const billId = item._id;
     const navigation = useNavigation()

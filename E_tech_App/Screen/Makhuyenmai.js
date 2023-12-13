@@ -14,36 +14,17 @@ import { useNavigation } from '@react-navigation/native'
 import tailwind from 'twrnc'
 import { formatPrice, formatTime } from '../utils/format'
 import LoadingWidget from '../Component/loading'
+import ItemVoucher from './ItemVoucher'
 
 export default function Makhuyenmai() {
   const navigation = useNavigation()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [loadingAdd, setLoadingAdd] = useState(false)
-  const [saveSale, setSaveSale] = useState(false);
-
-  const handleVoucher = async (voucherId, voucherCode) => {
-    try {
-      setLoadingAdd(true)
-      const response = await addVoucher(voucherCode, voucherId)
-      if (response.userId) {
-        const newArray = data.filter(item => item._id !== voucherId)
-        setData(newArray)
-        setSaveSale(true);
-      } else {
-        alert('Thêm thất bại')
-      }
-    } catch (error) {
-      console.error('Add voucher:', error)
-    } finally {
-      setLoadingAdd(false)
-    }
-  }
 
   const getData = async () => {
     try {
       setLoading(true)
-      const response = await getAllVoucher();
+      const response = await getAllVoucher()
       setData(response)
     } catch (error) {
       console.error('Makhuyenmai Screen:', error)
@@ -55,13 +36,18 @@ export default function Makhuyenmai() {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData()
-      console.log('data: ' + data);
     })
 
     return unsubscribe;
   }, [navigation])
 
-  console.log(data);
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <ItemVoucher item={item} index={index} setData={setData} data={data} />
+    )
+  }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,34 +65,7 @@ export default function Makhuyenmai() {
         <FlatList
           data={data}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <View style={[tailwind`bg-white mt-2 p-3 w-96 self-center border border-slate-300 rounded-lg`, { alignItems: 'center' }]}>
-              <View style={[tailwind`flex-row`, { alignItems: 'center' }]}>
-                <Image source={require('../img/sale.png')} style={styles.img} />
-                <View style={{ paddingTop: 10, width: '60%', marginLeft: 10 }}>
-                  <Text style={tailwind`text-base font-bold mb-1`} >{item.description}</Text>
-                  <Text >Đơn tối thiểu: {formatPrice(item.condition)}</Text>
-                  <Text style={styles.title}>HSD: {formatTime(item.expiration_date)}</Text>
-                </View>
-              </View>
-
-
-              {loadingAdd ?
-                <View style={{ alignItems: 'center', paddingTop: 5 }}>
-                  <LoadingWidget />
-                </View> :
-                <TouchableOpacity style={[tailwind`bg-blue-600 py-3 justify-center mt-5 rounded-md shadow-md`, { width: '90%' }]} disabled={saveSale} onPress={() => {
-                  handleVoucher(item._id, item.code)
-                }}>
-                  {
-                    saveSale == false
-                    ? <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Lưu</Text>
-                    : <Text style={{ color: 'white', fontSize: 16, alignSelf: 'center', fontWeight: 'bold' }}>Đã Lưu</Text>
-                  }
-
-                </TouchableOpacity>}
-            </View>
-          )}
+          renderItem={renderItem}
         />}
     </SafeAreaView>
   )
