@@ -1,9 +1,9 @@
 import api from '../apiService'
-import { getUser, getDeviceToken } from '../session'
+import { getDeviceToken, getUser } from '../session'
 
 const updateDeviceToken = async () => {
     try {
-        if (!getUser() || !getDeviceToken()) return ''
+        if (!getUser()) return ''
         const response = await api.post('/token/update', { token: getDeviceToken() })
         return response.data
     } catch (error) {
@@ -23,4 +23,4 @@ const deleteDeviceToken = async () => {
 
 
 
-export { updateDeviceToken }
+export { deleteDeviceToken, updateDeviceToken }
