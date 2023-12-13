@@ -103,6 +103,7 @@ const NewOrderScreen = () => {
 
                 <View style={{ paddingVertical: 10 }}>
                     <FlatList
+                        showsHorizontalScrollIndicator={false}
                         ref={flatListRef}
                         data={buttonValueList}
                         keyExtractor={(item, index) => index.toString()}

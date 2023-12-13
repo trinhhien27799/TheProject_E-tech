@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {  StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import StartRating from "../../Component/startRating";
 import { Ionicons } from "@expo/vector-icons";
 import { formatPrice } from "../../utils/format";
@@ -10,7 +10,6 @@ import { getUser } from "../../session";
 const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike }) => {
 
     const [like, setLike] = useState(isLike)
-    const [price, setPrice] = useState(0)
     const [text1, setText1] = useState('')
     const [text2, setText2] = useState('')
     const onClick = async (boolean) => {

@@ -27,12 +27,12 @@ const Pay = () => {
 
   const payNow = () => {
     const data = {
-      transport_fee: transport_fee,
       address: address,
       shipping_id: shipping._id,
       listIdCart: getListCart().map((item) => { return item._id }),
       voucher_id: voucher?._id,
       value: payment.id == '1' ? null : total + transport_fee - saleValue,
+      payment_method: payment.id == '1' ? 0 : 1
     }
     navigation.navigate('MoMoPaymentScreen', { data: data })
   }
@@ -40,12 +40,14 @@ const Pay = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      setData(getListCart())
       setAddressSelected(getAddress())
       setPayment(getPayment())
       setShipping(getShipping())
       setTransport_fee(getShipping()?.price ?? 0)
       const voucherSelected = getVoucher()
       setVoucher(voucherSelected)
+      checkTotalPrice()
     })
 
     return unsubscribe
@@ -73,15 +75,16 @@ const Pay = () => {
   }, [voucher])
 
 
-  useEffect(() => {
-    setData(getListCart())
+  const checkTotalPrice = () => {
     var price = 0
     getListCart().forEach(item => {
       price += item.quantity * item.price * (1 - item.percent_discount / 100)
     })
     setTotal(price)
-  }, [])
-
+    if (getVoucher()) {
+      if(getVoucher().condition < price) setVoucher(null)
+    }
+  }
 
   return (
     <ScrollView>

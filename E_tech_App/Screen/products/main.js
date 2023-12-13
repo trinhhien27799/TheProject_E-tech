@@ -74,14 +74,14 @@ const DetailPoducts = () => {
                 loading ?
                     <LoadingWidget /> :
                     (
-                        product.variations.length > 0 ?
+                        product.variations ?
                             <>
                                 <SectionList
                                     sections={sections}
                                     keyExtractor={(item, index) => index.toString()}
                                     renderItem={renderItem}
                                 />
-                                <FooterProduct />
+                                <FooterProduct product_name={product.product_name}/>
                             </>
                             :
                             <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>

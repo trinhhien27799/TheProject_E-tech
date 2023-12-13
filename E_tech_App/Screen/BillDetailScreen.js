@@ -10,13 +10,22 @@ import ItemInBill from './itemInBill';
 const BillDetailScreen = ({ route }) => {
     const { dataId } = route.params;
     const [data, setData] = useState(null)
+    const [timeLate, setTimeLate] = useState(null)
 
 
     const getData = async () => {
         try {
             const response = await getItemBill(dataId)
-            console.log(response)
             setData(response)
+            const t = new Date(response.time).getTime()
+            console.log('t', new Date(response.time).getTime())
+            if (response.shipping_method == 0) {
+                setTimeLate(new Date(t + 4 * 24 * 60 * 60 * 1000))
+            } else if (response.shipping_method == 1) {
+                setTimeLate(new Date(t + 2 * 24 * 60 * 60 * 1000))
+            } else {
+                setTimeLate(new Date(t + 6 * 24 * 60 * 60 * 1000))
+            }
         } catch (error) {
             console.log('BillDetailScreen: ', error)
         }
@@ -29,7 +38,7 @@ const BillDetailScreen = ({ route }) => {
 
 
     const renderItem = ({ item, index }) => {
-        return <ItemInBill item={item} status={data.status} />
+        return <ItemInBill item={item} />
     }
 
     return (
@@ -41,7 +50,7 @@ const BillDetailScreen = ({ route }) => {
                     <OrderStatusHeader orderStatus={data.status} />
                     <Text style={styles.textInfo}>Mã đơn hàng: {data._id}</Text>
                     <Text style={styles.textInfo}>Ngày mua: {formatTime(data.time)}</Text>
-                    <Text style={styles.textInfo}>Ngày nhận hàng: 3/11/2023</Text>
+                    <Text style={styles.textInfo}>Ngày nhận hàng: {formatTime(timeLate).slice(0, 10)}</Text>
                     <Text style={styles.textInfo}>Người mua: {data.address.fullname} </Text>
                 </View>
 
@@ -98,9 +107,10 @@ const BillDetailScreen = ({ route }) => {
                     />
                     <View style={styles.paymentType}>
                         <Text style={styles.textBold}>Phương thức thanh toán:</Text>
-                        <Text style={styles.textMoneyType}>{data.payment_method}</Text>
+                        <Text style={styles.textMoneyType}>{data.payment_method == 0 ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ví momo'}</Text>
                     </View>
                 </View>
+                {data.payment_method == 1 && <Text style={{ textAlign: 'center', marginBottom: 15 }}>{data.payment_status == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}</Text>}
                 <View style={styles.line}></View>
 
                 {/* Button */}
