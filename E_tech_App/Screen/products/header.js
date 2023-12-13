@@ -17,7 +17,6 @@ const HeaderProduct = ({ variations }) => {
             }}
         >
             <Image
-                key={index}
                 source={{ uri: item.image }}
                 style={{
                     height: 100, width: 100, resizeMode: 'contain',
@@ -34,7 +33,7 @@ const HeaderProduct = ({ variations }) => {
     return (
         <View style={styles.container}>
             <View style={styles.viewImage}>
-                <Image style={styles.imagePd} source={{ uri: image }} />
+                {image && <Image style={styles.imagePd} source={{ uri: image }} />}
             </View>
 
             <FlatList

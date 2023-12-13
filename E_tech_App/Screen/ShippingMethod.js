@@ -25,6 +25,7 @@ const ShippingMethod = () => {
             const data = await getListShipping();
             setData(data);
             setSelected(getShipping() ? getShipping()._id : data[0]._id)
+            setShipping(getShipping() ?? data[0])
         } catch (error) {
             console.log(error);
         } finally {

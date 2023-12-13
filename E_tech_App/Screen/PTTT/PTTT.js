@@ -31,6 +31,7 @@ const PTTT = () => {
     useEffect(() => {
         const select = getPayment()?.id ?? data[0].id
         setSelected(select)
+        setPayment(getPayment() ?? data[0])
     }, [])
 
 
@@ -46,10 +47,7 @@ const PTTT = () => {
         return (
             <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
                 <RadioButton value={item} status={check} />
-                <View
-                    onTouchStart={() => {
-                        setSelected(item._id)
-                    }}>
+                <View>
                     <Text style={{ fontSize: 16, marginStart: 10 }}>{item.name}</Text>
                 </View>
             </View>
