@@ -82,7 +82,7 @@ const Pay = () => {
     })
     setTotal(price)
     if (getVoucher()) {
-      if(getVoucher().condition < price) setVoucher(null)
+      if (getVoucher().condition > price) setVoucher(null)
     }
   }
 
@@ -131,7 +131,7 @@ const Pay = () => {
         <FlatList
           scrollEnabled={false}
           data={data}
-          style={{marginBottom: 15}}
+          style={{ marginBottom: 15 }}
           keyExtractor={(item, index) => item._id}
           renderItem={({ item }) => (
             <View style={{

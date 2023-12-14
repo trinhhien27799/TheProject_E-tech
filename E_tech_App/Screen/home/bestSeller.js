@@ -12,10 +12,10 @@ const BestSeller = ({ product, setProduct }) => {
 
   const getData = async () => {
     try {
-      // const dataOld = await AsyncStorage.getItem('product')
-      // if (dataOld) {
-      //   setProduct(JSON.parse(dataOld))
-      // }
+      const dataOld = await AsyncStorage.getItem('product')
+      if (dataOld) {
+        setProduct(JSON.parse(dataOld))
+      }
       const response = await getAllProduct()
       if (response != null && response.length > 0) {
         setProduct(response)
@@ -53,10 +53,10 @@ const BestSeller = ({ product, setProduct }) => {
 
 
         <TouchableOpacity onPress={handleItem}>
-          {item.image_preview && <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />}
+          {item.image_preview && <Image style={{ resizeMode: 'center', width: 150, height: 150, alignSelf: 'center' }} source={{ uri: item.image_preview }} />}
           <View style={{ flexDirection: 'row' }}>
-            <View style={tailwind`mt-4 w-37`}>
-              <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
+            <View style={{width:'100%'}}>
+              <Text style={{ marginTop: 10, fontWeight: 'bold',maxHeight:35,overflow:'hidden' }}>{item.product_name}</Text>
               <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
               {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15} />}
             </View>

@@ -4,11 +4,19 @@ import LoadingWidget from '../Component/loading'
 import { TouchableOpacity, View, Image, StyleSheet, Text } from 'react-native'
 import tailwind from 'twrnc'
 import { formatPrice, formatTime } from '../utils/format'
+import { getUser } from '../session'
+import { useRequireLogin } from '../utils/alert'
+import { useNavigation } from '@react-navigation/native'
 
 const ItemVoucher = ({ item, index, setData, data }) => {
     const [loadingAdd, setLoadingAdd] = useState(false)
+    const navigation = useNavigation()
     const handleVoucher = async (voucherId, voucherCode) => {
         try {
+            if (!getUser()) {
+                useRequireLogin(navigation)
+                return
+            }
             setLoadingAdd(true)
             const response = await addVoucher(voucherCode, voucherId)
             if (response.userId) {

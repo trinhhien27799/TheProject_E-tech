@@ -48,7 +48,6 @@ import BottomNavigation from '../Screen/home/bottomNavigation'
 import NotificationScreen from '../Screen/NotificationScreen'
 import ResetPassword from '../Screen/profile/resetPassword'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 export const navigationRef = React.createRef();
 
 export function navigate(name, params) {
@@ -70,7 +69,9 @@ export function MainNavigator() {
                 <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
                 <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
-                <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
+                <Stack.Screen name='ListPhone' component={ListPhone} options={{
+                    headerTitle: "Tất cả sản phẩm",
+                }} />
                 <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
                 <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />

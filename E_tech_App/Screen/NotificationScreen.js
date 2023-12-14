@@ -7,6 +7,8 @@ import { formatTime } from '../utils/format'
 import { useNavigation } from '@react-navigation/native'
 import LoadingWidget from '../Component/loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import LottieView from 'lottie-react-native'
+import { getUser } from '../session'
 
 
 const NotificationScreen = () => {
@@ -35,7 +37,7 @@ const NotificationScreen = () => {
     } catch (error) {
       console.log(`Notification fetchData : ${error}`)
     } finally {
-     if(loading) setLoading(false)
+      if (loading) setLoading(false)
     }
   }
 
@@ -110,26 +112,46 @@ const NotificationScreen = () => {
           {loading ?
             <LoadingWidget />
             :
-            <FlatList
-              style={{ width: '100%', backgroundColor: 'whitesmoke' }}
-              data={data}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(item.route, { dataId: item.dataId })
-                  }}
-                  style={[{ borderColor: item.seen ? 'grey' : 'blue', opacity: item.seen ? 0.6 : 1 }, styles.viewItem]}>
-                  <View>
-                    <Image source={{ uri: item.image }} style={styles.img} />
-                  </View>
-                  <View style={tailwind`w-64 ml-5`}>
-                    <Text style={styles.title}>{item.body}</Text>
-                    <Text style={styles.title2}>{formatTime(item.time)}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-            />}
+            <>
+              <FlatList
+                style={{ width: '100%', backgroundColor: 'whitesmoke', flexGrow: 0 }}
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate(item.route, { dataId: item.dataId })
+                    }}
+                    style={[{ borderColor: item.seen ? 'grey' : 'blue', opacity: item.seen ? 0.6 : 1 }, styles.viewItem]}>
+                    <View>
+                      <Image source={{ uri: item.image }} style={styles.img} />
+                    </View>
+                    <View style={tailwind`w-64 ml-5`}>
+                      <Text style={styles.title}>{item.body}</Text>
+                      <Text style={styles.title2}>{formatTime(item.time)}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+
+              {data.length == 0 && loading == false &&
+                <View style={{ backgroundColor: 'whitesmoke', flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                  <LottieView
+                    autoPlay
+                    style={{ width: 200, height: 200 }}
+                    source={require('../assets/notification.json')}
+                  />
+                  <TouchableOpacity
+                    onPress={() => { navigation.navigate('Login') }}
+                  >
+                    <Text style={{ marginTop: 10, padding: 10 }}>{getUser() ? 'Không có thông báo nào' : 'Đăng nhập để có thể nhận thông báo'}</Text>
+                  </TouchableOpacity>
+                  <View style={{ height: '30%' }} />
+                </View>}
+            </>
+
+
+          }
         </View>
         {showPopup && (
           <View style={styles.popupView}>
