@@ -17,7 +17,7 @@ const BottomNavigation = () => {
   const route = useRoute()
   const navigation = useNavigation()
   const user = getUser();
-  
+
 
   return (
     <Tabs.Navigator
@@ -59,7 +59,6 @@ const BottomNavigation = () => {
               focused={focused}
             />
           ),
-          title: 'Giỏ hàng'
         }}
       />
 
@@ -97,7 +96,7 @@ const BottomNavigation = () => {
 
       <Tabs.Screen
         name="Account"
-        component={user!=null?Profile:SettingScreen}
+        component={user != null ? Profile : SettingScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icon

@@ -11,12 +11,43 @@ import { kiemTraTuGanNhau, tinhDoTuongDong } from "../../utils/searchText";
 const SearchScreen = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const [itemFind, setItem] = useState([route.params.item])
-    const [querry, setQuerry] = useState(String(route.params.item.product_name).trim())
-    const [recommend, setRecommend] = useState(route.params.product.filter(item => item.product_type_id == route.params.item.product_type_id))
+    const [itemFind, setItem] = useState([])
+    const [querry, setQuerry] = useState('')
+    const [recommend, setRecommend] = useState([])
     const [recent, setRecent] = useState([])
     const [history, setHistory] = useState([])
     const [showHistory, setShowHistory] = useState(false)
+    const [product, setProduct] = useState([])
+
+    const getData = async () => {
+        try {
+            const dataOld = await AsyncStorage.getItem('product')
+            if (dataOld) {
+                setProduct(JSON.parse(dataOld))
+            }
+            const response = await getAllProduct()
+            if (response != null && response.length > 0) {
+                setProduct(response)
+                AsyncStorage.setItem('product', JSON.stringify(response))
+            }
+        } catch (error) {
+            console.log(`bestSeller: ${error}`)
+        }
+    }
+
+    useEffect(() => {
+        if (route.params?.item != null) {
+            setItem([route.params.item])
+            setQuerry(String(route.params.item.product_name).trim())
+            if (route.params?.product) {
+                setProduct(route.params.product)
+                setRecommend(route.params.product.filter(item => item.product_type_id == route.params.item.product_type_id))
+            }
+        }
+        if (!route.params?.product) {
+            getData()
+        }
+    }, [])
 
     const saveHistory = async () => {
         try {
@@ -74,24 +105,24 @@ const SearchScreen = () => {
     const filterProduct = () => {
         if (querry.trim().length == 0) {
             setItem([])
-            setRecommend(route.params.product)
+            setRecommend(product)
         } else {
-            const newArraySearch = route.params.product.filter((item) =>
+            const newArraySearch = product.filter((item) =>
                 tinhDoTuongDong(querry, item.product_name)
             )
             setItem(newArraySearch)
             if (newArraySearch.length == 0) {
-                const newArrayRecommendByName = route.params.product.filter((item) =>
+                const newArrayRecommendByName = product.filter((item) =>
                     kiemTraTuGanNhau(querry, item.product_name) || tinhDoTuongDong(querry, item.product_name)
                 )
                 setRecommend(newArrayRecommendByName)
                 if (newArrayRecommendByName.length == 0) {
-                    const newArrayRecommendByBrand = route.params.product.filter((item) =>
+                    const newArrayRecommendByBrand = product.filter((item) =>
                         kiemTraTuGanNhau(querry, item.product_type) || tinhDoTuongDong(querry, item.product_type)
                     )
                     setRecommend(newArrayRecommendByBrand)
                     if (newArrayRecommendByBrand.length == 0) {
-                        setRecommend(route.params.product)
+                        setRecommend(product)
                     }
                 }
 
@@ -128,7 +159,7 @@ const SearchScreen = () => {
 
 
                 <TouchableOpacity onPress={handleItem}>
-                    {item.image_preview && <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />}
+                    {item.image_preview && <Image style={{ resizeMode: 'center', width: 150, height: 150, alignSelf: 'center' }} source={{ uri: item.image_preview }} />}
                     <View style={{ flexDirection: 'row' }}>
                         <View style={tailwind`mt-4 w-37`}>
                             <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
