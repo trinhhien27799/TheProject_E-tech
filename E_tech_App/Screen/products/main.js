@@ -12,6 +12,7 @@ import FooterProduct from "./footer"
 import Info from "./info"
 import Comment from "./comment"
 import Related from "./related"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
 const DetailPoducts = () => {
@@ -25,6 +26,13 @@ const DetailPoducts = () => {
             const productId = route.params.productId
             const response = await getItemProduct(productId)
             setProduct(response)
+            var newArrayRecent = []
+            const arraytRecent = await AsyncStorage.getItem('product_recent')
+            if (arraytRecent) {
+                newArrayRecent = JSON.parse(arraytRecent).filter(item => item._id !== response._id)
+            }
+            newArrayRecent.unshift(response)
+            AsyncStorage.setItem('product_recent', JSON.stringify(newArrayRecent))
         } catch (error) {
             console.log(error)
         } finally {
@@ -56,7 +64,7 @@ const DetailPoducts = () => {
             case 2:
                 return <Rule />
             case 3:
-                return <Variations variations={product.variations} product_name={product.product_name} percent_discount={product.percent_discount}/>
+                return <Variations variations={product.variations} product_name={product.product_name} percent_discount={product.percent_discount} />
             case 4:
                 return <Related productId={product._id} />
             case 5:
@@ -81,7 +89,7 @@ const DetailPoducts = () => {
                                     keyExtractor={(item, index) => index.toString()}
                                     renderItem={renderItem}
                                 />
-                                <FooterProduct product_name={product.product_name}/>
+                                <FooterProduct product_name={product.product_name} />
                             </>
                             :
                             <View style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>

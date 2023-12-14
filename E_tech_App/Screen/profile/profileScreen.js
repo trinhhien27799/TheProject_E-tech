@@ -1,48 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList, Alert } from "react-native";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import color from "../../colors";
-import OrderSreen from "./orderSreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getUser } from "../../session";
+import React, { useEffect, useState } from "react"
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList, Alert } from "react-native"
+import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import color from "../../colors"
+import OrderSreen from "./orderSreen"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { getUser, setAddress, setUser } from "../../session"
+import { deleteDeviceToken } from "../../CallApi/tokenDeviceApi"
 
 
 const Profile = () => {
-    const navigation = useNavigation();
-    const [user,setUser] = useState(getUser());
+    const navigation = useNavigation()
+    const [user, setUser] = useState(getUser())
     useFocusEffect(
-        React.useCallback(()=>{
-            const newUser = getUser();
-            setUser(newUser);
-        },[])
-    );
-    const clearToken = async () => {
-        try {
-            await AsyncStorage.removeItem('token');
-            console.log('Token đã được xóa thành công.');
-        } catch (error) {
-            console.error('Lỗi khi xóa token:', error);
-        }
-    };
-    const Logout = ()=>{
-        Alert.alert('Đăng xuất','Bạn có muốn đăng xuất !!!',[
-            {
-                text:'Hủy',
-                onPress: () => {},
-            },
-            {
-                text: 'OK',
-                 onPress: () => {
-                    clearToken();
-                    navigation.replace('Login');
-                }
-            },
-        ])
-    }
+        React.useCallback(() => {
+            setUser(getUser())
+        }, [])
+    )
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile navigation={navigation} onPress={Logout} user={user}/>
+            <HeaderProfile navigation={navigation} user={user} />
             <View>
                 <TouchableOpacity style={styles.viewEdit}
                     onPress={() => { navigation.navigate('EditProfile') }}
@@ -83,14 +60,46 @@ const Profile = () => {
                 </TouchableOpacity>
             </View>
         </ScrollView>
-    );
+    )
 }
-const HeaderProfile = ({ navigation,onPress,user }) => {
+const HeaderProfile = ({ navigation, user }) => {
+    const Logout = () => {
+        Alert.alert('Đăng xuất', 'Bạn có muốn đăng xuất !!!', [
+            {
+                text: 'Hủy',
+                onPress: () => { },
+            },
+            {
+                text: 'OK',
+                onPress: () => {
+                    deleteDeviceToken()
+                    clearAsyncStorage(['token', 'notification'])
+                    setUser(null)
+                    setAddress(null)
+                    navigation.replace('Login')
+                }
+            },
+        ])
+    }
+
+    const clearAsyncStorage = async (array) => {
+        if (array != null && array.length > 0) {
+            Promise.all(array.map((item) => {
+                try {
+                    AsyncStorage.removeItem(item)
+                    console.log(`${item} đã được xóa thành công.`)
+                } catch (error) {
+                    console.error(`Lỗi khi xóa ${item} :`, error)
+                }
+            }))
+        }
+    }
+
     return (
         <ImageBackground source={{ uri: user.background }} style={[{ backgroundColor: 'transparent' }, styles.headerContainer]}>
             <TouchableOpacity
                 onPress={() => {
-                    navigation.goBack();
+                    navigation.goBack()
                 }}
                 style={styles.viewIcon}
             >
@@ -111,16 +120,16 @@ const HeaderProfile = ({ navigation,onPress,user }) => {
                 </View>
             </View>
             <TouchableOpacity
-                onPress={onPress}
+                onPress={Logout}
                 style={styles.viewIcon}
             >
                 <Image style={{ height: 25, width: 25, alignSelf: 'center', tintColor: 'white' }} source={require('../../img/exit.png')} />
             </TouchableOpacity>
         </ImageBackground>
-    );
-    
+    )
+
 }
-export default Profile;
+export default Profile
 const styles = StyleSheet.create({
     headerContainer: {
         height: Dimensions.get("window").height * 0.3,
@@ -181,4 +190,4 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: 'grey'
     }
-});
+})

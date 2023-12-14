@@ -6,6 +6,7 @@ import { getNotifications, seenAllNotification, deleteAllNotification } from '..
 import { formatTime } from '../utils/format'
 import { useNavigation } from '@react-navigation/native'
 import LoadingWidget from '../Component/loading'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const NotificationScreen = () => {
@@ -16,13 +17,25 @@ const NotificationScreen = () => {
 
   const fetchData = async () => {
     try {
+      const dataOld = await AsyncStorage.getItem('notifaction')
+      if (dataOld) {
+        setData(JSON.parse(dataOld))
+        setLoading(false)
+      }
       const response = await getNotifications()
       setData(response)
-      await seenAllNotification()
+      if (response != null && response.length > 0) {
+        seenAllNotification()
+        const cache = response.map((item) => {
+          item.seen = true
+          return item
+        })
+        AsyncStorage.setItem('notifaction', JSON.stringify(cache))
+      }
     } catch (error) {
       console.log(`Notification fetchData : ${error}`)
     } finally {
-      setLoading(false)
+     if(loading) setLoading(false)
     }
   }
 
@@ -54,7 +67,8 @@ const NotificationScreen = () => {
     try {
       setData([])
       setShowPopup(false)
-      await deleteAllNotification()
+      deleteAllNotification()
+      AsyncStorage.removeItem('notification')
     } catch (error) {
       console.log(`Notification deleteAll: ${error}`)
     }

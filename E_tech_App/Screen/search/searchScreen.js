@@ -1,221 +1,352 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Image, Dimensions, TextInput, FlatList, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions, TextInput, FlatList, Text, Alert, SectionList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getAllProduct } from "../../CallApi/productApi";
-import { useNavigation } from "@react-navigation/native";
-const SearchScreen = ({ route }) => {
-    const navigation = useNavigation();
-    const product_name = route.params.product_name;
-    const textInputRef = useRef(null);
-    const [history, setHistory] = useState([]);
-    const [isShowMore, setIsShowMore] = useState(false);
-    const [dataProduct, setDataProduct] = useState([]);
-    const [textSearch, setTextSearch] = useState('');
-    const brand_name = route.params.brand_name;
-    useEffect(() => {
+import { useNavigation, useRoute } from "@react-navigation/native";
+import LottieView from 'lottie-react-native'
+import tailwind from "twrnc";
+import { formatPrice } from "../../utils/format";
+import StartRating from "../../Component/startRating";
+import { kiemTraTuGanNhau, tinhDoTuongDong } from "../../utils/searchText";
+const SearchScreen = () => {
+    const navigation = useNavigation()
+    const route = useRoute()
+    const [itemFind, setItem] = useState([route.params.item])
+    const [querry, setQuerry] = useState(String(route.params.item.product_name).trim())
+    const [recommend, setRecommend] = useState(route.params.product.filter(item => item.product_type_id == route.params.item.product_type_id))
+    const [recent, setRecent] = useState([])
+    const [history, setHistory] = useState([])
+    const [showHistory, setShowHistory] = useState(false)
+
+    const saveHistory = async () => {
         try {
-            if (textInputRef.current) {
-                textInputRef.current.focus();
+            if (querry.toString().trim().length == 0) return
+            const index = history.lastIndexOf(querry.toString().trim())
+            if (index == history.length) return
+            var update = history
+            if (index > -1) update.splice(index, 1)
+            update.unshift(String(querry).trim())
+            setHistory(update)
+            const oldHistory = await AsyncStorage.getItem('history')
+            var newHistory = []
+            if (oldHistory) {
+                newHistory = JSON.parse(oldHistory).filter(item => item !== querry)
             }
-            const fetchData = async () => {
-                const product = await getAllProduct();
-                setDataProduct(product);
-            }
-            fetchData();
-            loadSearchHistory();
+            newHistory.unshift(querry)
+            const save = (newHistory.length < 6) ? newHistory : newHistory.slice(0, 5)
+            AsyncStorage.setItem('history', JSON.stringify(save))
         } catch (error) {
-            console.log(error);
+            console.log('saveHistory:', error)
         }
-    }, []);
-
-    
-    const handleSearch = async ({item}) => {
-        if (!textSearch) {
-            const newSearchItem = { product_name, brand_name };
-            await AsyncStorage.setItem('searchHistory', JSON.stringify([newSearchItem, ...history]));
-            setHistory(prevHistory => [...prevHistory, newSearchItem]);
-            navigation.navigate('ViewItem',{newSearchItem})
-        }else{
-            const newSearchItem = {product_name: item.product_name, brand_name: item.brand_name} 
-            await AsyncStorage.setItem('searchHistory', JSON.stringify([newSearchItem, ...history]));
-            setHistory(prevHistory => [...prevHistory, newSearchItem]);
-            navigation.navigate('ViewItem',{newSearchItem})
-        }
-    };
-    const deleteHistory = async () => {
-        await AsyncStorage.removeItem('searchHistory');
-        setHistory([]);
     }
-    const loadSearchHistory = async () => {
-        const history = await AsyncStorage.getItem('searchHistory');
-        if (history) {
-            setHistory(JSON.parse(history));
-        }
-    };
-    const handleItem = ({item,data})=>{
-        setTextSearch('');
-        handleSearch({item:data});
-    }
-    return (
-        <View>
-            <View style={styles.viewHeader}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                >
-                    <Image style={{ height: 30, width: 30 }} source={require('../../img/previous.png')} />
-                </TouchableOpacity>
-                <View style={styles.viewSearch}>
-                    <TextInput
-                        placeholder={product_name}
-                        ref={textInputRef}
-                        style={styles.textInput}
-                        onChangeText={(text) => {
-                            setTextSearch(text)
-                        }}
-                        value={textSearch}
-                    />
-                    <TouchableOpacity
-                        onPress={handleSearch}
-                    >
-                        <Ionicons size={20} name="search" style={{ color: 'gray' }} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View>
-                {
-                    !textSearch ? (<FlatList
-                        data={
-                            isShowMore ?
-                                history.slice(-10).reverse() :
-                                history.slice(-5).reverse()
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal={false}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                onPress={()=>{
-                                    navigation.navigate('ViewItem',{newSearchItem: item})
-                                }}
-                            >
-                                <ItemFlatlist item={item} />
-                            </TouchableOpacity>
-                        )}
-                        ItemSeparatorComponent={Line}
-                        initialNumToRender={5}
-                        maxToRenderPerBatch={5}
-                        scrollEnabled={true}
 
-                    />) : (
-                        <FlatList
-                            data={dataProduct}
-                            horizontal={false}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) => (
-                                item.product_name.toLowerCase().includes(textSearch.toLowerCase()) ? (
-                                    <>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                handleItem({item:item.product_name,data:item});
-                                            }}
-                                        >
-                                            <ItemFlatlist item={item} />
-                                        </TouchableOpacity>
-                                    </>
-                                ) : null
-                            )}
-                            ItemSeparatorComponent={Line}
-                        />
+    const getHistory = async () => {
+        try {
+            const data = await AsyncStorage.getItem('history')
+            if (data) {
+                setHistory(JSON.parse(data))
+            }
+        } catch (error) {
+            console.log('getHistory:', error)
+        }
+    }
+
+    const getArrayRecent = async () => {
+        try {
+            // AsyncStorage.removeItem('product_recent')
+            const arraytRecent = await AsyncStorage.getItem('product_recent')
+            if (arraytRecent) {
+                setRecent(JSON.parse(arraytRecent))
+            }
+        } catch (error) {
+            console.log('Array recent:', error)
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getArrayRecent()
+            getHistory()
+        })
+        return unsubscribe
+    }, [navigation])
+
+    const filterProduct = () => {
+        if (querry.trim().length == 0) {
+            setItem([])
+            setRecommend(route.params.product)
+        } else {
+            const newArraySearch = route.params.product.filter((item) =>
+                tinhDoTuongDong(querry, item.product_name)
+            )
+            setItem(newArraySearch)
+            if (newArraySearch.length == 0) {
+                const newArrayRecommendByName = route.params.product.filter((item) =>
+                    kiemTraTuGanNhau(querry, item.product_name) || tinhDoTuongDong(querry, item.product_name)
+                )
+                setRecommend(newArrayRecommendByName)
+                if (newArrayRecommendByName.length == 0) {
+                    const newArrayRecommendByBrand = route.params.product.filter((item) =>
+                        kiemTraTuGanNhau(querry, item.product_type) || tinhDoTuongDong(querry, item.product_type)
                     )
-                }
-            </View>
-            <Line />
-            {
-                !textSearch ? (
-                    <ShowHistory history={history} isShowMore={isShowMore} setIsShowMore={setIsShowMore} deleteHistory={deleteHistory} />
-                ) : null
-            }
-        </View>
-    );
-};
-const ItemFlatlist = ({ item }) => {
-    return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={styles.textFlatList}>
-                <Text>{item.product_name}</Text>
-            </View>
-        </View>
-    );
-}
-const ShowHistory = ({ history, isShowMore, setIsShowMore, deleteHistory }) => {
-    return (
-        <View>
-            {history.length == 0 ? null :
-                <View>
-                    {
-                        history.length <= 5 ?
-                            <TouchableOpacity
-                                style={{ alignItems: 'center', margin: 10 }}
-                                onPress={deleteHistory}
-                            >
-                                <Text style={{ color: 'gray' }}>Xóa lịch sử</Text>
-                            </TouchableOpacity> :
-                            <TouchableOpacity
-                                style={{ alignItems: 'center', margin: 10 }}
-                                onPress={() => setIsShowMore(true)}
-                            >
-                                {
-                                    isShowMore ?
-                                        <TouchableOpacity
-                                            onPress={deleteHistory}
-                                        >
-                                            <Text style={{ color: 'gray' }}>Xóa lịch sử</Text>
-                                        </TouchableOpacity> :
-                                        <Text style={{ color: 'gray' }}>Hiển thị nhiều hơn</Text>
-                                }
-                            </TouchableOpacity>
+                    setRecommend(newArrayRecommendByBrand)
+                    if (newArrayRecommendByBrand.length == 0) {
+                        setRecommend(route.params.product)
                     }
-                </View>
+                }
+
             }
+        }
+
+    }
+
+    useEffect(() => {
+        filterProduct()
+    }, [querry])
+
+    const handleTextQuerry = (text) => {
+        const txt = text.toString().replaceAll('  ', ' ')
+        setQuerry(txt)
+    }
+
+    const renderItem = ({ item, index }) => {
+        const handleItem = async () => {
+            navigation.navigate('DetailProducts', { productId: item._id });
+        }
+        return (
+            <View style={styles.body}>
+                {item.percent_discount > 0
+                    ? (
+                        <View style={styles.saler}>
+                            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', lineHeight: 30 }}>
+                                Giảm {item.percent_discount}%
+                            </Text>
+                        </View>
+                    ) :
+                    null
+                }
+
+
+                <TouchableOpacity onPress={handleItem}>
+                    {item.image_preview && <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />}
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={tailwind`mt-4 w-37`}>
+                            <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
+                            <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
+                            {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15} />}
+                        </View>
+
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    const data = [
+        { type: 0 },
+        { type: 1 },
+        { type: 2 },
+        { type: 3 }
+    ]
+    const sections = [{ data, key: 'section' }]
+
+
+    const component = ({ item }) => {
+        switch (item.type) {
+            case 0:
+                return (
+                    <View style={styles.appBar}>
+                        <TouchableOpacity
+                            onPress={() => { navigation.goBack() }}>
+                            <Image style={{ width: 20, height: 20 }} source={require('../../img/arrow-left.png')} />
+                        </TouchableOpacity>
+                        <TextInput
+                            style={styles.seachView}
+                            placeholder="Nhập thông tin sản phẩm muốn tìm"
+                            value={querry}
+                            onChangeText={(text) => {
+                                handleTextQuerry(text)
+                            }}
+                            onEndEditing={() => {
+                                filterProduct()
+                                saveHistory()
+                            }}
+                            onPressOut={() => {
+                                setShowHistory(true)
+                            }}
+                            onSubmitEditing={() => {
+                                setShowHistory(false)
+                            }} />
+                    </View>
+                )
+            case 1:
+                return (
+                    showHistory && history.length > 0 &&
+                    <View style={styles.viewHistory}>
+                        <Text style={styles.textTitle}>Lịch sử tìm kiếm</Text>
+                        <FlatList
+                            data={history}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item, index }) => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setQuerry(item.toString().trim())
+                                        setShowHistory(false)
+                                    }}>
+                                    <Text style={styles.itemHistory}>{item}</Text>
+                                </TouchableOpacity>
+                            )}
+                            style={{ flexGrow: 0 }}
+                        />
+                    </View>
+
+                )
+            case 2:
+                return (
+                    itemFind.length > 0 ?
+                        <>
+                            <Text style={styles.textTitle}>Tìm thấy {itemFind.length} sản phẩm phù hợp</Text>
+                            <FlatList
+                                horizontal
+                                data={itemFind}
+                                keyExtractor={(item, index) => item._id}
+                                renderItem={renderItem}
+                                style={{ flexGrow: 0 }}
+                            />
+                        </>
+                        :
+                        <View style={{ alignSelf: 'center', alignItems: 'center', width: '100%' }}>
+                            <LottieView
+                                autoPlay
+                                style={{
+                                    width: 150,
+                                    height: 150,
+                                    backgroundColor: 'white',
+                                    marginTop: 5
+                                }}
+                                source={require('../../assets/not-found.json')}
+                            />
+                            <Text
+                                style={{ marginTop: 30, fontSize: 15 }}>Hãy thử tìm một sản phẩm khác nhé!</Text>
+                            {
+                                recommend.length > 0 &&
+                                <>
+                                    <Text style={styles.textTitle}>Sản phẩm đề xuất</Text>
+                                    <FlatList
+                                        horizontal
+                                        data={recommend}
+                                        keyExtractor={(item, index) => item._id}
+                                        renderItem={renderItem}
+                                        style={{ flexGrow: 0 }}
+                                    />
+                                </>
+                            }
+                        </View>
+                )
+            case 3:
+                return (
+                    <>
+                        <Text style={styles.textTitle}>Đã xem gần đây</Text>
+                        <FlatList
+                            horizontal
+                            data={recent}
+                            keyExtractor={(item, index) => item._id}
+                            renderItem={renderItem}
+                            style={{ flexGrow: 0 }}
+                        />
+                    </>
+                )
+            default:
+                return null
+        }
+    }
+
+
+
+    return (
+        <View style={styles.container}>
+            <SectionList
+                sections={sections}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={component}
+            />
+
         </View>
-    );
+
+
+    )
 }
-const Line = () => (
-    <View
-        style={{
-            height: 1,
-            width: "100%",
-            backgroundColor: "gray",
-        }}
-    />
-);
-export default SearchScreen;
+
+export default SearchScreen
+
 const styles = StyleSheet.create({
-
-
-    viewHeader: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 10,
-        paddingTop: 40,
-        backgroundColor: '#1E90FF'
-    },
-    viewSearch: {
-        height: 50,
-        width: Dimensions.get('window').width - 100,
-        marginLeft: 10,
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        borderRadius: 5,
-        flexDirection: "row",
+    container: {
+        flex: 1,
         backgroundColor: 'white'
     },
-    textInput: {
-        height: 40,
-        width: Dimensions.get('window').width - 200,
-        color: 'grey'
+    appBar: {
+        flexDirection: 'row',
+        padding: 15,
+        alignItems: 'center',
+        elevation: 10,
+        backgroundColor: 'white',
+        borderBottomColor: 'grey',
+        borderBottomWidth: 0.5,
+
+
     },
-    textFlatList: {
+    seachView: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 6,
+        marginHorizontal: 15,
+        borderColor: 'red',
+        borderWidth: 1,
+        borderRadius: 8
+    },
+    textTitle: {
+        fontWeight: '500',
+        fontSize: 18,
+        alignSelf: 'flex-start',
         margin: 15,
+    },
+    body: {
+        backgroundColor: 'white',
+        width: Dimensions.get('window').width / 2 - 16,
+        borderRadius: 10,
+        shadowColor: 'grey',
+        shadowRadius: 7,
+        alignItems: 'center',
+        shadowOpacity: 0.8,
+        margin: 6,
+        padding: 15,
+        elevation: 10
+    },
+    saler: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: 75,
+        height: 35,
+        backgroundColor: 'red',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        borderTopLeftRadius: 10,
+        zIndex: 2,
+    },
+    img: {
+        height: 100,
+        width: 140,
+        zIndex: 1,
+        marginTop: 25,
+    },
+    viewHistory: {
+        backgroundColor: 'white',
+    },
+    itemHistory: {
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        borderBottomWidth: 0.4,
+        borderBottomColor: 'grey'
     }
-});
+})

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react"
-import { FlatList, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
+import { FlatList, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { useNavigation } from '@react-navigation/native'
-import tailwind from "twrnc"
 import { getBrand } from '../../CallApi/brand'
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
-const ListBrand = (props) => {
+const ListBrand = () => {
     const navigation = useNavigation()
     const [data, setData] = useState([])
-    const [title, setTitle] = useState('')
     const getData = async () => {
         try {
-            const rs = await getBrand()
-            if (rs != null && rs.length > 0) {
-                setData(rs)
-                setTitle("Các hãng sản phẩm")
+            const dataOld = await AsyncStorage.getItem('brand')
+            if (dataOld) {
+                setData(JSON.parse(dataOld))
+            }
+            const response = await getBrand()
+            if (response != null && response.length > 0) {
+                setData(response)
+                AsyncStorage.setItem('brand', JSON.stringify(response))
             }
         } catch (error) {
             console.log(`ListBrand : ${error}`)
@@ -21,8 +24,12 @@ const ListBrand = (props) => {
     }
 
     useEffect(() => {
-        getData()
-    }, [])
+        const unsubscribe = navigation.addListener('focus', () => {
+            getData()
+        })
+        return unsubscribe
+    }, [navigation])
+
 
     const renderItem = ({ item }) => {
         return (
@@ -38,7 +45,7 @@ const ListBrand = (props) => {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
+            {data.length > 0 && <Text style={styles.title}>Các hãng sản phẩm</Text>}
             <FlatList
 
                 data={data}
@@ -54,7 +61,7 @@ const ListBrand = (props) => {
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 8,
-        flex: 1, 
+        flex: 1,
         backgroundColor: "whitesmoke"
     },
     title: {

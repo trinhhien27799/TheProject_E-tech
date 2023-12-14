@@ -1,35 +1,21 @@
 import { Ionicons } from "@expo/vector-icons"
 import React, { useEffect, useRef, useState } from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity, FlatList } from "react-native"
-import { getAllProduct } from "../../CallApi/productApi"
 import { useNavigation } from "@react-navigation/native"
-import { setlistProduct } from "../../session"
 
 
-const MainHeader = ({ navigation, route }) => {
-    const [dataProduct, setDataProduct] = useState([])
+const MainHeader = ({ product }) => {
     const scrollView = useRef()
     const [currentPage, setCurrentPage] = useState(0)
-    const [list, setList] = useState('')
+    const navigation = useNavigation()
 
 
-    const fetchData = async () => {
-        try {
-            const product = await getAllProduct()
-            setList(product.length)
-            setDataProduct(product)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    useEffect(() => {
-        fetchData()
-    }, [])
+
 
     useEffect(() => {
         const scrollInterval = setInterval(() => {
 
-            if (currentPage < list) {
+            if (currentPage < product.length) {
                 setCurrentPage(currentPage + 1)
             } else {
                 setCurrentPage(1)
@@ -60,15 +46,13 @@ const MainHeader = ({ navigation, route }) => {
 
                 <FlatList
                     ref={scrollView}
-                    data={dataProduct}
+                    data={product}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => {
-                                const product_name = item.product_name
-                                const brand_name = item.brand_name
-                                navigation.navigate('SearchScreen', { product_name, brand_name })
+                                navigation.navigate('SearchScreen', { item: item, product: product })
                             }}
                         >
 
