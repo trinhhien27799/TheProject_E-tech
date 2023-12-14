@@ -80,7 +80,7 @@ const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
             >
                 <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : '#E3E6E7', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
                     <Text style={{ color: select ? 'black' : 'grey' }}>{item.color}</Text>
-                    <Text style={{ fontSize: 13, color: select ? 'red' : 'grey', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
+                    <Text style={{ fontSize: 13, color: select ? 'red' : 'grey', fontWeight: '500' }}>{formatPrice(item.price * (1 - percent_discount / 100))}</Text>
                 </View>
             </TouchableOpacity>
         </View>
