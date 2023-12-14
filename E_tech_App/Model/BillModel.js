@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllBill, getRealBill } from "../CallApi/billApi"
+import { getAllBill, getItemBill, getRealBill } from "../CallApi/billApi"
 
 export const getBill = (statusNum) => {
     console.log(statusNum);
@@ -30,6 +30,27 @@ export const getAllUserBill = () => {
             setData(rs)
         } catch (error) {
             console.log(`ListOrder : ${error}`)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    return data;
+}
+
+export const getDetailBill = (id) => {
+    console.log('id: ' + id);
+    const [data, setData] = useState(null)
+
+    const getData = async () => {
+        try {
+            const response = await getItemBill(id)
+            setData(response)
+            console.log('data: ' + data)
+        } catch (error) {
+            console.log('CancelView: ', error)
         }
     }
 

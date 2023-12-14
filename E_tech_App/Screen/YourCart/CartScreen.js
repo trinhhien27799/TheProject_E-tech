@@ -139,13 +139,13 @@ const CartScreen = () => {
           <LoadingWidget />
           :
           <>
-
             <FlatList
               data={data}
               style={styles.listCart}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            
 
             {/* Payment Container */}
             {allowDelete &&
@@ -175,8 +175,6 @@ const CartScreen = () => {
                   </TouchableOpacity>
                 </View>
               </Animated.View>}
-
-
           </>
         }
       </View>

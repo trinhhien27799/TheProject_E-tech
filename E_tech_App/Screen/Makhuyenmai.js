@@ -91,12 +91,6 @@ const styles = StyleSheet.create({
     marginLeft: 60,
     fontSize: 18,
   },
-  img: {
-    height: 80,
-    width: 90,
-    marginLeft: 6,
-    marginBottom: 8,
-  },
   title: {
     fontSize: 13,
     marginTop: 10,

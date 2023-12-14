@@ -30,11 +30,11 @@ const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
                     pushListCart(response)
                     navigation.navigate('PayScreen')
                 }
-                console.log("Thêm giỏ hàng thành công")
+                alert("Thêm giỏ hàng thành công")
             } else {
                 setIsModalVisible(true)
                 setLoading(false)
-                console.log("Thêm giỏ hàng thất bại")
+                alert("Thêm giỏ hàng thất bại")
             }
         } catch (error) {
             console.log(`AddCart: ${error}`)

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { addVoucher } from '../CallApi/voucherApi'
 import LoadingWidget from '../Component/loading'
-import { TouchableOpacity, View } from 'react-native-web'
+import { TouchableOpacity, View, Image, StyleSheet, Text } from 'react-native'
 import tailwind from 'twrnc'
-import { formatTime } from '../utils/format'
+import { formatPrice, formatTime } from '../utils/format'
 
 const ItemVoucher = ({ item, index, setData, data }) => {
     const [loadingAdd, setLoadingAdd] = useState(false)
@@ -50,3 +50,21 @@ const ItemVoucher = ({ item, index, setData, data }) => {
 }
 
 export default ItemVoucher
+
+const styles = StyleSheet.create({
+    img: {
+        height: 80,
+        width: 90,
+        marginLeft: 6,
+        marginBottom: 8,
+    },
+    text: {
+        marginLeft: 60,
+        fontSize: 18,
+    },
+
+    title: {
+        fontSize: 13,
+        marginTop: 10,
+    },
+})

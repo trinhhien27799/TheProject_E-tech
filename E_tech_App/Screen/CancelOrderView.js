@@ -13,27 +13,7 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill'
 
 const CancelOrderView = () => {
     const route = useRoute();
-    const dataId = route.params
-
-    console.log(dataId.dataId);
-    const [data, setData] = useState(null)
-
-
-    const getData = async () => {
-        try {
-            const response = await getItemBill(dataId.dataId)
-            setData(response)
-        } catch (error) {
-            console.log('BillDetailScreen: ', error)
-        }
-    }
-
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    console.log('data: ' + data);
+    const data = route.params.dataId;
 
     const [takeValue, setTakeValue] = useState(null);
     const navigation = useNavigation();
