@@ -5,30 +5,33 @@ import { getAllProduct } from "../../CallApi/productApi"
 import tailwind from 'twrnc'
 import { formatPrice } from '../../utils/format'
 import StartRating from '../../Component/startRating'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const BestSeller = () => {
+const BestSeller = ({ product, setProduct }) => {
   const navigation = useNavigation()
-
-  const [product, setProduct] = useState([])
-  const [title, setTitle] = useState('')
-  const [more, setMore] = useState('')
 
   const getData = async () => {
     try {
-      const rs = await getAllProduct()
-      if (rs != null && rs.length > 0) {
-        setProduct(rs)
-        setTitle("Danh sách sản phẩm")
-        setMore("Xem thêm")
+      // const dataOld = await AsyncStorage.getItem('product')
+      // if (dataOld) {
+      //   setProduct(JSON.parse(dataOld))
+      // }
+      const response = await getAllProduct()
+      if (response != null && response.length > 0) {
+        setProduct(response)
+        AsyncStorage.setItem('product', JSON.stringify(response))
       }
-
     } catch (error) {
       console.log(`bestSeller: ${error}`)
     }
   }
+
   useEffect(() => {
-    getData()
-  }, [])
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData()
+    })
+    return unsubscribe
+  }, [navigation])
 
 
   const renderItem = ({ item, index }) => {
@@ -50,12 +53,12 @@ const BestSeller = () => {
 
 
         <TouchableOpacity onPress={handleItem}>
-          <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
+          {item.image_preview && <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />}
           <View style={{ flexDirection: 'row' }}>
             <View style={tailwind`mt-4 w-37`}>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
               <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
-              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15}/>}
+              {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15} />}
             </View>
 
           </View>
@@ -66,15 +69,15 @@ const BestSeller = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {product.length > 0 && <View style={styles.header}>
         <View style={styles.headerTitle}>
           <Image style={{ width: 25, height: 25, marginRight: 10 }} source={require('../../img/newspaper.png')} />
-          <Text style={{ fontWeight: '700', fontSize: 18, lineHeight: 25 }}>{title}</Text>
+          <Text style={{ fontWeight: '700', fontSize: 18, lineHeight: 25 }}>Danh sách sản phẩm</Text>
         </View>
         <TouchableOpacity onPress={() => { navigation.navigate('ListPhone') }}>
-          <Text style={{ fontWeight: '400', color: 'blue' }}>{more}</Text>
+          <Text style={{ fontWeight: '400', color: 'blue' }}>Xem thêm</Text>
         </TouchableOpacity>
-      </View>
+      </View>}
       <View style={styles.listView}>
         <FlatList
           data={product}

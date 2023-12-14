@@ -14,7 +14,7 @@ const updateDeviceToken = async () => {
 const deleteDeviceToken = async () => {
     try {
         if (!getUser()) return ''
-        const response = await api.delete('/token/delete')
+        const response = await api.post('/token/delete', { token: getDeviceToken() })
         return response.data
     } catch (error) {
         throw error

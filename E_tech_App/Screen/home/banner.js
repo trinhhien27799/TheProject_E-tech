@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { FlatList, Dimensions, View, StyleSheet, Image, TouchableOpacity, Text } from "react-native"
 import { getBanner } from "../../CallApi/banner"
 import { useNavigation } from "@react-navigation/core"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
 const card_width = Dimensions.get('window').width
@@ -9,20 +10,34 @@ const Banner = () => {
     const scrollViewRef = useRef()
     const [currentPage, setCurrentPage] = useState(0)
     const [dataBanner, setDataBanner] = useState([])
-    const navigation = useNavigation();
+    const navigation = useNavigation()
+
+    const fectData = async () => {
+        try {
+            const dataOld = await AsyncStorage.getItem('banner')
+            if (dataOld) {
+                setDataBanner(JSON.parse(dataOld))
+            }
+            const bannerData = await getBanner()
+            if (bannerData.length > 0) {
+                setDataBanner(bannerData)
+                AsyncStorage.setItem('banner', JSON.stringify(bannerData))
+            }
+        } catch (error) {
+            console.log('Banner', error)
+        }
+    }
 
     useEffect(() => {
-        const fectData = async () => {
-            const bannerData = await getBanner()
-            setDataBanner(bannerData)
-            const imagePromises = bannerData.map(async (item) => {
-                await Image.prefetch(item.image)
-            })
+        const unsubscribe = navigation.addListener('focus', () => {
+            fectData()
+        })
+        return unsubscribe
+    }, [navigation])
 
-            await Promise.all(imagePromises)
-        }
-        fectData()
-    }, [])
+
+
+
     useEffect(() => {
         const scrollInterval = setInterval(() => {
             if (currentPage < dataBanner.length - 1) {
@@ -42,7 +57,7 @@ const Banner = () => {
     const renderItem = ({ item }) => {
         return (
             <TouchableOpacity
-                onPress={() => navigation.navigate('DetailProducts', {productId: item.productId})}
+                onPress={() => navigation.navigate('DetailProducts', { productId: item.productId })}
             >
                 <View style={styles.card}>
                     <View>

@@ -3,17 +3,22 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity }
 import { useNavigation } from '@react-navigation/native'
 import tailwind from "twrnc"
 import { getTypeProduct } from '../../CallApi/typeProduct'
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
-const ListProduct = (props) => {
+const ListProduct = () => {
     const navigation = useNavigation()
     const [data, setData] = useState([])
-    const [title, setTitle] = useState('')
+
     const getData = async () => {
         try {
-            const rs = await getTypeProduct()
-            if (rs != null && rs.length > 0) {
-                setData(rs)
-                setTitle("Các loại sản phẩm")
+            const dataOld = await AsyncStorage.getItem('type_product')
+            if (dataOld) {
+                setData(JSON.parse(dataOld))
+            }
+            const response = await getTypeProduct()
+            if (response != null && response.length > 0) {
+                setData(response)
+                AsyncStorage.setItem('type_product', JSON.stringify(response))
             }
 
         } catch (error) {
@@ -21,9 +26,14 @@ const ListProduct = (props) => {
         }
     }
 
+
     useEffect(() => {
-        getData()
-    }, [])
+        const unsubscribe = navigation.addListener('focus', () => {
+            getData()
+        })
+        return unsubscribe
+    }, [navigation])
+
 
     const renderItem = ({ item }) => {
         return (
@@ -44,14 +54,14 @@ const ListProduct = (props) => {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
+            {data.length > 0 && < Text style={styles.title}>Các loại sản phẩm</Text>}
             <FlatList
 
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
                 horizontal={true} />
-        </View>
+        </View >
     )
 }
 
