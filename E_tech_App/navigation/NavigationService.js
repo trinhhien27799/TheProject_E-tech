@@ -18,7 +18,6 @@ import ListPhoneByCate from '../Screen/ListPhoneByCate'
 import DetailProducts from '../Screen/products/main'
 import SplashScreen from '../Screen/splash/SplashScreen'
 import DetailCommentScreen from '../Screen/DetailCommentScreen'
-import SettingScreen from '../Screen/profile/setting'
 import NewOrderScreen from '../Screen/OrderPackageScenes/NewOrderScreen'
 import AddCommentScreen from '../Screen/AddCommentScreen';
 import CommentButton from '../Component/CommentButton';
@@ -34,7 +33,6 @@ import Profile from '../Screen/profile/profileScreen'
 import ListPhone from '../Screen/ListPhone'
 import Login from '../Screen/authentication/Login'
 import SignUp from '../Screen/authentication/SignUp'
-import editProfile from '../Screen/profile/editProfile'
 
 import SearchScreen from '../Screen/search/searchScreen'
 
@@ -78,12 +76,9 @@ export function MainNavigator() {
                 <Stack.Screen name='ConfirmOTP' component={ConfirmOTP} options={{ headerShown: false }} />
                 <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
                 <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />
-                <Stack.Screen name='EditProfile' component={editProfile} options={{ headerShown: false }} />
                 <Stack.Screen name='ButtonNavigation' component={BottomNavigation} options={{ headerShown: false }} />
                 <Stack.Screen name='SearchScreen' component={SearchScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='DetailProducts' component={DetailProducts} options={{ headerShown: false }} />
-                <Stack.Screen name='SettingScreen' component={SettingScreen} options={{ headerShown: false }} />
-
                 <Stack.Screen name='AddressScreen' component={AddressScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='AddAddressScreen' component={AddAddress} options={{
                     headerTitle: "Thêm địa chỉ"

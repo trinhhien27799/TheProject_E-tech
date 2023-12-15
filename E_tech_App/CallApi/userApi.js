@@ -13,28 +13,30 @@ export const resetPassword = async (oldPass, newPass) => {
     }
 
 }
-export const updateAvatar = async (filename) => {
-    const formData = new FormData();
-    formData.append('avatar', {
-        uri: filename,
-        type: 'image/jpeg',
-        name: 'avatar.jpg',
-    });
-    const response = await api.post('/user/update/avatar', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-    // setUser(response.data.user);
-    return response.data;
+export const updateImage = async (filename, type) => {
+    try {
+        const formData = new FormData();
+        formData.append(type, {
+            uri: filename,
+            type: 'image/jpeg',
+            name: `av_${new Date().getTime()}.jpg`,
+        });
+        const response = await api.post(`/user/update/${type}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error
+    }
 };
 
-export const updateFullname=async (fullname)=>{
-try{
-    const response = await api.post('/user/update/fullname',{fullname:fullname});
-    return response.data;
-}catch (error) {
-    console.error('Lỗi yêu cầu mạng:', error);
-    throw error;
-}
+export const updateFullname = async (fullname) => {
+    try {
+        const response = await api.post('/user/update/fullname', { fullname: fullname });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 }

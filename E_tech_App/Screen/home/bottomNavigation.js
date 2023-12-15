@@ -9,15 +9,11 @@ import Makhuyenmai from '../Makhuyenmai';
 import Profile from '../profile/profileScreen';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getUser } from '../../session';
-import SettingScreen from '../profile/setting';
+
 
 const Tabs = AnimatedTabBarNavigator();
 
 const BottomNavigation = () => {
-  const route = useRoute()
-  const navigation = useNavigation()
-  const user = getUser();
-
 
   return (
     <Tabs.Navigator
@@ -96,7 +92,7 @@ const BottomNavigation = () => {
 
       <Tabs.Screen
         name="Account"
-        component={user != null ? Profile : SettingScreen}
+        component={Profile}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Icon
