@@ -68,7 +68,7 @@ const AddressItem = ({ item, index, check, listCheck, setListCheck, choose, idSe
                 </View>
             </View>
             {check ?
-                <Checkbox disabled={isCheckedSelected} value={isChecked && !isCheckedSelected} onValueChange={(checked) => {
+                <Checkbox disabled={isCheckedSelected} value={isChecked && !isCheckedSelected && choose} onValueChange={(checked) => {
                     eventChecked(checked)
                 }} />
                 :

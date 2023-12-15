@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Text,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -15,9 +14,10 @@ import {  insertOtp } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 import tailwind from 'twrnc';
 import { setCheck } from '../../session';
+import { useNavigation } from '@react-navigation/native';
 
 
-const SignUp = ({ navigation }) => {
+const SignUp = () => {
   const [fullname, setFullname] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -30,6 +30,7 @@ const SignUp = ({ navigation }) => {
   const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
   const [checkValue, setCheckValue] = useState(false);
+  const navigation = useNavigation()
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 

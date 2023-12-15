@@ -115,6 +115,13 @@ const Login = ({ navigation }) => {
                         ĐĂNG NHẬP
                     </Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.replace('ButtonNavigation')
+                    }}
+                    style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 55,marginBottom:15 }}>
+                    <Text>Tiếp tục mà không cần tài khoản?</Text>
+                </TouchableOpacity>
                 <View style={styles.view3}></View>
                 <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
                     <Text>Bạn chưa có tài khoản? </Text>
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#336BFA',
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 40,
+      
     },
     button: {
         backgroundColor: '',
@@ -169,7 +176,7 @@ const styles = StyleSheet.create({
         marginRight: 'auto',
         padding: 10,
         width: '50%',
-        marginTop: 50,
+        marginTop: 20,
     },
     viewInput: {
         width: '100%',

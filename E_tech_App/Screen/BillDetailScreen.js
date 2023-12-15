@@ -6,8 +6,11 @@ import { TotalProductBill } from '../DataMathResolve/TotalProductBill';
 import { formatPrice, formatTime } from '../utils/format';
 import { getItemBill } from '../CallApi/billApi';
 import ItemInBill from './itemInBill';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const BillDetailScreen = ({ route }) => {
+const BillDetailScreen = () => {
+    const route = useRoute()
+    const navigation = useNavigation()
     const { dataId } = route.params;
     const [data, setData] = useState(null)
     const [timeLate, setTimeLate] = useState(null)
@@ -36,7 +39,7 @@ const BillDetailScreen = ({ route }) => {
         getData()
     }, [])
 
-    
+
 
     const renderItem = ({ item, index }) => {
         return <ItemInBill item={item} />

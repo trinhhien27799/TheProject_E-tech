@@ -5,7 +5,7 @@ class SoundPlayer {
     this.soundObject = new Audio.Sound()
   }
 
-  async playSound(fileName) {
+  async playSound() {
     try {
       await this.soundObject.unloadAsync() 
       await this.soundObject.loadAsync(require('../assets/notification-sound.mp3'))

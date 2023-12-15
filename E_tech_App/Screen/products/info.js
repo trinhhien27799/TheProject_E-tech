@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {  StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import StartRating from "../../Component/startRating";
 import { Ionicons } from "@expo/vector-icons";
 import { formatPrice } from "../../utils/format";
 import { handleLike } from '../../CallApi/productApi'
 import { getUser } from "../../session";
+import { useRequireLogin } from "../../utils/alert";
+import { useNavigation } from "@react-navigation/native";
 
 
 const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike }) => {
@@ -12,6 +14,7 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
     const [like, setLike] = useState(isLike)
     const [text1, setText1] = useState('')
     const [text2, setText2] = useState('')
+    const navigation = useNavigation()
     const onClick = async (boolean) => {
         try {
             const user = getUser()
@@ -46,12 +49,16 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={28}/>}
+                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={28} />}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                         onPress={() => {
-                            onClick(!like)
-                            setLike(!like)
+                            if (!getUser()) {
+                                useRequireLogin(navigation)
+                            } else {
+                                onClick(!like)
+                                setLike(!like)
+                            }
                         }}
                     >
                         {

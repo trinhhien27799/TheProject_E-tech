@@ -40,6 +40,7 @@ const Variations = ({ variations, product_name, percent_discount }) => {
                                     onPress={() => {
                                         setSelectVersionIndex(index);
                                     }}
+                                    percent_discount={percent_discount}
                                 />
                             }}
                             numColumns={3}
@@ -60,6 +61,7 @@ const Variations = ({ variations, product_name, percent_discount }) => {
                             setSelectedColorIndex(index);
                         }}
                         selectedRAMROM={selectedRAMROM}
+                        percent_discount={percent_discount}
                     />
                 }}
                 numColumns={3}
@@ -67,11 +69,8 @@ const Variations = ({ variations, product_name, percent_discount }) => {
         </View>
     );
 }
-const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
+const ItemView = ({ item, isSelected, onPress, selectedRAMROM, percent_discount }) => {
     const select = selectedRAMROM == item.ram + '/' + item.rom;
-
-
-
     return (
         <View>
             <TouchableOpacity
@@ -80,7 +79,7 @@ const ItemView = ({ item, isSelected, onPress, selectedRAMROM }) => {
             >
                 <View style={[{ borderColor: select ? isSelected ? '#1E90FF' : 'grey' : '#E3E6E7', backgroundColor: select ? null : '#E3E6E7' }, styles.viewItem]}>
                     <Text style={{ color: select ? 'black' : 'grey' }}>{item.color}</Text>
-                    <Text style={{ fontSize: 13, color: select ? 'red' : 'grey', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
+                    <Text style={{ fontSize: 13, color: select ? 'red' : 'grey', fontWeight: '500' }}>{formatPrice(item.price * (1 - percent_discount / 100))}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -92,7 +91,7 @@ const TextView = ({ title }) => (
     </View>
 );
 
-const ItemViewVersion = ({ item, isSelected, onPress }) => {
+const ItemViewVersion = ({ item, isSelected, onPress, percent_discount }) => {
 
 
     return (
@@ -101,7 +100,7 @@ const ItemViewVersion = ({ item, isSelected, onPress }) => {
         >
             <View style={[{ borderColor: isSelected ? '#1E90FF' : '#E3E6E7', backgroundColor: isSelected ? null : '#E3E6E7' }, styles.viewItem]}>
                 <Text>{item.ram}/{item.rom}</Text>
-                <Text style={{ fontSize: 13, color: 'red', fontWeight: '500' }}>{formatPrice(item.price)}</Text>
+                <Text style={{ fontSize: 13, color: 'red', fontWeight: '500' }}>{formatPrice(item.price * (1 - percent_discount / 100))}</Text>
             </View>
         </TouchableOpacity>
 

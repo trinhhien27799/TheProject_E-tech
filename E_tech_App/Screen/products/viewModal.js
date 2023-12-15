@@ -4,9 +4,10 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import { formatPrice } from "../../utils/format"
 import { addCart } from "../../CallApi/cartApi"
 import LottieView from 'lottie-react-native'
-import { pushListCart, clearListCart, getProductSelected } from '../../session'
+import { pushListCart, clearListCart, getProductSelected, getUser } from '../../session'
 import { useNavigation } from "@react-navigation/native"
 import tailwind from "twrnc"
+import { useRequireLogin } from "../../utils/alert"
 const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
     const navigation = useNavigation()
     const [quantity, setQuantity] = useState(1)
@@ -29,11 +30,11 @@ const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
                     pushListCart(response)
                     navigation.navigate('PayScreen')
                 }
-                console.log("Thêm giỏ hàng thành công")
+                alert("Thêm giỏ hàng thành công")
             } else {
                 setIsModalVisible(true)
                 setLoading(false)
-                console.log("Thêm giỏ hàng thất bại")
+                alert("Thêm giỏ hàng thất bại")
             }
         } catch (error) {
             console.log(`AddCart: ${error}`)
@@ -91,7 +92,11 @@ const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
                 <TouchableOpacity
                     style={[tailwind`bg-blue-600 w-50 rounded-lg shadow-md my-3`, { alignSelf: 'center', paddingVertical: 10 }]}
                     onPress={() => {
-                        handleAdd()
+                        if (!getUser()) {
+                            useRequireLogin(navigation)
+                        } else {
+                            handleAdd()
+                        }
                     }}
                 >
                     <Text style={tailwind` font-bold text-white self-center`}>Thêm vào giỏ hàng</Text>
@@ -117,7 +122,7 @@ const styles = StyleSheet.create({
     },
     viewName: {
         justifyContent: 'center',
-        flex:1
+        flex: 1
     },
     price: {
         fontSize: 11,

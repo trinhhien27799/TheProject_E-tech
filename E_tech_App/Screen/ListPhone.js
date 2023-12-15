@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList } from "react-native";
 import colors from "../colors";
-import ListItem from "../ListItem";
-import data from '../items';
 import { getAllProduct } from "../CallApi/productApi";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { formatPrice } from '../utils/format'
 import tailwind from "twrnc";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const ListPhone = () => {
     const [product, setProduct] = useState(null);
     const navigation = useNavigation();
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: 'Tất cả sản phẩm',
+            headerRight: () => (
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('SearchScreen', { product: product })
+                }}>
+                    <Image source={require('../assets/search.png')} style={{ width: 18, height: 18 }} />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
     const getData = async () => {
         try {
-            const rs = await getAllProduct()
-            if (rs != null && rs.length > 0) {
-                setProduct(rs)
-                setTitle("Danh sách sản phẩm")
-                setMore("Xem thêm")
+            const dataOld = await AsyncStorage.getItem('product')
+            if (dataOld) {
+                setProduct(JSON.parse(dataOld))
             }
-
+            const response = await getAllProduct()
+            if (response != null && response.length > 0) {
+                setProduct(response)
+                AsyncStorage.setItem('product', JSON.stringify(response))
+            }
         } catch (error) {
             console.log(`bestSeller: ${error}`)
         }
@@ -31,7 +44,7 @@ const ListPhone = () => {
 
     const ListItem = ({ item }) => {
         return (
-            <View style={tailwind`flex-1 p-5 w-96 border border-gray-300 mt-2 self-center bg-white rounded-lg`}>
+            <View style={{ paddingHorizontal: 15, paddingVertical: 15, backgroundColor: 'white', borderBottomWidth: 0.5, marginTop: 0.5, borderBottomColor: 'grey' }}>
                 <TouchableOpacity onPress={() => { navigation.navigate('DetailProducts', { productId: item._id }); }}>
                     <View style={styles.containerInfo}>
                         <Image
@@ -56,25 +69,8 @@ const ListPhone = () => {
                             <View style={styles.textCategory}>
                                 <Text style={{ fontSize: 12, color: colors.grey }}>Hãng: {item.brand_name}</Text>
                             </View>
-                            {/* <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{
-                                        color: colors.grey,
-                                        fontSize: 12,
-                                    }}>Trạng thái: </Text>
-                                    <Text style={{
-                                        color: item.status ? colors.conHang : colors.hetHang,
-                                        fontSize: 12,
-                                    }}>{item.quantity > 0 ? <Text>Còn hàng</Text> : <Text>Hết hàng</Text>} </Text>
-                                </View> */}
+
                         </View>
-                    </View>
-                    <View style={styles.viewButton}>
-                        <TouchableOpacity style={tailwind `p-2 bg-blue-600 rounded-lg shadow-md`}>
-                            <AntDesign name="shoppingcart" size={20} color="white" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={tailwind `p-2 bg-blue-600 rounded-lg shadow-md ml-2`}>
-                            <Text style={{ color: 'white', fontWeight: "bold", fontSize: 13 }}>Mua ngay</Text>
-                        </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
 
@@ -84,22 +80,11 @@ const ListPhone = () => {
 
     return (
         <View style={styles.container}>
-            <View style={tailwind`bg-white flex-row py-3`}>
-                <TouchableOpacity
-                    onPress={() => { navigation.goBack() }}
-                    style={tailwind`bg-white p-1.5 rounded-full shadow-md ml-3`}
-                >
-                    <Ionicons name="arrow-back" size={30} color="black" />
-                </TouchableOpacity>
-                <Text style={tailwind`text-base mt-2 font-bold ml-3`}>Danh sách sản phẩm</Text>
-            </View>
-
             <FlatList
                 data={product}
+                keyExtractor={(item) => item._id}
                 renderItem={ListItem}
             />
-
-            
         </View>
     );
 }
@@ -108,53 +93,18 @@ const styles = StyleSheet.create({
     image: {
         height: 100,
         width: 100,
-        resizeMode: 'cover',
+        resizeMode: 'center',
         borderRadius: 8,
         justifyContent: "center"
     },
-    viewButton: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-
-    // Fix height & width
-    buttonCart: {
-        backgroundColor: colors.hetHang,
-        borderRadius: 5,
-        paddingTop: 5,
-        paddingBottom: 5,
-        width: 50,
-        alignItems: 'center',
-    },
-    buttonBuy: {
-        backgroundColor: colors.hetHang,
-        borderRadius: 5,
-        width: 80,
-        alignItems: 'center',
-        justifyContent: "center",
-        marginLeft: 10,
-    },
     containerInfo: {
         flexDirection: 'row',
-
-    },
-    containerItem: {
-        flex: 1,
-        backgroundColor: 'white',
-        marginTop: 15,
-        padding: 20
     },
     textCategory: {
         marginTop: 5
     },
     textPrice: {
         marginTop: 10
-    },
-    text: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginTop: 20,
-        marginBottom: 10
     },
     container: {
         flex: 1,

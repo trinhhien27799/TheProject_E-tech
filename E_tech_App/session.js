@@ -1,4 +1,3 @@
-import { object } from "prop-types"
 
 
 
@@ -55,14 +54,6 @@ const setListCart = (list) => {
 
 var deviceToken = null
 
-const setDeviceToken = (token) => {
-  console.log(token)
-  deviceToken = token
-}
-
-const getDeviceToken = () => {
-  return deviceToken
-}
 
 var address = null
 
@@ -122,17 +113,29 @@ const getChats = () => {
 const cleanChats = ()=>{
   listChats = [];
 }
+var deviceToken = null
+
+const setDeviceToken = (token) => {
+  deviceToken = token
+}
+
+const getDeviceToken = () => {
+  return deviceToken
+}
+
+
+
 
 export {
   setUser, getUser,
   setProductSelected, getProductSelected,
   pushListCart, clearListCart, deleteItemInListCart, getListCart, updateItemInCart, setListCart,
-  setDeviceToken, getDeviceToken,
   setAddress, getAddress,
   getShipping, setShipping,
   setVoucher, getVoucher,
   setPayment, getPayment,
   setCheck,getCheck,
   setChat,getChats,cleanChats
+  setDeviceToken,getDeviceToken
 }
 

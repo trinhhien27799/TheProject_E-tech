@@ -5,13 +5,13 @@ import { useNavigation } from '@react-navigation/native'
 import { formatPrice } from '../../utils/format'
 import LoadingWidget from '../../Component/loading'
 import CartItem from './cartItem'
-import { getListCart, clearListCart, setListCart } from '../../session'
+import { getListCart, clearListCart, setListCart, getUser } from '../../session'
 import LottieView from 'lottie-react-native'
 
 const CartScreen = () => {
   const navigation = useNavigation()
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
   const [update, setUpdate] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -27,11 +27,12 @@ const CartScreen = () => {
       setLoading(true)
       setData([])
       const response = await getCart()
+      setData(response)
       const resultArray = response.filter((itemA) =>
         getListCart().some((itemB) => itemB._id === itemA._id)
       )
       setListCart(resultArray)
-      setData(response)
+
     } catch (error) {
       console.log(`Cart Screen : ${error}`)
     } finally {
@@ -57,7 +58,7 @@ const CartScreen = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      fetchData()
+      if (getUser() != null) fetchData()
     })
 
     return unsubscribe
@@ -139,13 +140,27 @@ const CartScreen = () => {
           <LoadingWidget />
           :
           <>
-
             <FlatList
               data={data}
               style={styles.listCart}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            {data.length == 0 &&
+              <View style={{ backgroundColor: 'whitesmoke', flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                <LottieView
+                  autoPlay
+                  style={{ width: 200, height: 200 }}
+                  source={require('../../assets/cart.json')}
+                />
+                <TouchableOpacity
+                  onPress={() => { navigation.navigate('ButtonNavigation', { screen: 'Home' }) }}
+                >
+                  <Text style={{ marginTop: 10, padding: 10 }}>Thêm sản phẩm vào giỏ hàng</Text>
+                </TouchableOpacity>
+                <View style={{ height: '30%' }} />
+              </View>}
+
 
             {/* Payment Container */}
             {allowDelete &&
@@ -175,8 +190,6 @@ const CartScreen = () => {
                   </TouchableOpacity>
                 </View>
               </Animated.View>}
-
-
           </>
         }
       </View>
@@ -217,7 +230,8 @@ const styles = StyleSheet.create({
 
   listCart: {
     marginBottom: 10,
-    width: Dimensions.get('screen').width
+    width: Dimensions.get('screen').width,
+    flexGrow: 0
   },
   header: {
     borderBottomWidth: 0.5,
@@ -225,7 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     flexDirection: 'row',
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   textHeader: {
     fontSize: 20,

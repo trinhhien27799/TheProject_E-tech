@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import tailwind from 'twrnc'
 import { addCart } from '../../CallApi/cartApi'
 import { getListCart, pushListCart } from '../../session'
 import LoadingWidget from '../../Component/loading'
+import { getItemBill } from '../../CallApi/billApi'
+import { getDetailBill } from '../../Model/BillModel'
 
 const OrderStatusChangeButton = ({ item }) => {
     const navigation = useNavigation();
@@ -12,7 +14,9 @@ const OrderStatusChangeButton = ({ item }) => {
     const styleFeedback = 'self-end p-2 bg-gray-500 rounded-md';
     const styleCancel = 'self-end p-2 bg-red-500 rounded-md ml-2';
     const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md ml-2';
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
+    const detailBill = getDetailBill(item._id)
 
     const AddCartArray = async (products) => {
         try {
@@ -48,7 +52,7 @@ const OrderStatusChangeButton = ({ item }) => {
                         </TouchableOpacity>)}
                 {item.status == 0 &&
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('CancelOrderScreen', { dataId: item._id })}
+                        onPress={() => {navigation.navigate('CancelOrderScreen', { dataId: detailBill })}}
                         style={tailwind`${styleCancel}`}
                     >
                         <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>
