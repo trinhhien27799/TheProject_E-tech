@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { insertOtp } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 import tailwind from 'twrnc';
+import { setCheck } from '../../session';
 import { useNavigation } from '@react-navigation/native';
 import LockLoading from './lockLoading';
 
@@ -28,12 +29,12 @@ const SignUp = () => {
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
   const [isRepasswordShow, setisRepasswordShow] = useState(false);
-  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
   const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
   const [checkValue, setCheckValue] = useState(false);
   const navigation = useNavigation()
   const [loading, setLoading] = useState(false)
+
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 
@@ -70,7 +71,7 @@ const SignUp = () => {
     }
   }
   const handleDelete = () => {
-    setShowVerifyDialog(false);
+    setCheck(false);
     setRemainingTime(120);
     setIsSignUpPressed(false);
   };

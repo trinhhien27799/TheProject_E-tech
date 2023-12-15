@@ -2,8 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
 import Dialog from "react-native-dialog";
 import { verifyOTP, registerUser,insertOtp } from '../../CallApi/authenApi';
+import { getCheck, setCheck } from "../../session";
 
-const VerifyDialog = ({ check, onCancle, email, password, fullname, navigation, remainingTime, setRemainingTime,checkValue,setCheckValue }) => {
+const VerifyDialog = ({ onCancle, email, password, fullname, navigation, remainingTime, setRemainingTime,checkValue,setCheckValue }) => {
+    const check = getCheck();
     const firtInput = useRef();
     const secondInput = useRef();
     const thirdInput = useRef();
@@ -16,10 +18,6 @@ const VerifyDialog = ({ check, onCancle, email, password, fullname, navigation, 
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
-    };
-
-    const displayAlert = (message) => {
-        alert(message);
     };
     const resetTextInputValues = () => {
         firtInput.current.clear();
@@ -38,22 +36,24 @@ const VerifyDialog = ({ check, onCancle, email, password, fullname, navigation, 
     
         try {
             verificationResult = await verifyOTP(email, otpString);
-    
             registrationResult = await registerUser(fullname, email, password, navigation);
+            if(registrationResult.code ==200){
+                alert(registrationResult.message);
+                navigation.navigate('Login');
+            }
+                alert(registrationResult.message);
+            setCheck(false);
         } catch (error) {
             console.error("Có lỗi xảy ra:", error);
     
-            if (verificationResult && verificationResult.code === 400) {
-                displayAlert("Mã xác minh hết hạn");
-            } else if (registrationResult && registrationResult.code === 500) {
-                displayAlert("Email đã tồn tại");
+            if (verificationResult && verificationResult.code == 400) {
+                alert("Mã xác minh hết hạn");
+            } else if (registrationResult && registrationResult.code == 500) {
+                alert("Email đã tồn tại");
             } else {
-                displayAlert("Có lỗi xảy ra trong quá trình xử lý.");
+                alert("Có lỗi xảy ra trong quá trình xử lý.");
             }
         }
-
-
-    
         console.log("Xác minh kết quả:", verificationResult);
         console.log("Đăng ký kết quả:", registrationResult);
     };
