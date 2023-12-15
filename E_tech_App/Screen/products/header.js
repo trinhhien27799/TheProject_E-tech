@@ -11,6 +11,7 @@ const HeaderProduct = ({ variations }) => {
 
     const RenderItem = ({ item, index }) => (
         <TouchableOpacity
+            style={{ elevation: 10 }}
             onPress={() => {
                 setImage(item.image)
                 setBorderIndex(index)
@@ -19,9 +20,8 @@ const HeaderProduct = ({ variations }) => {
             <Image
                 source={{ uri: item.image }}
                 style={{
-                    height: 100, width: 100, resizeMode: 'contain',
-                    backgroundColor: 'white', margin: 5, borderRadius: 15,
-                    borderColor: borderIndex == index ? 'black' : null, borderWidth: 1
+                    height: 100, width: 100, resizeMode: 'center',
+                    backgroundColor: 'white', marginEnd: 10,
                 }} />
         </TouchableOpacity>
     )
@@ -61,6 +61,7 @@ export default HeaderProduct
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
     viewImage: {
         height: Dimensions.get('window').height * 0.5,
@@ -69,7 +70,8 @@ const styles = StyleSheet.create({
     imagePd: {
         flex: 1,
         resizeMode: 'contain',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        marginHorizontal: 40
     },
     viewPrevious: {
         position: 'absolute',
@@ -84,5 +86,6 @@ const styles = StyleSheet.create({
     },
     flastlist: {
         paddingLeft: 8,
+        paddingBottom: 10
     }
 })

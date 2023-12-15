@@ -5,17 +5,19 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Image,
+  Image, StatusBar,
   ScrollView,
+  Alert,
+  Dimensions,
 } from 'react-native';
 import { isValidEmail, isPassWord, isValidUsername, isConfirm } from '../../Component/validation';
 import { Ionicons } from "@expo/vector-icons";
-import {  insertOtp } from '../../CallApi/authenApi';
+import { insertOtp } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 import tailwind from 'twrnc';
 import { setCheck } from '../../session';
 import { useNavigation } from '@react-navigation/native';
-
+import LockLoading from './lockLoading';
 
 const SignUp = () => {
   const [fullname, setFullname] = useState('');
@@ -31,6 +33,8 @@ const SignUp = () => {
   const [confirmPass, setConfirmPass] = useState('');
   const [checkValue, setCheckValue] = useState(false);
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
+
 
   const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
 
@@ -52,27 +56,17 @@ const SignUp = () => {
   }, [remainingTime, isSignUpPressed]);
   const handleSignUp = async () => {
     try {
-      if (password != confirmPass || confirmPass != password) {
-        setErrorPassword('Password không khớp');
-        setErrorConfim('Password không khớp');
+      setLoading(true)
+      const insert = await insertOtp(email, false);
+      setLoading(false)
+      if (insert.code === 200) {
+        setShowVerifyDialog(true);
+        setIsSignUpPressed(true);
       } else {
-        setErrorPassword('');
-        setErrorConfim('');
-        if (email == '' || password == '' || fullname == '' || confirmPass == '') {
-          alert("Vui lòng điền đầy đủ thông tin!!!");
-        } else {
-          const insert = await insertOtp(email, false);
-          if (insert.code === 200) {
-            setCheck(true);
-            setIsSignUpPressed(true);
-          } else {
-            alert(insert.message);
-          }
-
-        }
-
+        Alert.alert('Thông báo', insert.message);
       }
     } catch (error) {
+      setLoading(false)
       console.error('Error:', error);
     }
   }
@@ -81,162 +75,222 @@ const SignUp = () => {
     setRemainingTime(120);
     setIsSignUpPressed(false);
   };
+
+
+  const convertFullname = (text) => {
+    const name = String(text)
+    if (name.trim().length == 0) {
+      setFullname('')
+      return
+    }
+    var lowerCaseName = name.replaceAll('  ', ' ').toLowerCase();
+    var words = lowerCaseName.split(' ');
+    for (var i = 0; i < words.length; i++) {
+      const fisrt = words[i].charAt(0).toUpperCase()
+      var last = words[i].slice(1);
+      if (last[0] && last[0].toUpperCase() === fisrt) last = last.slice(1);
+      words[i] = fisrt + last
+    }
+    var capitalizedFullName = words.join(' ');
+
+    setFullname(capitalizedFullName)
+  }
+
+  const removeSpace = (index) => {
+    switch (String(index)) {
+      case '0':
+        setFullname(String(fullname).trim())
+        break
+      case '1':
+        setEmail(String(email).trim())
+        break
+      case '2':
+        setPassword(String(password).trim())
+        break
+      case '3':
+        setConfirmPass(String(confirmPass).trim())
+        break
+      default: break
+    }
+
+  }
   return (
+    <View style={{ flex: 1 }}>
       <ScrollView style={styles.safeArea}>
-      <View style={styles.view}>
-        <TouchableOpacity
-          style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full mt-5`}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons name="arrow-back" style={tailwind`self-center`} size={20} color="black" />
-        </TouchableOpacity>
-
-        <View style={{ marginVertical: 22 }}>
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              marginVertical: 12,
-              color: 'black',
-            }}>
-            Đăng ký
-          </Text>
-          <Text style={{ color: 'grey' }}>
-            Đăng ký tài khoản để bắt đầu
-          </Text>
-        </View>
-
-        <View>
-          <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Họ và tên</Text>
-          <View style={styles.viewInput}>
-            <Ionicons name='person-outline' size={15} />
-            <TextInput
-              placeholder="Họ và tên"
-              onChangeText={(text) => {
-                setErrorFullname(isValidUsername(text) ? '' : 'Full name không đúng định dạng');
-                setFullname(text);
-              }}
-              placeholderTextColor={'black'}
-              style={{ width: '100%', marginLeft: 10 }}
-            />
-          </View>
-          <Text style={{ color: 'red', margin: 10 }}>{errorFullname}</Text>
-        </View>
-
-        <View>
-          <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Email hoặc số điện thoại</Text>
-          <View style={styles.viewInput}>
-            <Image source={require('../../img/mail.png')} style={{ height: 20, width: 20 }} />
-            <TextInput
-              placeholder="Email hoặc số điện thoại "
-              onChangeText={(text) => {
-                setErrorEmail(isValidEmail(text) ? '' : 'Email hoặc số điện thoại không hợp lệ');
-                setEmail(text);
-              }}
-              placeholderTextColor={'black'}
-              style={{ width: '100%', marginLeft: 10 }}
-            />
-          </View>
-          <Text style={{ color: 'red', margin: 10 }}>{errorEmail}</Text>
-        </View>
-
-        <View>
-          <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Mật khẩu</Text>
-          <View style={styles.viewInput}>
-            <Image source={require('../../img/password.png')} style={{ height: 20, width: 20 }} />
-            <TextInput
-              placeholder="Mật khẩu"
-              onChangeText={(text) => {
-                setPassword(text);
-                setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
-              }}
-              placeholderTextColor={'black'}
-              style={{ width: '100%', marginLeft: 10 }}
-              secureTextEntry={!isPasswordShow}
-            />
-            <TouchableOpacity
-              onPress={() => setisPasswordShow(!isPasswordShow)}
-              style={{
-                position: 'absolute',
-                right: 12,
-              }}
-
-            >
-              {
-                isPasswordShow != true ? (
-                  <Ionicons name="eye-off" size={24} color={'black'} />
-                ) : (
-                  <Ionicons name="eye" size={24} color={'black'} />
-                )
-              }
-            </TouchableOpacity>
-          </View>
-          <Text style={{ color: 'red', margin: 10 }}>{errorPassword}</Text>
-        </View>
-
-        <View>
-          <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Xác nhận mật khẩu</Text>
-          <View style={styles.viewInput}>
-            <Image source={require('../../img/password.png')} style={{ height: 20, width: 20 }} />
-            <TextInput
-              placeholder="Xác nhận mật khẩu"
-              onChangeText={(text) => {
-                setConfirmPass(text);
-                setErrorConfim(isConfirm(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
-              }}
-              placeholderTextColor={'black'}
-              style={{ width: '100%', marginLeft: 10 }}
-              secureTextEntry={!isRepasswordShow}
-            />
-            <TouchableOpacity
-              onPress={() => setisRepasswordShow(!isRepasswordShow)}
-              style={{
-                position: 'absolute',
-                right: 12,
-              }}
-
-            >
-              {
-                isRepasswordShow != true ? (
-                  <Ionicons name="eye-off" size={24} color={'black'} />
-                ) : (
-                  <Ionicons name="eye" size={24} color={'black'} />
-                )
-              }
-            </TouchableOpacity>
-          </View>
-          <Text style={{ color: 'red', margin: 10 }}>{errorConfim}</Text>
-        </View>
-
-        <TouchableOpacity
-        disabled={!isValidOk()}
-          onPress={() => {
-            handleSignUp()
-          }}
-          style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
-            ĐĂNG KÝ
-          </Text>
-        </TouchableOpacity>
-        <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
-        <View style={styles.view3}></View>
-        <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
-
-          <Text>Bạn đã có tài khoản? </Text>
+        <View style={styles.view}>
+          <StatusBar barStyle="light-content" backgroundColor="white" />
           <TouchableOpacity
+            style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full mt-5`}
             onPress={() => {
-              navigation.navigate('Login')
+              if (navigation.canGoBack()) {
+                navigation.goBack();
+              } else {
+                navigation.navigate('Login')
+              }
             }}
           >
-            <Text style={{ marginLeft: 2, color: '#336BFA', fontWeight: 'bold' }}>
-              Đăng nhập
+            <Ionicons name="arrow-back" style={tailwind`self-center`} size={20} color="black" />
+          </TouchableOpacity>
+
+          <View style={{ marginVertical: 22 }}>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: 'bold',
+                marginVertical: 12,
+                color: 'black',
+              }}>
+              Đăng ký
+            </Text>
+            <Text style={{ color: 'grey' }}>
+              Đăng ký tài khoản để bắt đầu
+            </Text>
+          </View>
+
+          <View>
+            <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Họ và tên</Text>
+            <View style={styles.viewInput}>
+              <Ionicons name='person-outline' size={15} />
+              <TextInput
+                placeholder="Họ và tên"
+                onChangeText={(text) => {
+                  setErrorFullname(isValidUsername(text) ? '' : 'Full name không đúng định dạng');
+                  convertFullname(text)
+                }}
+                onEndEditing={() => {
+                  removeSpace(0)
+                }}
+                value={fullname}
+                style={{ width: '100%', marginLeft: 10, marginStart: 10 }}
+              />
+            </View>
+            <Text style={{ color: 'red', margin: 10 }}>{errorFullname}</Text>
+          </View>
+
+          <View>
+            <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Email hoặc số điện thoại</Text>
+            <View style={styles.viewInput}>
+              <Image source={require('../../img/mail.png')} style={{ height: 20, width: 20 }} />
+              <TextInput
+                placeholder="Email hoặc số điện thoại "
+                onChangeText={(text) => {
+                  setErrorEmail(isValidEmail(text) ? '' : 'Email hoặc số điện thoại không hợp lệ');
+                  setEmail(String(text).replaceAll(' ',''));
+                }}
+                value={email}
+                onEndEditing={() => {
+                  removeSpace(1)
+                }}
+                style={{ width: '100%', marginLeft: 10 }}
+              />
+            </View>
+            <Text style={{ color: 'red', margin: 10 }}>{errorEmail}</Text>
+          </View>
+
+          <View>
+            <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Mật khẩu</Text>
+            <View style={styles.viewInput}>
+              <Image source={require('../../img/password.png')} style={{ height: 20, width: 20 }} />
+              <TextInput
+                placeholder="Mật khẩu"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(String(text).replaceAll(' ',''));
+                  setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
+                  setErrorConfim(String(text).trim() === String(confirmPass).trim() ? '' : 'Mật khẩu không khớp')
+                }}
+                onEndEditing={() => {
+                  removeSpace(2)
+                }}
+                style={{ width: '100%', marginLeft: 10 }}
+                secureTextEntry={!isPasswordShow}
+              />
+              <TouchableOpacity
+                onPress={() => setisPasswordShow(!isPasswordShow)}
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                }}
+
+              >
+                {
+                  isPasswordShow != true ? (
+                    <Ionicons name="eye-off" size={24} color={'black'} />
+                  ) : (
+                    <Ionicons name="eye" size={24} color={'black'} />
+                  )
+                }
+              </TouchableOpacity>
+            </View>
+            <Text style={{ color: 'red', margin: 10 }}>{errorPassword}</Text>
+          </View>
+
+          <View>
+            <Text style={{ marginBottom: 5, fontWeight: 'bold', fontSize: 15 }}>Xác nhận mật khẩu</Text>
+            <View style={styles.viewInput}>
+              <Image source={require('../../img/password.png')} style={{ height: 20, width: 20 }} />
+              <TextInput
+                placeholder="Xác nhận mật khẩu"
+                value={confirmPass}
+                onChangeText={(text) => {
+                  setConfirmPass(String(text).replaceAll(' ',''));
+                  setErrorConfim(isConfirm(text) ? (String(password).trim() === String(text).trim()) ? '' : 'Mật khẩu không khớp' : 'Mật khẩu lớn hơn 6 ký tự');
+                }}
+                onEndEditing={() => {
+                  removeSpace(3)
+                }}
+                style={{ width: '100%', marginLeft: 10 }}
+                secureTextEntry={!isRepasswordShow}
+              />
+              <TouchableOpacity
+                onPress={() => setisRepasswordShow(!isRepasswordShow)}
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                }}
+
+              >
+                {
+                  isRepasswordShow != true ? (
+                    <Ionicons name="eye-off" size={24} color={'black'} />
+                  ) : (
+                    <Ionicons name="eye" size={24} color={'black'} />
+                  )
+                }
+              </TouchableOpacity>
+            </View>
+            <Text style={{ color: 'red', margin: 10 }}>{errorConfim}</Text>
+          </View>
+
+          <TouchableOpacity
+            disabled={!isValidOk()}
+            onPress={() => {
+              handleSignUp()
+            }}
+            style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
+              ĐĂNG KÝ
             </Text>
           </TouchableOpacity>
+          <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
+          <View style={styles.view3}></View>
+          <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
+
+            <Text>Bạn đã có tài khoản? </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Login')
+              }}
+            >
+              <Text style={{ marginLeft: 2, color: '#336BFA', fontWeight: 'bold' }}>
+                Đăng nhập
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      {loading && <LockLoading />}
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -277,7 +331,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '50%',
     marginTop: '5%',
-    
+
   },
 });
 

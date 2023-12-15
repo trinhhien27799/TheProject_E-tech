@@ -1,4 +1,8 @@
 
-export const API_USER_URL = 'http://192.168.0.104:3000';
+export const API_USER_URL = '';
+
 
 export const API_BASE_URL = API_USER_URL
+
+/// SỬA IP Ở FILE apiService.js 
+// KHÔNG XÓa FILE NÀY TRÁNH XUNG ĐỘT KHI ĐẨY CODE

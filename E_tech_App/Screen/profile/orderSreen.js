@@ -2,6 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, View, Text, TouchableOpacity } from "react-native";
 import { getBillByStatus } from "../../CallApi/billApi";
+import { getUser } from "../../session";
+import { useRequireLogin } from "../../utils/alert";
 
 
 export default OrderScreen = () => {
@@ -34,7 +36,13 @@ export default OrderScreen = () => {
     return (
         <View>
             <TouchableOpacity
-                onPress={() => hanldClick('get-all')}
+                onPress={() => {
+                    if (getUser() == null) {
+                        useRequireLogin(navigation)
+                        return
+                    }
+                    hanldClick('get-all')
+                }}
                 style={{
                     marginTop: '5%', flexDirection: 'row', justifyContent: 'space-between',
                     paddingHorizontal: 20, borderBottomWidth: 0.5,
@@ -52,17 +60,39 @@ export default OrderScreen = () => {
             </TouchableOpacity>
 
             <View style={styles.containerChild}>
-                <TouchableOpacity onPress={() => hanldClick('0')} style={{ flexDirection: 'column' }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (getUser() == null) {
+                            useRequireLogin(navigation)
+                            return
+                        }
+                        hanldClick('0')
+                    }}
+                    style={{ flexDirection: 'column' }}>
                     <Image style={{ height: 20, width: 20, alignSelf: "center", marginBottom: "5%", marginRight: '10%', }} source={require('../../img/list.png')} />
                     <Text>Chờ xác nhận</Text>
                     {countZero > 0 && <Text style={styles.circle}>{countZero}</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => hanldClick('1')} style={{ flexDirection: 'column' }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (getUser() == null) {
+                            useRequireLogin(navigation)
+                            return
+                        }
+                        hanldClick('1')
+                    }}
+                    style={{ flexDirection: 'column' }}>
                     <Image style={{ height: 20, width: 20, alignSelf: "center", marginBottom: "5%", marginRight: '10%', }} source={require('../../img/truck.png')} />
                     <Text>Đang giao hàng</Text>
                     {countOne > 0 && <Text style={styles.circle}>{countOne}</Text>}
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => hanldClick('2')} style={{ flexDirection: 'column' }}>
+                <TouchableOpacity onPress={() => {
+                    if (getUser() == null) {
+                        useRequireLogin(navigation)
+                        return
+                    }
+                    hanldClick('2')
+                }} style={{ flexDirection: 'column' }}>
                     <Image style={{ height: 20, width: 20, alignSelf: "center", marginBottom: "5%", marginRight: '10%', }} source={require('../../img/box.png')} />
                     <Text>Đã giao hàng</Text>
                 </TouchableOpacity>

@@ -142,6 +142,7 @@ const NotificationScreen = () => {
                     source={require('../assets/notification.json')}
                   />
                   <TouchableOpacity
+                    disabled={getUser() != null}
                     onPress={() => { navigation.navigate('Login') }}
                   >
                     <Text style={{ marginTop: 10, padding: 10 }}>{getUser() ? 'Không có thông báo nào' : 'Đăng nhập để có thể nhận thông báo'}</Text>

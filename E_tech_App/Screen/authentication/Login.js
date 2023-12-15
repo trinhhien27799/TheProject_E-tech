@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TouchableOpacity, StyleSheet, Text, TextInput, Image, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, TextInput, Image, View, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
@@ -8,35 +8,36 @@ import { setAuthToken } from "../../apiService";
 import { updateDeviceToken } from "../../CallApi/tokenDeviceApi";
 import { setAddress, setUser } from "../../session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LockLoading from "./lockLoading";
 
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [errorEmail, setErrorEmail] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const isValidOk = () => !!email.trim() && !!password.trim() && password.length >= 6
 
     const handleLogin = async () => {
         try {
-            const username = email;
-            const response = await loginUser(username, password, navigation);
+            setLoading(true)
+            const response = await loginUser(email, password);
+            setLoading(false)
             if (response.code === 200) {
                 setAuthToken(response.token)
                 setUser(response.user)
                 setAddress(response.user?.address ?? null)
-                navigation.replace('ButtonNavigation');
-                alert('Đăng nhập thành công')
                 await updateDeviceToken()
                 await AsyncStorage.setItem("token", response.token)
+                navigation.replace('ButtonNavigation');
             } else {
-                alert(response.message)
+                Alert.alert('Thông báo', response.message)
             }
         } catch (error) {
+            setLoading(false)
             console.error('Error:', error);
-
         }
     }
 
@@ -58,9 +59,9 @@ const Login = ({ navigation }) => {
                                 placeholder="Email hoặc số điện thoại "
                                 onChangeText={(text) => {
                                     setErrorEmail(isValidEmail(text) ? '' : 'Email hoặc số điện thoại không hợp lệ');
-                                    setEmail(text);
+                                    setEmail(String(text).replaceAll(' ', ''));
                                 }}
-                                placeholderTextColor={'black'}
+                                value={email}
                                 style={{ width: '100%', marginLeft: 10 }}
                             />
                         </View>
@@ -73,10 +74,10 @@ const Login = ({ navigation }) => {
                             <TextInput
                                 placeholder="Mật khẩu"
                                 onChangeText={(text) => {
-                                    setPassword(text);
+                                    setPassword(String(text).replaceAll(' ', ''));
                                     setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự!');
                                 }}
-                                placeholderTextColor={'black'}
+                                value={password}
                                 style={{ width: '100%', marginLeft: 10 }}
                                 secureTextEntry={!isPasswordShow}
                             />
@@ -119,7 +120,7 @@ const Login = ({ navigation }) => {
                     onPress={() => {
                         navigation.replace('ButtonNavigation')
                     }}
-                    style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 55,marginBottom:15 }}>
+                    style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 55, marginBottom: 15 }}>
                     <Text>Tiếp tục mà không cần tài khoản?</Text>
                 </TouchableOpacity>
                 <View style={styles.view3}></View>
@@ -137,6 +138,7 @@ const Login = ({ navigation }) => {
                 </View>
 
             </View>
+            {loading && <LockLoading />}
         </SafeAreaView>
 
     )
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#336BFA',
         marginLeft: 'auto',
         marginRight: 'auto',
-      
+
     },
     button: {
         backgroundColor: '',
