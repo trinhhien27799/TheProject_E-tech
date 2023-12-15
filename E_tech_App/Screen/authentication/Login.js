@@ -11,7 +11,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
     const [isPasswordShow, setisPasswordShow] = useState(false);
-    const [isChecked, setIsChecker] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -102,7 +101,7 @@ const Login = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('Quenmk1')
+                            navigation.navigate('ForgotEmail')
                         }}
                         style={{ alignSelf: 'flex-end' }}>
                         <Text style={styles.textForgot}>Quên mật khẩu?</Text>

@@ -12,10 +12,36 @@ const Profile = () => {
     const navigation = useNavigation()
     const [user, setUser] = useState(getUser())
     useFocusEffect(
-        React.useCallback(() => {
-            setUser(getUser())
-        }, [])
-    )
+        React.useCallback(()=>{
+            const newUser = getUser();
+            setUser(newUser);
+        },[])
+    );
+    const clearToken = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            setUser(null);
+            console.log('Token đã được xóa thành công.');
+        } catch (error) {
+            console.error('Lỗi khi xóa token:', error);
+        }
+    };
+    const Logout = ()=>{
+        Alert.alert('Đăng xuất','Bạn có muốn đăng xuất !!!',[
+            {
+                text:'Hủy',
+                onPress: () => {},
+            },
+            {
+                text: 'OK',
+                 onPress: () => {
+                    clearToken();
+                    navigation.replace('ButtonNavigation');
+                }
+            },
+        ])
+    }
+
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>

@@ -6,7 +6,6 @@ var user = null
 const setUser = (newUser) => {
   user = newUser
 }
-
 const getUser = () => {
   return user
 }
@@ -96,7 +95,24 @@ const setPayment = (object) => {
 const getPayment = () => {
   return payment
 }
+var check = false;
 
+const setCheck = (newCheck)=>{
+  check = newCheck;
+}
+const getCheck = () => {
+  return check;
+}
+var listChats = [];
+const setChat = (newChats)=>{
+  listChats.push(newChats);
+}
+const getChats = () => {
+  return listChats;
+}
+const cleanChats = ()=>{
+  listChats = [];
+}
 var deviceToken = null
 
 const setDeviceToken = (token) => {
@@ -118,6 +134,8 @@ export {
   getShipping, setShipping,
   setVoucher, getVoucher,
   setPayment, getPayment,
+  setCheck,getCheck,
+  setChat,getChats,cleanChats
   setDeviceToken,getDeviceToken
 }
 
