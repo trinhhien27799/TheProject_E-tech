@@ -19,6 +19,7 @@ const Profile = () => {
     const clearToken = async () => {
         try {
             await AsyncStorage.removeItem('token');
+            setUser(null);
             console.log('Token đã được xóa thành công.');
         } catch (error) {
             console.error('Lỗi khi xóa token:', error);
@@ -34,7 +35,7 @@ const Profile = () => {
                 text: 'OK',
                  onPress: () => {
                     clearToken();
-                    navigation.replace('Login');
+                    navigation.replace('ButtonNavigation');
                 }
             },
         ])

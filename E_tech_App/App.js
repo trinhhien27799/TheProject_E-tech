@@ -10,7 +10,7 @@ import editProfile from './Screen/profile/editProfile'
 
 import SearchScreen from './Screen/search/searchScreen'
 
-import Quenmk1 from './Screen/authentication/forgotEmail'
+import ForgotEmail from './Screen/authentication/forgotEmail'
 import ConfirmOTP from './Screen/authentication/confirmOTP'
 import Taomk from './Screen/authentication/Taomkmoi'
 import Taomk2 from './Screen/authentication/Taomkmoi2'
@@ -58,7 +58,7 @@ import { getUser, setDeviceToken } from './session'
 
 import FavoriteScreen from './Screen/favorite/FavoriteScreen'
 import NewAddress from './Screen/address/NewAddress'
-import ChatsScreen from './Screen/chats/ChatsScreen'
+import ChatsScreen from './Screen/chats/chatsScreen'
 import MoMoPaymentScreen from './Screen/pay/Momo'
 
 
@@ -163,7 +163,7 @@ export default App = () => {
           <Stack.Screen name='ListPhone' component={ListPhone} options={{ headerShown: false }} />
           <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
           <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
-          <Stack.Screen name='Quenmk1' component={Quenmk1} options={{ headerShown: false }} />
+          <Stack.Screen name='ForgotEmail' component={ForgotEmail} options={{ headerShown: false }} />
           <Stack.Screen name='ConfirmOTP' component={ConfirmOTP} options={{ headerShown: false }} />
           <Stack.Screen name='Taomk' component={Taomk} options={{ headerShown: false }} />
           <Stack.Screen name='Taomk2' component={Taomk2} options={{ headerShown: false }} />

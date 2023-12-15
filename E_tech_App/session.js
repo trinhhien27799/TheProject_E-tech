@@ -112,7 +112,16 @@ const setCheck = (newCheck)=>{
 const getCheck = () => {
   return check;
 }
-
+var listChats = [];
+const setChat = (newChats)=>{
+  listChats.push(newChats);
+}
+const getChats = () => {
+  return listChats;
+}
+const cleanChats = ()=>{
+  listChats = [];
+}
 
 export {
   setUser, getUser,
@@ -124,5 +133,6 @@ export {
   setVoucher, getVoucher,
   setPayment, getPayment,
   setCheck,getCheck,
+  setChat,getChats,cleanChats
 }
 

@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react"
-import { getItemProduct } from "../../CallApi/productApi";
+import { getAllProduct } from "../../CallApi/productApi";
+import { getAllVoucher } from "../../CallApi/voucherApi";
 
-const useItemProduct = (productId)=>{
-    const [loading,setLoading] = useState(true);
+const ItemProduct = ()=>{
+    const [isLoading,setLoading] = useState(true);
     const [dataItem,setDataItem] = useState([]);
+    const [dataVoucher,setDataVoucher] = useState([]);
     const getData = async()=>{
         try {
             setLoading(true);
-            const response = await getItemProduct(productId);
+            const response = await getAllProduct();
+            const rsVoucher = await getAllVoucher();
+            setDataVoucher(rsVoucher);
             setDataItem(response);
         } catch (error) {
             console.log(error);
@@ -18,6 +22,7 @@ const useItemProduct = (productId)=>{
     useEffect(()=>{
         getData();
     },[]);
-    return {loading,dataItem};
+    return {isLoading,dataItem,dataVoucher};
 }
-export default useItemProduct;
+
+export default ItemProduct;
