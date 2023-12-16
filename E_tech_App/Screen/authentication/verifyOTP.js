@@ -1,112 +1,117 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, TextInput, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, Alert } from "react-native";
 import Dialog from "react-native-dialog";
-import { verifyOTP, registerUser,insertOtp } from '../../CallApi/authenApi';
-import { getCheck, setCheck } from "../../session";
+import { verifyOTP, insertOtp } from '../../CallApi/authenApi';
 
-const VerifyDialog = ({ onCancle, email, password, fullname, navigation, remainingTime, setRemainingTime,checkValue,setCheckValue }) => {
-    const check = getCheck();
-    const firtInput = useRef();
-    const secondInput = useRef();
-    const thirdInput = useRef();
-    const fourInput = useRef();
-    const fiveInput = useRef();
-    const [checkEdit,setCheckEdit] = useState(true);
-    const sixInput = useRef();
+
+const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,setLoading }) => {
+
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-    const handleOtpChange = (index, value) => {
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
-    };
-    const resetTextInputValues = () => {
-        firtInput.current.clear();
-        secondInput.current.clear();
-        thirdInput.current.clear();
-        fourInput.current.clear();
-        fiveInput.current.clear();
-        sixInput.current.clear();
-        firtInput.current.focus();
-        setOtp(["", "", "", "", "", ""]);
-    };
-    const handleConfirm = async ({ email, password, fullname, navigation }) => {
-        const otpString = otp.join("");
-        let verificationResult;
-        let registrationResult;
-    
+
+    const [allow, setAllow] = useState(false)
+    const [error,setError] = useState(null)
+
+    const handleConfirm = async () => {
         try {
-            verificationResult = await verifyOTP(email, otpString);
-            registrationResult = await registerUser(fullname, email, password, navigation);
-            if(registrationResult.code ==200){
-                alert(registrationResult.message);
-                navigation.navigate('Login');
+            setLoading(true)
+            setVisble(false)
+            const response = await verifyOTP(email, otp.join(''));
+            setVisble(true)
+            switch (response.code) {
+                case 200: {
+                    setVisble(false)
+                    setSatus(true)
+                    setError(null)
+                    break
+                }
+                case 400: {
+                    setLoading(false)
+                    setError('Mã otp đã hết hạn')
+                    break
+                }
+                case 404: {
+                    setLoading(false)
+                    setError('Mã otp không chính xác')
+                    break
+                }
+                case 500: {
+                    setLoading(false)
+                    setError( 'Đã xảy ra lỗi trong quá trình xác minh mã otp')
+                    break
+                }
+
             }
-                alert(registrationResult.message);
-            setCheck(false);
         } catch (error) {
-            console.error("Có lỗi xảy ra:", error);
-    
-            if (verificationResult && verificationResult.code == 400) {
-                alert("Mã xác minh hết hạn");
-            } else if (registrationResult && registrationResult.code == 500) {
-                alert("Email đã tồn tại");
-            } else {
-                alert("Có lỗi xảy ra trong quá trình xử lý.");
-            }
+            setLoading(false)
+            console.error("handleConfirm", error);
+            setError( 'Đã xảy ra lỗi trong quá trình xác minh mã otp')
         }
-        console.log("Xác minh kết quả:", verificationResult);
-        console.log("Đăng ký kết quả:", registrationResult);
     };
+
+
 
 
 
     return (
-        <Dialog.Container visible={check}>
+        <Dialog.Container visible={visible}>
 
             <Dialog.Title>Xác nhận email</Dialog.Title>
             <Dialog.Description>
                 Vui lòng điền mã xác thực
             </Dialog.Description>
             <BoxVerity
-                firtInput={firtInput}
-                secondInput={secondInput}
-                thirdInput={thirdInput}
-                fourInput={fourInput}
-                fiveInput={fiveInput}
-                sixInput={sixInput}
                 otp={otp}
-                onOtpChange={handleOtpChange}
-                checkEdit={checkEdit}
-                checkValue={checkValue}
+                setOtp={setOtp}
+                setAllow={setAllow}
             />
-            {!checkValue ? (
+            {error && <Text style={{color:'red'}}>{error}</Text>}
+            {countDown == 0 ? (
                 <TouchableOpacity
-                    onPress={() => {
-                        setRemainingTime(120),
-                            insertOtp(email)
-                            setCheckEdit(true);
-                            setCheckValue(!checkValue);
-                            resetTextInputValues();
-                    }
-                    }
+                    onPress={sendOTP}
                 >
                     <Text>Gửi lại mã xác nhận</Text>
                 </TouchableOpacity>
             ) : (
-                <Text style={{ color: 'red' }}>{remainingTime} giây</Text>
+                <Text style={{ color: 'red' }}>{countDown} giây</Text>
             )}
-            <Dialog.Button label="Cancle" onPress={onCancle} />
-            <Dialog.Button 
-            label="Confirm" 
-            onPress={() => {
-                handleConfirm({ email: email, fullname: fullname, password: password, navigation: navigation }),
-                setCheckEdit(false)
-            }} 
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                    onPress={() => { setVisble(false) }} >
+                    <Text style={{ color: 'grey' }}>Quay lại</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    disabled={!allow}
+                    style={{ marginStart: 20 }}
+                    onPress={handleConfirm}>
+                    <Text style={{ color: allow ? 'black' : 'grey' }}>Xác nhận</Text>
+                </TouchableOpacity>
+
+
+
+            </View>
         </Dialog.Container>
     );
 }
-const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, sixInput, onOtpChange,checkEdit }) => {
+
+
+const BoxVerity = ({ otp, setOtp, setAllow }) => {
+    const firtInput = useRef();
+    const secondInput = useRef();
+    const thirdInput = useRef();
+    const fourInput = useRef();
+    const fiveInput = useRef();
+    const sixInput = useRef();
+
+
+    const setText = (pos, text) => {
+        const array = otp
+        array[pos - 1] = text
+        setOtp(array)
+        setAllow(pos == 6)
+    }
+
+
+
     return (
         <View style={styles.boxContainer}>
             <View style={styles.otpBox}>
@@ -114,15 +119,29 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
                     style={styles.otpText}
                     keyboardType="number-pad"
                     maxLength={1}
-                    editable={checkEdit}
-                    onChangeText={
-                        (text) => {
-                            text && secondInput.current.focus();
-                            onOtpChange(0, text);
-                            
+                    onChangeText={(text) => {
+                        setText(1, text)
+                        if (text.length > 0) {
+                            secondInput.current.focus()
                         }
-                    }
+                    }}
                     ref={firtInput}
+                />
+            </View>
+            <View style={styles.otpBox}>
+                <TextInput
+                    style={styles.otpText}
+                    keyboardType="number-pad"
+                    maxLength={1}
+                    ref={secondInput}
+                    onChangeText={(text) => {
+                        setText(2, text)
+                        if (text.length == 0) {
+                            firtInput.current.focus()
+                            return
+                        }
+                        thirdInput.current.focus()
+                    }}
 
                 />
             </View>
@@ -131,24 +150,14 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
                     style={styles.otpText}
                     keyboardType="number-pad"
                     maxLength={1}
-                    editable={checkEdit}
-                    ref={secondInput}
-                    onChangeText={(text) => {
-                        text && thirdInput.current.focus();
-                        onOtpChange(1, text);
-                    }}
-                />
-            </View>
-            <View style={styles.otpBox}>
-                <TextInput
-                    style={styles.otpText}
-                    keyboardType="number-pad"
-                    editable={checkEdit}
-                    maxLength={1}
                     ref={thirdInput}
                     onChangeText={(text) => {
-                        text && fourInput.current.focus();
-                        onOtpChange(2, text);
+                        setText(3, text)
+                        if (text.length == 0) {
+                            secondInput.current.focus()
+                            return
+                        }
+                        fourInput.current.focus()
                     }}
                 />
             </View>
@@ -156,12 +165,15 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
                 <TextInput
                     style={styles.otpText}
                     keyboardType="number-pad"
-                    editable={checkEdit}
                     maxLength={1}
                     ref={fourInput}
                     onChangeText={(text) => {
-                        text && fiveInput.current.focus();
-                        onOtpChange(3, text);
+                        setText(4, text)
+                        if (text.length == 0) {
+                            thirdInput.current.focus()
+                            return
+                        }
+                        fiveInput.current.focus()
                     }}
                 />
             </View>
@@ -169,12 +181,15 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
                 <TextInput
                     style={styles.otpText}
                     keyboardType="number-pad"
-                    editable={checkEdit}
                     maxLength={1}
                     ref={fiveInput}
                     onChangeText={(text) => {
-                        text && sixInput.current.focus();
-                        onOtpChange(4, text);
+                        setText(5, text)
+                        if (text.length == 0) {
+                            fourInput.current.focus()
+                            return
+                        }
+                        sixInput.current.focus()
                     }}
                 />
             </View>
@@ -182,17 +197,22 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
                 <TextInput
                     style={styles.otpText}
                     keyboardType="number-pad"
-                    editable={checkEdit}
                     maxLength={1}
                     ref={sixInput}
                     onChangeText={(text) => {
-                        onOtpChange(5, text);
+                        setText(6, text)
+                        if (text.length == 0) {
+                            fiveInput.current.focus()
+                            return
+                        }
                     }}
                 />
             </View>
         </View>
     );
 }
+
+
 export default VerifyDialog;
 
 const styles = StyleSheet.create({

@@ -8,14 +8,12 @@ import {
   Image, StatusBar,
   ScrollView,
   Alert,
-  Dimensions,
 } from 'react-native';
 import { isValidEmail, isPassWord, isValidUsername, isConfirm } from '../../Component/validation';
 import { Ionicons } from "@expo/vector-icons";
-import { insertOtp } from '../../CallApi/authenApi';
+import { insertOtp, registerUser } from '../../CallApi/authenApi';
 import VerifyDialog from './verifyOTP';
 import tailwind from 'twrnc';
-import { setCheck } from '../../session';
 import { useNavigation } from '@react-navigation/native';
 import LockLoading from './lockLoading';
 
@@ -29,52 +27,84 @@ const SignUp = () => {
   const [errorConfim, setErrorConfim] = useState('');
   const [isPasswordShow, setisPasswordShow] = useState(false);
   const [isRepasswordShow, setisRepasswordShow] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(120);
   const [confirmPass, setConfirmPass] = useState('');
-  const [checkValue, setCheckValue] = useState(false);
   const navigation = useNavigation()
+
+  const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
+  const [countDown, setCountDown] = useState(0)
+  const [visible, setVisible] = useState(false)
+  const [status, setSatus] = useState(false)
   const [loading, setLoading] = useState(false)
 
 
-  const isValidOk = () => !!email.trim() && !!password.trim() && !!fullname.trim() && !!confirmPass.trim() && isValidUsername(fullname) == true && isValidEmail(email) == true;
-
-  const [isSignUpPressed, setIsSignUpPressed] = useState(false);
-
-  useEffect(() => {
-    if (isSignUpPressed) {
-      const interval = setInterval(() => {
-        if (remainingTime > 0) {
-          setRemainingTime(remainingTime - 1);
-        } else {
-          clearInterval(interval);
-          setCheckValue(!checkValue)
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-
-  }, [remainingTime, isSignUpPressed]);
-  const handleSignUp = async () => {
+  const sendOTP = async () => {
     try {
+      Keyboard.dismiss()
       setLoading(true)
-      const insert = await insertOtp(email, false);
+      setCountDown(30)
+      const response = await insertOtp(email, false)
       setLoading(false)
-      if (insert.code === 200) {
-        setShowVerifyDialog(true);
-        setIsSignUpPressed(true);
+      if (response.code == 200) {
+        setVisible(true)
       } else {
-        Alert.alert('Thông báo', insert.message);
+        Alert.alert('Thông báo', 'Đã xảy ra lỗi hãy thử lại sau')
       }
     } catch (error) {
+      console.log('sendOTP ', error)
       setLoading(false)
-      console.error('Error:', error);
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi hãy thử lại sau')
     }
   }
-  const handleDelete = () => {
-    setCheck(false);
-    setRemainingTime(120);
-    setIsSignUpPressed(false);
-  };
+
+
+  const register = async () => {
+    try {
+      const response = await registerUser(fullname, email, password)
+      setSatus(false)
+      setLoading(false)
+      if (response.code == 200) {
+        Alert.alert('Thông báo', 'Tạo tài khoản thành công', [{
+          text: 'Ở lại',
+          style: 'cancel'
+        }, {
+          text: 'Đăng nhập ngay',
+          onPress: () => {
+            if (navigation.canGoBack()) {
+              navigation.goBack()
+            } else {
+              navigation.navigate('Login')
+            }
+          }
+        }])
+      } else {
+        Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trinh đăng ký')
+      }
+    } catch (error) {
+      console.log('register', error)
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trinh đăng ký')
+    } finally {
+      setFullname('')
+      setEmail('')
+      setPassword('')
+      setConfirmPass('')
+      setCountDown(0)
+    }
+  }
+
+
+  useEffect(() => {
+    if (status) register()
+  }, [status])
+
+  useEffect(() => {
+    if (countDown > 0) {
+      setTimeout(() => {
+        var time = countDown
+        setCountDown(time - 1)
+      }, 1000)
+    }
+  }, [countDown])
+
 
 
   const convertFullname = (text) => {
@@ -175,7 +205,7 @@ const SignUp = () => {
                 placeholder="Email hoặc số điện thoại "
                 onChangeText={(text) => {
                   setErrorEmail(isValidEmail(text) ? '' : 'Email hoặc số điện thoại không hợp lệ');
-                  setEmail(String(text).replaceAll(' ',''));
+                  setEmail(String(text).replaceAll(' ', ''));
                 }}
                 value={email}
                 onEndEditing={() => {
@@ -195,7 +225,7 @@ const SignUp = () => {
                 placeholder="Mật khẩu"
                 value={password}
                 onChangeText={(text) => {
-                  setPassword(String(text).replaceAll(' ',''));
+                  setPassword(String(text).replaceAll(' ', ''));
                   setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
                   setErrorConfim(String(text).trim() === String(confirmPass).trim() ? '' : 'Mật khẩu không khớp')
                 }}
@@ -233,7 +263,7 @@ const SignUp = () => {
                 placeholder="Xác nhận mật khẩu"
                 value={confirmPass}
                 onChangeText={(text) => {
-                  setConfirmPass(String(text).replaceAll(' ',''));
+                  setConfirmPass(String(text).replaceAll(' ', ''));
                   setErrorConfim(isConfirm(text) ? (String(password).trim() === String(text).trim()) ? '' : 'Mật khẩu không khớp' : 'Mật khẩu lớn hơn 6 ký tự');
                 }}
                 onEndEditing={() => {
@@ -264,15 +294,13 @@ const SignUp = () => {
 
           <TouchableOpacity
             disabled={!isValidOk()}
-            onPress={() => {
-              handleSignUp()
-            }}
+            onPress={sendOTP}
             style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
               ĐĂNG KÝ
             </Text>
           </TouchableOpacity>
-          <VerifyDialog checkValue={checkValue} setCheckValue={setCheckValue} setRemainingTime={setRemainingTime} remainingTime={remainingTime} check={showVerifyDialog} onCancle={handleDelete} email={email} fullname={fullname} password={password} navigation={navigation} />
+
           <View style={styles.view3}></View>
           <View style={{ justifyContent: 'center', alignContent: 'center', flexDirection: 'row', marginTop: 10 }}>
 
@@ -289,6 +317,7 @@ const SignUp = () => {
           </View>
         </View>
       </ScrollView>
+      <VerifyDialog email={email} countDown={countDown} setVisble={setVisible} visible={visible} setSatus={setSatus} sendOTP={sendOTP} setLoading={setLoading} />
       {loading && <LockLoading />}
     </View>
   );

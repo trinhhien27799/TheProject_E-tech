@@ -1,9 +1,9 @@
 import api, { setAuthToken } from '../apiService'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export const registerUser = async (username, email, password, navigation) => {
+export const registerUser = async (fullname, email, password) => {
     try {
-        const response = await api.post('/user/create-account', { fullname: username, username: email, password: password })
+        const response = await api.post('/user/create-account', { fullname: fullname, username: email, password: password })
         return response.data
     } catch (error) {
         console.error('Lỗi yêu cầu mạng:', error)
@@ -49,8 +49,7 @@ export const autoLogin = async () => {
 export const verifyOTP = async (username, otp) => {
     try {
         const response = await api.post('/user/verify-otp', { username, otp })
-        const data = await response.json();
-        return data;
+        return response.data
     } catch (error) {
         throw error;
     }
