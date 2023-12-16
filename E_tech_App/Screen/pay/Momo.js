@@ -19,6 +19,28 @@ const MoMoPaymentScreen = () => {
     const [src, setSrc] = useState(require('../../assets/logo.json'))
     const [textStatus, setTextStatus] = useState('Đang tiến hành đặt hàng đặt hàng')
 
+
+    const appState = useRef(AppState.currentState);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (
+                appState.current.match(/inactive|background/) &&
+                nextAppState === 'active'
+            ) {
+                console.log('App has come to the foreground!');
+            }
+
+            appState.current = nextAppState;
+            if (appState.current == 'active') setStatus(3)
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
+
     useEffect(() => {
         try {
             create()
@@ -27,6 +49,10 @@ const MoMoPaymentScreen = () => {
             setStatus(-1)
         }
     }, [])
+
+
+
+
 
     useEffect(() => {
         if (status == 0) return

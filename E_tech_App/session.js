@@ -95,14 +95,7 @@ const setPayment = (object) => {
 const getPayment = () => {
   return payment
 }
-var check = false;
 
-const setCheck = (newCheck)=>{
-  check = newCheck;
-}
-const getCheck = () => {
-  return check;
-}
 var listChats = [];
 const setChat = (newChats)=>{
   listChats.push(newChats);
@@ -134,7 +127,6 @@ export {
   getShipping, setShipping,
   setVoucher, getVoucher,
   setPayment, getPayment,
-  setCheck,getCheck,
   setChat,getChats,cleanChats,
   setDeviceToken,getDeviceToken
 }

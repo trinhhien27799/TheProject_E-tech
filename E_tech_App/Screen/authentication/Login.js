@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TouchableOpacity, StyleSheet, Text, TextInput, Image, View, Alert } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, TextInput, Image, View, Alert, Keyboard } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { isValidEmail, isPassWord } from "../../Component/validation";
 import { loginUser } from '../../CallApi/authenApi';
@@ -22,6 +22,7 @@ const Login = ({ navigation }) => {
 
     const handleLogin = async () => {
         try {
+            Keyboard.dismiss()
             setLoading(true)
             const response = await loginUser(email, password);
             setLoading(false)
