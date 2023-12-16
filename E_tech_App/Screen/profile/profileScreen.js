@@ -107,15 +107,9 @@ const HeaderProfile = ({ navigation }) => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             const img = 'https://th.bing.com/th/id/R.ef29b9a065d7450a0a2a58aa89278ccc?rik=B3%2b8nQn%2bnxpA0Q&pid=ImgRaw&r=0'
-            if (!getUser()) {
-                setFullname('Đăng nhập ngay')
-                setAvatar(img)
-                setBackground(img)
-            } else {
-                setFullname(getUser().fullname ?? '')
-                setAvatar(getUser().avatar ?? img)
-                setBackground(getUser().background ?? img)
-            }
+            setFullname(getUser()?.fullname ?? 'Đăng nhập ngay')
+            setAvatar(getUser()?.avatar ?? img)
+            setBackground(getUser()?.background ?? img)
         })
         return unsubscribe
     }, [navigation])
@@ -126,7 +120,7 @@ const HeaderProfile = ({ navigation }) => {
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 1,
+                quality: 0.5,
             });
 
             if (!result.canceled) {
@@ -136,10 +130,19 @@ const HeaderProfile = ({ navigation }) => {
                     setBackground(result.assets[0].uri)
                 }
                 const response = await updateImage(result.assets[0].uri, type)
-                if (response.code == 200) { setUser(response) } else { Alert.alert('Đã xảy ra lỗi', response.message) }
+                if (response.code == 200) {
+                    setUser(response.user)
+                } else {
+                    setAvatar(getUser().avatar)
+                    setBackground(getUser().background)
+                    Alert.alert('Đã xảy ra lỗi', response.message)
+                }
             }
         } catch (error) {
             console.log(`update ${type}:`, error)
+            setAvatar(getUser().avatar)
+            setBackground(getUser().background)
+            Alert.alert('Đã xảy ra lỗi', 'Hãy thử lại sau')
         }
     }
 
