@@ -8,6 +8,7 @@ import {
   Image, StatusBar,
   ScrollView,
   Alert,
+  Keyboard,
 } from 'react-native';
 import { isValidEmail, isPassWord, isValidUsername, isConfirm } from '../../Component/validation';
 import { Ionicons } from "@expo/vector-icons";
