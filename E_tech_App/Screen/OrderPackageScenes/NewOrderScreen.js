@@ -6,12 +6,13 @@ import CheckPayScreenFix from './CheckPayScreenFix'
 import { Image } from 'react-native'
 import { getBillByStatus } from '../../CallApi/billApi'
 import LoadingWidget from '../../Component/loading'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
 const NewOrderScreen = () => {
     const route = useRoute()
-    const [value, setValue] = useState(route.params.getValueOrder)
+    const [value, setValue] = useState(route.params.getValueOrder ?? 'get-all')
     const [oldValue, setOldValue] = useState(route.params.getValueOrder)
     const navigation = useNavigation()
     const [data, setData] = useState([])
@@ -45,7 +46,11 @@ const NewOrderScreen = () => {
         try {
             setLoading(true)
             const response = await getBillByStatus(status)
-            if (response) setData(response)
+            if (response) {
+                setData(response)
+                if (status == 0) AsyncStorage.setItem('bill0', String(response.length))
+                if (status == 1) AsyncStorage.setItem('bill1', String(response.length))
+            }
         } catch (error) {
             console.log(error)
         } finally {
@@ -69,6 +74,15 @@ const NewOrderScreen = () => {
     }, [value])
 
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getData(value)
+        })
+
+        return unsubscribe
+    }, [navigation])
+
+
 
     const ButtonCard = ({ item }) => {
         return (
@@ -88,11 +102,11 @@ const NewOrderScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={tailwind `bg-white mb-3`}>
+            <View style={tailwind`bg-white mb-3`}>
                 <View style={styles.header}>
                     <TouchableOpacity
                         onPress={() => { navigation.goBack() }}
-                        
+
                     >
                         <Image source={require('../../img/arrow-left.png')}
                             style={{ width: 16, height: 16, marginEnd: 20 }}
@@ -134,19 +148,19 @@ export default NewOrderScreen
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center'
+        flex: 1,
+        alignItems: 'center'
     },
     header: {
-      width: Dimensions.get('window').width,
-      alignItems: 'center',
-      paddingVertical: 10,
-      flexDirection: 'row',
-      paddingHorizontal: 15,
-      paddingVertical: 20
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        paddingVertical: 10,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        paddingVertical: 20
     },
     textHeader: {
-      fontSize: 20,
-      fontWeight: 'bold',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
-  })
+})

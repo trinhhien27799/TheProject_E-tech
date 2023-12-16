@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import tailwind from 'twrnc'
 import { addCart } from '../../CallApi/cartApi'
-import { getListCart, pushListCart } from '../../session'
+import { pushListCart } from '../../session'
 import LoadingWidget from '../../Component/loading'
-import { getItemBill } from '../../CallApi/billApi'
-import { getDetailBill } from '../../Model/BillModel'
 
 const OrderStatusChangeButton = ({ item }) => {
     const navigation = useNavigation();
@@ -16,7 +14,6 @@ const OrderStatusChangeButton = ({ item }) => {
     const styleBuyAgain = 'self-end p-2 bg-blue-500 rounded-md ml-2';
     const [loading, setLoading] = useState(false);
 
-    const detailBill = getDetailBill(item._id)
 
     const AddCartArray = async (products) => {
         try {
@@ -25,7 +22,7 @@ const OrderStatusChangeButton = ({ item }) => {
                 const cart = await addCart(item)
                 pushListCart(cart)
             }))
-            navigation.navigate('ButtonNavigation', { screen: 'Cart' }) 
+            navigation.navigate('ButtonNavigation', { screen: 'Cart' })
         } catch (error) {
             console.log('OrderStatusChangeButton: ', error)
             alert("Đã xảy ra lỗi!")
@@ -37,7 +34,9 @@ const OrderStatusChangeButton = ({ item }) => {
         <View>
             <View style={tailwind`w-full flex-row justify-end`}>
                 {item.status != -1 &&
-                    <TouchableOpacity style={tailwind`${styleFeedback}`}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('ContactScreen')}
+                        style={tailwind`${styleFeedback}`}>
                         <Text style={tailwind`text-white font-bold`}>Phản Hồi</Text>
                     </TouchableOpacity>}
                 {(item.status == 2 || item.status == -1) &&
@@ -52,7 +51,7 @@ const OrderStatusChangeButton = ({ item }) => {
                         </TouchableOpacity>)}
                 {item.status == 0 &&
                     <TouchableOpacity
-                        onPress={() => {navigation.navigate('CancelOrderScreen', { dataId: detailBill })}}
+                        onPress={() => { navigation.navigate('CancelOrderScreen', { billId: item._id }) }}
                         style={tailwind`${styleCancel}`}
                     >
                         <Text style={tailwind`text-white font-bold`}>Hủy Đơn Hàng</Text>

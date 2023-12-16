@@ -10,7 +10,6 @@ const SplashScreen = () => {
     const navigation = useNavigation()
     const login = async () => {
         try {
-            if (getUser()) {
                 const response = await autoLogin();
                 if (response.code == 200) {
                     setUser(response.user)
@@ -18,7 +17,6 @@ const SplashScreen = () => {
                     console.log("Đăng nhập thành công")
                     await updateDeviceToken()
                 }
-            }
         } catch (error) {
             console.log(`splash :${error}`)
         } finally {

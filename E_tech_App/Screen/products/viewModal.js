@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons"
 import React, { useState } from "react"
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native"
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ScrollView, Alert } from "react-native"
 import { formatPrice } from "../../utils/format"
 import { addCart } from "../../CallApi/cartApi"
 import LottieView from 'lottie-react-native'
@@ -29,8 +29,10 @@ const ViewModal = ({ product_name, data, setIsModalVisible, option }) => {
                     response.percent_discount = getProductSelected()?.percent_discount ?? 0
                     pushListCart(response)
                     navigation.navigate('PayScreen')
+                } else {
+                    Alert.alert('Thông báo', 'Thêm sản phẩm vào giỏ hàng thành công')
                 }
-                alert("Thêm giỏ hàng thành công")
+
             } else {
                 setIsModalVisible(true)
                 setLoading(false)

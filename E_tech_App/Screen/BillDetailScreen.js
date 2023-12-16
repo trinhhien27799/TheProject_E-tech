@@ -21,7 +21,6 @@ const BillDetailScreen = () => {
             const response = await getItemBill(dataId)
             setData(response)
             const t = new Date(response.time).getTime()
-            console.log('t', new Date(response.time).getTime())
             if (response.shipping_method == 0) {
                 setTimeLate(new Date(t + 4 * 24 * 60 * 60 * 1000))
             } else if (response.shipping_method == 1) {
@@ -120,7 +119,9 @@ const BillDetailScreen = () => {
                 {/* Button */}
                 <View style={styles.Button}>
                     <View style={styles.confirmContainer}>
-                        <TouchableOpacity style={styles.buttonPayment}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ContactScreen')}
+                            style={styles.buttonPayment}>
                             <Text style={styles.textPayment}>Phản hồi đơn hàng</Text>
                         </TouchableOpacity>
                     </View>

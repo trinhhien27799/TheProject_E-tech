@@ -46,6 +46,7 @@ import BottomNavigation from '../Screen/home/bottomNavigation'
 import NotificationScreen from '../Screen/NotificationScreen'
 import ResetPassword from '../Screen/profile/resetPassword'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ContactScreen from '../Screen/contacts/Contacts';
 export const navigationRef = React.createRef();
 
 export function navigate(name, params) {
@@ -62,6 +63,10 @@ export function MainNavigator() {
         <NavigationContainer ref={setTopLevelNavigator}>
             <Stack.Navigator
                 initialRouteName='Splash' >
+
+                <Stack.Screen name='ContactScreen' component={ContactScreen} options={{ 
+                    headerTitle:'Liên hệ'
+                }} />
                 <Stack.Screen name='MoMoPaymentScreen' component={MoMoPaymentScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name='Splash' component={SplashScreen} options={{ headerShown: false }} />
@@ -127,7 +132,9 @@ export function MainNavigator() {
                 <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
-                <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ headerShown: false }} />
+                <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ 
+                    headerTitle:'Hủy đơn hàng'
+                }} />
 
 
                 <Stack.Screen name='FavoriteScreen' component={FavoriteScreen} options={{ headerShown: false }} />

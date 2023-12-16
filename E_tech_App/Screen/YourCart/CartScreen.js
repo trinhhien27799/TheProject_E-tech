@@ -166,11 +166,9 @@ const CartScreen = () => {
             {allowDelete &&
               <Animated.View
                 style={{
-                  position: 'relative',
+                  position: 'absolute',
                   width: '90%',
                   bottom: 0,
-                  left: 0,
-                  right: 0,
                   borderWidth: 1,
                   borderColor: 'blue',
                   margin: 10,
@@ -178,6 +176,7 @@ const CartScreen = () => {
                   paddingHorizontal: 40,
                   paddingVertical: 15,
                   transform: [{ translateY }],
+                  backgroundColor: 'white'
                 }}
               >
                 <View style={styles.productTotal}>

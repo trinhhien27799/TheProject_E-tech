@@ -4,6 +4,7 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from "react-native";
 import { getBillByStatus } from "../../CallApi/billApi";
 import { getUser } from "../../session";
 import { useRequireLogin } from "../../utils/alert";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default OrderScreen = () => {
@@ -13,10 +14,16 @@ export default OrderScreen = () => {
 
     const getData = async () => {
         try {
+            const bill0 = await AsyncStorage.getItem('bill0')
+            if(bill0) setCountZero(bill0)
+            const bill1 = await AsyncStorage.getItem('bill1')
+            if(bill1) setCountOne(bill1)
             const resZero = await getBillByStatus(0)
             setCountZero(resZero.length)
             const resOne = await getBillByStatus(1)
             setCountOne(resOne.length)
+            AsyncStorage.setItem('bill0',String(resZero.length))
+            AsyncStorage.setItem('bill1',String(resOne.length))
         } catch (error) {
             console.log('OrderScreen:', error)
         }

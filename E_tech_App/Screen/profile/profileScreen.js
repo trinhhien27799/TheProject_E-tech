@@ -70,6 +70,15 @@ const Profile = () => {
                         <Text>Đổi mật khẩu</Text>
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('ContactScreen')
+                    }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/help-desk.png')} />
+                        <Text>Liên hệ</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )
@@ -136,7 +145,7 @@ const HeaderProfile = ({ navigation }) => {
                 text: 'OK',
                 onPress: () => {
                     deleteDeviceToken()
-                    clearAsyncStorage(['token', 'notification'])
+                    clearAsyncStorage(['token', 'notification', 'bill0', 'bill1','history','product_recent'])
                     setUser(null)
                     setAddress(null)
                     navigation.replace('Login')
