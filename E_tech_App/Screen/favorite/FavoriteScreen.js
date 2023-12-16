@@ -29,12 +29,11 @@ const FavoriteScreen = () => {
     fetchData()
   }, [])
 
-  console.log(data);
 
   const RenderItem = ({ item }) => {
-    if(item != null){
+    if (item != null) {
       return <IteamProduct item={item} navigation={navigation} list={list} setList={setList} />
-    } 
+    }
   }
 
   const handleDelete = () => {
@@ -96,12 +95,28 @@ const FavoriteScreen = () => {
       </View>
 
       {loading ? <LoadingWidget /> :
-        <FlatList
-          data={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={RenderItem}
-          style={{ width: Dimensions.get('window').width, marginTop: 8 }}
-        />}
+        (
+          data.length > 0 ? <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={RenderItem}
+            style={{ width: Dimensions.get('window').width, marginTop: 8 }}
+          />
+            :
+            <View style={{ backgroundColor: 'whitesmoke', flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <LottieView
+                autoPlay
+                style={{ width: 200, height: 200 }}
+                source={require('../../assets/favorite.json')}
+              />
+              <TouchableOpacity
+                onPress={() => { navigation.navigate('ButtonNavigation', { screen: 'Home' }) }}
+              >
+                <Text style={{ marginTop: 10, padding: 10 }}>Danh sách yêu thích trống</Text>
+              </TouchableOpacity>
+              <View style={{ height: '30%' }} />
+            </View>
+        )}
     </View>
   )
 }
