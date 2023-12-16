@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-
-
 import { Image, Text, View } from 'react-native'
 
 import { requestUserPermission, NotificationListenner } from './utils/notification_helper'

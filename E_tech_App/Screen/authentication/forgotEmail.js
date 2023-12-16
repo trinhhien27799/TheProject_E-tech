@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { insertOtp } from '../../CallApi/authenApi';
 import tailwind from 'twrnc';
 
-const Quenmk1 = () => {
+const ForgotEmail = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
@@ -22,8 +22,12 @@ const Quenmk1 = () => {
   const [isSignUpPressed, setIsSignUpPressed] = useState(true);
   const handleCheck = async () => {
     try {
-        navigation.navigate('ConfirmOTP',{isSignUpPressed,email});
-        insertOtp(email,true);
+        const instert = await insertOtp(email,true);
+        if(instert.code == 200){
+          navigation.navigate('ConfirmOTP',{isSignUpPressed,email});
+          setEmail('');
+        }
+        alert(instert.message)
         setEmail('');
     } catch (error) {
         console.error('Error:', error);
@@ -118,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Quenmk1;
+export default ForgotEmail;

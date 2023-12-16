@@ -102,7 +102,7 @@ const Login = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate('Quenmk1')
+                            navigation.navigate('ForgotEmail')
                         }}
                         style={{ alignSelf: 'flex-end' }}>
                         <Text style={styles.textForgot}>Quên mật khẩu?</Text>
