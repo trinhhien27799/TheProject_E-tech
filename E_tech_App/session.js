@@ -135,7 +135,7 @@ export {
   setVoucher, getVoucher,
   setPayment, getPayment,
   setCheck,getCheck,
-  setChat,getChats,cleanChats
+  setChat,getChats,cleanChats,
   setDeviceToken,getDeviceToken
 }
 
