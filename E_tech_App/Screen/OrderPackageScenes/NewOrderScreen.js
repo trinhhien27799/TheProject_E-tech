@@ -103,17 +103,6 @@ const NewOrderScreen = () => {
     return (
         <View style={styles.container}>
             <View style={tailwind`bg-white mb-3`}>
-                <View style={styles.header}>
-                    <TouchableOpacity
-                        onPress={() => { navigation.goBack() }}
-
-                    >
-                        <Image source={require('../../img/arrow-left.png')}
-                            style={{ width: 16, height: 16, marginEnd: 20 }}
-                        />
-                    </TouchableOpacity>
-                    <Text style={styles.textHeader}>Đơn hàng của bạn</Text>
-                </View>
 
                 <View style={{ paddingVertical: 10 }}>
                     <FlatList

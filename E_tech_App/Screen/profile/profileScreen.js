@@ -72,6 +72,19 @@ const Profile = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
+                        if (getUser() == null) {
+                            useRequireLogin(navigation)
+                            return
+                        }
+                        navigation.navigate('RefundScreen')
+                    }}>
+                    <View style={styles.viewItem}>
+                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/refund.png')} />
+                        <Text>Hoàn tiền</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
                         navigation.navigate('ContactScreen')
                     }}>
                     <View style={styles.viewItem}>
@@ -145,7 +158,7 @@ const HeaderProfile = ({ navigation }) => {
                 text: 'OK',
                 onPress: () => {
                     deleteDeviceToken()
-                    clearAsyncStorage(['token', 'notification', 'bill0', 'bill1','history','product_recent'])
+                    clearAsyncStorage(['token', 'notification', 'bill0', 'bill1', 'history', 'product_recent'])
                     setUser(null)
                     setAddress(null)
                     navigation.replace('Login')

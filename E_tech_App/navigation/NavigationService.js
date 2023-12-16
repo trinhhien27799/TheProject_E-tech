@@ -47,6 +47,7 @@ import NotificationScreen from '../Screen/NotificationScreen'
 import ResetPassword from '../Screen/profile/resetPassword'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ContactScreen from '../Screen/contacts/Contacts';
+import RefundScreen from '../Screen/refunds/RefundScreen';
 export const navigationRef = React.createRef();
 
 export function navigate(name, params) {
@@ -63,9 +64,11 @@ export function MainNavigator() {
         <NavigationContainer ref={setTopLevelNavigator}>
             <Stack.Navigator
                 initialRouteName='Splash' >
-
-                <Stack.Screen name='ContactScreen' component={ContactScreen} options={{ 
-                    headerTitle:'Liên hệ'
+                <Stack.Screen name='RefundScreen' component={RefundScreen} options={{
+                    headerTitle: 'Yêu cầu hoàn tiền'
+                }} />
+                <Stack.Screen name='ContactScreen' component={ContactScreen} options={{
+                    headerTitle: 'Liên hệ'
                 }} />
                 <Stack.Screen name='MoMoPaymentScreen' component={MoMoPaymentScreen} options={{ headerShown: false }} />
 
@@ -129,11 +132,13 @@ export function MainNavigator() {
                 <Stack.Screen name='ListPhoneByCate' component={ListPhoneByCate} />
                 <Stack.Screen name='ListCommentScreen' component={DetailCommentScreen} options={{ headerShown: false }} />
 
-                <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{ headerShown: false }} />
+                <Stack.Screen name='NewOrderScreen' component={NewOrderScreen} options={{
+                    headerTitle: 'Đơn hàng của bạn'
+                }} />
                 <Stack.Screen name='AddCommentScreen' component={AddCommentScreen} options={{ headerShown: false }} />
                 <Stack.Screen name='CommentButton' component={CommentButton} options={{ headerShown: false }} />
-                <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{ 
-                    headerTitle:'Hủy đơn hàng'
+                <Stack.Screen name='CancelOrderScreen' component={CancelOrderView} options={{
+                    headerTitle: 'Hủy đơn hàng'
                 }} />
 
 
