@@ -35,16 +35,9 @@ const ItemInBill = ({ item }) => {
                 <View style={styles.nameItemView}>
                     <View >
                         <Text style={styles.nameItem}>{item.product_name}</Text>
-                        <Text style={styles.categoryItem}>Loại: </Text>
-                        <Text style={styles.categoryItem}>Giá: {formatPrice(item.price)}</Text>
+                        <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
                     </View>
-                    <View>
 
-                    </View>
-                </View>
-
-                <View style={styles.priceItemView}>
-                    <Text style={styles.textQuantity}>Số lượng: {item.quantity}</Text>
                 </View>
             </View>
             <View style={styles.textTotal}>
@@ -62,14 +55,14 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'column',
         borderBottomWidth: 1.3,
-        paddingVertical: 20,
+        paddingVertical: 10,
         borderBottomColor: '#D5D5D5',
         justifyContent: 'center'
 
     },
     cartItem: {
         width: '100%',
-        height: 135,
+        flexGrow: 0,
         justifyContent: 'space-between',
         flexDirection: 'row',
         paddingTop: 20,
@@ -78,14 +71,15 @@ const styles = StyleSheet.create({
 
     imgItem: {
         width: 80,
-        height: 110,
+        height: 80,
         backgroundColor: '#D5D5D5',
         justifyContent: 'center',
         borderRadius: 5,
+        resizeMode: 'center'
     },
 
     nameItemView: {
-        width: '35%',
+        flex: 1, marginStart: 15
 
     },
     categoryItem: {
@@ -98,18 +92,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
-    priceItemView: {
-        width: '30%',
-    },
     textQuantity: {
-        textAlign: 'right',
         fontSize: 13.5,
-        marginTop: 1
     },
     textTotal: {
         textAlign: 'right',
         fontSize: 13.5,
         fontWeight: 'bold',
-        marginTop: 30
     },
 })

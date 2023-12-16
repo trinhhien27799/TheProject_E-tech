@@ -93,7 +93,7 @@ const Comment = ({ productId, product }) => {
                         source={{ uri: item.product.image }}
                     />
                     <View style={{ marginStart: 8 }}>
-                        <Text style={tailwind `w-70`}>{item.product.name}</Text>
+                        <Text style={tailwind`w-70`}>{item.product.name}</Text>
                         <Text style={{ fontSize: 13, overflow: "scroll", color: 'grey', width: '70%' }}>{item.product.property}</Text>
                     </View>
                 </View>
@@ -148,26 +148,23 @@ const Comment = ({ productId, product }) => {
             setLoading(true)
             const form = new FormData()
             await Promise.all([
-                new Promise((resolve) => {
-                    images.forEach(async (asset, index) => {
+                (async () => {
+                    images.map(async (asset, index) => {
                         const fileName = `${index}v${Date.now()}.jpg`
                         form.append('image', {
                             uri: asset.uri,
                             type: 'image/jpeg',
                             name: fileName,
                         })
-                        resolve()
                     })
-                }),
-                new Promise((resolve) => {
+                })(),
+                (() => {
                     form.append('productId', productId)
                     form.append('variationId', variationId)
                     form.append('numStar', numStar)
                     form.append('content', content.toString().trim())
-                    resolve()
-                }),
+                })(),
             ])
-
             const response = await pushComment(form)
             if (response.code == 200) {
                 console.log('Đánh giá thành công')
@@ -195,14 +192,14 @@ const Comment = ({ productId, product }) => {
         {
             name: "5 sao",
             population: sortCount5Star,
-            color: "rgba(131, 167, 234, 1)",
+            color: "#22B14C",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "4 sao",
             population: sortCount4Star,
-            color: "#F00",
+            color: "rgba(131, 167, 234, 1)",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
@@ -216,7 +213,7 @@ const Comment = ({ productId, product }) => {
         {
             name: "2 sao",
             population: sortCount2Star,
-            color: "#ffffff",
+            color: "#FFF200",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
@@ -294,7 +291,7 @@ const Comment = ({ productId, product }) => {
                         <>
                             <LottieView
                                 autoPlay
-                                style={{ width: 40, height: 40, marginTop: 10, position: 'absolute', right: 10, bottom: 10 }}
+                                style={{ width: 40, height: 40 }}
                                 source={require('../../assets/logo.json')}
                             />
                         </>

@@ -36,10 +36,12 @@ export const loginUser = async (username, password) => {
 export const autoLogin = async () => {
     try {
         const token = await AsyncStorage.getItem("token")
-        if (!token) throw "can not get token"
-        setAuthToken(token)
-        const response = await api.post('/user/auto-login')
-        return response.data
+        if (token) {
+            setAuthToken(token)
+            const response = await api.post('/user/auto-login')
+            return response.data
+        }
+        return { code: 400 }
     } catch (error) {
         throw error
     }

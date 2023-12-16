@@ -32,23 +32,12 @@ export const updateStatusPaymentBill = async (billId) => {
     }
 }
 
-export const cancelBill = async (item, reasonValue) => {
-    const billId = item._id;
-    const navigation = useNavigation()
-
+export const cancelBill = async (billId, cancel_order) => {
     try {
-        const res = await api.post('/bill/cancel', { id_bill: billId, cancel_order: reasonValue });
-        const data = res.data;
-
-        if (data == 200) {
-            alert('Hủy đơn hàng thành công');
-            navigation.goBack();
-        }
-        else {
-            alert('Hủy đơn hàng không thành công');
-        }
+        const res = await api.post('/bill/cancel', { id_bill: billId, cancel_order: cancel_order });
+        return res.data
     } catch (error) {
-        console.log(error);
+        throw error
     }
 }
 
