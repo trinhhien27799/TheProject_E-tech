@@ -32,7 +32,8 @@ const Pay = () => {
       listIdCart: getListCart().map((item) => { return item._id }),
       voucher_id: voucher?._id,
       value: payment.id == '1' ? null : total + transport_fee - saleValue,
-      payment_method: payment.id == '1' ? 0 : 1
+      payment_method: payment.id == '1' ? 0 : 1,
+      note: note
     }
     navigation.navigate('MoMoPaymentScreen', { data: data })
   }
@@ -72,7 +73,10 @@ const Pay = () => {
       }
       setSaleValue(sale)
     }
-  }, [voucher])
+  }, [voucher, transport_fee])
+
+
+
 
 
   const checkTotalPrice = () => {
