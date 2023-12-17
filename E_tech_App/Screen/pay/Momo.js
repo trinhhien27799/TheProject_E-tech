@@ -17,7 +17,8 @@ const MoMoPaymentScreen = () => {
     // 2: Đặt thành công momo -đã thanh toán
     // 3: Đặt thành công momo chưa thanh toán
     const [src, setSrc] = useState(require('../../assets/logo.json'))
-    const [textStatus, setTextStatus] = useState('Đang tiến hành đặt hàng đặt hàng')
+    const [textStatus, setTextStatus] = useState('')
+    var momo = -1
 
 
     const appState = useRef(AppState.currentState);
@@ -32,7 +33,7 @@ const MoMoPaymentScreen = () => {
             }
 
             appState.current = nextAppState;
-            if (appState.current == 'active') setStatus(3)
+            if (appState.current == 'active' && momo == -1) setStatus(3)
         });
 
         return () => {
@@ -43,7 +44,13 @@ const MoMoPaymentScreen = () => {
 
     useEffect(() => {
         try {
-            create()
+            if (data?.billId != null) {
+                setTextStatus('Đang tiến hành đặt hàng thanh toán')
+                payNow(data.value, data.billId)
+            } else {
+                setTextStatus('Đang tiến hành đặt hàng đặt hàng')
+                create()
+            }
         } catch (error) {
             console.log('MomoScreen: ', error)
             setStatus(-1)
@@ -56,21 +63,27 @@ const MoMoPaymentScreen = () => {
 
     useEffect(() => {
         if (status == 0) return
+        if (data?.billId != null) {
+            setTextStatus(status == 2 ? 'Thanh toán thành công' : 'Thanh toán thất bại')
+            setSrc(status == 2 ? require('../../assets/success.json') : require('../../assets/failure.json'))
+            setTimeout(() => {
+                navigation.goBack()
+            }, 1400)
+            return
+        }
         const icon = status == -1 ? require('../../assets/failure.json') : require('../../assets/success.json')
         setSrc(icon)
-        setTimeout(() => {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'ButtonNavigation' }],
-            })
-        }, 1000)
-
         if (status == -1) {
             setTextStatus('Đặt hàng thất bại!')
             return
         }
         setTextStatus('Đặt hàng thành công!')
-
+        setTimeout(() => {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'ButtonNavigation' }],
+            })
+        }, 1400)
     }, [status])
 
     const create = async () => {
@@ -114,6 +127,7 @@ const MoMoPaymentScreen = () => {
 
     const momoHandleResponse = (response, billId) => {
         try {
+            momo = 0
             if (response && response.status === 0) {
                 // SUCCESS: continue to submit momoToken,phonenumber to server
                 // let fromapp = response.fromapp // ALWAYS:: fromapp == momotransfer
@@ -122,7 +136,6 @@ const MoMoPaymentScreen = () => {
                 // let message = response.message
                 setStatus(2)
                 updateStatusPaymentBill(billId)
-
             } else {
                 // Has Error: show message here
                 console.log('momoHandleResponse error')

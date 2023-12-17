@@ -97,13 +97,13 @@ const getPayment = () => {
 }
 
 var listChats = [];
-const setChat = (newChats)=>{
+const setChat = (newChats) => {
   listChats.push(newChats);
 }
 const getChats = () => {
   return listChats;
 }
-const cleanChats = ()=>{
+const cleanChats = () => {
   listChats = [];
 }
 var deviceToken = null
@@ -114,6 +114,16 @@ const setDeviceToken = (token) => {
 
 const getDeviceToken = () => {
   return deviceToken
+}
+
+var countDown = 0
+
+const setCounDowntSession = (num) => {
+  countDown = num
+}
+
+const getCountDownSession = () => {
+  return countDown
 }
 
 
@@ -127,7 +137,8 @@ export {
   getShipping, setShipping,
   setVoucher, getVoucher,
   setPayment, getPayment,
-  setChat,getChats,cleanChats,
-  setDeviceToken,getDeviceToken
+  setChat, getChats, cleanChats,
+  setDeviceToken, getDeviceToken,
+  setCounDowntSession, getCountDownSession
 }
 
