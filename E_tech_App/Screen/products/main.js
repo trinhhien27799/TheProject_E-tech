@@ -18,14 +18,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 const DetailPoducts = () => {
     const route = useRoute()
     const navigation = useNavigation()
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
 
     const getData = async () => {
         try {
             const productId = route.params.productId
             const response = await getItemProduct(productId)
-            setProduct(response)
+            if (product.variations.length > 0) setProduct(response)
             var newArrayRecent = []
             const arraytRecent = await AsyncStorage.getItem('product_recent')
             if (arraytRecent) {
@@ -82,7 +82,7 @@ const DetailPoducts = () => {
                 loading ?
                     <LoadingWidget /> :
                     (
-                        product.variations ?
+                        product != null ?
                             <>
                                 <SectionList
                                     sections={sections}
