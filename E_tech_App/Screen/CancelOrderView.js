@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Alert, FlatList, ScrollView, StyleSheet } from 'react-native'
+import { Alert, Dimensions, FlatList, ScrollView, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { Image } from 'react-native'
 import { Text } from 'react-native'
@@ -9,7 +9,8 @@ import { RadioButton } from 'react-native-paper'
 import tailwind from 'twrnc'
 import { cancelBill, getItemBill } from '../CallApi/billApi'
 import { formatPrice, formatTime } from '../utils/format'
-import { TotalProductBill } from '../DataMathResolve/TotalProductBill'
+import LockLoading from './authentication/lockLoading'
+
 
 const CancelOrderView = () => {
     const route = useRoute();
@@ -17,6 +18,7 @@ const CancelOrderView = () => {
     const [data, setData] = useState(null)
     const navigation = useNavigation();
     const [timeLate, setTimeLate] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const getData = async () => {
         try {
@@ -76,8 +78,21 @@ const CancelOrderView = () => {
     }
 
     const HandleCancel = async () => {
+        Alert.alert('Thông báo', 'Xác nhận hủy đơn hàng', [{
+            text: 'Xác nhận',
+            onPress: cancelNow
+        },
+        {
+            text: 'Quay lại',
+            style: 'default',
+        }])
+    }
+
+    const cancelNow = async () => {
         try {
+            setLoading(true)
             const response = await cancelBill(billId, takeValue)
+            setLoading(false)
             if (response.code == 200) {
                 const msg = (data.payment_status == 1 && data.payment_method == 1) ? 'Hủy đơn thành công, Số tiền thanh toán sẽ được hoàn lại sau 3 đến 4 ngày' : 'Hủy đơn thành công'
                 Alert.alert('Thông báo', msg, [
@@ -90,6 +105,7 @@ const CancelOrderView = () => {
                 Alert.alert('Thông báo', 'Hủy đơn hàng thất bại, vui lòng liên hệ cskh để tiến hánh hủy đơn')
             }
         } catch (error) {
+            setLoading(false)
             Alert.alert('Thông báo', 'Hủy đơn hàng thất bại,vui lòng liên hệ cskh để tiến hánh hủy đơn')
         }
     }
@@ -201,13 +217,15 @@ const CancelOrderView = () => {
                     </RadioButton.Group>
 
                     <TouchableOpacity
-                        style={tailwind`bg-red-600 p-3 w-50 self-center mt-3 rounded-lg`}
+                        style={[tailwind`bg-red-600 p-3 w-50 self-center mt-3 rounded-lg`]}
                         onPress={HandleCancel}
                     >
                         <Text style={tailwind`self-center font-bold text-white`}>Xác Nhận Hủy</Text>
                     </TouchableOpacity>
                 </View>
+
             </View>
+            {loading && <LockLoading />}
         </ScrollView>
     )
 }

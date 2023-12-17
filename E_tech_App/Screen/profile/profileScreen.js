@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, ImageBackground, FlatList, Alert } from "react-native"
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, TextInput, Alert } from "react-native"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import OrderSreen from "./orderSreen"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -7,109 +7,204 @@ import { getUser, setAddress, setUser } from "../../session"
 import { deleteDeviceToken } from "../../CallApi/tokenDeviceApi"
 import * as ImagePicker from 'expo-image-picker';
 import { useRequireLogin } from "../../utils/alert"
-import { updateImage } from "../../CallApi/userApi"
+import { updateFullname, updateImage } from "../../CallApi/userApi"
+import Dialog from "react-native-dialog";
+import LockLoading from "../authentication/lockLoading"
+
+
 
 const Profile = () => {
     const navigation = useNavigation()
+    const [showEdit, setShowEdit] = useState(false)
+    const [newName, setNewName] = useState('')
+    const [warningEdit, setWarningEdit] = useState(null)
+    const [fullname, setFullname] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const handleUpdateFullname = async () => {
+        try {
+            setShowEdit(false)
+            setLoading(true)
+            const response = await updateFullname(newName)
+            setLoading(false)
+            if (response.code == 200) {
+                setUser(response.user)
+                setFullname(newName)
+                Alert.alert('Thông báo', 'Cập nhật thành công', [{
+                    text: 'Xác nhận',
+                    onPress: () => setShowEdit(false)
+                }])
+            } else {
+                Alert.alert('Thông báo', 'Cập nhật họ tên người dùng thất bại', [{
+                    text: 'Xác nhận',
+                    onPress: () => setShowEdit(false)
+                }])
+            }
+        } catch (error) {
+            setLoading(false)
+            Alert.alert('Thông báo', 'Cập nhật họ tên người dùng thất bại', [{
+                text: 'Xác nhận',
+                onPress: () => setShowEdit(false)
+            }])
+        }
+    }
+
+    const convertFullname = (text) => {
+        const name = String(text)
+        if (name.trim().length == 0) {
+            setNewName('')
+            return
+        }
+        var lowerCaseName = name.replaceAll('  ', ' ').toLowerCase();
+        var words = lowerCaseName.split(' ');
+        for (var i = 0; i < words.length; i++) {
+            const fisrt = words[i].charAt(0).toUpperCase()
+            var last = words[i].slice(1);
+            if (last[0] && last[0].toUpperCase() === fisrt) last = last.slice(1);
+            words[i] = fisrt + last
+        }
+        var capitalizedFullName = words.join(' ');
+
+        setNewName(capitalizedFullName)
+
+        const regex = /^[^\d]+$/
+        const check = regex.test(capitalizedFullName)
+        setWarningEdit(!check)
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <HeaderProfile navigation={navigation} />
-            <View style={{ marginTop: 30 }}>
-                <OrderSreen />
-                <TouchableOpacity
-                    onPress={() => {
-                        if (getUser() == null) {
-                            useRequireLogin(navigation)
-                            return
-                        }
-                        navigation.navigate('MyVoucher')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/voucher.png')} />
-                        <Text>Mã giảm giá đã lưu</Text>
-                    </View>
-                </TouchableOpacity>
+            <View style={{ flex: 1, height: Dimensions.get('window').height }}>
+                <HeaderProfile setLoading={setLoading} navigation={navigation} setShowEdit={setShowEdit} setNewName={setNewName} fullname={fullname} setFullname={setFullname} />
+                <View style={{ marginTop: 30 }}>
+                    <OrderSreen />
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (getUser() == null) {
+                                useRequireLogin(navigation)
+                                return
+                            }
+                            navigation.navigate('MyVoucher')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/voucher.png')} />
+                            <Text>Mã giảm giá đã lưu</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        if (getUser() == null) {
-                            useRequireLogin(navigation)
-                            return
-                        }
-                        navigation.navigate('FavoriteScreen')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../img/heart.png')} />
-                        <Text>Đã thích</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (getUser() == null) {
-                            useRequireLogin(navigation)
-                            return
-                        }
-                        navigation.navigate('AddressScreen')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/contact-list.png')} />
-                        <Text>Sổ địa chỉ</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (getUser() == null) {
-                            useRequireLogin(navigation)
-                            return
-                        }
-                        navigation.navigate('ResetPassword')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/synchronize.png')} />
-                        <Text>Đổi mật khẩu</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        if (getUser() == null) {
-                            useRequireLogin(navigation)
-                            return
-                        }
-                        navigation.navigate('RefundScreen')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/refund.png')} />
-                        <Text>Hoàn tiền</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate('ContactScreen')
-                    }}>
-                    <View style={styles.viewItem}>
-                        <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/help-desk.png')} />
-                        <Text>Liên hệ</Text>
-                    </View>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (getUser() == null) {
+                                useRequireLogin(navigation)
+                                return
+                            }
+                            navigation.navigate('FavoriteScreen')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../img/heart.png')} />
+                            <Text>Đã thích</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (getUser() == null) {
+                                useRequireLogin(navigation)
+                                return
+                            }
+                            navigation.navigate('AddressScreen')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/contact-list.png')} />
+                            <Text>Sổ địa chỉ</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (getUser() == null) {
+                                useRequireLogin(navigation)
+                                return
+                            }
+                            navigation.navigate('ResetPassword')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/synchronize.png')} />
+                            <Text>Đổi mật khẩu</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (getUser() == null) {
+                                useRequireLogin(navigation)
+                                return
+                            }
+                            navigation.navigate('RefundScreen')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/refund.png')} />
+                            <Text>Hoàn tiền</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('ContactScreen')
+                        }}>
+                        <View style={styles.viewItem}>
+                            <Image style={{ height: 25, width: 25, alignSelf: "center", marginEnd: 15 }} source={require('../../assets/help-desk.png')} />
+                            <Text>Liên hệ</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <Dialog.Container visible={showEdit}>
+                        <Text>Nhập tên mới</Text>
+                        <TextInput
+                            value={newName}
+                            style={{ borderWidth: 1, borderColor: 'grey', paddingVertical: 5, paddingHorizontal: 8, borderRadius: 5 }}
+                            placeholder="Nhập tên mới"
+                            onChangeText={(text) => {
+                                convertFullname(text)
+                            }}
+                            onEndEditing={() => {
+                                setNewName(newName.trim())
+                            }}
+                        />
+                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>  {warningEdit == '' ? null : warningEdit == true ? 'Vui lòng nhập đúng tên' : ''}</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setNewName(getUser()?.fullname ?? '')
+                                    setShowEdit(false)
+                                }}>
+                                <Text style={{ color: 'grey' }}>Quay lại</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleUpdateFullname}
+                                style={{ marginStart: 15 }}>
+                                <Text
+                                    style={{ color: warningEdit ? 'grey' : 'black' }}>Cập nhật</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Dialog.Container>
+                </View>
+                {loading && <LockLoading />}
             </View>
         </ScrollView>
     )
 }
-const HeaderProfile = ({ navigation }) => {
+const HeaderProfile = ({ setLoading, navigation, setShowEdit, setNewName, fullname, setFullname }) => {
 
 
-    const [fullname, setFullname] = useState('')
+
     const [avatar, setAvatar] = useState(null)
     const [background, setBackground] = useState(null)
 
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            const img = 'https://th.bing.com/th/id/R.ef29b9a065d7450a0a2a58aa89278ccc?rik=B3%2b8nQn%2bnxpA0Q&pid=ImgRaw&r=0'
+            const bg = require('../../assets/bg.jpg')
+            const av = require('../../assets/logo.jpg')
             setFullname(getUser()?.fullname ?? 'Đăng nhập ngay')
-            setAvatar(getUser()?.avatar ?? img)
-            setBackground(getUser()?.background ?? img)
+            setAvatar(getUser() ? { uri: getUser().avatar } : av)
+            setBackground(getUser() ? { uri: getUser().background } : bg)
+            setNewName(getUser()?.fullname ?? '')
         })
         return unsubscribe
     }, [navigation])
@@ -124,24 +219,29 @@ const HeaderProfile = ({ navigation }) => {
             });
 
             if (!result.canceled) {
-                if (type === 'avatar') {
-                    setAvatar(result.assets[0].uri)
-                } else {
-                    setBackground(result.assets[0].uri)
-                }
+                setLoading(true)
                 const response = await updateImage(result.assets[0].uri, type)
+                setLoading(false)
                 if (response.code == 200) {
                     setUser(response.user)
+                    if (type === 'avatar') {
+                        setAvatar({ uri: result.assets[0].uri })
+                    } else {
+                        setBackground({ uri: result.assets[0].uri })
+                    }
+                    Alert.alert('Thông báo', 'Cập nhật ảnh thành công')
                 } else {
-                    setAvatar(getUser().avatar)
-                    setBackground(getUser().background)
+                    setLoading(false)
+                    setAvatar({ uri: getUser().avatar })
+                    setBackground({ uri: getUser().background })
                     Alert.alert('Đã xảy ra lỗi', response.message)
                 }
             }
         } catch (error) {
             console.log(`update ${type}:`, error)
-            setAvatar(getUser().avatar)
-            setBackground(getUser().background)
+            setLoading(false)
+            setAvatar({ uri: getUser().avatar })
+            setBackground({ uri: getUser().background })
             Alert.alert('Đã xảy ra lỗi', 'Hãy thử lại sau')
         }
     }
@@ -183,6 +283,8 @@ const HeaderProfile = ({ navigation }) => {
         }
     }
 
+
+
     return (
         background &&
         <View style={styles.headerContainer}>
@@ -209,7 +311,7 @@ const HeaderProfile = ({ navigation }) => {
                             imagePicker('background')
                         }
                     }}>
-                    <Image style={styles.background} source={{ uri: background }} />
+                    <Image style={styles.background} source={background} />
                 </TouchableOpacity>
             }
             <View style={{
@@ -229,9 +331,18 @@ const HeaderProfile = ({ navigation }) => {
                                 imagePicker('avatar')
                             }
                         }}>
-                        <Image style={styles.imageHeader} source={{ uri: avatar }} />
+                        <Image style={styles.imageHeader} source={avatar} />
                     </TouchableOpacity>}
-                <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'black', marginTop: 10 }}>{fullname}</Text>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'center' }}>
+                    <View style={{ width: 31 }} />
+                    <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'black', alignSelf: 'center' }}>{fullname}</Text>
+                    {getUser() != null && <TouchableOpacity
+                        onPress={() => {
+                            setShowEdit(true)
+                        }}>
+                        <Image style={{ width: 20, height: 20, marginStart: 15 }} source={require('../../assets/edit.png')} />
+                    </TouchableOpacity>}
+                </View>
             </View>
             <TouchableOpacity
                 onPress={Logout}

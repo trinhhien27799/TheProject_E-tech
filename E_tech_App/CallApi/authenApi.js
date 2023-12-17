@@ -54,10 +54,10 @@ export const verifyOTP = async (username, otp) => {
         throw error;
     }
 }
-export const forgotPassword = async (username, password, navigation) => {
+export const forgotPassword = async (username, password) => {
 
     try {
-        const response = await api.post('/user/forgot-password', { username, password })
+        const response = await api.post('/user/forgot-password', { username: username, password: password })
         return response.data;
     } catch (error) {
         throw error;

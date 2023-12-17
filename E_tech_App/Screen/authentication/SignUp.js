@@ -42,13 +42,13 @@ const SignUp = () => {
     try {
       Keyboard.dismiss()
       setLoading(true)
-      setCountDown(30)
       const response = await insertOtp(email, false)
       setLoading(false)
       if (response.code == 200) {
+        setCountDown(30)
         setVisible(true)
       } else {
-        Alert.alert('Thông báo', 'Đã xảy ra lỗi hãy thử lại sau')
+        Alert.alert('Thông báo', response.message)
       }
     } catch (error) {
       console.log('sendOTP ', error)
@@ -78,11 +78,11 @@ const SignUp = () => {
           }
         }])
       } else {
-        Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trinh đăng ký')
+        Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trình đăng ký')
       }
     } catch (error) {
       console.log('register', error)
-      Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trinh đăng ký')
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trình đăng ký')
     } finally {
       setFullname('')
       setEmail('')
@@ -104,7 +104,7 @@ const SignUp = () => {
         setCountDown(time - 1)
       }, 1000)
     }
-  }, [countDown])
+  }, [countDown, visible])
 
 
 
@@ -228,7 +228,9 @@ const SignUp = () => {
                 onChangeText={(text) => {
                   setPassword(String(text).replaceAll(' ', ''));
                   setErrorPassword(isPassWord(text) ? '' : 'Mật khẩu lớn hơn 6 ký tự');
-                  setErrorConfim(String(text).trim() === String(confirmPass).trim() ? '' : 'Mật khẩu không khớp')
+                  if (confirmPass.length > 0) {
+                    setErrorConfim(String(text).trim() === String(confirmPass).trim() ? '' : 'Mật khẩu không khớp')
+                  }
                 }}
                 onEndEditing={() => {
                   removeSpace(2)
@@ -294,11 +296,11 @@ const SignUp = () => {
           </View>
 
           <TouchableOpacity
-            disabled={!isValidOk()}
+            disabled={!isValidOk() || countDown > 0}
             onPress={sendOTP}
-            style={[styles.button, { backgroundColor: isValidOk() == true ? '#336BFA' : 'grey' }]}>
+            style={[styles.button, { backgroundColor: isValidOk() && countDown == 0 ? '#336BFA' : 'grey' }]}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}>
-              ĐĂNG KÝ
+              {countDown > 0 ? `Vui lòng đợi sau ${countDown} giây` : ' ĐĂNG KÝ'}
             </Text>
           </TouchableOpacity>
 
@@ -318,7 +320,7 @@ const SignUp = () => {
           </View>
         </View>
       </ScrollView>
-      <VerifyDialog email={email} countDown={countDown} setVisble={setVisible} visible={visible} setSatus={setSatus} sendOTP={sendOTP} setLoading={setLoading} />
+      <VerifyDialog setCountDown={setCountDown} email={email} countDown={countDown} setVisble={setVisible} visible={visible} setSatus={setSatus} sendOTP={sendOTP} setLoading={setLoading} />
       {loading && <LockLoading />}
     </View>
   );
@@ -359,7 +361,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     padding: 10,
-    width: '50%',
+    width: '60%',
     marginTop: '5%',
 
   },

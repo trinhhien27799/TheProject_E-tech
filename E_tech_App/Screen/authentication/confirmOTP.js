@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, Alert, Keyboard, } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { insertOtp, verifyOTP } from '../../CallApi/authenApi';
 import tailwind from 'twrnc';
-const ConfirmOTP = ({ route }) => {
-  const isSignUpPressed = route.params.isSignUpPressed;
+import { StatusBar } from 'expo-status-bar';
+import { getCountDownSession, setCounDowntSession } from '../../session';
+import LockLoading from './lockLoading';
+const ConfirmOTP = () => {
+  const route = useRoute()
   const email = route.params.email;
   const navigation = useNavigation();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -15,58 +18,67 @@ const ConfirmOTP = ({ route }) => {
   const fourInput = useRef();
   const fiveInput = useRef();
   const sixInput = useRef();
-  const [remainingTime, setRemainingTime] = useState(120);
-  const [checkTime, setCheckTime] = useState(false);
+  const [countDown, setCounDownt] = useState(getCountDownSession());
+
+  const [loading, setLoading] = useState(false)
+
   const handleOtpChange = (index, value) => {
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
   };
-  useEffect(() => {
-    if (isSignUpPressed) {
-      const interval = setInterval(() => {
-        if (remainingTime > 0) {
-          setRemainingTime(remainingTime - 1);
-        } else {
-          clearInterval(interval);
-          setCheckTime(true);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    }
 
-  }, [remainingTime, isSignUpPressed]);
 
 
   const isValidOk = () => !!otp.join().trim();
   const handleCheck = async () => {
-    const otpString = otp.join("");
     try {
+      Keyboard.dismiss()
+      setLoading(true)
+      const otpString = otp.join("");
       const verificationResult = await verifyOTP(email, otpString);
+      setLoading(false)
       if (verificationResult.code == 200) {
         navigation.navigate('Taomk', email)
+      } else {
+        Alert.alert('Thông báo', verificationResult.message);
       }
-      alert(verificationResult.message);
     } catch (error) {
-      console.error('Error:', error);
+      setLoading(false)
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trình xác minh otp');
     }
   }
 
-  return (
-    <SafeAreaView style={tailwind `flex-1 justify-center`}>
-      <View style={styles.view1}>
-        <TouchableOpacity
-          style={tailwind`bg-white w-10 h-10 justify-center shadow-md rounded-full m-5`}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons name="arrow-back" style={tailwind`self-center`} size={20} color="black" />
-        </TouchableOpacity>
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setCounDownt(getCountDownSession())
+    })
 
-        <Text style={tailwind `text-lg font-bold mt-6`}>Quên mật khẩu</Text>
-      </View>
-      <View style={styles.view}>
+    return unsubscribe
+  }, [navigation])
+
+  useEffect(() => {
+    if (countDown > 0) {
+      setTimeout(() => {
+        const time = countDown
+        setCounDownt(time - 1)
+        setCounDowntSession(time - 1)
+      }, 1000)
+    }
+  }, [countDown])
+
+  return (
+    <SafeAreaView style={[tailwind`flex-1`, { backgroundColor: 'white' }]}>
+      <StatusBar backgroundColor='white' />
+      <TouchableOpacity
+        style={[tailwind`bg-white w-10 h-10 shadow-md rounded-full`, { position: 'absolute', top: 80, left: 20, alignItems: 'center', justifyContent: 'center' }]}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      >
+        <Ionicons name="arrow-back" style={tailwind`self-center`} size={24} color="black" />
+      </TouchableOpacity>
+      <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
         <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10 }}>
           Xác thực email
         </Text>
@@ -85,28 +97,28 @@ const ConfirmOTP = ({ route }) => {
         </View>
         <View style={{ justifyContent: 'center', marginBottom: '5%', flexDirection: 'row' }}>
           <TouchableOpacity
-            disabled={!checkTime}
+            disabled={countDown > 0}
             onPress={() => {
+              setCounDownt(30)
               insertOtp(email, true);
-              setRemainingTime(120);
-              setCheckTime(false);
             }}
           >
-            <Text style={{ color: checkTime ? 'black' : '#CED3D0' }}>Gửi lại mã xác nhận</Text>
+            <Text style={{ color: countDown == 0 ? 'black' : '#CED3D0' }}>Gửi lại mã xác nhận {countDown > 0 ? `(${countDown} giây)` : ''}</Text>
           </TouchableOpacity>
-          {remainingTime >= 1 ? (<Text style={{ color: 'red', marginLeft: 5 }}>{remainingTime} giây</Text>) : null}
 
         </View>
         <TouchableOpacity
           disabled={!isValidOk()}
           onPress={handleCheck}
-          style={tailwind `bg-blue-600 w-40 p-4 rounded-lg shadow-md self-center`}
+          style={tailwind`bg-blue-600 w-40 p-4 rounded-lg shadow-md self-center`}
         >
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFFFFF', alignSelf: 'center' }}>
             TIẾP TỤC
           </Text>
         </TouchableOpacity>
       </View>
+
+      {loading && <LockLoading />}
     </SafeAreaView>
   );
 };
@@ -135,7 +147,7 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
           maxLength={1}
           ref={secondInput}
           onChangeText={(text) => {
-            text && thirdInput.current.focus();
+            text.trim().length > 0 ? thirdInput.current.focus() : firtInput.current.focus()
             onOtpChange(1, text);
           }}
         />
@@ -147,7 +159,7 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
           maxLength={1}
           ref={thirdInput}
           onChangeText={(text) => {
-            text && fourInput.current.focus();
+            text.trim().length > 0 ? fourInput.current.focus() : secondInput.current.focus()
             onOtpChange(2, text);
           }}
         />
@@ -159,9 +171,10 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
           maxLength={1}
           ref={fourInput}
           onChangeText={(text) => {
-            text && fiveInput.current.focus();
+            text.trim().length > 0 ? fiveInput.current.focus() : thirdInput.current.focus()
             onOtpChange(3, text);
           }}
+
         />
       </View>
       <View style={styles.otpBox}>
@@ -171,7 +184,7 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
           maxLength={1}
           ref={fiveInput}
           onChangeText={(text) => {
-            text && sixInput.current.focus();
+            text.trim().length > 0 ? sixInput.current.focus() : fourInput.current.focus()
             onOtpChange(4, text);
           }}
         />
@@ -183,6 +196,7 @@ const BoxVerity = ({ firtInput, secondInput, thirdInput, fourInput, fiveInput, s
           maxLength={1}
           ref={sixInput}
           onChangeText={(text) => {
+            text.trim().length == 0 && fiveInput.current.focus()
             onOtpChange(5, text);
           }}
         />
@@ -194,13 +208,6 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 10,
-    marginTop: '10%',
-  },
-  view: {
-    flex: 1,
-    justifyContent: 'center',
-    margin: '5%'
   },
   view1: {
     flexDirection: 'row',

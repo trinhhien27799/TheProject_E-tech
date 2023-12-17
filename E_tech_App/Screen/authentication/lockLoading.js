@@ -21,8 +21,8 @@ export default LockLoading
 
 const styles = StyleSheet.create({
     container: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: '100%',
+        height: '100%',
         position: 'absolute',
         top: 0,
         left: 0,

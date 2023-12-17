@@ -4,12 +4,13 @@ import Dialog from "react-native-dialog";
 import { verifyOTP, insertOtp } from '../../CallApi/authenApi';
 
 
-const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,setLoading }) => {
+const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP, setLoading, setCountDown }) => {
 
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
 
     const [allow, setAllow] = useState(false)
-    const [error,setError] = useState(null)
+    const [error, setError] = useState(null)
+
 
     const handleConfirm = async () => {
         try {
@@ -36,7 +37,7 @@ const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,
                 }
                 case 500: {
                     setLoading(false)
-                    setError( 'Đã xảy ra lỗi trong quá trình xác minh mã otp')
+                    setError('Đã xảy ra lỗi trong quá trình xác minh mã otp')
                     break
                 }
 
@@ -44,7 +45,7 @@ const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,
         } catch (error) {
             setLoading(false)
             console.error("handleConfirm", error);
-            setError( 'Đã xảy ra lỗi trong quá trình xác minh mã otp')
+            setError('Đã xảy ra lỗi trong quá trình xác minh mã otp')
         }
     };
 
@@ -64,7 +65,7 @@ const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,
                 setOtp={setOtp}
                 setAllow={setAllow}
             />
-            {error && <Text style={{color:'red'}}>{error}</Text>}
+            {error && <Text style={{ color: 'red' }}>{error}</Text>}
             {countDown == 0 ? (
                 <TouchableOpacity
                     onPress={sendOTP}
@@ -76,7 +77,9 @@ const VerifyDialog = ({ email, visible, setVisble, countDown, setSatus, sendOTP,
             )}
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <TouchableOpacity
-                    onPress={() => { setVisble(false) }} >
+                    onPress={() => {
+                        setVisble(false)
+                    }} >
                     <Text style={{ color: 'grey' }}>Quay lại</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

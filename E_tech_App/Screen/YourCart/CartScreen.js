@@ -58,7 +58,7 @@ const CartScreen = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      if (getUser() != null) fetchData()
+      if (getUser()) fetchData()
     })
 
     return unsubscribe

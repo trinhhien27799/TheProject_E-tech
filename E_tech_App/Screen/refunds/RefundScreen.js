@@ -17,11 +17,7 @@ const RefundScreen = () => {
         },
         {
             value: 1,
-            text: 'Chờ xác nhận'
-        },
-        {
-            value: 2,
-            text: 'Chờ xác nhận'
+            text: 'Đã hoàn tiền'
         },
     ]
 
@@ -52,7 +48,9 @@ const RefundScreen = () => {
 
     const renderItem = ({ item, index }) => {
         return (
-            <View style={styles.item}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('OrderDetailScreen', { dataId: item.billId })}
+                style={styles.item}>
                 <Text style={{ fontWeight: '500', fontSize: 17, color: item.status == 0 ? 'red' : item.status == 1 ? 'yellow' : 'green' }}>#{item.billId}</Text>
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <LottieView
@@ -60,9 +58,9 @@ const RefundScreen = () => {
                         style={{ width: 36, height: 36 }}
                         source={require('../../assets/refunds.json')}
                     />
-                    <Text style={{ marginStart: 10,flex:1 }}>Yêu cầu hoàn tiền cho đơn hàng đã được {item.status == 0 ? 'tạo thành công' : item.status == 1 ? 'xác nhận thành công' : 'hoàn thành'} vào lúc {formatTime(item.time)}</Text>
+                    <Text style={{ marginStart: 10, flex: 1 }}>Yêu cầu hoàn tiền cho đơn hàng đã được {item.status == 0 ? 'tạo thành công' : item.status == 1 ? 'xác nhận thành công' : 'hoàn thành'} vào lúc {formatTime(item.time)}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
