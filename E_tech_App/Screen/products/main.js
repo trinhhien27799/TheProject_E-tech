@@ -25,7 +25,7 @@ const DetailPoducts = () => {
         try {
             const productId = route.params.productId
             const response = await getItemProduct(productId)
-            if (product.variations.length > 0) setProduct(response)
+            if (response.variations.length > 0) setProduct(response)
             var newArrayRecent = []
             const arraytRecent = await AsyncStorage.getItem('product_recent')
             if (arraytRecent) {
