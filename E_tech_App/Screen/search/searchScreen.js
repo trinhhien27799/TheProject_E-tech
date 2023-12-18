@@ -169,6 +169,7 @@ const SearchScreen = () => {
 
                     </View>
                 </TouchableOpacity>
+                <Text style={{ color: 'grey', position: 'absolute', top: 10, alignSelf: 'flex-end', fontSize: 12, paddingEnd: 12 }}>Đã bán: {item.sold}</Text>
             </View>
         )
     }
@@ -350,8 +351,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowOpacity: 0.8,
         margin: 6,
-        padding: 15,
-        elevation: 10
+        padding: 15
     },
     saler: {
         position: 'absolute',

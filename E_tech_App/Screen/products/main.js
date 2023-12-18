@@ -32,7 +32,8 @@ const DetailPoducts = () => {
                 newArrayRecent = JSON.parse(arraytRecent).filter(item => item._id !== response._id)
             }
             newArrayRecent.unshift(response)
-            AsyncStorage.setItem('product_recent', JSON.stringify(newArrayRecent))
+            const save = newArrayRecent.slice(0, 7)
+            AsyncStorage.setItem('product_recent', JSON.stringify(save))
         } catch (error) {
             console.log(error)
         } finally {
@@ -60,7 +61,7 @@ const DetailPoducts = () => {
             case 0:
                 return <HeaderProduct variations={product.variations} />
             case 1:
-                return <Info productId={product._id} productName={product.product_name} minPrice={product.min_price} maxPrice={product.max_price} percentDiscount={product.percent_discount} vote={product.vote} isLike={product.like} />
+                return <Info sold={product.sold} productId={product._id} productName={product.product_name} minPrice={product.min_price} maxPrice={product.max_price} percentDiscount={product.percent_discount} vote={product.vote} isLike={product.like} />
             case 2:
                 return <Rule />
             case 3:

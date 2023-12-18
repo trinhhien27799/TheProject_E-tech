@@ -61,7 +61,11 @@ export default function Makhuyenmai() {
         </Text>
       </View>
 
-      {loading ? <LoadingWidget /> :
+      {loading ?
+        <View style={{ paddingTop: 30 }}>
+          <LoadingWidget />
+        </View>
+        :
         <FlatList
           data={data}
           keyExtractor={(item) => item._id}
