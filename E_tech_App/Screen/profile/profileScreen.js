@@ -312,7 +312,7 @@ const HeaderProfile = ({ setLoading, navigation, setShowEdit, setNewName, fullna
                             imagePicker('background')
                         }
                     }}>
-                    <Image style={styles.background} source={background} />
+                    {background && <Image style={styles.background} source={background} />}
                 </TouchableOpacity>
             }
             <View style={{
@@ -332,7 +332,7 @@ const HeaderProfile = ({ setLoading, navigation, setShowEdit, setNewName, fullna
                                 imagePicker('avatar')
                             }
                         }}>
-                        <Image style={styles.imageHeader} source={avatar} />
+                        {avatar && <Image style={styles.imageHeader} source={avatar} />}
                     </TouchableOpacity>}
                 <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'center' }}>
                     <View style={{ width: 31 }} />

@@ -32,6 +32,10 @@ const Login = ({ navigation }) => {
                 setAddress(response.user?.address ?? null)
                 await updateDeviceToken()
                 await AsyncStorage.setItem("token", response.token)
+                if (navigation.canGoBack()) {
+                    navigation.goBack()
+                    return
+                }
                 navigation.replace('ButtonNavigation');
             } else {
                 Alert.alert('Thông báo', response.message)

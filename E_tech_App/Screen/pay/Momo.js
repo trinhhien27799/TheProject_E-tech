@@ -88,6 +88,7 @@ const MoMoPaymentScreen = () => {
 
     const create = async () => {
         try {
+            console.log(data)
             const response = await createBill(data)
             if (response?.billId) {
                 if (data.value) { payNow(data.value, response.billId) } else { setStatus(1) }

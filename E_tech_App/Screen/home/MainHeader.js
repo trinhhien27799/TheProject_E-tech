@@ -64,7 +64,7 @@ const MainHeader = ({ product }) => {
                 />
             </TouchableOpacity>
 
-            <View >
+            {/* <View >
                 <View style={styles.icon}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('ChatsScreen')}
@@ -72,7 +72,7 @@ const MainHeader = ({ product }) => {
                         <Ionicons name="chatbubble-ellipses-outline" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
         </View>
     )
 }
