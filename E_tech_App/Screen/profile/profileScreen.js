@@ -186,6 +186,7 @@ const Profile = () => {
                 </View>
                 {loading && <LockLoading />}
             </View>
+            <View style={{ height: 20 }} />
         </ScrollView>
     )
 }
