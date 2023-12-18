@@ -137,7 +137,9 @@ const CartScreen = () => {
         flex: 1
       }}>
         {loading ?
-          <LoadingWidget />
+          <View style={{ paddingTop: 30}}>
+            <LoadingWidget />
+          </View>
           :
           <>
             <FlatList

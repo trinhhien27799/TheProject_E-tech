@@ -9,7 +9,7 @@ import { useRequireLogin } from "../../utils/alert";
 import { useNavigation } from "@react-navigation/native";
 
 
-const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike }) => {
+const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vote, isLike,sold }) => {
 
     const [like, setLike] = useState(isLike)
     const [text1, setText1] = useState('')
@@ -45,11 +45,12 @@ const Info = ({ productId, productName, minPrice, maxPrice, percentDiscount, vot
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{productName}</Text>
             <View style={{ paddingVertical: 10 }}>
                 <Text style={{ color: 'red', fontSize: 17 }}>{text1}</Text>
-                <Text style={{ color: 'grey', fontSize: 17, textDecorationLine: 'line-through' }}>{text2}</Text>
+                {text2 && <Text style={{ color: 'grey', fontSize: 17, textDecorationLine: 'line-through' }}>{text2}</Text>}
+                <Text style={{fontSize: 17 }}>Đã bán {sold} sản phẩm</Text>
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={28} />}
+                {vote == 0 ? <Text>Chưa có đánh giá cho sản phẩm này</Text> : <StartRating route={vote} size={20} />}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                         onPress={() => {

@@ -110,7 +110,9 @@ const NotificationScreen = () => {
           width: '100%',
         }}>
           {loading ?
-            <LoadingWidget />
+             <View style={{ paddingTop: 30}}>
+             <LoadingWidget />
+           </View>
             :
             <>
               <FlatList

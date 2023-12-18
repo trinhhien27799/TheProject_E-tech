@@ -56,13 +56,14 @@ const BestSeller = ({ product, setProduct }) => {
           {item.image_preview && <Image style={[tailwind`w-35 h-28 self-center mt-4`, { resizeMode: 'center' }]} source={{ uri: item.image_preview }} />}
           <View style={{ flexDirection: 'row' }}>
             <View style={tailwind`mt-4 w-37`}>
-              <Text style={{ marginTop: 10, fontWeight: 'bold',height:55 }}>{item.product_name}</Text>
+              <Text style={{ marginTop: 10, fontWeight: 'bold', height: 55 }}>{item.product_name}</Text>
               <Text style={{ marginTop: 3 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
               <Text style={{}}>Hãng: {item.brand_name}</Text>
               {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15} />}
             </View>
           </View>
         </TouchableOpacity>
+        <Text style={{ color: 'grey', position: 'absolute', top: 10, alignSelf: 'flex-end', fontSize: 12 ,paddingEnd:12}}>Đã bán: {item.sold}</Text>
       </View>
     )
   }
