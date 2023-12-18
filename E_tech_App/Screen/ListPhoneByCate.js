@@ -5,6 +5,7 @@ import { getAllProductByFilter, getItemProduct } from '../CallApi/productApi'
 import tailwind from 'twrnc'
 import { formatPrice } from '../utils/format'
 import LottieView from 'lottie-react-native'
+import StartRating from "../Component/startRating"
 
 
 const ListPhone = ({ route }) => {
@@ -45,8 +46,8 @@ const ListPhone = ({ route }) => {
         getData()
     }, [])
 
-    const handleItem = async ({item})=>{
-        navigation.navigate('DetailProducts',{productId:item._id});
+    const handleItem = async ({ item }) => {
+        navigation.navigate('DetailProducts', { productId: item._id });
     }
 
     const renderItem = ({ item, index }) => (
@@ -63,13 +64,14 @@ const ListPhone = ({ route }) => {
             }
 
 
-            <TouchableOpacity onPress={() => { handleItem({item:item}) }}>
-                <Image style={tailwind`w-35 h-28 self-center mt-4`} source={{ uri: item.image_preview }} />
+            <TouchableOpacity onPress={() => { handleItem({ item: item }) }}>
+                {item.image_preview && <Image style={[tailwind`w-35 h-28 self-center mt-4`, { resizeMode: 'center' }]} source={{ uri: item.image_preview }} />}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={tailwind`mt-4 w-37`}>
-                        <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.product_name}</Text>
-                        <Text style={{ marginTop: 5, marginBottom: 5 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
-                        <Text style={{ marginTop: 5 }}>Hãng: {item.brand_name}</Text>
+                        <Text style={{ marginTop: 10, fontWeight: 'bold',height:55 }}>{item.product_name}</Text>
+                        <Text style={{ marginTop: 3 }}>Giá: {formatPrice(item.min_price ? item.min_price * (item.percent_discount != 0 ? (1 - item.percent_discount * 0.01) : 1) : 0)}</Text>
+                        <Text >Hãng: {item.brand_name}</Text>
+                        {item.vote == 0 ? <Text>Chưa có đánh giá</Text> : <StartRating route={item.vote} size={15} />}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 10,
         width: 180,
-        height: 270,
+        height: 280,
         borderRadius: 20,
         shadowColor: 'grey',
         shadowRadius: 10,
